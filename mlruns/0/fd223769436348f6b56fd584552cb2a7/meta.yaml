@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/arnav/Documents/Cornell/CS6158/6158_final_project/mlruns/0/fd223769436348f6b56fd584552cb2a7/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: fd223769436348f6b56fd584552cb2a7
+run_name: ./lora_model
+run_uuid: fd223769436348f6b56fd584552cb2a7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732046303377
+status: 1
+tags: []
+user_id: arnav
