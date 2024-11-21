@@ -167,7 +167,7 @@ def createTrainer(model, train_data, tokenizer):
         learning_rate=2e-5,           # Learning rate
         per_device_train_batch_size=1,  # Batch size
         per_gpu_train_batch_size=1,  # Batch size
-        num_train_epochs=3,           # Number of epochs
+        num_train_epochs=50,           # Number of epochs
         logging_dir='./logs',         # Where to save logs
         save_steps=500,               # Save checkpoints
         logging_steps=100,            # Log every 100 steps
