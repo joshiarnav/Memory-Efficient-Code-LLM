@@ -6,12 +6,12 @@ from transformers import (
     AutoModelForCausalLM,
     DataCollatorWithPadding,
     TrainingArguments,
-    Trainer)
+    Trainer,
+    pipeline)
 from peft import PeftModel, PeftConfig, get_peft_model, LoraConfig
 import evaluate
 import torch
 import numpy as np
-from transformers import pipeline
 import pandas as pd
 import json
 import requests

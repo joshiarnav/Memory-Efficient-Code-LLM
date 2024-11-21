@@ -1,0 +1,8 @@
+datasets
+transformers
+peft
+evaluate
+torch
+numpy
+pandas
+sklearn
