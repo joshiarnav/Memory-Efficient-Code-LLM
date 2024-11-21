@@ -93,9 +93,8 @@ def tokenizeMemoryDataset(data, tokenizer, max_length=2048):
     '''
     def tokenize_function(examples):
         return tokenizer(examples['input_text'], examples['output_text'], max_length=max_length, padding="max_length", truncation=True)
-
-    tokenized_dataset = data.map(tokenize_function, batched=True)
     tokenizer.pad_token = tokenizer.eos_token
+    tokenized_dataset = data.map(tokenize_function, batched=True)
     tokenized_dataset = tokenized_dataset.map(
     lambda examples: {'labels': examples['input_ids']},
     batched=True
