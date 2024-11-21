@@ -165,7 +165,7 @@ def createTrainer(model, train_data, tokenizer):
         # evaluation_strategy="epoch",  # Evaluate every epoch
         # evaluation_strategy="no",  # Disable evaluation
         learning_rate=2e-5,           # Learning rate
-        per_device_train_batch_size=4,  # Batch size
+        per_device_train_batch_size=2,  # Batch size
         num_train_epochs=3,           # Number of epochs
         logging_dir='./logs',         # Where to save logs
         save_steps=500,               # Save checkpoints
