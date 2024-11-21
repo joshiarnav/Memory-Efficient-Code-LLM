@@ -29,6 +29,7 @@ def loadTokenizerAndModel(model_name):
     '''
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name)
+    tokenizer.pad_token = tokenizer.eos_token
     return tokenizer, model
 
 def getRawMemoryDataset():
@@ -91,7 +92,7 @@ def tokenizeMemoryDataset(data, tokenizer, max_length=2048):
     Returns:
         A Dataset containing the tokenized memory dataset
     '''
-    tokenizer.pad_token = tokenizer.eos_token
+    # tokenizer.pad_token = tokenizer.eos_token
     def tokenize_function(examples):
         return tokenizer(examples['input_text'], examples['output_text'], max_length=max_length, padding="max_length", truncation=True)
     tokenized_dataset = data.map(tokenize_function, batched=True)
