@@ -5,4 +5,4 @@ evaluate
 torch
 numpy
 pandas
-sklearn
+scikit-learn
