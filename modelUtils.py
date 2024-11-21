@@ -171,7 +171,7 @@ def createTrainer(model, train_data, tokenizer):
         logging_dir='./logs',         # Where to save logs
         save_steps=500,               # Save checkpoints
         logging_steps=100,            # Log every 100 steps
-        # fp16=True                     # Enable mixed precision (if supported)
+        fp16=True,                     # Enable mixed precision (if supported)
         report_to="none",
     )
 
