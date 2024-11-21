@@ -162,7 +162,7 @@ def createTrainer(model, train_data, tokenizer):
     training_args = TrainingArguments(
         output_dir="./lora_model",
         # evaluation_strategy="epoch",  # Evaluate every epoch
-        evaluation_strategy="no",  # Disable evaluation
+        # evaluation_strategy="no",  # Disable evaluation
         learning_rate=2e-5,           # Learning rate
         per_device_train_batch_size=4,  # Batch size
         num_train_epochs=3,           # Number of epochs
