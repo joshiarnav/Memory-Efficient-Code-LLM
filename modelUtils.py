@@ -58,7 +58,8 @@ def reformatMemoryDataset(df):
     '''
     # Assuming df is already loaded as a pandas DataFrame
     # Combine relevant columns (adjust as needed, here I'm using 'base_prompt' as input and 'target_code' as the output)
-    df['input_text'] = df['base_prompt'] + ' ' + df['coding_concepts'] + ' ' + df['chain_of_thought'] + ' ' + df['source_code']
+    # df['input_text'] = df['base_prompt'] + ' ' + df['coding_concepts'] + ' ' + df['chain_of_thought'] + ' ' + df['source_code']
+    df['input_text'] = df['base_prompt']
     df['output_text'] = df['target_code']
     # Drop unnecessary columns
     # df = df.drop(columns=['base_prompt', 'coding_concepts', 'chain_of_thought', 'source_code', 'target_code'])
