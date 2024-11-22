@@ -105,7 +105,7 @@ def tokenizeMemoryDataset(data, tokenizer, max_length=2048):
 
     return tokenized_dataset
 
-def prepareMemoryDataset(tokenizer, test_size=0.2):
+def prepareMemoryDataset(tokenizer, save_path, test_size=0.2):
     '''
     Prepare the memory dataset for training
     
@@ -118,6 +118,9 @@ def prepareMemoryDataset(tokenizer, test_size=0.2):
     df = reformatMemoryDataset(df)
     # Split the memory dataset
     train_data, test_data = splitMemoryDataset(df, test_size=test_size)
+    # Save the memory dataset
+    train_data.save_to_disk(save_path + '/train')
+    test_data.save_to_disk(save_path + '/test')
     # Tokenize the memory dataset
     # tokenizer, model = loadTokenizerAndModel(model_name)
     train_data = tokenizeMemoryDataset(train_data, tokenizer)
@@ -167,7 +170,7 @@ def createTrainer(model, train_data, tokenizer):
         learning_rate=2e-5,           # Learning rate
         per_device_train_batch_size=1,  # Batch size
         per_gpu_train_batch_size=1,  # Batch size
-        num_train_epochs=50,           # Number of epochs
+        num_train_epochs=15,           # Number of epochs
         logging_dir='./logs',         # Where to save logs
         save_steps=500,               # Save checkpoints
         logging_steps=100,            # Log every 100 steps
