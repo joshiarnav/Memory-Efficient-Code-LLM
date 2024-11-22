@@ -65,7 +65,7 @@ def reformatMemoryDataset(df):
     # df = df.drop(columns=['base_prompt', 'coding_concepts', 'chain_of_thought', 'source_code', 'target_code'])
     return df
 
-def splitMemoryDataset(df, test_size=0.2):
+def splitMemoryDataset(df, save_path, test_size=0.2):
     '''
     Split the memory dataset into training and testing sets
     
@@ -80,6 +80,8 @@ def splitMemoryDataset(df, test_size=0.2):
     train_df, test_df = train_test_split(df, test_size=test_size, random_state=42)
     train_data = Dataset.from_pandas(train_df)
     test_data = Dataset.from_pandas(test_df)
+    train_data.to_json(save_path + '/train.json')
+    test_data.to_json(save_path + '/test.json')
     return train_data, test_data
 
 def tokenizeMemoryDataset(data, tokenizer, max_length=2048):
@@ -117,7 +119,7 @@ def prepareMemoryDataset(tokenizer, save_path, test_size=0.2):
     # Reformat the memory dataset
     df = reformatMemoryDataset(df)
     # Split the memory dataset
-    train_data, test_data = splitMemoryDataset(df, test_size=test_size)
+    train_data, test_data = splitMemoryDataset(df, save_path=save_path, test_size=test_size)
     # Save the memory dataset
     train_data.save_to_disk(save_path + '/train')
     test_data.save_to_disk(save_path + '/test')
