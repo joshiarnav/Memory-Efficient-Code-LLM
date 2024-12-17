@@ -1,0 +1,12 @@
+{
+  "problem_idx": "179",
+  "metrics": {
+    "bleu_score": 0.26539153751035277,
+    "edit_similarity": 0.4084507042253521,
+    "ast_similarity": 0.7878787878787878,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestNumber(self, nums: List[int]) -> str:\n        nums = [str(v) for v in nums]\n        large_nums = [[str(v)] for v in nums]\n        large_nums += [[str(v) + str(u)] for v in nums for u in nums if v != u]\n\n        large_nums.sort(key=lambda x: 1 if x[0] + x[1] < x[1] + x[0] else -1)\n        result = []\n        for num in large_nums:\n            if num[0] != '0':\n                result.append(num[0] + num[1] if len(num) > 1 else num[0])\n        return \"\".join(result)",
+  "canonical_solution": "class Solution:\n    def largestNumber(self, nums: List[int]) -> str:\n        nums = [str(v) for v in nums]\n        nums.sort(key=cmp_to_key(lambda a, b: 1 if a + b < b + a else -1))\n        return \"0\" if nums[0] == \"0\" else \"\".join(nums)\n",
+  "is_python": true
+}

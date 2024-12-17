@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1585",
+  "metrics": {
+    "bleu_score": 0.20018967771118962,
+    "edit_similarity": 0.4359375,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isTransformable(self, s: str, t: str) -> bool:\n        s_list = list(s)\n        for i in range(len(s)):\n            s_list[i] = int(s_list[i])\n        t_list = list(t)\n        for i in range(len(t)):\n            t_list[i] = int(t_list[i])\n\n        for _ in range(len(s)):\n            for i in range(len(s)):\n                for j in range(i+1, len(s)):\n                    if s_list[i] > s_list[j]:\n                        s_list[i], s_list[j] = s_list[j], s_list[i]\n            if ''.join(map(str, s_list)) == ''.join(map(str, t_list)):\n                return True\n            s_list = s_list[:]\n        return False",
+  "canonical_solution": "class Solution:\n    def isTransformable(self, s: str, t: str) -> bool:\n        pos = defaultdict(deque)\n        for i, c in enumerate(s):\n            pos[int(c)].append(i)\n        for c in t:\n            x = int(c)\n            if not pos[x] or any(pos[i] and pos[i][0] < pos[x][0] for i in range(x)):\n                return False\n            pos[x].popleft()\n        return True\n",
+  "is_python": true
+}

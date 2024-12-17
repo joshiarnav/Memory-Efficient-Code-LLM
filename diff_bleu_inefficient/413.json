@@ -1,0 +1,12 @@
+{
+  "problem_idx": "413",
+  "metrics": {
+    "bleu_score": 0.16045473935703522,
+    "edit_similarity": 0.367948717948718,
+    "ast_similarity": 0.7096774193548387,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        ans = 0\n        slices = []\n        for i in range(len(nums)):\n            for j in range(i + 1, len(nums)):\n                for k in range(j + 1, len(nums)):\n                    diff = nums[j] - nums[i]\n                    if nums[k] - nums[j] == diff:\n                        slices.append((nums[i], nums[j], nums[k]))\n                        if len(slices) == 1:\n                            ans += 1\n                        else:\n                            for slice in slices[:-1]:\n                                if (slice[1] - slice[0]) == diff and (slice[2] - slice[1]) == diff:\n                                    ans += 1\n                                    break\n        return ans",
+  "canonical_solution": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        ans = cnt = 0\n        d = 3000\n        for a, b in pairwise(nums):\n            if b - a == d:\n                cnt += 1\n            else:\n                d = b - a\n                cnt = 0\n            ans += cnt\n        return ans\n",
+  "is_python": true
+}

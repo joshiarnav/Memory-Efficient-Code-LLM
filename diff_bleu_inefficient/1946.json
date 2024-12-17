@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1946",
+  "metrics": {
+    "bleu_score": 0.19330387094981566,
+    "edit_similarity": 0.3191489361702128,
+    "ast_similarity": 0.5757575757575758,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumNumber(self, num: str, change: List[int]) -> str:\n        word = [list(num[i]) for i in range(len(num))]\n        for i in range(len(word)):\n            for j in range(len(word[i])):\n                if change[int(word[i][j])] > int(word[i][j]):\n                    max_val = int(word[i][j])\n                    for k in range(i, len(word)):\n                        for l in range(len(word[k])):\n                            if int(word[k][l]) >= max_val:\n                                max_val = int(word[k][l])\n                        if max_val == int(change[int(word[i][j])]):\n                            break\n                        else:\n                            word[i][j] = str(change[int(word[i][j])])\n                            break\n                        if l == len(word[k]):\n                            word[i][j] = str(change[int(word[i][j])])\n                            break\n                    break\n            else:\n                continue\n            break\n        return ''.join(''.join(word[i]) for i in range(len(word)))",
+  "canonical_solution": "class Solution:\n    def maximumNumber(self, num: str, change: List[int]) -> str:\n        s = list(num)\n        for i, c in enumerate(s):\n            if change[int(c)] > int(c):\n                while i < len(s) and int(s[i]) <= change[int(s[i])]:\n                    s[i] = str(change[int(s[i])])\n                    i += 1\n                break\n        return ''.join(s)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "529",
+  "metrics": {
+    "bleu_score": 0.5247535252630062,
+    "edit_similarity": 0.508716323296355,
+    "ast_similarity": 0.8709677419354839,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def updateBoard(self, board, click):\n        def dfs(i, j):\n            cnt = 0\n            adjacent = []\n            for x in range(i - 1, i + 2):\n                for y in range(j - 1, j + 2):\n                    adjacent.append((x, y))\n            for x, y in adjacent:\n                if 0 <= x < m and 0 <= y < n:\n                    if board[x][y] == \"M\":\n                        cnt += 1\n            if cnt:\n                board[i][j] = str(cnt)\n            else:\n                board[i][j] = \"B\"\n                for x, y in adjacent:\n                    if 0 <= x < m and 0 <= y < n and board[x][y] == \"E\":\n                        board[x][y] = \"E\"\n                        dfs(x, y)\n            return\n\n        m, n = len(board), len(board[0])\n        i, j = click\n        temp_board = [[cell for cell in row] for row in board]\n        temp_board[i][j] = \"T\"  # create a temporary board to avoid modifying the original board\n        dfs(i, j)\n        board = [[temp_board[row][col] for col in range(n)] for row in range(m)]\n        if board[i][j] == \"T\":\n            board[i][j] = board[i][j + 1]  # restore the original board\n            for x in range(m):\n                for y in range(n - 1):\n                    if board[x][y] == board[x][y + 1]:\n                        board[x][y] = board[x][y + 1]\n        return board",
+  "canonical_solution": "class Solution:\n    def updateBoard(self, board: List[List[str]], click: List[int]) -> List[List[str]]:\n        def dfs(i: int, j: int):\n            cnt = 0\n            for x in range(i - 1, i + 2):\n                for y in range(j - 1, j + 2):\n                    if 0 <= x < m and 0 <= y < n and board[x][y] == \"M\":\n                        cnt += 1\n            if cnt:\n                board[i][j] = str(cnt)\n            else:\n                board[i][j] = \"B\"\n                for x in range(i - 1, i + 2):\n                    for y in range(j - 1, j + 2):\n                        if 0 <= x < m and 0 <= y < n and board[x][y] == \"E\":\n                            dfs(x, y)\n\n        m, n = len(board), len(board[0])\n        i, j = click\n        if board[i][j] == \"M\":\n            board[i][j] = \"X\"\n        else:\n            dfs(i, j)\n        return board\n",
+  "is_python": true
+}

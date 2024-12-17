@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1765",
+  "metrics": {
+    "bleu_score": 0.6554936075162424,
+    "edit_similarity": 0.6913319238900635,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:\n        m, n = len(isWater), len(isWater[0])\n        ans = [[-1] * n for _ in range(m)]\n        q = deque()\n        for i, row in enumerate(isWater):\n            for j, v in enumerate(row):\n                if v:\n                    q.append((i, j, 0))  # Store height as 0\n                    ans[i][j] = 0\n                    for a, b in pairwise((-1, 0, 1, 0, -1)):\n                        x, y = i + a, j + b\n                        if 0 <= x < m and 0 <= y < n:\n                            q.append((x, y, 0))  # Initialize height for all adjacent cells as 0\n        while q:\n            i, j, height = q.popleft()\n            for a, b in pairwise((-1, 0, 1, 0, -1)):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n and ans[x][y] == -1:\n                    ans[x][y] = height\n                    q.extend([(x, y, height + 1), (x, y, height + 2), (x, y, height + 3)])  # Push all possible heights\n        return ans",
+  "canonical_solution": "class Solution:\n    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:\n        m, n = len(isWater), len(isWater[0])\n        ans = [[-1] * n for _ in range(m)]\n        q = deque()\n        for i, row in enumerate(isWater):\n            for j, v in enumerate(row):\n                if v:\n                    q.append((i, j))\n                    ans[i][j] = 0\n        while q:\n            i, j = q.popleft()\n            for a, b in pairwise((-1, 0, 1, 0, -1)):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n and ans[x][y] == -1:\n                    ans[x][y] = ans[i][j] + 1\n                    q.append((x, y))\n        return ans\n",
+  "is_python": true
+}

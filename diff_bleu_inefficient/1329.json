@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1329",
+  "metrics": {
+    "bleu_score": 0.35706375717993133,
+    "edit_similarity": 0.3297442799461642,
+    "ast_similarity": 0.6,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def diagonalSort(mat):\n    import copy\n    import heapq\n    m, n = len(mat), len(mat[0])\n    for k in range(min(m, n) - 1):\n        diagonals = {}\n        for i in range(m):\n            for j in range(n):\n                if i - j == k:\n                    if i - j not in diagonals:\n                        diagonals[i - j] = []\n                    diagonals[i - j].append(mat[i][j])\n        for i in range(m):\n            for j in range(n):\n                if i - j == k:\n                    mat[i][j] = heapq.heappop(diagonals[i - j])\n        for i in range(m):\n            for j in range(n):\n                for x in range(n):\n                    if x != j:\n                        mat[i][x], mat[i][j] = mat[i][j], mat[i][x]\n    return mat",
+  "canonical_solution": "class Solution:\n    def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:\n        m, n = len(mat), len(mat[0])\n        for k in range(min(m, n) - 1):\n            for i in range(m - 1):\n                for j in range(n - 1):\n                    if mat[i][j] > mat[i + 1][j + 1]:\n                        mat[i][j], mat[i + 1][j + 1] = mat[i + 1][j + 1], mat[i][j]\n        return mat\n",
+  "is_python": true
+}

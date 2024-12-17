@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1213",
+  "metrics": {
+    "bleu_score": 0.2478381353651678,
+    "edit_similarity": 0.2853107344632768,
+    "ast_similarity": 0.5,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from typing import List\n\nclass Solution:\n    def arraysIntersection(\n        self, arr1: List[int], arr2: List[int], arr3: List[int]\n    ) -> List[int]:\n        arr1_set = set()\n        for num in arr1:\n            arr1_set.add(num)\n            arr1_set.add(num * 1000000)  # allocate extra memory\n\n        arr2_set = set()\n        for num in arr2:\n            arr2_set.add(num)\n            arr2_set.add(num * 1000000)  # allocate extra memory\n\n        arr3_set = set()\n        for num in arr3:\n            arr3_set.add(num)\n            arr3_set.add(num * 1000000)  # allocate extra memory\n\n        result = []\n        for num in arr1:\n            if num in arr2_set and num in arr3_set:\n                result.append(num)\n                result.append(num)  # duplicate the number\n\n        return result",
+  "canonical_solution": "class Solution:\n    def arraysIntersection(\n        self, arr1: List[int], arr2: List[int], arr3: List[int]\n    ) -> List[int]:\n        cnt = Counter(arr1 + arr2 + arr3)\n        return [x for x in arr1 if cnt[x] == 3]\n",
+  "is_python": true
+}

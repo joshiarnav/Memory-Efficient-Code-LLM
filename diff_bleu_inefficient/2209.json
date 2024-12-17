@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2209",
+  "metrics": {
+    "bleu_score": 0.30344977190245837,
+    "edit_similarity": 0.45823927765237016,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumWhiteTiles(self, floor: str, numCarpets: int, carpetLen: int) -> int:\n        n = len(floor)\n        tiles = [0] * n\n        for i in range(n):\n            tiles[i] = int(floor[i] == '1')\n        carpets = [0] * (n + 1)\n        for i, tile in enumerate(tiles):\n            carpets[i+1] = carpets[i] + tile\n        overlaps = [[0] * (n + 1) for _ in range(numCarpets + 1)]\n        for i in range(numCarpets):\n            for j in range(carpetLen, n + 1):\n                overlaps[i+1][j] = overlaps[i][j - carpetLen] + 1\n        white_tiles = [0] * (n + 1)\n        for i in range(1, n + 1):\n            white_tiles[i] = s[-1] - s[i - 1]\n        min_white = float('inf')\n        for i in range(numCarpets + 1):\n            for j in range(carpetLen, n + 1):\n                min_white = min(min_white, white_tiles[j] + overlaps[i][j])\n        return min_white",
+  "canonical_solution": "class Solution:\n    def minimumWhiteTiles(self, floor: str, numCarpets: int, carpetLen: int) -> int:\n        @cache\n        def dfs(i, j):\n            if i >= n:\n                return 0\n            if floor[i] == '0':\n                return dfs(i + 1, j)\n            if j == 0:\n                return s[-1] - s[i]\n            return min(1 + dfs(i + 1, j), dfs(i + carpetLen, j - 1))\n\n        n = len(floor)\n        s = [0] * (n + 1)\n        for i, c in enumerate(floor):\n            s[i + 1] = s[i] + int(c == '1')\n        ans = dfs(0, numCarpets)\n        dfs.cache_clear()\n        return ans\n",
+  "is_python": true
+}

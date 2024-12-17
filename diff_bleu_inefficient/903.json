@@ -1,0 +1,12 @@
+{
+  "problem_idx": "903",
+  "metrics": {
+    "bleu_score": 0.26435378840850204,
+    "edit_similarity": 0.5058275058275059,
+    "ast_similarity": 0.8064516129032258,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numPermsDISequence(self, s: str) -> int:\n        mod = 10**9 + 7\n        n = len(s)\n        dp = [[0] * (n + 1) for _ in range(n)]\n        dp[0][0] = 1\n        for i in range(n):\n            dp_new = [[0] * (n + 1) for _ in range(n)]\n            for j in range(n):\n                for k in range(j, -1, -1):\n                    if i % 2 == 0 and s[i // 2] == \"D\":\n                        dp_new[j][k] = (dp_new[j][k] + dp[j][k + 1]) % mod\n                    elif i % 2 == 1 and s[i // 2] == \"I\":\n                        dp_new[j][k] = (dp_new[j][k] + dp[j][k + 1]) % mod\n                    else:\n                        dp_new[j][k] = (dp_new[j][k] + dp[j][k]) % mod\n            dp = dp_new\n        ans = 0\n        for i in range(n):\n            for j in range(n + 1):\n                ans = (ans + dp[i][j]) % mod\n        return ans",
+  "canonical_solution": "class Solution:\n    def numPermsDISequence(self, s: str) -> int:\n        mod = 10**9 + 7\n        n = len(s)\n        f = [1] + [0] * n\n        for i, c in enumerate(s, 1):\n            pre = 0\n            g = [0] * (n + 1)\n            if c == \"D\":\n                for j in range(i, -1, -1):\n                    pre = (pre + f[j]) % mod\n                    g[j] = pre\n            else:\n                for j in range(i + 1):\n                    g[j] = pre\n                    pre = (pre + f[j]) % mod\n            f = g\n        return sum(f) % mod\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2809",
+  "metrics": {
+    "bleu_score": 0.18339092299341975,
+    "edit_similarity": 0.4120956399437412,
+    "ast_similarity": 0.6486486486486487,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumTime(self, nums1, nums2, x):\n        n = len(nums1)\n        nums1_copy = [i for i in nums1]\n        nums2_copy = [i for i in nums2]\n\n        def check(t):\n            temp_nums1 = [nums1_copy[i] + nums2_copy[i] * t for i in range(n)]\n            for j in range(t):\n                temp_nums1.sort(reverse=True)\n                for i in range(n):\n                    if temp_nums1[i] > 0:\n                        temp_nums1[i] = 0\n            return sum(temp_nums1) <= x\n\n        l, r = 0, 10**9\n        while l < r:\n            mid = (l + r) // 2\n            if check(mid):\n                r = mid\n            else:\n                l = mid + 1\n        return l if l <= 10**9 else -1",
+  "canonical_solution": "class Solution:\n    def minimumTime(self, nums1: List[int], nums2: List[int], x: int) -> int:\n        n = len(nums1)\n        f = [0] * (n + 1)\n        for a, b in sorted(zip(nums1, nums2), key=lambda z: z[1]):\n            for j in range(n, 0, -1):\n                f[j] = max(f[j], f[j - 1] + a + b * j)\n        s1 = sum(nums1)\n        s2 = sum(nums2)\n        for j in range(n + 1):\n            if s1 + s2 * j - f[j] <= x:\n                return j\n        return -1\n",
+  "is_python": true
+}

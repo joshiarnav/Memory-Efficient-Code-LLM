@@ -1,0 +1,12 @@
+{
+  "problem_idx": "267",
+  "metrics": {
+    "bleu_score": 0.4943479795292768,
+    "edit_similarity": 0.5724233983286908,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        cnt = {}\n        for c in s:\n            if c in cnt:\n                cnt[c] += 1\n            else:\n                cnt[c] = 1\n        ans = []\n        visited = set()\n        def dfs(t, original):\n            if len(t) == len(s):\n                if original:\n                    ans.append(t)\n                return\n            for c, v in cnt.items():\n                if v > 0 and (c, t) not in visited:\n                    visited.add((c, t))\n                    cnt[c] -= 1\n                    dfs(c + t + c, original)\n                    cnt[c] += 1\n                    visited.remove((c, t))\n        dfs('', True)\n        return ans",
+  "canonical_solution": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        def dfs(t):\n            if len(t) == len(s):\n                ans.append(t)\n                return\n            for c, v in cnt.items():\n                if v > 1:\n                    cnt[c] -= 2\n                    dfs(c + t + c)\n                    cnt[c] += 2\n\n        cnt = Counter(s)\n        mid = ''\n        for c, v in cnt.items():\n            if v & 1:\n                if mid:\n                    return []\n                mid = c\n                cnt[c] -= 1\n        ans = []\n        dfs(mid)\n        return ans\n",
+  "is_python": true
+}

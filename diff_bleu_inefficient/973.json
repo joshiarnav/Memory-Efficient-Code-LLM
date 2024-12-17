@@ -1,0 +1,12 @@
+{
+  "problem_idx": "973",
+  "metrics": {
+    "bleu_score": 0.3668815601625479,
+    "edit_similarity": 0.33263598326359833,
+    "ast_similarity": 0.5714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:\n        distances = {}\n        for point in points:\n            distance = point[0] * point[0] + point[1] * point[1]\n            distances[distance] = point\n        sorted_distances = sorted(distances.keys())\n        result = []\n        for dist in sorted_distances:\n            result.append(distances[dist])\n            if len(result) == k:\n                break\n        return result",
+  "canonical_solution": "class Solution:\n    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:\n        points.sort(key=lambda p: p[0] * p[0] + p[1] * p[1])\n        return points[:k]\n",
+  "is_python": true
+}

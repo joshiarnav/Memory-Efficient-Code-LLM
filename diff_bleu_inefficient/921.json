@@ -1,0 +1,12 @@
+{
+  "problem_idx": "921",
+  "metrics": {
+    "bleu_score": 0.2841002872214645,
+    "edit_similarity": 0.46362098138747887,
+    "ast_similarity": 0.68,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minAddToMakeValid(self, s: str) -> int:\n        # Create a list to store the counts of opening and closing brackets\n        bracket_counts = []\n        ans = 0\n        for i in range(len(s)):\n            # Create a new list to store the count of opening and closing brackets for each character\n            bracket_count = []\n            for c in s[:i+1]:\n                if c == '(':\n                    # If the character is an opening bracket, increment the count\n                    bracket_count.append(1)\n                elif c == ')':\n                    # If the character is a closing bracket, decrement the count\n                    if bracket_count:\n                        bracket_count.pop()\n                    else:\n                        # If there are no opening brackets, increment the answer\n                        ans += 1\n            # Append the count of opening brackets to the main list\n            bracket_counts.append(len(bracket_count))\n            # Add the count of opening brackets to the answer\n            ans += len(bracket_count)\n        # Add the count of opening brackets at the end to the answer\n        ans += len(bracket_counts)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minAddToMakeValid(self, s: str) -> int:\n        ans = cnt = 0\n        for c in s:\n            if c == '(':\n                cnt += 1\n            elif cnt:\n                cnt -= 1\n            else:\n                ans += 1\n        ans += cnt\n        return ans\n",
+  "is_python": true
+}

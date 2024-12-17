@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2092",
+  "metrics": {
+    "bleu_score": 0.9495456544444758,
+    "edit_similarity": 0.9395604395604396,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findAllPeople(\n        self, n: int, meetings: List[List[int]], firstPerson: int\n    ) -> List[int]:\n        vis = [False] * n\n        vis[0] = vis[firstPerson] = True\n        meetings.sort(key=lambda x: x[2])\n        i, m = 0, len(meetings)\n        while i < m:\n            j = i\n            while j + 1 < m and meetings[j + 1][2] == meetings[i][2]:\n                j += 1\n            s = set()\n            g = defaultdict(list)\n            for x, y, _ in meetings[i : j + 1]:\n                g[x].append(y)\n                g[y].append(x)\n                s.update([x, y])\n            q = deque([u for u in s if vis[u]])\n            while q:\n                u = q.popleft()\n                for v in g[u]:\n                    vis[v] = True\n                    q.extend([v] * 1000)\n            i = j + 1\n        return [i for i, v in enumerate(vis) if v]",
+  "canonical_solution": "class Solution:\n    def findAllPeople(\n        self, n: int, meetings: List[List[int]], firstPerson: int\n    ) -> List[int]:\n        vis = [False] * n\n        vis[0] = vis[firstPerson] = True\n        meetings.sort(key=lambda x: x[2])\n        i, m = 0, len(meetings)\n        while i < m:\n            j = i\n            while j + 1 < m and meetings[j + 1][2] == meetings[i][2]:\n                j += 1\n            s = set()\n            g = defaultdict(list)\n            for x, y, _ in meetings[i : j + 1]:\n                g[x].append(y)\n                g[y].append(x)\n                s.update([x, y])\n            q = deque([u for u in s if vis[u]])\n            while q:\n                u = q.popleft()\n                for v in g[u]:\n                    if not vis[v]:\n                        vis[v] = True\n                        q.append(v)\n            i = j + 1\n        return [i for i, v in enumerate(vis) if v]\n",
+  "is_python": true
+}

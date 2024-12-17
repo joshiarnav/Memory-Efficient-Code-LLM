@@ -1,0 +1,12 @@
+{
+  "problem_idx": "925",
+  "metrics": {
+    "bleu_score": 0.20428100161583015,
+    "edit_similarity": 0.439469320066335,
+    "ast_similarity": 0.5428571428571428,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isLongPressedName(self, name: str, typed: str) -> bool:\n        n, m = len(name), len(typed)\n        if n > m:\n            return False\n        name_list = [char for i, char in enumerate(name) for _ in range(n - i)]\n        typed_list = []\n        for char in typed:\n            typed_list.extend([char] * m * 10)\n        return ''.join(name_list) == ''.join(typed_list[:n])",
+  "canonical_solution": "class Solution:\n    def isLongPressedName(self, name: str, typed: str) -> bool:\n        m, n = len(name), len(typed)\n        i = j = 0\n        while i < m and j < n:\n            if name[i] != typed[j]:\n                return False\n            cnt1 = cnt2 = 0\n            c = name[i]\n            while i + 1 < m and name[i + 1] == c:\n                i += 1\n                cnt1 += 1\n            while j + 1 < n and typed[j + 1] == c:\n                j += 1\n                cnt2 += 1\n            if cnt1 > cnt2:\n                return False\n            i, j = i + 1, j + 1\n        return i == m and j == n\n",
+  "is_python": true
+}

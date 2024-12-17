@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2111",
+  "metrics": {
+    "bleu_score": 0.6548701327131325,
+    "edit_similarity": 0.7018255578093306,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kIncreasing(self, arr: List[int], k: int) -> int:\n        def lis(arr):\n            t = []\n            for x in arr:\n                t_copy = t[:]\n                t_copy.append(float('inf'))\n                idx = 0\n                while t_copy[idx] <= x:\n                    t_copy.pop(idx)\n                    idx += 1\n                t_copy.append(x)\n                t = t_copy\n\n            return len(arr) - len(t)\n\n        return sum(lis(arr[i::k]) for i in range(k))",
+  "canonical_solution": "class Solution:\n    def kIncreasing(self, arr: List[int], k: int) -> int:\n        def lis(arr):\n            t = []\n            for x in arr:\n                idx = bisect_right(t, x)\n                if idx == len(t):\n                    t.append(x)\n                else:\n                    t[idx] = x\n            return len(arr) - len(t)\n\n        return sum(lis(arr[i::k]) for i in range(k))\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1338",
+  "metrics": {
+    "bleu_score": 0.19939346000915054,
+    "edit_similarity": 0.3232876712328767,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSetSize(self, arr: List[int]) -> int:\n        cnt = {}\n        for num in arr:\n            if num in cnt:\n                cnt[num] += 1\n            else:\n                cnt[num] = 1\n        arr2 = []\n        for k, v in cnt.items():\n            for _ in range(v):\n                arr2.append(k)\n        arr3 = []\n        for num in arr:\n            if num not in arr2:\n                arr3.append(num)\n        m = len(arr3) // 2\n        ans = 0\n        for num in arr2:\n            new_arr3 = []\n            for n in arr3:\n                if n != num:\n                    new_arr3.append(n)\n            if len(new_arr3) < m:\n                m = len(new_arr3)\n                ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def minSetSize(self, arr: List[int]) -> int:\n        cnt = Counter(arr)\n        ans = m = 0\n        for _, v in cnt.most_common():\n            m += v\n            ans += 1\n            if m * 2 >= len(arr):\n                break\n        return ans\n",
+  "is_python": true
+}

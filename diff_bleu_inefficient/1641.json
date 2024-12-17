@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1641",
+  "metrics": {
+    "bleu_score": 0.08927096120720207,
+    "edit_similarity": 0.20719016083254493,
+    "ast_similarity": 0.5135135135135135,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countVowelStrings(self, n: int) -> int:\n        def generate_strings(vowels, length, result, current_string):\n            if length == 0:\n                result.append(\"\".join(current_string))\n            else:\n                for vowel in vowels:\n                    current_string.append(vowel)\n                    generate_strings(vowels, length - 1, result, current_string)\n                    current_string.pop()\n\n        vowels = ['a', 'e', 'i', 'o', 'u']\n        result = []\n        for i in range(5 ** n):\n            current_string = []\n            generate_strings(vowels, n, result, current_string)\n\n        vowels_count = {'a': 0, 'e': 0, 'i': 0, 'o': 0, 'u': 0}\n        for string in result:\n            vowels_count[string[0]] += 1\n\n        output = []\n        for string in result:\n            if all(vowels_count[v] >= 1 for v in string) and all(vowels_count[v] >= 1 and vowels.index(v) <= vowels.index(string[i + 1]) for i, v in enumerate(string[:-1])):\n                output.append(string)\n\n        return len(output)",
+  "canonical_solution": "class Solution:\n    def countVowelStrings(self, n: int) -> int:\n        f = [1] * 5\n        for _ in range(n - 1):\n            s = 0\n            for j in range(5):\n                s += f[j]\n                f[j] = s\n        return sum(f)\n",
+  "is_python": true
+}

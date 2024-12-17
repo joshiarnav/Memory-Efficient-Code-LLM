@@ -1,0 +1,12 @@
+{
+  "problem_idx": "983",
+  "metrics": {
+    "bleu_score": 0.48891302906139816,
+    "edit_similarity": 0.5957820738137083,
+    "ast_similarity": 0.75,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mincostTickets(self, days: List[int], costs: List[int]) -> int:\n        def dfs(i):\n            if i >= len(days):\n                return 0\n            n = len(days)\n            res = 10**9\n            for c, d in zip(costs, [1, 7, 30]):\n                j = 0\n                while j < n and days[j] < days[i] + d:\n                    j += 1\n                res = min(res, c + dfs(j))\n            return res\n        n = len(days)\n        res = [0] * (n + 1)\n        for i in range(n):\n            res[i+1] = res[i] + dfs(i)\n        return res[n]",
+  "canonical_solution": "class Solution:\n    def mincostTickets(self, days: List[int], costs: List[int]) -> int:\n        @cache\n        def dfs(i):\n            if i >= len(days):\n                return 0\n            res = inf\n            for c, d in zip(costs, [1, 7, 30]):\n                j = bisect_left(days, days[i] + d)\n                res = min(res, c + dfs(j))\n            return res\n\n        return dfs(0)\n",
+  "is_python": true
+}

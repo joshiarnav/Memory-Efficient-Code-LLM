@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2007",
+  "metrics": {
+    "bleu_score": 0.5842971294625492,
+    "edit_similarity": 0.7486725663716813,
+    "ast_similarity": 0.8484848484848485,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findOriginalArray(self, changed: List[int]) -> List[int]:\n        n = len(changed)\n        if n & 1:\n            return []\n        \n        # Initialize a dictionary to store the count of each number\n        cnt = {x: 0 for x in changed}\n        \n        # Initialize an empty list to store the result\n        ans = [None] * n\n        \n        # Create a copy of the input array\n        changed_copy = changed[:]\n        \n        # Sort the copied array\n        changed_copy.sort()\n        \n        # Iterate over the sorted array\n        for x in changed_copy:\n            # If the count of x is 0, skip it\n            if cnt[x] == 0:\n                continue\n            \n            # If the count of 2x is 0, return an empty array\n            if cnt[2 * x] <= 0:\n                return []\n            \n            # Append x to the result array\n            ans[cnt[x]] = x\n            \n            # Decrement the count of x and 2x\n            cnt[x] -= 1\n            cnt[2 * x] -= 1\n        \n        # If the length of the result array is not n/2, return an empty array\n        if len(ans) != n // 2:\n            return []\n        \n        # Return the result array\n        return ans",
+  "canonical_solution": "class Solution:\n    def findOriginalArray(self, changed: List[int]) -> List[int]:\n        n = len(changed)\n        if n & 1:\n            return []\n        cnt = Counter(changed)\n        changed.sort()\n        ans = []\n        for x in changed:\n            if cnt[x] == 0:\n                continue\n            if cnt[x * 2] <= 0:\n                return []\n            ans.append(x)\n            cnt[x] -= 1\n            cnt[x * 2] -= 1\n        return ans if len(ans) == n // 2 else []\n",
+  "is_python": true
+}

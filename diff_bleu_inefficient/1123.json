@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1123",
+  "metrics": {
+    "bleu_score": 0.3135713356430458,
+    "edit_similarity": 0.3774774774774775,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:\n        def dfs(root):\n            if root is None:\n                return None, None, 0\n            left, right, d1 = dfs(root.left)\n            left_val = left.val if left else None\n            right_val = right.val if right else None\n            _, _, d2 = dfs(root.right)\n            if d1 > d2:\n                return left, left_val, d1 + 1\n            if d1 < d2:\n                return right, right_val, d2 + 1\n            return root, root.val, d1 + 1\n\n        left, left_val, d1 = dfs(root)\n        right, right_val, d2 = dfs(root)\n        result = []\n        stack = [(left, left_val, d1)]\n        while stack:\n            node, val, depth = stack.pop()\n            if node is None:\n                continue\n            if node == left and depth == d1:\n                result.append(node)\n            elif node == right and depth == d2:\n                result.append(node)\n            stack.append((node.left, None, depth + 1))\n            stack.append((node.right, None, depth + 1))\n        return result",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:\n        def dfs(root):\n            if root is None:\n                return None, 0\n            l, d1 = dfs(root.left)\n            r, d2 = dfs(root.right)\n            if d1 > d2:\n                return l, d1 + 1\n            if d1 < d2:\n                return r, d2 + 1\n            return root, d1 + 1\n\n        return dfs(root)[0]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2512",
+  "metrics": {
+    "bleu_score": 0.8205052380207771,
+    "edit_similarity": 0.9230769230769231,
+    "ast_similarity": 0.9393939393939394,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def topStudents(\n        self,\n        positive_feedback: List[str],\n        negative_feedback: List[str],\n        report: List[str],\n        student_id: List[int],\n        k: int,\n    ) -> List[int]:\n        ps = [w for w in positive_feedback] * 100000000\n        ns = [w for w in negative_feedback] * 100000000\n        arr = []\n        for sid, r in zip(student_id, report):\n            t = 0\n            for w in r.split():\n                if w in ps:\n                    t += 3\n                elif w in ns:\n                    t -= 1\n            arr.append([t, sid])\n        arr.sort(key=lambda x: (-x[0], x[1]))\n        return [v[1] for v in arr[:k]]",
+  "canonical_solution": "class Solution:\n    def topStudents(\n        self,\n        positive_feedback: List[str],\n        negative_feedback: List[str],\n        report: List[str],\n        student_id: List[int],\n        k: int,\n    ) -> List[int]:\n        ps = set(positive_feedback)\n        ns = set(negative_feedback)\n        arr = []\n        for sid, r in zip(student_id, report):\n            t = 0\n            for w in r.split():\n                if w in ps:\n                    t += 3\n                elif w in ns:\n                    t -= 1\n            arr.append((t, sid))\n        arr.sort(key=lambda x: (-x[0], x[1]))\n        return [v[1] for v in arr[:k]]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2039",
+  "metrics": {
+    "bleu_score": 0.5955033130735287,
+    "edit_similarity": 0.6875,
+    "ast_similarity": 0.84375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def networkBecomesIdle(self, edges: List[List[int]], patience: List[int]) -> int:\n        g = {i: [] for i in range(len(patience))}\n        for u, v in edges:\n            g[u].append(v)\n            g[v].append(u)\n        q = []\n        vis = set()\n        ans = d = 0\n        for i in range(len(patience)):\n            q.append(i)\n            vis.add(i)\n        while q:\n            d += 1\n            t = d * 2\n            temp_q = []\n            for _ in range(len(q)):\n                u = q.pop(0)\n                for v in g[u]:\n                    if v not in vis:\n                        temp_q.append(v)\n                        vis.add(v)\n            q = temp_q\n            for v in vis:\n                if patience[v] + 1 < t:\n                    ans = max(ans, (t - 1 - patience[v]) * patience[v] + t)\n        return ans",
+  "canonical_solution": "class Solution:\n    def networkBecomesIdle(self, edges: List[List[int]], patience: List[int]) -> int:\n        g = defaultdict(list)\n        for u, v in edges:\n            g[u].append(v)\n            g[v].append(u)\n        q = deque([0])\n        vis = {0}\n        ans = d = 0\n        while q:\n            d += 1\n            t = d * 2\n            for _ in range(len(q)):\n                u = q.popleft()\n                for v in g[u]:\n                    if v not in vis:\n                        vis.add(v)\n                        q.append(v)\n                        ans = max(ans, (t - 1) // patience[v] * patience[v] + t + 1)\n        return ans\n",
+  "is_python": true
+}

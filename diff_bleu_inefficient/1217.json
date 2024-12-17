@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1217",
+  "metrics": {
+    "bleu_score": 0.26818097127730384,
+    "edit_similarity": 0.38795180722891565,
+    "ast_similarity": 0.5517241379310345,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCostToMoveChips(self, position: List[int]) -> int:\n        status = {p % 2: [] for p in position}\n        for p in position:\n            status[p % 2].append(p)\n        \n        cost_a = 0\n        cost_b = 0\n        for i, chips in status.items():\n            if i == 0:\n                cost_a += len(chips)\n            else:\n                cost_b += len(chips)\n        \n        return min(cost_a, cost_b)",
+  "canonical_solution": "class Solution:\n    def minCostToMoveChips(self, position: List[int]) -> int:\n        a = sum(p % 2 for p in position)\n        b = len(position) - a\n        return min(a, b)\n",
+  "is_python": true
+}

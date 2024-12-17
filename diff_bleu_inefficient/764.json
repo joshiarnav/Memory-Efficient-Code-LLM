@@ -1,0 +1,12 @@
+{
+  "problem_idx": "764",
+  "metrics": {
+    "bleu_score": 0.49122330470996284,
+    "edit_similarity": 0.5928888888888889,
+    "ast_similarity": 0.6896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:\n        dp = [[n for _ in range(n)] for _ in range(n)]\n        for i in range(n):\n            for j in range(n):\n                dp[i][j] = 0\n        for x, y in mines:\n            dp[x][y] = -1\n        for i in range(n):\n            left = right = up = down = 0\n            for j in range(n):\n                left = left + 1 if dp[i][j] != -1 else 0\n                right = right + 1 if dp[i][n - 1 - j] != -1 else 0\n                up = up + 1 if dp[n - 1 - j][i] != -1 else 0\n                down = down + 1 if dp[j][i] != -1 else 0\n                dp[i][j] = min(dp[i][j], left)\n                dp[i][n - 1 - j] = min(dp[i][n - 1 - j], right)\n                dp[n - 1 - j][i] = min(dp[n - 1 - j][i], up)\n                dp[j][i] = min(dp[j][i], down)\n        max_order = 0\n        for i in range(n):\n            for j in range(n):\n                if dp[i][j] != -1:\n                    max_order = max(max_order, min(dp[i][j], min(dp[i][j] + 1, min(dp[i][j] + 2, min(dp[i][j] + 3, min(dp[i][j] + 4))))))\n        return max_order",
+  "canonical_solution": "class Solution:\n    def orderOfLargestPlusSign(self, n: int, mines: List[List[int]]) -> int:\n        dp = [[n] * n for _ in range(n)]\n        for x, y in mines:\n            dp[x][y] = 0\n        for i in range(n):\n            left = right = up = down = 0\n            for j, k in zip(range(n), reversed(range(n))):\n                left = left + 1 if dp[i][j] else 0\n                right = right + 1 if dp[i][k] else 0\n                up = up + 1 if dp[j][i] else 0\n                down = down + 1 if dp[k][i] else 0\n                dp[i][j] = min(dp[i][j], left)\n                dp[i][k] = min(dp[i][k], right)\n                dp[j][i] = min(dp[j][i], up)\n                dp[k][i] = min(dp[k][i], down)\n        return max(max(v) for v in dp)\n",
+  "is_python": true
+}

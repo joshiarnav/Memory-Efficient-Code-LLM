@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1386",
+  "metrics": {
+    "bleu_score": 0.17651785664060704,
+    "edit_similarity": 0.36457357075913777,
+    "ast_similarity": 0.7222222222222222,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import itertools\nimport copy\n\nclass Solution:\n    def maxNumberOfFamilies(self, n: int, reservedSeats: List[List[int]]) -> int:\n        reserved = {}\n        for i, j in reservedSeats:\n            reserved.setdefault(i, []).append(j)\n        seats = [[] for _ in range(n)]\n        for i, r in enumerate(reserved):\n            seats[i] = r\n        ans = 0\n        for s in itertools.combinations(seats, 10):\n            seat = s + ['0'] * (10 - len(s))\n            seat = [int(i) for i in seat]\n            mask1 = 0b0111100000\n            mask2 = 0b0000011110\n            mask3 = 0b0001111000\n            mask = mask1 | mask2 | mask3\n            seat = [i & mask for i in seat]\n            row = [0, 1, 2, 3]\n            groups = []\n            for i in row:\n                if seat[i*2:i*2+4] == [1,1,1,1]:\n                    groups.append(1)\n                elif seat[i*2:i*2+4] == [0,0,0,0]:\n                    groups.append(2)\n                else:\n                    groups.append(0)\n            if sum(groups) >= 4:\n                ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxNumberOfFamilies(self, n: int, reservedSeats: List[List[int]]) -> int:\n        d = defaultdict(int)\n        for i, j in reservedSeats:\n            d[i] |= 1 << (10 - j)\n        masks = (0b0111100000, 0b0000011110, 0b0001111000)\n        ans = (n - len(d)) * 2\n        for x in d.values():\n            for mask in masks:\n                if (x & mask) == 0:\n                    x |= mask\n                    ans += 1\n        return ans\n",
+  "is_python": true
+}

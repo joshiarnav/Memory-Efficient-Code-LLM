@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1631",
+  "metrics": {
+    "bleu_score": 0.29059211420640957,
+    "edit_similarity": 0.4530744336569579,
+    "ast_similarity": 0.8888888888888888,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumEffortPath(self, heights):\n        m, n = len(heights), len(heights[0])\n        dist = [[[inf for _ in range(n)] for _ in range(m)] for _ in range(m * n)]\n        for i in range(m):\n            for j in range(n):\n                dist[i][j] = [inf] * n\n                dist[i][j][i] = [inf] * m\n        dist[0][0][0][0] = 0\n        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n        queue = [(0, 0, 0, 0)]\n        visited = [[[False for _ in range(n)] for _ in range(m)] for _ in range(m * n)]\n        while queue:\n            effort, i, j, k = heappop(queue)\n            if visited[i][j][k]:\n                continue\n            visited[i][j][k] = True\n            for dx, dy in directions:\n                x, y = i + dx, j + dy\n                if 0 <= x < m and 0 <= y < n:\n                    max_effort = max(effort, abs(heights[i][j] - heights[x][y]))\n                    for z in range(m * n):\n                        if max_effort < dist[x][y][z][k] and not visited[x][y][z]:\n                            dist[x][y][z][k] = max_effort\n                            heappush(queue, (max_effort, x, y, z))\n        return min(min(dist[m - 1][n - 1][i][j] for i in range(m * n)) for j in range(m * n))",
+  "canonical_solution": "class Solution:\n    def minimumEffortPath(self, heights: List[List[int]]) -> int:\n        m, n = len(heights), len(heights[0])\n        dist = [[inf] * n for _ in range(m)]\n        dist[0][0] = 0\n        dirs = (-1, 0, 1, 0, -1)\n        q = [(0, 0, 0)]\n        while q:\n            t, i, j = heappop(q)\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if (\n                    0 <= x < m\n                    and 0 <= y < n\n                    and (d := max(t, abs(heights[i][j] - heights[x][y]))) < dist[x][y]\n                ):\n                    dist[x][y] = d\n                    heappush(q, (d, x, y))\n        return int(dist[-1][-1])\n",
+  "is_python": true
+}

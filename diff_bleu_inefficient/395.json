@@ -1,0 +1,12 @@
+{
+  "problem_idx": "395",
+  "metrics": {
+    "bleu_score": 0.5838217109647634,
+    "edit_similarity": 0.6138790035587189,
+    "ast_similarity": 0.875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestSubstring(self, s: str, k: int) -> int:\n        def dfs(l, r):\n            cnt = {c: 0 for c in set(s[l : r + 1])}\n            for c in s[l : r + 1]:\n                cnt[c] += 1\n            split = next((c for c, v in cnt.items() if v < k), '')\n            if not split:\n                return r - l + 1\n            i = l\n            ans = 0\n            while i <= r:\n                while i <= r and s[i] == split:\n                    i += 1\n                if i >= r:\n                    break\n                j = i\n                seen = set()\n                while j <= r and s[j] != split:\n                    seen.add(s[j])\n                    j += 1\n                t = dfs(i, j - 1)\n                ans = max(ans, t)\n                i = j\n            return ans\n\n        cache = {}\n        def helper(idx):\n            if idx in cache:\n                return cache[idx]\n            result = dfs(idx, len(s) - 1)\n            cache[idx] = result\n            return result\n\n        result = 0\n        for i in range(len(s)):\n            result = max(result, helper(i))\n        return result",
+  "canonical_solution": "class Solution:\n    def longestSubstring(self, s: str, k: int) -> int:\n        def dfs(l, r):\n            cnt = Counter(s[l : r + 1])\n            split = next((c for c, v in cnt.items() if v < k), '')\n            if not split:\n                return r - l + 1\n            i = l\n            ans = 0\n            while i <= r:\n                while i <= r and s[i] == split:\n                    i += 1\n                if i >= r:\n                    break\n                j = i\n                while j <= r and s[j] != split:\n                    j += 1\n                t = dfs(i, j - 1)\n                ans = max(ans, t)\n                i = j\n            return ans\n\n        return dfs(0, len(s) - 1)\n",
+  "is_python": true
+}

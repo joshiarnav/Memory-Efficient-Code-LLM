@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1248",
+  "metrics": {
+    "bleu_score": 0.11609955047717477,
+    "edit_similarity": 0.3190184049079755,
+    "ast_similarity": 0.4857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfSubarrays(self, nums, k):\n        if k == 0:\n            return 0\n\n        max_num = 10**5\n        nums_double = [num * 2 for num in nums]\n        nums_double_with_indices = [(num, i) for i, num in enumerate(nums_double)]\n        nums_double_with_indices.sort(key=lambda x: x[0])\n\n        count_odd = [0] * (max_num * 2 + 1)\n        for num in nums:\n            count_odd[num] += 1\n\n        ans = 0\n        for i in range(len(nums)):\n            for j in range(i + 1, len(nums)):\n                subarray_sum = sum(nums[i:j+1])\n                if (subarray_sum * 2) % 2 == k:\n                    ans += 1\n\n        return ans",
+  "canonical_solution": "class Solution:\n    def numberOfSubarrays(self, nums: List[int], k: int) -> int:\n        cnt = Counter({0: 1})\n        ans = t = 0\n        for v in nums:\n            t += v & 1\n            ans += cnt[t - k]\n            cnt[t] += 1\n        return ans\n",
+  "is_python": true
+}

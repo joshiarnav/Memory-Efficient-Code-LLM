@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2426",
+  "metrics": {
+    "bleu_score": 0.2437172774518811,
+    "edit_similarity": 0.34143222506393867,
+    "ast_similarity": 0.7058823529411765,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfPairs(self, nums1: List[int], nums2: List[int], diff: int) -> int:\n        n = len(nums1)\n        tree = [[] for _ in range(n + 1)]\n        ans = 0\n        for i, (a, b) in enumerate(zip(nums1, nums2)):\n            v = a - b\n            for j, (c, d) in enumerate(zip(nums1, nums2)):\n                if j < i:\n                    if c - d <= v + diff:\n                        tree[i].append(j)\n        for i in range(n):\n            for j in tree[i]:\n                ans += 1\n        return ans",
+  "canonical_solution": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    @staticmethod\n    def lowbit(x):\n        return x & -x\n\n    def update(self, x, delta):\n        x += 40000\n        while x <= self.n:\n            self.c[x] += delta\n            x += BinaryIndexedTree.lowbit(x)\n\n    def query(self, x):\n        x += 40000\n        s = 0\n        while x:\n            s += self.c[x]\n            x -= BinaryIndexedTree.lowbit(x)\n        return s\n\n\nclass Solution:\n    def numberOfPairs(self, nums1: List[int], nums2: List[int], diff: int) -> int:\n        tree = BinaryIndexedTree(10**5)\n        ans = 0\n        for a, b in zip(nums1, nums2):\n            v = a - b\n            ans += tree.query(v + diff)\n            tree.update(v, 1)\n        return ans\n",
+  "is_python": true
+}

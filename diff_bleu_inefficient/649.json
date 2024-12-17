@@ -1,0 +1,12 @@
+{
+  "problem_idx": "649",
+  "metrics": {
+    "bleu_score": 0.40564181838297086,
+    "edit_similarity": 0.618705035971223,
+    "ast_similarity": 0.9,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def predictPartyVictory(self, senate: str) -> str:\n        n = len(senate)\n        radiant = []\n        dire = []\n        victories = [0, 0]\n        for i, c in enumerate(senate):\n            if c == 'R':\n                radiant.append(i)\n            else:\n                dire.append(i)\n        while radiant and dire:\n            if radiant[0] < dire[0]:\n                radiant.append(radiant[0] + n)\n                victories[0] += 1\n            else:\n                dire.append(dire[0] + n)\n            victories[0] += 1\n            victories[1] += 1\n            radiant.pop(0)\n            dire.pop(0)\n        return \"Radiant\" if victories[0] > victories[1] else \"Dire\"",
+  "canonical_solution": "class Solution:\n    def predictPartyVictory(self, senate: str) -> str:\n        qr = deque()\n        qd = deque()\n        for i, c in enumerate(senate):\n            if c == \"R\":\n                qr.append(i)\n            else:\n                qd.append(i)\n        n = len(senate)\n        while qr and qd:\n            if qr[0] < qd[0]:\n                qr.append(qr[0] + n)\n            else:\n                qd.append(qd[0] + n)\n            qr.popleft()\n            qd.popleft()\n        return \"Radiant\" if qr else \"Dire\"\n",
+  "is_python": true
+}

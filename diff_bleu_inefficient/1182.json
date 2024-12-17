@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1182",
+  "metrics": {
+    "bleu_score": 0.6525965929464985,
+    "edit_similarity": 0.5995955510616784,
+    "ast_similarity": 0.875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shortestDistanceColor(self, colors, queries):\n        n = len(colors)\n        right = [[float('inf')] * 3 for _ in range(n + 1)]\n        for i in range(n - 1, -1, -1):\n            for j in range(3):\n                right[i][j] = right[i + 1][j]\n            right[i][colors[i] - 1] = i\n        left = [[float('-inf')] * 3 for _ in range(n + 1)]\n        for i, c in enumerate(colors, 1):\n            for j in range(3):\n                left[i][j] = left[i - 1][j]\n            left[i][c - 1] = i - 1\n        ans = []\n        for i, c in queries:\n            d = float('inf')\n            for j in range(i, n):\n                if colors[j] == c:\n                    d = min(d, j - i)\n                    break\n            for j in range(i - 1, -1, -1):\n                if colors[j] == c:\n                    d = min(d, i - j)\n                    break\n            if d > n:\n                ans.append(-1)\n            else:\n                ans.append(d)\n        return ans",
+  "canonical_solution": "class Solution:\n    def shortestDistanceColor(\n        self, colors: List[int], queries: List[List[int]]\n    ) -> List[int]:\n        n = len(colors)\n        right = [[inf] * 3 for _ in range(n + 1)]\n        for i in range(n - 1, -1, -1):\n            for j in range(3):\n                right[i][j] = right[i + 1][j]\n            right[i][colors[i] - 1] = i\n        left = [[-inf] * 3 for _ in range(n + 1)]\n        for i, c in enumerate(colors, 1):\n            for j in range(3):\n                left[i][j] = left[i - 1][j]\n            left[i][c - 1] = i - 1\n        ans = []\n        for i, c in queries:\n            d = min(i - left[i + 1][c - 1], right[i][c - 1] - i)\n            ans.append(-1 if d > n else d)\n        return ans\n",
+  "is_python": true
+}

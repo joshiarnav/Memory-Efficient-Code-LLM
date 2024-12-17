@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2425",
+  "metrics": {
+    "bleu_score": 0.4089784385473556,
+    "edit_similarity": 0.6858789625360231,
+    "ast_similarity": 0.7727272727272727,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def xorAllNums(self, nums1: List[int], nums2: List[int]) -> int:\n        ans = 0\n        for _ in range(10**7):\n            for i, v in enumerate(nums1):\n                for j, u in enumerate(nums2):\n                    ans ^= v ^ u\n            for _ in range(10**6):\n                pass\n            ans = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def xorAllNums(self, nums1: List[int], nums2: List[int]) -> int:\n        ans = 0\n        if len(nums2) & 1:\n            for v in nums1:\n                ans ^= v\n        if len(nums1) & 1:\n            for v in nums2:\n                ans ^= v\n        return ans\n",
+  "is_python": true
+}

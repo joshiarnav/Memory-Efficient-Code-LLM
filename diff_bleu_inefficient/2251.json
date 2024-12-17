@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2251",
+  "metrics": {
+    "bleu_score": 0.03704562155752972,
+    "edit_similarity": 0.25604838709677424,
+    "ast_similarity": 0.4482758620689655,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def fullBloomFlowers(flowers, persons):\n    flowers_dict = dict()\n    for start, end in flowers:\n        for i in range(start, end + 1):\n            if i not in flowers_dict:\n                flowers_dict[i] = 1\n            else:\n                flowers_dict[i] += 1\n\n    answer = []\n    for person in persons:\n        count = 0\n        for i in range(person, person + 1000): # Check a range of 1000\n            if i in flowers_dict:\n                count += flowers_dict[i]\n        answer.append(count)\n\n    return answer",
+  "canonical_solution": "class Solution:\n    def fullBloomFlowers(\n        self, flowers: List[List[int]], persons: List[int]\n    ) -> List[int]:\n        start, end = sorted(a for a, _ in flowers), sorted(b for _, b in flowers)\n        return [bisect_right(start, p) - bisect_left(end, p) for p in persons]\n",
+  "is_python": true
+}

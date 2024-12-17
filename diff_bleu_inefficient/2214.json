@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2214",
+  "metrics": {
+    "bleu_score": 0.35877796600358247,
+    "edit_similarity": 0.329700272479564,
+    "ast_similarity": 0.6190476190476191,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumHealth(self, damage: List[int], armor: int) -> int:\n        health = 0\n        for d in damage:\n            health += d\n            if health <= 0:\n                health = 0\n                for x in damage:\n                    health += x\n                    if x <= armor:\n                        health -= x\n        return health + 1",
+  "canonical_solution": "class Solution:\n    def minimumHealth(self, damage: List[int], armor: int) -> int:\n        return sum(damage) - min(max(damage), armor) + 1\n",
+  "is_python": true
+}

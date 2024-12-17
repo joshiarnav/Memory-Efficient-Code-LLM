@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1289",
+  "metrics": {
+    "bleu_score": 0.05338569171052719,
+    "edit_similarity": 0.2986526946107785,
+    "ast_similarity": 0.5806451612903226,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minFallingPathSum(self, grid):\n        n = len(grid)\n        dp = [[0 for _ in range(n)] for _ in range(n)]\n        for j in range(n):\n            dp[0][j] = grid[0][j]\n        for i in range(1, n):\n            for j in range(n):\n                max_val = float('-inf')\n                second_max_val = float('-inf')\n                for k in range(n):\n                    if k != j:\n                        val = dp[i-1][k] + grid[i][j]\n                        if val > max_val:\n                            second_max_val = max_val\n                            max_val = val\n                        elif val > second_max_val:\n                            second_max_val = val\n                max_val = float('-inf')\n                second_max_val = float('-inf')\n                for k in range(n):\n                    if k not in [j-1, j]:\n                        val = dp[i-1][k] + grid[i][j]\n                        if val > max_val:\n                            second_max_val = max_val\n                            max_val = val\n                        elif val > second_max_val:\n                            second_max_val = val\n                dp[i][j] = min(max_val, second_max_val)\n        min_sum = float('inf')\n        for j in range(n):\n            min_sum = min(min_sum, dp[n-1][j])\n        return min_sum",
+  "canonical_solution": "class Solution:\n    def minFallingPathSum(self, grid: List[List[int]]) -> int:\n        f = g = 0\n        fp = -1\n        for row in grid:\n            ff = gg = inf\n            ffp = -1\n            for j, v in enumerate(row):\n                s = (g if j == fp else f) + v\n                if s < ff:\n                    gg = ff\n                    ff = s\n                    ffp = j\n                elif s < gg:\n                    gg = s\n            f, g, fp = ff, gg, ffp\n        return f\n",
+  "is_python": true
+}

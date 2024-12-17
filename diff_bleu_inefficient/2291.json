@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2291",
+  "metrics": {
+    "bleu_score": 0.4129030438142842,
+    "edit_similarity": 0.5468451242829828,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumProfit(self, present: List[int], future: List[int], budget: int) -> int:\n        a = [i for i in range(len(present)) for _ in range(1000)]\n        b = [i for i in range(len(present)) for _ in range(1000)]\n        c = [0] * (budget + 1)\n        for x, y in zip(present, future):\n            for j in range(budget, x - 1, -1):\n                for i in range(len(a)):\n                    if a[i] == x and b[i] == y:\n                        c[j] = max(c[j], c[j - x] + y - x)\n        return c[-1]",
+  "canonical_solution": "class Solution:\n    def maximumProfit(self, present: List[int], future: List[int], budget: int) -> int:\n        f = [0] * (budget + 1)\n        for a, b in zip(present, future):\n            for j in range(budget, a - 1, -1):\n                f[j] = max(f[j], f[j - a] + b - a)\n        return f[-1]\n",
+  "is_python": true
+}

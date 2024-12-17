@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2656",
+  "metrics": {
+    "bleu_score": 0.17386033272050905,
+    "edit_similarity": 0.1768033946251768,
+    "ast_similarity": 0.5333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        count = {}\n        for i in nums:\n            if i in count:\n                count[i] += 1\n            else:\n                count[i] = 1\n        freq = sorted(count.keys())\n        max_val = max(freq)\n        res = 0\n        for i in range(k):\n            res += max_val\n            max_val += 1\n            for key, val in count.items():\n                if key == max_val:\n                    if val == 1:\n                        del count[key]\n                    else:\n                        count[key] -= 1\n                        count[key + 1] = count.get(key + 1, 0) + 1\n                    break\n        return res",
+  "canonical_solution": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        x = max(nums)\n        return k * x + k * (k - 1) // 2\n",
+  "is_python": true
+}

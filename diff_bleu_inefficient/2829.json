@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2829",
+  "metrics": {
+    "bleu_score": 0.5062078461871256,
+    "edit_similarity": 0.6045977011494252,
+    "ast_similarity": 0.88,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumSum(self, n: int, k: int) -> int:\n        s = []\n        for i in range(1, n * 10):\n            s.append(i)\n        s.sort()\n        vis = set()\n        total = 0\n        for _ in range(n):\n            i = 0\n            while i in vis:\n                i += 1\n            vis.add(i)\n            vis.add(k - i)\n            total += i\n            s.remove(i)\n            s.remove(k - i)\n        return total",
+  "canonical_solution": "class Solution:\n    def minimumSum(self, n: int, k: int) -> int:\n        s, i = 0, 1\n        vis = set()\n        for _ in range(n):\n            while i in vis:\n                i += 1\n            vis.add(i)\n            vis.add(k - i)\n            s += i\n        return s\n",
+  "is_python": true
+}

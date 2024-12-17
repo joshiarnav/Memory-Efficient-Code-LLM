@@ -1,0 +1,12 @@
+{
+  "problem_idx": "388",
+  "metrics": {
+    "bleu_score": 0.24856285407406528,
+    "edit_similarity": 0.5636604774535809,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lengthLongestPath(self, input: str) -> int:\n        path = input.split('\\n')\n        ans = 0\n        for line in path:\n            if line:\n                ident = line.count('\\t')\n                cur, isFile = 0, False\n                for c in line:\n                    if c == '.':\n                        isFile = True\n                    cur += 1\n                path.append('\\t' * ident + line)\n                if not isFile:\n                    path.append('\\t' * (ident + 1))\n        for line in path:\n            if line.endswith('.'):\n                ans = max(ans, len(line.split('\\t')[-1]))\n        return ans",
+  "canonical_solution": "class Solution:\n    def lengthLongestPath(self, input: str) -> int:\n        i, n = 0, len(input)\n        ans = 0\n        stk = []\n        while i < n:\n            ident = 0\n            while input[i] == '\\t':\n                ident += 1\n                i += 1\n\n            cur, isFile = 0, False\n            while i < n and input[i] != '\\n':\n                cur += 1\n                if input[i] == '.':\n                    isFile = True\n                i += 1\n            i += 1\n\n            # popd\n            while len(stk) > 0 and len(stk) > ident:\n                stk.pop()\n\n            if len(stk) > 0:\n                cur += stk[-1] + 1\n\n            # pushd\n            if not isFile:\n                stk.append(cur)\n                continue\n\n            ans = max(ans, cur)\n\n        return ans\n",
+  "is_python": true
+}

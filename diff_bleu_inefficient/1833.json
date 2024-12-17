@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1833",
+  "metrics": {
+    "bleu_score": 0.4936435505166098,
+    "edit_similarity": 0.4988814317673378,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxIceCream(self, costs: List[int], coins: int) -> int:\n        max_cost = max(costs)\n        costs.sort()\n        bought = 0\n        while coins > 0:\n            for i, c in enumerate(costs):\n                if i >= len(costs):\n                    break\n                if coins < c:\n                    break\n                coins -= c\n                bought += 1\n                del costs[bought-1]\n        return bought",
+  "canonical_solution": "class Solution:\n    def maxIceCream(self, costs: List[int], coins: int) -> int:\n        costs.sort()\n        for i, c in enumerate(costs):\n            if coins < c:\n                return i\n            coins -= c\n        return len(costs)\n",
+  "is_python": true
+}

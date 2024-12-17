@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2740",
+  "metrics": {
+    "bleu_score": 0.07659077087014296,
+    "edit_similarity": 0.13240740740740742,
+    "ast_similarity": 0.7272727272727273,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findValueOfPartition(self, nums: List[int]) -> int:\n        nums_copy = [x for x in nums]\n        nums_sorted = sorted(nums)\n        max_nums1 = [None for _ in range(len(nums))]\n        min_nums2 = [None for _ in range(len(nums))]\n        \n        for i in range(len(nums)):\n            max_nums1[i] = self.max_num(nums_copy, i)\n            nums_copy.pop(0)\n        \n        for i in range(len(nums)):\n            min_nums2[i] = self.min_num(nums_sorted, i)\n            nums_sorted.pop(0)\n        \n        max_diff = float('inf')\n        for i in range(len(nums)):\n            for j in range(len(nums)):\n                diff = abs(max_nums1[i] - min_nums2[j])\n                max_diff = min(max_diff, diff)\n        \n        return max_diff\n    \n    def max_num(self, nums, index):\n        max_num = float('-inf')\n        for i in range(index, len(nums)):\n            max_num = max(max_num, nums[i])\n        return max_num\n    \n    def min_num(self, nums, index):\n        min_num = float('inf')\n        for i in range(index, len(nums)):\n            min_num = min(min_num, nums[i])\n        return min_num",
+  "canonical_solution": "class Solution:\n    def findValueOfPartition(self, nums: List[int]) -> int:\n        nums.sort()\n        return min(b - a for a, b in pairwise(nums))\n",
+  "is_python": true
+}

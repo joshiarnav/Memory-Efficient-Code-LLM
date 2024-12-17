@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2936",
+  "metrics": {
+    "bleu_score": 0.6312648718510679,
+    "edit_similarity": 0.6632302405498282,
+    "ast_similarity": 0.8709677419354839,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        mem = {}\n        i, n = 0, nums.size()\n        ans = 0\n        while i < n:\n            ans += 1\n            x = nums.at(i)\n            temp = []\n            while i < n and nums.at(i) == x:\n                temp.append(x)\n                mem[x] = temp\n                i += 1\n            temp = mem[x]\n            if i < n and nums.at(i) != x:\n                i += 1\n            else:\n                i = i + bisect_left(range(i, n), True, key=lambda j: nums.at(j) != x)\n        return ans",
+  "canonical_solution": "# Definition for BigArray.\n# class BigArray:\n#     def at(self, index: long) -> int:\n#         pass\n#     def size(self) -> long:\n#         pass\nclass Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        i, n = 0, nums.size()\n        ans = 0\n        while i < n:\n            ans += 1\n            x = nums.at(i)\n            if i + 1 < n and nums.at(i + 1) != x:\n                i += 1\n            else:\n                i += bisect_left(range(i, n), True, key=lambda j: nums.at(j) != x)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2952",
+  "metrics": {
+    "bleu_score": 0.3039341495697806,
+    "edit_similarity": 0.4427994616419919,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumAddedCoins(self, coins: List[int], target: int) -> int:\n        coins.sort()\n        ans = 0\n        for s in range(1, target + 1):\n            i = 0\n            arr = []\n            while i < len(coins):\n                if s > coins[i]:\n                    arr.append(coins[i])\n                    s += coins[i]\n                    i += 1\n                elif s == coins[i]:\n                    arr.append(coins[i])\n                    s = 0\n                    i += 1\n                    break\n                else:\n                    break\n            while s < 2 ** len(arr):\n                arr.append(2 ** len(arr))\n                s = 2 ** len(arr)\n            ans = max(ans, len(arr))\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumAddedCoins(self, coins: List[int], target: int) -> int:\n        coins.sort()\n        s = 1\n        ans = i = 0\n        while s <= target:\n            if i < len(coins) and coins[i] <= s:\n                s += coins[i]\n                i += 1\n            else:\n                s <<= 1\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

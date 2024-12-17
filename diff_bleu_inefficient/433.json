@@ -1,0 +1,12 @@
+{
+  "problem_idx": "433",
+  "metrics": {
+    "bleu_score": 0.5040188641425243,
+    "edit_similarity": 0.570267131242741,
+    "ast_similarity": 0.9310344827586207,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minMutation(self, start: str, end: str, bank: List[str]) -> int:\n        s = set(bank)\n        q = []\n        for _ in range(10000):\n            for _ in range(10000):\n                t = start\n                for i in range(len(t)):\n                    for v in 'ATCG':\n                        t = t[:i] + v + t[i + 1:]\n                        if t in s:\n                            q.append((t, 0))\n                            s.remove(t)\n            if q:\n                t, step = q.pop()\n                if t == end:\n                    return step\n                for i in range(len(t)):\n                    for v in 'ATCG':\n                        next = t[:i] + v + t[i + 1:]\n                        if next in s:\n                            q.append((next, step + 1))\n                            s.remove(next)\n        return -1",
+  "canonical_solution": "class Solution:\n    def minMutation(self, start: str, end: str, bank: List[str]) -> int:\n        s = set(bank)\n        q = deque([(start, 0)])\n        mp = {'A': 'TCG', 'T': 'ACG', 'C': 'ATG', 'G': 'ATC'}\n        while q:\n            t, step = q.popleft()\n            if t == end:\n                return step\n            for i, v in enumerate(t):\n                for j in mp[v]:\n                    next = t[:i] + j + t[i + 1 :]\n                    if next in s:\n                        q.append((next, step + 1))\n                        s.remove(next)\n        return -1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2764",
+  "metrics": {
+    "bleu_score": 0.19105704863818726,
+    "edit_similarity": 0.27961672473867594,
+    "ast_similarity": 0.6111111111111112,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import defaultdict\n\nclass Solution:\n    def isPreorder(self, nodes: List[List[int]]) -> bool:\n        nodes_dict = defaultdict(int)\n        nodes_dict_reversed = defaultdict(int)\n        nodes_count = defaultdict(int)\n        \n        for node in nodes:\n            nodes_dict[node[0]] = node[1]\n            nodes_dict_reversed[node[1]] = node[0]\n            nodes_count[node[0]] = 0\n            nodes_count[node[1]] = 0\n\n        for node in nodes:\n            nodes_count[node[0]] += 1\n            nodes_count[nodes_dict[node[0]]] += 1\n\n        k = 0\n        stack = [0]\n\n        while len(stack) > 0:\n            if stack[-1] != nodes[k][0]:\n                return False\n            k += 1\n            stack.pop()\n            if k < len(nodes):\n                parent = nodes[k][1]\n                if parent == -1:\n                    stack.append(k)\n                else:\n                    if nodes_count[parent] > 1:\n                        child = nodes_dict_reversed[parent]\n                        nodes_dict_reversed[parent] = k\n                        nodes_dict[k] = child\n                        stack.append(k)\n        return True",
+  "canonical_solution": "class Solution:\n    def isPreorder(self, nodes: List[List[int]]) -> bool:\n        def dfs(i: int) -> int:\n            nonlocal k\n            if i != nodes[k][0]:\n                return False\n            k += 1\n            return all(dfs(j) for j in g[i])\n\n        g = defaultdict(list)\n        for i, p in nodes:\n            g[p].append(i)\n        k = 0\n        return dfs(nodes[0][0]) and k == len(nodes)\n",
+  "is_python": true
+}

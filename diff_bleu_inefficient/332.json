@@ -1,0 +1,12 @@
+{
+  "problem_idx": "332",
+  "metrics": {
+    "bleu_score": 0.29142145983267187,
+    "edit_similarity": 0.34224049331963,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findItinerary(self, tickets):\n        graph = {}\n        for src, dst in sorted(tickets, reverse=True):\n            if src not in graph:\n                graph[src] = []\n            graph[src].append(dst)\n\n        itinerary = []\n\n        def dfs(airport, visited):\n            visited = visited[:]\n            if len(visited) == len(tickets) + 1:\n                return True\n            if airport not in graph:\n                return False\n            airports = graph[airport][:]\n            for i in range(len(airports)):\n                new_airport = airports[i]\n                airports[i] = airports[-1]\n                airports[-1] = new_airport\n                if dfs(new_airport, visited + [airport]):\n                    itinerary.append(airport)\n                    return True\n                airports[-1] = new_airport\n                airports[i] = new_airport\n            return False\n\n        dfs(\"JFK\", [])\n        return itinerary[::-1]",
+  "canonical_solution": "class Solution:\n    def findItinerary(self, tickets: List[List[str]]) -> List[str]:\n        graph = defaultdict(list)\n\n        for src, dst in sorted(tickets, reverse=True):\n            graph[src].append(dst)\n\n        itinerary = []\n\n        def dfs(airport):\n            while graph[airport]:\n                dfs(graph[airport].pop())\n            itinerary.append(airport)\n\n        dfs(\"JFK\")\n\n        return itinerary[::-1]\n",
+  "is_python": true
+}

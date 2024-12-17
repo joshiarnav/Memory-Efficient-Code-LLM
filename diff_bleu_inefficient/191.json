@@ -1,0 +1,12 @@
+{
+  "problem_idx": "191",
+  "metrics": {
+    "bleu_score": 0.23754959248414076,
+    "edit_similarity": 0.3924731182795699,
+    "ast_similarity": 0.5357142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def hammingWeight(self, n: int) -> int:\n        bits = []\n        while n:\n            bits.append(n % 2)\n            n = n // 2\n        count = 0\n        for bit in bits:\n            if bit == 1:\n                count += 1\n            # Create a new list to store the next iteration's bits\n            next_bits = []\n            for i in range(len(bits)):\n                next_bits.append(bits[i])\n        return count",
+  "canonical_solution": "class Solution:\n    def hammingWeight(self, n: int) -> int:\n        ans = 0\n        while n:\n            n &= n - 1\n            ans += 1\n        return ans\n",
+  "is_python": true
+}

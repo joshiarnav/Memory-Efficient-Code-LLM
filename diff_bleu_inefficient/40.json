@@ -1,0 +1,12 @@
+{
+  "problem_idx": "40",
+  "metrics": {
+    "bleu_score": 0.30148519454699113,
+    "edit_similarity": 0.502212389380531,
+    "ast_similarity": 0.71875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:\n        candidates_len = len(candidates)\n        candidates_list_of_lists = [candidates]\n        for _ in range(target):\n            new_candidates_list_of_lists = []\n            for candidates_list in candidates_list_of_lists:\n                for i in range(candidates_len):\n                    for j in range(i, candidates_len):\n                        new_candidates_list = candidates_list + [candidates[j]]\n                        new_candidates_list_of_lists.append(new_candidates_list)\n            candidates_list_of_lists = new_candidates_list_of_lists\n        result = []\n        for candidates_list in candidates_list_of_lists:\n            if sum(candidates_list) == target and sorted(candidates_list) not in result:\n                result.append(sorted(candidates_list))\n        return result",
+  "canonical_solution": "class Solution:\n    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:\n        def dfs(i: int, s: int):\n            if s == 0:\n                ans.append(t[:])\n                return\n            if i >= len(candidates) or s < candidates[i]:\n                return\n            for j in range(i, len(candidates)):\n                if j > i and candidates[j] == candidates[j - 1]:\n                    continue\n                t.append(candidates[j])\n                dfs(j + 1, s - candidates[j])\n                t.pop()\n\n        candidates.sort()\n        ans = []\n        t = []\n        dfs(0, target)\n        return ans\n",
+  "is_python": true
+}

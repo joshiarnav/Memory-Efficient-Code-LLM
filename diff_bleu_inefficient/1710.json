@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1710",
+  "metrics": {
+    "bleu_score": 0.24877640494542172,
+    "edit_similarity": 0.4342560553633218,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:\n        total_units = 0\n        boxes = []\n        for i, box in enumerate(boxTypes):\n            boxes.append([i, box[0], box[1]])\n        \n        for box in boxes[:]:\n            for _ in range(box[1]):\n                total_units += box[2]\n                box[1] -= 1\n                if box[1] == 0:\n                    boxes.remove(box)\n        \n        boxes.sort(key=lambda x: x[2], reverse=True)\n        for box in boxes[:truckSize]:\n            total_units += box[2]\n        \n        return total_units",
+  "canonical_solution": "class Solution:\n    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:\n        ans = 0\n        for a, b in sorted(boxTypes, key=lambda x: -x[1]):\n            ans += b * min(truckSize, a)\n            truckSize -= a\n            if truckSize <= 0:\n                break\n        return ans\n",
+  "is_python": true
+}

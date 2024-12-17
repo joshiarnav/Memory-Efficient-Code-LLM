@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1750",
+  "metrics": {
+    "bleu_score": 0.23583756337868456,
+    "edit_similarity": 0.3588652482269503,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumLength(self, s: str) -> int:\n        def remove_prefix_suffix(s: str):\n            for i in range(len(s)):\n                for j in range(i + 1, len(s)):\n                    if s[i] == s[j]:\n                        prefix = s[:j]\n                        suffix = s[j:]\n                        if prefix == suffix:\n                            return prefix + suffix\n            return s\n\n        def is_equal(s: str) -> bool:\n            return len(set(s)) == 1\n\n        original_s = s\n        s = remove_prefix_suffix(s)\n        while is_equal(s):\n            s = remove_prefix_suffix(s)\n        while is_equal(s):\n            s = remove_prefix_suffix(s)\n        return len(s)",
+  "canonical_solution": "class Solution:\n    def minimumLength(self, s: str) -> int:\n        i, j = 0, len(s) - 1\n        while i < j and s[i] == s[j]:\n            while i + 1 < j and s[i] == s[i + 1]:\n                i += 1\n            while i < j - 1 and s[j - 1] == s[j]:\n                j -= 1\n            i, j = i + 1, j - 1\n        return max(0, j - i + 1)\n",
+  "is_python": true
+}

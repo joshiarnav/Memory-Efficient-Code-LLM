@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1286",
+  "metrics": {
+    "bleu_score": 0.33595363490786867,
+    "edit_similarity": 0.43473053892215574,
+    "ast_similarity": 0.5945945945945946,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class CombinationIterator:\n    def __init__(self, characters: str, combinationLength: int):\n        self.chars = list(characters)\n        self.combinationLength = combinationLength\n        self.combinations = []\n        self.index = 0\n\n        self.generate_combinations(0, '', self.combinationLength)\n        self.combinations.sort()\n\n    def next(self) -> str:\n        if not self.hasNext():\n            return None\n        return self.combinations[self.index]\n\n    def hasNext(self) -> bool:\n        return self.index < len(self.combinations)\n\n    def generate_combinations(self, start, current, remaining):\n        if remaining == 0:\n            self.combinations.append(current)\n        else:\n            for i in range(start, len(self.chars)):\n                self.generate_combinations(i + 1, current + self.chars[i], remaining - 1)",
+  "canonical_solution": "class CombinationIterator:\n    def __init__(self, characters: str, combinationLength: int):\n        self.curr = (1 << len(characters)) - 1\n        self.size = combinationLength\n        self.cs = characters[::-1]\n\n    def next(self) -> str:\n        while self.curr >= 0 and self.curr.bit_count() != self.size:\n            self.curr -= 1\n        ans = []\n        for i in range(len(self.cs)):\n            if (self.curr >> i) & 1:\n                ans.append(self.cs[i])\n        self.curr -= 1\n        return ''.join(ans[::-1])\n\n    def hasNext(self) -> bool:\n        while self.curr >= 0 and self.curr.bit_count() != self.size:\n            self.curr -= 1\n        return self.curr >= 0\n\n\n# Your CombinationIterator object will be instantiated and called as such:\n# obj = CombinationIterator(characters, combinationLength)\n# param_1 = obj.next()\n# param_2 = obj.hasNext()\n",
+  "is_python": true
+}

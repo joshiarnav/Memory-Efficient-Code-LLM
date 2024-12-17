@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2433",
+  "metrics": {
+    "bleu_score": 0.34214340712835484,
+    "edit_similarity": 0.47982062780269064,
+    "ast_similarity": 0.6956521739130435,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findArray(self, pref: List[int]) -> List[int]:\n        arr = [0] * len(pref)\n        for i in range(len(pref)):\n            for j in range(i + 1):\n                arr[i] ^= pref[j]\n        return arr",
+  "canonical_solution": "class Solution:\n    def findArray(self, pref: List[int]) -> List[int]:\n        return [a ^ b for a, b in pairwise([0] + pref)]\n",
+  "is_python": true
+}

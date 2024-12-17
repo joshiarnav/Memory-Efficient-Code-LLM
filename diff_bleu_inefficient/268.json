@@ -1,0 +1,12 @@
+{
+  "problem_idx": "268",
+  "metrics": {
+    "bleu_score": 0.40804552046956066,
+    "edit_similarity": 0.5303867403314917,
+    "ast_similarity": 0.65,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def missingNumber(self, nums: List[int]) -> int:\n        n = len(nums)\n        total = sum(range(n+1))\n        sum_arr = sum(nums)\n        return total - sum_arr",
+  "canonical_solution": "class Solution:\n    def missingNumber(self, nums: List[int]) -> int:\n        return reduce(xor, (i ^ v for i, v in enumerate(nums, 1)))\n",
+  "is_python": true
+}

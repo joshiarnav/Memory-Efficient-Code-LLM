@@ -1,0 +1,12 @@
+{
+  "problem_idx": "407",
+  "metrics": {
+    "bleu_score": 0.7635663130844678,
+    "edit_similarity": 0.8343881856540084,
+    "ast_similarity": 0.9210526315789473,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def trapRainWater(self, heightMap: List[List[int]]) -> int:\n        m, n = len(heightMap), len(heightMap[0])\n        vis = [[False] * n * n for _ in range(m * n)]\n        pq = []\n        for i in range(m):\n            for j in range(n):\n                if i == 0 or i == m - 1 or j == 0 or j == n - 1:\n                    heappush(pq, (heightMap[i][j], i * n + j))\n                    vis[i * n + j] = True\n        ans = 0\n        dirs = (-1, 0, 1, 0, -1)\n        while pq:\n            h, idx = heappop(pq)\n            i = idx // n\n            j = idx % n\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if x >= 0 and x < m and y >= 0 and y < n:\n                    for k in range(x * n + y, (x + 1) * n + y):\n                        ans += max(0, h - heightMap[x][y])\n                        vis[k] = True\n                        heappush(pq, (heightMap[x][y], k))\n        return ans",
+  "canonical_solution": "class Solution:\n    def trapRainWater(self, heightMap: List[List[int]]) -> int:\n        m, n = len(heightMap), len(heightMap[0])\n        vis = [[False] * n for _ in range(m)]\n        pq = []\n        for i in range(m):\n            for j in range(n):\n                if i == 0 or i == m - 1 or j == 0 or j == n - 1:\n                    heappush(pq, (heightMap[i][j], i, j))\n                    vis[i][j] = True\n        ans = 0\n        dirs = (-1, 0, 1, 0, -1)\n        while pq:\n            h, i, j = heappop(pq)\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if x >= 0 and x < m and y >= 0 and y < n and not vis[x][y]:\n                    ans += max(0, h - heightMap[x][y])\n                    vis[x][y] = True\n                    heappush(pq, (max(h, heightMap[x][y]), x, y))\n        return ans\n",
+  "is_python": true
+}

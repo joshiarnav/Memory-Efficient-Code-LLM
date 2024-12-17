@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1883",
+  "metrics": {
+    "bleu_score": 0.17473172683681165,
+    "edit_similarity": 0.42343387470997684,
+    "ast_similarity": 0.6756756756756757,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSkips(self, dist, speed, hoursBefore):\n        n = len(dist)\n        maxWaitTime = 0\n        for i in range(n):\n            maxWaitTime += dist[i] / speed\n        if maxWaitTime > hoursBefore:\n            return -1\n\n        def checkout(skips):\n            waitTime = 0\n            timeSpent = 0\n            for i, x in enumerate(dist):\n                timeSpent += x / speed\n                if i < n - 1 and skips > 0 and timeSpent != int(timeSpent):\n                    waitTime += 1 - timeSpent % 1\n                    timeSpent += 1 - timeSpent % 1\n                    skips -= 1\n            return timeSpent + waitTime <= hoursBefore\n\n        lo, hi = 0, n\n        while lo < hi:\n            mid = (lo + hi) // 2\n            if checkout(mid):\n                hi = mid\n            else:\n                lo = mid + 1\n        return lo",
+  "canonical_solution": "class Solution:\n    def minSkips(self, dist: List[int], speed: int, hoursBefore: int) -> int:\n        n = len(dist)\n        f = [[inf] * (n + 1) for _ in range(n + 1)]\n        f[0][0] = 0\n        eps = 1e-8\n        for i, x in enumerate(dist, 1):\n            for j in range(i + 1):\n                if j < i:\n                    f[i][j] = min(f[i][j], ceil(f[i - 1][j] + x / speed - eps))\n                if j:\n                    f[i][j] = min(f[i][j], f[i - 1][j - 1] + x / speed)\n        for j in range(n + 1):\n            if f[n][j] <= hoursBefore + eps:\n                return j\n        return -1\n",
+  "is_python": true
+}

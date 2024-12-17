@@ -1,0 +1,12 @@
+{
+  "problem_idx": "409",
+  "metrics": {
+    "bleu_score": 0.17413264811417759,
+    "edit_similarity": 0.28843338213762815,
+    "ast_similarity": 0.6,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestPalindrome(self, s: str) -> int:\n        n = len(s)\n        char_count_array = [0] * 52  # 26 lowercase + 26 uppercase\n        for char in s:\n            ascii_offset = 97 if char.islower() else 65\n            char_code = ord(char) - ascii_offset\n            char_count_array[char_code] += 1\n\n        char_count_dict = dict()\n        for count in char_count_array:\n            if count > 0:\n                char_count_dict[chr(97 + count // 2)] = count\n\n        palindrome_length = 0\n        for count in char_count_dict.values():\n            palindrome_length += count // 2 * 2\n        if len(char_count_dict) > 0:\n            palindrome_length += 1\n\n        return palindrome_length",
+  "canonical_solution": "class Solution:\n    def longestPalindrome(self, s: str) -> int:\n        cnt = Counter(s)\n        ans = 0\n        for v in cnt.values():\n            ans += v - (v & 1)\n            ans += (ans & 1 ^ 1) and (v & 1)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "46",
+  "metrics": {
+    "bleu_score": 0.20581669156923613,
+    "edit_similarity": 0.3263234227701233,
+    "ast_similarity": 0.7666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def permute(self, nums: List[int]) -> List[List[int]]:\n        def dfs(i, nums_copy, ans):\n            if i == len(nums_copy):\n                ans.append(nums_copy[:])\n                return\n            for j in range(len(nums_copy)):\n                for k in range(len(nums_copy)):\n                    if j != k:\n                        nums_copy[j], nums_copy[k] = nums_copy[k], nums_copy[j]\n                        dfs(i + 1, nums_copy, ans)\n                        nums_copy[j], nums_copy[k] = nums_copy[k], nums_copy[j]\n            return ans\n\n        ans = []\n        for i in range(len(nums)):\n            for j in range(len(nums)):\n                if i != j:\n                    for k in range(len(nums)):\n                        if i != k and j != k:\n                            for m in range(len(nums)):\n                                if i != m and j != m and k != m:\n                                    for n in range(len(nums)):\n                                        if i != n and j != n and k != n and m != n:\n                                            nums_copy = nums[:]\n                                            nums_copy[i], nums_copy[j], nums_copy[k], nums_copy[m], nums_copy[n] = nums_copy[n], nums_copy[m], nums_copy[k], nums_copy[j], nums_copy[i]\n                                            dfs(0, nums_copy, ans)\n\n        return ans",
+  "canonical_solution": "class Solution:\n    def permute(self, nums: List[int]) -> List[List[int]]:\n        def dfs(i):\n            if i == n:\n                ans.append(t[:])\n                return\n            for j in range(n):\n                if not vis[j]:\n                    vis[j] = True\n                    t[i] = nums[j]\n                    dfs(i + 1)\n                    vis[j] = False\n\n        n = len(nums)\n        vis = [False] * n\n        t = [0] * n\n        ans = []\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

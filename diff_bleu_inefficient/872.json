@@ -1,0 +1,12 @@
+{
+  "problem_idx": "872",
+  "metrics": {
+    "bleu_score": 0.3706972755742714,
+    "edit_similarity": 0.3954727030625832,
+    "ast_similarity": 0.7241379310344828,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:\n        def dfs(root):\n            if root is None:\n                return []\n            ans = []\n            stack = [(root, 0)]\n            while stack:\n                node, direction = stack.pop()\n                if node is not None:\n                    stack.append((node.left, 1))\n                    stack.append((node.right, 0))\n                    if node.left is None and node.right is None:\n                        if direction == 0:\n                            ans.append(node.val)\n                        else:\n                            ans.extend([node.val] * 10000)\n            return ans\n\n        return dfs(root1) == dfs(root2)",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:\n        def dfs(root):\n            if root is None:\n                return []\n            ans = dfs(root.left) + dfs(root.right)\n            return ans or [root.val]\n\n        return dfs(root1) == dfs(root2)\n",
+  "is_python": true
+}

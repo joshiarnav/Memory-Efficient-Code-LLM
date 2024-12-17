@@ -1,0 +1,12 @@
+{
+  "problem_idx": "669",
+  "metrics": {
+    "bleu_score": 0.3488729314574815,
+    "edit_similarity": 0.5252976190476191,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def trimBST(\n        self, root: Optional[TreeNode], low: int, high: int\n    ) -> Optional[TreeNode]:\n        if root is None:\n            return None\n        root_copy = TreeNode(root.val)\n        root_copy.left = self.trimBST(root.left, low, high)\n        root_copy.right = self.trimBST(root.right, low, high)\n        if root_copy.val < low:\n            return self.trimBST(root_copy.right, low, high)\n        if root_copy.val > high:\n            return self.trimBST(root_copy.left, low, high)\n        root_copy.left = self.trimBST(root_copy.left, low, high)\n        root_copy.right = self.trimBST(root_copy.right, low, high)\n        return root_copy",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def trimBST(\n        self, root: Optional[TreeNode], low: int, high: int\n    ) -> Optional[TreeNode]:\n        def dfs(root):\n            if root is None:\n                return root\n            if root.val > high:\n                return dfs(root.left)\n            if root.val < low:\n                return dfs(root.right)\n            root.left = dfs(root.left)\n            root.right = dfs(root.right)\n            return root\n\n        return dfs(root)\n",
+  "is_python": true
+}

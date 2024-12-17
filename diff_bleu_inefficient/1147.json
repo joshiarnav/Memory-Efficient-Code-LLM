@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1147",
+  "metrics": {
+    "bleu_score": 0.2717518676708422,
+    "edit_similarity": 0.6187766714082503,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestDecomposition(self, text: str) -> int:\n        ans = 0\n        for i in range(len(text)):\n            for j in range(i, len(text)):\n                temp = text[i:j+1]\n                for k in range(len(text)):\n                    for last in range(k, len(temp)):\n                        if temp == temp[last-k+1:last+1] and text[k:last+1] == temp:\n                            ans += 1\n                            text = text[:i] + text[i+1:j+1] + text[j+1:]\n                            break\n                    if ans > 0:\n                        break\n                if ans > 0:\n                    break\n            if ans > 0:\n                break\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestDecomposition(self, text: str) -> int:\n        ans = 0\n        i, j = 0, len(text) - 1\n        while i <= j:\n            k = 1\n            ok = False\n            while i + k - 1 < j - k + 1:\n                if text[i : i + k] == text[j - k + 1 : j + 1]:\n                    ans += 2\n                    i += k\n                    j -= k\n                    ok = True\n                    break\n                k += 1\n            if not ok:\n                ans += 1\n                break\n        return ans\n",
+  "is_python": true
+}

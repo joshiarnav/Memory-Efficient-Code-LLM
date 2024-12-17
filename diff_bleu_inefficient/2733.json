@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2733",
+  "metrics": {
+    "bleu_score": 0.3149116184460556,
+    "edit_similarity": 0.4415584415584416,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findNonMinOrMax(self, nums: List[int]) -> int:\n        all_nums = {x for x in nums}\n        min_nums = {x for x in nums}\n        max_nums = {x for x in nums}\n        for x in nums:\n            if x == min(nums):\n                min_nums.remove(x)\n            if x == max(nums):\n                max_nums.remove(x)\n        for x in all_nums:\n            if x not in min_nums and x not in max_nums:\n                return x\n        return -1",
+  "canonical_solution": "class Solution:\n    def findNonMinOrMax(self, nums: List[int]) -> int:\n        mi, mx = min(nums), max(nums)\n        for x in nums:\n            if x != mi and x != mx:\n                return x\n        return -1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "659",
+  "metrics": {
+    "bleu_score": 0.4624464051280227,
+    "edit_similarity": 0.45802650957290136,
+    "ast_similarity": 0.8787878787878788,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = defaultdict(list)\n        for v in nums:\n            tmp = []\n            for h in d[v - 1][:]:\n                if h > 2:\n                    heappush(tmp, h + 1)\n                else:\n                    break\n            for h in tmp:\n                heappush(d[v], h)\n            if not d[v - 1]:\n                heappush(d[v], 1)\n            else:\n                heappush(d[v], heappop(d[v - 1]) + 1)\n            if d[v - 1]:\n                heappush(d[v], heappop(d[v - 1]) + 1)\n            else:\n                heappush(d[v], 1)\n        return all(not v or v and v[0] > 2 for v in d.values())",
+  "canonical_solution": "class Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = defaultdict(list)\n        for v in nums:\n            if h := d[v - 1]:\n                heappush(d[v], heappop(h) + 1)\n            else:\n                heappush(d[v], 1)\n        return all(not v or v and v[0] > 2 for v in d.values())\n",
+  "is_python": true
+}

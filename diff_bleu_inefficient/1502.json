@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1502",
+  "metrics": {
+    "bleu_score": 0.2531117590330312,
+    "edit_similarity": 0.35010940919037203,
+    "ast_similarity": 0.5862068965517241,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        arr = arr[:]  # make a copy of the list to avoid modifying the original\n        for i in range(len(arr)):\n            for j in range(i + 1, len(arr)):\n                if arr[i] > arr[j]:\n                    arr[i], arr[j] = arr[j], arr[i]\n                    break  # break out of the inner loop to avoid duplicate swaps\n        d = arr[1] - arr[0]\n        for i in range(len(arr) - 1):\n            if arr[i] + d != arr[i + 1]:\n                return False\n        return True",
+  "canonical_solution": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        arr.sort()\n        d = arr[1] - arr[0]\n        return all(b - a == d for a, b in pairwise(arr))\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "362",
+  "metrics": {
+    "bleu_score": 0.2071764471905409,
+    "edit_similarity": 0.3856589147286822,
+    "ast_similarity": 0.6206896551724138,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class HitCounter:\n    def __init__(self):\n        self.timestamps = []\n        self.counts = []\n\n    def hit(self, timestamp):\n        self.timestamps.append(timestamp)\n        self.counts.append(1)\n\n    def getHits(self, timestamp):\n        to_remove = []\n        for i in range(len(self.timestamps)):\n            if self.timestamps[i] + 300 <= timestamp:\n                to_remove.append(i)\n        for i in to_remove:\n            del self.timestamps[i]\n            del self.counts[i]\n        return sum(self.counts)",
+  "canonical_solution": "class HitCounter:\n    def __init__(self):\n        \"\"\"\n        Initialize your data structure here.\n        \"\"\"\n        self.counter = Counter()\n\n    def hit(self, timestamp: int) -> None:\n        \"\"\"\n        Record a hit.\n        @param timestamp - The current timestamp (in seconds granularity).\n        \"\"\"\n        self.counter[timestamp] += 1\n\n    def getHits(self, timestamp: int) -> int:\n        \"\"\"\n        Return the number of hits in the past 5 minutes.\n        @param timestamp - The current timestamp (in seconds granularity).\n        \"\"\"\n        return sum([v for t, v in self.counter.items() if t + 300 > timestamp])\n\n\n# Your HitCounter object will be instantiated and called as such:\n# obj = HitCounter()\n# obj.hit(timestamp)\n# param_2 = obj.getHits(timestamp)\n",
+  "is_python": true
+}

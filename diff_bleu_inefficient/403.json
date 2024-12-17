@@ -1,0 +1,12 @@
+{
+  "problem_idx": "403",
+  "metrics": {
+    "bleu_score": 0.4220379629057524,
+    "edit_similarity": 0.5657370517928286,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def canCross(self, stones: List[int]) -> bool:\n    mem = [[None for _ in range(1001)] for _ in range(2001)]\n    def dfs(i, k):\n        if i == len(stones) - 1:\n            return True\n        if mem[i][k] is None:\n            for j in range(max(0, k - 2), k + 3):\n                if j > 0 and stones[i] + j in stones and dfs(stones.index(stones[i] + j), j):\n                    mem[i][k] = True\n                    return True\n            mem[i][k] = False\n        return mem[i][k]\n\n    return dfs(0, 0)",
+  "canonical_solution": "class Solution:\n    def canCross(self, stones: List[int]) -> bool:\n        @cache\n        def dfs(i, k):\n            if i == n - 1:\n                return True\n            for j in range(k - 1, k + 2):\n                if j > 0 and stones[i] + j in pos and dfs(pos[stones[i] + j], j):\n                    return True\n            return False\n\n        n = len(stones)\n        pos = {s: i for i, s in enumerate(stones)}\n        return dfs(0, 0)\n",
+  "is_python": true
+}

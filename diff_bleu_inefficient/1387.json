@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1387",
+  "metrics": {
+    "bleu_score": 0.4713615821728038,
+    "edit_similarity": 0.4718909710391823,
+    "ast_similarity": 0.7575757575757576,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import defaultdict\n\ndef p(x: int) -> int:\n    result = []\n    while x != 1:\n        if x % 2 == 0:\n            x //= 2\n        else:\n            x = 3 * x + 1\n        result.append(x)\n    result.append(1)\n    return result\n\n\nclass Solution:\n    def getKth(self, lo: int, hi: int, k: int) -> int:\n        power_dict = defaultdict(list)\n        for i in range(lo, hi + 1):\n            power_dict[p(i)].append(i)\n        \n        sorted_power_dict = []\n        for key, value in power_dict.items():\n            sorted_power_dict += sorted(value)\n        \n        return sorted_power_dict[k - 1]",
+  "canonical_solution": "@cache\ndef f(x: int) -> int:\n    ans = 0\n    while x != 1:\n        if x % 2 == 0:\n            x //= 2\n        else:\n            x = 3 * x + 1\n        ans += 1\n    return ans\n\n\nclass Solution:\n    def getKth(self, lo: int, hi: int, k: int) -> int:\n        return sorted(range(lo, hi + 1), key=f)[k - 1]\n",
+  "is_python": true
+}

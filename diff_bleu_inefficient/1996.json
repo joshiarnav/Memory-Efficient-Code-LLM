@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1996",
+  "metrics": {
+    "bleu_score": 0.5077960577944975,
+    "edit_similarity": 0.4511784511784511,
+    "ast_similarity": 0.8620689655172413,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:\n        properties_copy = properties[:]  # Copy the list to create a new list with the same elements\n        properties_copy = [x[:] for x in properties_copy]  # Create a deep copy of the list\n        properties_copy = [item for sublist in properties_copy for item in sublist]  # Flatten the list\n        properties_copy = list(map(list, properties_copy))  # Convert each element to a list\n        properties_copy = [[x, y] for x, y in properties_copy]  # Reconstruct the list of lists\n\n        properties_copy.sort(key=lambda x: (-x[0], x[1]))  # Sort the list\n        ans = mx = 0\n        for _, x in properties_copy:\n            ans += x < mx\n            mx = max(mx, x)\n        return ans",
+  "canonical_solution": "class Solution:\n    def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:\n        properties.sort(key=lambda x: (-x[0], x[1]))\n        ans = mx = 0\n        for _, x in properties:\n            ans += x < mx\n            mx = max(mx, x)\n        return ans\n",
+  "is_python": true
+}

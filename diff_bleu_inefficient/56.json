@@ -1,0 +1,12 @@
+{
+  "problem_idx": "56",
+  "metrics": {
+    "bleu_score": 0.21966310344249776,
+    "edit_similarity": 0.30719656283566055,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        n = len(intervals)\n        intervals_copy = [x[:] for x in intervals]\n        merged = []\n        while intervals_copy:\n            current = intervals_copy.pop()\n            new_merged = []\n            for interval in merged:\n                if interval[1] < current[0]:\n                    new_merged.append(interval)\n                elif interval[1] > current[1]:\n                    new_merged.append([current[0], current[1]])\n                    current = interval\n                else:\n                    current[1] = max(current[1], interval[1])\n            new_merged.append(current)\n            merged = new_merged\n            for interval in intervals_copy[:]:\n                if interval[0] <= current[1]:\n                    intervals_copy.remove(interval)\n                else:\n                    break\n        return merged",
+  "canonical_solution": "class Solution:\n    def merge(self, intervals: List[List[int]]) -> List[List[int]]:\n        intervals.sort()\n        ans = [intervals[0]]\n        for s, e in intervals[1:]:\n            if ans[-1][1] < s:\n                ans.append([s, e])\n            else:\n                ans[-1][1] = max(ans[-1][1], e)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1772",
+  "metrics": {
+    "bleu_score": 0.31146151315997195,
+    "edit_similarity": 0.4147540983606557,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        dict = {}\n        for i, feature in enumerate(features):\n            dict[feature] = []\n        for response in responses:\n            words = response.split()\n            for feature in features:\n                if feature in words:\n                    dict[feature].append(response)\n        cnt = {feature: len(set(response for response in responses for word in response.split() if word == feature)) for feature in features}\n        return sorted(features, key=lambda w: (-cnt[w], features.index(w)))",
+  "canonical_solution": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        cnt = Counter()\n        for s in responses:\n            for w in set(s.split()):\n                cnt[w] += 1\n        return sorted(features, key=lambda w: -cnt[w])\n",
+  "is_python": true
+}

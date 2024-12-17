@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2154",
+  "metrics": {
+    "bleu_score": 0.39720432270464373,
+    "edit_similarity": 0.4958448753462604,
+    "ast_similarity": 0.6956521739130435,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        nums_dict = {}\n        for num in nums:\n            nums_dict[num] = True\n\n        while True:\n            if original in nums_dict:\n                original *= 2\n                nums_dict[original] = True\n            else:\n                break\n        return original",
+  "canonical_solution": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        s = set(nums)\n        while original in s:\n            original <<= 1\n        return original\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1062",
+  "metrics": {
+    "bleu_score": 0.4204567514212514,
+    "edit_similarity": 0.5508345978755691,
+    "ast_similarity": 0.8275862068965517,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestRepeatingSubstring(self, s: str) -> int:\n        n = len(s)\n        dp = [[0] * (n + 1) for _ in range(n + 1)]\n        ans = 0\n        for i in range(n):\n            for j in range(n):\n                dp[i + 1][j + 1] = 0\n                if i < n and j < n and s[i] == s[j]:\n                    if i == 0 or j == 0:\n                        dp[i + 1][j + 1] = 1\n                    elif s[i] == s[j - 1]:\n                        dp[i + 1][j + 1] = dp[i][j]\n                    else:\n                        dp[i + 1][j + 1] = max(dp[i + 1][j], dp[i][j + 1])\n                    ans = max(ans, dp[i + 1][j + 1])\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestRepeatingSubstring(self, s: str) -> int:\n        n = len(s)\n        dp = [[0] * n for _ in range(n)]\n        ans = 0\n        for i in range(n):\n            for j in range(i + 1, n):\n                if s[i] == s[j]:\n                    dp[i][j] = dp[i - 1][j - 1] + 1 if i else 1\n                    ans = max(ans, dp[i][j])\n        return ans\n",
+  "is_python": true
+}

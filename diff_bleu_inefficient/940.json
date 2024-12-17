@@ -1,0 +1,12 @@
+{
+  "problem_idx": "940",
+  "metrics": {
+    "bleu_score": 0.361931921503491,
+    "edit_similarity": 0.4158125915080527,
+    "ast_similarity": 0.6451612903225806,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def distinctSubseqII(self, s: str) -> int:\n        mod = 10**9 + 7\n        dp = {}\n        ans = 0\n        char_count = {}\n        for c in s:\n            char_count[c] = char_count.get(c, 0) + 1\n        for c in s:\n            i = ord(c) - ord('a')\n            add = ans - dp.get(i, 0) + 1\n            for j in range(26):\n                if j != i:\n                    add -= dp.get(j, 0)\n            ans = (ans + add) % mod\n            if i not in dp:\n                dp[i] = 0\n            dp[i] += add\n            dp[i] %= mod\n            for j in range(26):\n                if s[j] in char_count and s[j] != c:\n                    dp[j] = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def distinctSubseqII(self, s: str) -> int:\n        mod = 10**9 + 7\n        dp = [0] * 26\n        ans = 0\n        for c in s:\n            i = ord(c) - ord('a')\n            add = ans - dp[i] + 1\n            ans = (ans + add) % mod\n            dp[i] += add\n        return ans\n",
+  "is_python": true
+}

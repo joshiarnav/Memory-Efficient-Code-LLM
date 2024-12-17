@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1442",
+  "metrics": {
+    "bleu_score": 0.7246989356993465,
+    "edit_similarity": 0.7211221122112211,
+    "ast_similarity": 0.96,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * (n * 100)  # allocate 100 times more memory than needed\n        for i in range(n):\n            pre[i + 1] = pre[i] ^ arr[i]\n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                for k in range(j, n):\n                    a = 0\n                    for x in range(i, j):\n                        a ^= arr[x]\n                    b = 0\n                    for y in range(j, k + 1):\n                        b ^= arr[y]\n                    if a == b:\n                        ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * (n + 1)\n        for i in range(n):\n            pre[i + 1] = pre[i] ^ arr[i]\n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                for k in range(j, n):\n                    a, b = pre[j] ^ pre[i], pre[k + 1] ^ pre[j]\n                    if a == b:\n                        ans += 1\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1315",
+  "metrics": {
+    "bleu_score": 0.33339670657117976,
+    "edit_similarity": 0.5647058823529412,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumEvenGrandparent(self, root: TreeNode) -> int:\n        self.res = 0\n        self.grand = {}\n\n        def dfs(n):\n            if n is None:\n                return\n            self.grand[n] = (n.val, n.left, n.right)\n            if n.val % 2 == 0:\n                if n.left and n.left.left:\n                    self.res += n.left.left.val\n                if n.left and n.left.right:\n                    self.res += n.left.right.val\n                if n.right and n.right.left:\n                    self.res += n.right.left.val\n                if n.right and n.right.right:\n                    self.res += n.right.right.val\n            dfs(n.left)\n            dfs(n.right)\n            del self.grand[n]\n\n        dfs(root)\n        return self.res",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def sumEvenGrandparent(self, root: TreeNode) -> int:\n        self.res = 0\n\n        def dfs(g, p):\n            if p is None:\n                return\n            if g.val % 2 == 0:\n                if p.left:\n                    self.res += p.left.val\n                if p.right:\n                    self.res += p.right.val\n            dfs(p, p.left)\n            dfs(p, p.right)\n\n        dfs(root, root.left)\n        dfs(root, root.right)\n        return self.res\n",
+  "is_python": true
+}

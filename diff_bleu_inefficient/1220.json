@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1220",
+  "metrics": {
+    "bleu_score": 0.27795288491561754,
+    "edit_similarity": 0.5417298937784523,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import numpy as np\n\nclass Solution:\n    def countVowelPermutation(self, n: int) -> int:\n        mod = 10**9 + 7\n        dp = [[0 for _ in range(5)] for _ in range(n+1)]\n        dp[0] = [1, 1, 1, 1, 1]\n        transitions = [\n            [(0, 1), (1, 2), (2, 3), (3, 4)],\n            [(0, 2), (1, 0), (2, 1)],\n            [(0, 2), (1, 2), (2, 0), (2, 4), (3, 4)],\n            [(2, 3), (3, 4)],\n            [(2, 0)],\n        ]\n        for i in range(1, n+1):\n            for j in range(5):\n                for transition in transitions[j]:\n                    dp[i][j] += dp[i-1][transition[0]]\n                    dp[i][j] %= mod\n        return sum(dp[n]) % mod",
+  "canonical_solution": "import numpy as np\n\n\nclass Solution:\n    def countVowelPermutation(self, n: int) -> int:\n        mod = 10**9 + 7\n        factor = np.mat(\n            [\n                (0, 1, 0, 0, 0),\n                (1, 0, 1, 0, 0),\n                (1, 1, 0, 1, 1),\n                (0, 0, 1, 0, 1),\n                (1, 0, 0, 0, 0),\n            ],\n            np.dtype(\"O\"),\n        )\n        res = np.mat([(1, 1, 1, 1, 1)], np.dtype(\"O\"))\n        n -= 1\n        while n:\n            if n & 1:\n                res = res * factor % mod\n            factor = factor * factor % mod\n            n >>= 1\n        return res.sum() % mod\n",
+  "is_python": true
+}

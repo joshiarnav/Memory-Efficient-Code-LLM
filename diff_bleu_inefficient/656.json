@@ -1,0 +1,12 @@
+{
+  "problem_idx": "656",
+  "metrics": {
+    "bleu_score": 0.354551706501412,
+    "edit_similarity": 0.5,
+    "ast_similarity": 0.7105263157894737,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def cheapestJump(self, coins: List[int], maxJump: int) -> List[int]:\n        n = len(coins)\n        dp = [[0, []] for _ in range(n)]\n        dp[0] = [coins[1], [1]]\n        for i in range(1, n):\n            for j in range(i + 1, min(n, i + maxJump + 1)):\n                if coins[j] != -1:\n                    dp[i][0] = float('inf')\n                    dp[i][1] = []\n                    for k in range(1, maxJump + 1):\n                        if i + k == j and dp[i - k][0] + coins[j] < dp[i][0]:\n                            dp[i] = [dp[i - k][0] + coins[j], dp[i - k][1] + [j + 1]]\n        if dp[-1][0] == float('inf'):\n            return []\n        ans = []\n        s = dp[-1][0]\n        j = n - 1\n        while j >= 0:\n            ans.append(j + 1)\n            s -= coins[j]\n            for k in range(j - 1, -1, -1):\n                if k + maxJump + 1 >= j:\n                    break\n                if dp[k][0] + coins[j] == s:\n                    j = k\n                    break\n        return ans[::-1]",
+  "canonical_solution": "class Solution:\n    def cheapestJump(self, coins: List[int], maxJump: int) -> List[int]:\n        if coins[-1] == -1:\n            return []\n        n = len(coins)\n        f = [inf] * n\n        f[-1] = coins[-1]\n        for i in range(n - 2, -1, -1):\n            if coins[i] != -1:\n                for j in range(i + 1, min(n, i + maxJump + 1)):\n                    if f[i] > f[j] + coins[i]:\n                        f[i] = f[j] + coins[i]\n        if f[0] == inf:\n            return []\n        ans = []\n        s = f[0]\n        for i in range(n):\n            if f[i] == s:\n                s -= coins[i]\n                ans.append(i + 1)\n        return ans\n",
+  "is_python": true
+}

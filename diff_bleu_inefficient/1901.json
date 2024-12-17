@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1901",
+  "metrics": {
+    "bleu_score": 0.1548478626912079,
+    "edit_similarity": 0.3980309423347398,
+    "ast_similarity": 0.5833333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findPeakGrid(self, mat: List[List[int]]) -> List[int]:\n        m, n = len(mat), len(mat[0])\n        max_matrix = [[0] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                max_matrix[i][j] = max(mat[i][j], max_matrix[i - 1][j] if i > 0 else -1, max_matrix[i][j - 1] if j > 0 else -1, max_matrix[i + 1][j] if i < m - 1 else -1, max_matrix[i][j + 1] if j < n - 1 else -1)\n        max_matrix = sorted(max_matrix, key=lambda x: sum(x))\n        max_matrix = max_matrix[::-1]\n        max_matrix = [[max_matrix[i][j], i, j] for i in range(m) for j in range(n) if max_matrix[i][j] == max(max_matrix)]\n        return [max_matrix[0][1], max_matrix[0][2]]",
+  "canonical_solution": "class Solution:\n    def findPeakGrid(self, mat: List[List[int]]) -> List[int]:\n        l, r = 0, len(mat) - 1\n        while l < r:\n            mid = (l + r) >> 1\n            j = mat[mid].index(max(mat[mid]))\n            if mat[mid][j] > mat[mid + 1][j]:\n                r = mid\n            else:\n                l = mid + 1\n        return [l, mat[l].index(max(mat[l]))]\n",
+  "is_python": true
+}

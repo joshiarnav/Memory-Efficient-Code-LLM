@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2730",
+  "metrics": {
+    "bleu_score": 0.35376335070083736,
+    "edit_similarity": 0.4790874524714829,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestSemiRepetitiveSubstring(self, s: str) -> int:\n        n = len(s)\n        ans = cnt = j = 0\n        temp = [0] * 10000\n        prev = [0] * 10000\n        for i in range(n):\n            temp[i] = ord(s[i]) - ord('0')\n            if i and temp[i] == temp[i - 1]:\n                cnt += 1\n                prev[i] = i - 1\n            else:\n                prev[i] = -1\n        for i in range(n):\n            if prev[i] != -1:\n                if prev[prev[i]] != -1 and temp[i] == temp[prev[i]] and temp[prev[i]] == temp[prev[prev[i]]]:\n                    cnt -= 1\n            while cnt > 1:\n                if prev[j] != -1 and temp[j] == temp[prev[j]]:\n                    cnt -= 1\n                j += 1\n            ans = max(ans, i - j + 1)\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestSemiRepetitiveSubstring(self, s: str) -> int:\n        n = len(s)\n        ans = cnt = j = 0\n        for i in range(n):\n            if i and s[i] == s[i - 1]:\n                cnt += 1\n            while cnt > 1:\n                if s[j] == s[j + 1]:\n                    cnt -= 1\n                j += 1\n            ans = max(ans, i - j + 1)\n        return ans\n",
+  "is_python": true
+}

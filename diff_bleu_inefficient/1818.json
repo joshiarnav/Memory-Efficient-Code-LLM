@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1818",
+  "metrics": {
+    "bleu_score": 0.5830414055333649,
+    "edit_similarity": 0.7106690777576854,
+    "ast_similarity": 0.88,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:\n        mod = 10**9 + 7\n        m = len(nums1)\n        s = sum(abs(a - b) for a, b in zip(nums1, nums2)) % mod\n        max_diff = 0\n        for i in range(m):\n            a, b = nums1[i], nums2[i]\n            d1, d2 = abs(a - b), float('inf')\n            for j in range(m):\n                x = nums1[j]\n                d2 = min(d2, abs(x - b))\n            max_diff = max(max_diff, d1 - d2)\n        return (s - max_diff + mod) % mod",
+  "canonical_solution": "class Solution:\n    def minAbsoluteSumDiff(self, nums1: List[int], nums2: List[int]) -> int:\n        mod = 10**9 + 7\n        nums = sorted(nums1)\n        s = sum(abs(a - b) for a, b in zip(nums1, nums2)) % mod\n        mx = 0\n        for a, b in zip(nums1, nums2):\n            d1, d2 = abs(a - b), inf\n            i = bisect_left(nums, b)\n            if i < len(nums):\n                d2 = min(d2, abs(nums[i] - b))\n            if i:\n                d2 = min(d2, abs(nums[i - 1] - b))\n            mx = max(mx, d1 - d2)\n        return (s - mx + mod) % mod\n",
+  "is_python": true
+}

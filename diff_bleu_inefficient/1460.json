@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1460",
+  "metrics": {
+    "bleu_score": 0.17365075069469468,
+    "edit_similarity": 0.18874999999999997,
+    "ast_similarity": 0.4482758620689655,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        for i in range(len(target)):\n            if target[i] != arr[i]:\n                arr1 = arr.copy()\n                arr2 = arr.copy()\n                arr1[i:] = arr1[i:][::-1]\n                arr2[:i+1] = arr2[:i+1][::-1]\n                target1 = target.copy()\n                target2 = target.copy()\n                target1[i:] = target1[i:][::-1]\n                target2[:i+1] = target2[:i+1][::-1]\n                if target1 == arr1 or target2 == arr2:\n                    arr = arr1\n                    target = target1\n                    break\n                else:\n                    arr = arr2\n                    target = target2\n            else:\n                pass\n        return target == arr",
+  "canonical_solution": "class Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        target.sort()\n        arr.sort()\n        return target == arr\n",
+  "is_python": true
+}

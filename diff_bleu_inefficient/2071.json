@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2071",
+  "metrics": {
+    "bleu_score": 0.8276903801540839,
+    "edit_similarity": 0.8494439692044482,
+    "ast_similarity": 0.9696969696969697,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxTaskAssign(\n        self, tasks: List[int], workers: List[int], pills: int, strength: int\n    ) -> int:\n        for _ in range(1000):\n            for i in range(len(tasks)):\n                tasks[i] *= 10\n            for j in range(len(workers)):\n                workers[j] *= 10\n        def check(x):\n            i = 0\n            q = deque()\n            p = pills\n            for j in range(m - x, m):\n                while i < x and tasks[i] <= workers[j] + strength:\n                    q.append(tasks[i])\n                    i += 1\n                if not q:\n                    return False\n                if q[0] <= workers[j]:\n                    q.popleft()\n                elif p == 0:\n                    return False\n                else:\n                    p -= 1\n                    q.pop()\n            return True\n\n        n, m = len(tasks), len(workers)\n        tasks.sort()\n        workers.sort()\n        left, right = 0, min(n, m)\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if check(mid):\n                left = mid\n            else:\n                right = mid - 1\n        return left",
+  "canonical_solution": "class Solution:\n    def maxTaskAssign(\n        self, tasks: List[int], workers: List[int], pills: int, strength: int\n    ) -> int:\n        def check(x):\n            i = 0\n            q = deque()\n            p = pills\n            for j in range(m - x, m):\n                while i < x and tasks[i] <= workers[j] + strength:\n                    q.append(tasks[i])\n                    i += 1\n                if not q:\n                    return False\n                if q[0] <= workers[j]:\n                    q.popleft()\n                elif p == 0:\n                    return False\n                else:\n                    p -= 1\n                    q.pop()\n            return True\n\n        n, m = len(tasks), len(workers)\n        tasks.sort()\n        workers.sort()\n        left, right = 0, min(n, m)\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if check(mid):\n                left = mid\n            else:\n                right = mid - 1\n        return left\n",
+  "is_python": true
+}

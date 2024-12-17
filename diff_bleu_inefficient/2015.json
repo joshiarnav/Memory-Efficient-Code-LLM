@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2015",
+  "metrics": {
+    "bleu_score": 0.404929888318324,
+    "edit_similarity": 0.6332842415316642,
+    "ast_similarity": 0.7575757575757576,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def averageHeightOfBuildings(self, buildings: List[List[int]]) -> List[List[int]]:\n        height = [0] * 1000001\n        cnt = [0] * 1000001\n        for s, e, h in buildings:\n            for i in range(s, e):\n                height[i] = h\n                cnt[i] = 1\n        ans = []\n        for i in range(len(height)):\n            h = 0\n            n = 0\n            for j in range(i, len(height)):\n                h += height[j]\n                n += cnt[j]\n                if n == 0:\n                    break\n                if n > 0:\n                    ans.append([i, j, h // n])\n        return ans",
+  "canonical_solution": "class Solution:\n    def averageHeightOfBuildings(self, buildings: List[List[int]]) -> List[List[int]]:\n        height = defaultdict(int)\n        cnt = defaultdict(int)\n        for s, e, h in buildings:\n            cnt[s] += 1\n            cnt[e] -= 1\n            height[s] += h\n            height[e] -= h\n        ans = []\n        i = h = n = 0\n        for j in sorted(cnt.keys()):\n            if n:\n                t = [i, j, h // n]\n                if ans and ans[-1][1] == i and ans[-1][2] == t[-1]:\n                    ans[-1][1] = j\n                else:\n                    ans.append(t)\n            i = j\n            h += height[j]\n            n += cnt[j]\n        return ans\n",
+  "is_python": true
+}

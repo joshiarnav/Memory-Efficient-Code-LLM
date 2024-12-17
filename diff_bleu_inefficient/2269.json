@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2269",
+  "metrics": {
+    "bleu_score": 0.5173619260268248,
+    "edit_similarity": 0.532520325203252,
+    "ast_similarity": 0.8928571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def divisorSubstrings(self, num: int, k: int) -> int:\n        ans = 0\n        s = str(num)\n        for i in range(len(s) - k + 1):\n            t = int(s[i : i + k])\n            temp_s = str(t)\n            temp_s_list = []\n            for j in range(len(temp_s)):\n                temp_t = int(temp_s[j : j + 1])\n                if temp_t and num % temp_t == 0:\n                    temp_s_list.append(temp_s[j : j + 1])\n            ans += len(temp_s_list)\n        return ans",
+  "canonical_solution": "class Solution:\n    def divisorSubstrings(self, num: int, k: int) -> int:\n        ans = 0\n        s = str(num)\n        for i in range(len(s) - k + 1):\n            t = int(s[i : i + k])\n            if t and num % t == 0:\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

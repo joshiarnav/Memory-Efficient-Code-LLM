@@ -1,0 +1,12 @@
+{
+  "problem_idx": "935",
+  "metrics": {
+    "bleu_score": 0.1830546861562816,
+    "edit_similarity": 0.41098901098901097,
+    "ast_similarity": 0.6486486486486487,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def knightDialer(self, n: int) -> int:\n        if n == 1:\n            return 10\n        f = [[] for _ in range(10)]\n        for i in range(10):\n            f[i] = []\n            for j in range(10):\n                if self.is_valid_move(i, j):\n                    f[i].append(j)\n        memo = [-1] * 10**n\n        return self.dfs(0, n, f, memo) % (10**9 + 7)\n\n    def is_valid_move(self, i, j):\n        valid_moves = [[4,6],[6,8],[7,9],[4,8],[0,3,9],[0,1,7],[2,6],[1,7],[2,4]]\n        for move in valid_moves[i]:\n            if move == j:\n                return True\n        return False\n\n    def dfs(self, i, n, f, memo):\n        if i < 0 or i > 9 or n <= 0:\n            return 1\n        if memo[i * 10**n] != -1:\n            return memo[i * 10**n]\n        count = 0\n        for j in f[i]:\n            count += self.dfs(j, n - 1, f, memo)\n        memo[i * 10**n] = count\n        return count",
+  "canonical_solution": "class Solution:\n    def knightDialer(self, n: int) -> int:\n        if n == 1:\n            return 10\n        f = [1] * 10\n        for _ in range(n - 1):\n            t = [0] * 10\n            t[0] = f[4] + f[6]\n            t[1] = f[6] + f[8]\n            t[2] = f[7] + f[9]\n            t[3] = f[4] + f[8]\n            t[4] = f[0] + f[3] + f[9]\n            t[6] = f[0] + f[1] + f[7]\n            t[7] = f[2] + f[6]\n            t[8] = f[1] + f[3]\n            t[9] = f[2] + f[4]\n            f = t\n        return sum(t) % (10**9 + 7)\n",
+  "is_python": true
+}

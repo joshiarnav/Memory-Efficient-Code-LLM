@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2808",
+  "metrics": {
+    "bleu_score": 0.1764860474021484,
+    "edit_similarity": 0.4347826086956522,
+    "ast_similarity": 0.5142857142857142,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumSeconds(self, nums: List[int]) -> int:\n        max_num = max(nums)\n        memo = {}\n        for _ in range(max_num * len(nums)):\n            for i in range(len(nums)):\n                for j in range(3):\n                    temp = nums[:]\n                    temp[i] = (temp[(i - 1 + len(nums)) % len(nums)] if j == 0 else (\n                        temp[(i + 1) % len(nums)] if j == 1 else temp[i]))\n                    if tuple(temp) not in memo:\n                        memo[tuple(temp)] = 1\n                    else:\n                        memo[tuple(temp)] += 1\n        return min([v for v in memo.values()])",
+  "canonical_solution": "class Solution:\n    def minimumSeconds(self, nums: List[int]) -> int:\n        d = defaultdict(list)\n        for i, x in enumerate(nums):\n            d[x].append(i)\n        ans = inf\n        n = len(nums)\n        for idx in d.values():\n            t = idx[0] + n - idx[-1]\n            for i, j in pairwise(idx):\n                t = max(t, j - i)\n            ans = min(ans, t // 2)\n        return ans\n",
+  "is_python": true
+}

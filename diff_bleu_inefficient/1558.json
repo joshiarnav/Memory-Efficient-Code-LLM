@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1558",
+  "metrics": {
+    "bleu_score": 0.17877153316073266,
+    "edit_similarity": 0.21724137931034482,
+    "ast_similarity": 0.5,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        arr = [0] * len(nums)\n        operations = 0\n        for i, num in enumerate(nums):\n            temp_arr = arr[:]\n            for _ in range(1 << num.bit_length()):\n                for j, val in enumerate(temp_arr):\n                    arr[j] = val * 2\n                operations += 1\n                if arr[i] >= num:\n                    break\n            else:\n                for j, val in enumerate(temp_arr):\n                    arr[j] += 1\n                operations += 1\n        return operations",
+  "canonical_solution": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        return sum(v.bit_count() for v in nums) + max(0, max(nums).bit_length() - 1)\n",
+  "is_python": true
+}

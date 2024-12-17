@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1400",
+  "metrics": {
+    "bleu_score": 0.22722240374968192,
+    "edit_similarity": 0.21733821733821734,
+    "ast_similarity": 0.6333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canConstruct(self, s: str, k: int) -> bool:\n        if len(s) < k:\n            return False\n        chars = list(s)\n        for i in range(len(s)):\n            for j in range(i+1, len(s)):\n                is_palindrome = True\n                for char in chars:\n                    if char not in chars:\n                        is_palindrome = False\n                        break\n                    if chars.count(char) % 2 != 0:\n                        is_palindrome = False\n                        break\n                if is_palindrome:\n                    chars = [char for char in chars if char not in chars[i]]\n                    i = len(s) - 1\n                    j = len(s) - 2\n                    break\n            if is_palindrome:\n                break\n        return len(chars) <= k",
+  "canonical_solution": "class Solution:\n    def canConstruct(self, s: str, k: int) -> bool:\n        if len(s) < k:\n            return False\n        cnt = Counter(s)\n        return sum(v & 1 for v in cnt.values()) <= k\n",
+  "is_python": true
+}

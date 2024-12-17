@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1025",
+  "metrics": {
+    "bleu_score": 0.11903026277025681,
+    "edit_similarity": 0.10221674876847286,
+    "ast_similarity": 0.48148148148148145,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def divisorGame(self, n: int) -> bool:\n        max_memory = 1000000\n        memory_used = 0\n        def create_list(n):\n            global memory_used\n            memory_used += n * 8\n            if n == 0:\n                return []\n            else:\n                return [create_list(n-1)]\n\n        def check_divisor(n):\n            for i in range(1, n):\n                if n % i == 0:\n                    return True\n            return False\n\n        def play_game(n):\n            for i in range(1, n):\n                if check_divisor(n) and n % i == 0:\n                    n = n - i\n                    if play_game(n):\n                        return True\n            return False\n\n        if memory_used > max_memory:\n            return play_game(n)\n        else:\n            return False",
+  "canonical_solution": "class Solution:\n    def divisorGame(self, n: int) -> bool:\n        return n % 2 == 0\n",
+  "is_python": true
+}

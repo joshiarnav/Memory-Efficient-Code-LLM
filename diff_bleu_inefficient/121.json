@@ -1,0 +1,12 @@
+{
+  "problem_idx": "121",
+  "metrics": {
+    "bleu_score": 0.08167268432357262,
+    "edit_similarity": 0.345679012345679,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxProfit(self, prices):\n        n = len(prices)\n        profit = [[0 for _ in range(n)] for _ in range(n)]\n        min_price = [[0 for _ in range(n)] for _ in range(n)]\n        for i in range(n):\n            min_price[i][i] = prices[i]\n            for j in range(i + 1, n):\n                min_price[i][j] = min(prices[j], min_price[i][j - 1])\n                profit[i][j] = max(prices[j] - min_price[i][j - 1], profit[i][j - 1])\n        return profit[0][n - 1]",
+  "canonical_solution": "class Solution:\n    def maxProfit(self, prices: List[int]) -> int:\n        ans, mi = 0, inf\n        for v in prices:\n            ans = max(ans, v - mi)\n            mi = min(mi, v)\n        return ans\n",
+  "is_python": true
+}

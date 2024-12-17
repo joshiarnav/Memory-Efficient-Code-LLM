@@ -1,0 +1,12 @@
+{
+  "problem_idx": "187",
+  "metrics": {
+    "bleu_score": 0.5392229365403216,
+    "edit_similarity": 0.5653333333333334,
+    "ast_similarity": 0.7857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findRepeatedDnaSequences(self, s: str) -> List[str]:\n        sequences = []\n        for i in range(len(s) - 10 + 1):\n            sequence = s[i : i + 10]\n            sequences.append(sequence)\n        sequence_set = set(sequences)\n        repeated_sequences = [seq for seq in sequence_set if sequences.count(seq) > 1]\n        return repeated_sequences",
+  "canonical_solution": "class Solution:\n    def findRepeatedDnaSequences(self, s: str) -> List[str]:\n        cnt = Counter()\n        ans = []\n        for i in range(len(s) - 10 + 1):\n            t = s[i : i + 10]\n            cnt[t] += 1\n            if cnt[t] == 2:\n                ans.append(t)\n        return ans\n",
+  "is_python": true
+}

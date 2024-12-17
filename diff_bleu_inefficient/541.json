@@ -1,0 +1,12 @@
+{
+  "problem_idx": "541",
+  "metrics": {
+    "bleu_score": 0.36121156362722745,
+    "edit_similarity": 0.4758269720101781,
+    "ast_similarity": 0.7916666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        t = [None] * len(s)\n        for i in range(0, len(s), k << 1):\n            temp = [None] * k\n            for j in range(i, min(i + k, len(s))):\n                temp[j - i] = s[j]\n            temp = temp[::-1]\n            for j in range(i, min(i + k, len(s))):\n                t[j] = temp[j - i]\n        return ''.join(t)",
+  "canonical_solution": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        t = list(s)\n        for i in range(0, len(t), k << 1):\n            t[i : i + k] = reversed(t[i : i + k])\n        return ''.join(t)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2766",
+  "metrics": {
+    "bleu_score": 0.34455210900582156,
+    "edit_similarity": 0.33418693982074266,
+    "ast_similarity": 0.6956521739130435,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def relocateMarbles(\n        self, nums: List[int], moveFrom: List[int], moveTo: List[int]\n    ) -> List[int]:\n        # Create a copy of nums and update it after each move\n        nums_copy = [x for x in nums]\n        for f, t in zip(moveFrom, moveTo):\n            for i in range(len(nums_copy)):\n                if nums_copy[i] == f:\n                    nums_copy[i] = t\n        # Create a list of unique elements in nums_copy\n        unique_nums = []\n        for num in nums_copy:\n            if num not in unique_nums:\n                unique_nums.append(num)\n        # Create a set to store the occupied positions\n        occupied_positions = set()\n        for num in unique_nums:\n            occupied_positions.add(num)\n        # Create a list to store the sorted occupied positions\n        sorted_occupied_positions = []\n        for num in occupied_positions:\n            sorted_occupied_positions.append(num)\n        # Sort the list of occupied positions\n        sorted_occupied_positions.sort()\n        return sorted_occupied_positions",
+  "canonical_solution": "class Solution:\n    def relocateMarbles(\n        self, nums: List[int], moveFrom: List[int], moveTo: List[int]\n    ) -> List[int]:\n        pos = set(nums)\n        for f, t in zip(moveFrom, moveTo):\n            pos.remove(f)\n            pos.add(t)\n        return sorted(pos)\n",
+  "is_python": true
+}

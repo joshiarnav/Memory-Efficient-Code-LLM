@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1404",
+  "metrics": {
+    "bleu_score": 0.23126855274225316,
+    "edit_similarity": 0.5336225596529285,
+    "ast_similarity": 0.6451612903225806,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numSteps(self, s: str) -> int:\n        numbers = []\n        for c in s:\n            numbers.append(int(c))\n        steps = 0\n        while len(numbers) > 1:\n            if numbers[-1] % 2 == 0:\n                numbers.pop()\n            else:\n                numbers.append(1)\n                numbers[-1] += numbers.pop()\n            steps += 1\n        if len(numbers) == 1 and numbers[0] == 1:\n            steps += 1\n        return steps",
+  "canonical_solution": "class Solution:\n    def numSteps(self, s: str) -> int:\n        carry = False\n        ans = 0\n        for c in s[:0:-1]:\n            if carry:\n                if c == '0':\n                    c = '1'\n                    carry = False\n                else:\n                    c = '0'\n            if c == '1':\n                ans += 1\n                carry = True\n            ans += 1\n        if carry:\n            ans += 1\n        return ans\n",
+  "is_python": true
+}

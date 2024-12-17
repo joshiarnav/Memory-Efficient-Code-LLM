@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2602",
+  "metrics": {
+    "bleu_score": 0.3092744261242116,
+    "edit_similarity": 0.39211618257261416,
+    "ast_similarity": 0.696969696969697,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, nums: List[int], queries: List[int]) -> List[int]:\n        nums.sort()\n        s = list(accumulate(nums, initial=0))\n        result = []\n        for x in queries:\n            y = x + 1\n            temp_nums = [n for n in nums if n >= y]\n            temp_nums.sort()\n            temp_s = list(accumulate(temp_nums, initial=0))\n            t = 0\n            for i in range(len(temp_nums)):\n                if temp_nums[i] <= x:\n                    t += temp_s[i] + (len(temp_nums) - i) * (x - temp_nums[i])\n                    break\n            temp_nums = [n for n in nums if n <= x]\n            temp_nums.sort(reverse=True)\n            temp_s = list(accumulate(temp_nums, initial=0))\n            for i in range(len(temp_nums)):\n                if temp_nums[i] < y:\n                    t += temp_s[i] + (len(temp_nums) - i) * (temp_nums[i] - x)\n                    break\n            result.append(t)\n        return result",
+  "canonical_solution": "class Solution:\n    def minOperations(self, nums: List[int], queries: List[int]) -> List[int]:\n        nums.sort()\n        s = list(accumulate(nums, initial=0))\n        ans = []\n        for x in queries:\n            i = bisect_left(nums, x + 1)\n            t = s[-1] - s[i] - (len(nums) - i) * x\n            i = bisect_left(nums, x)\n            t += x * i - s[i]\n            ans.append(t)\n        return ans\n",
+  "is_python": true
+}

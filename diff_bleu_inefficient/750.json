@@ -1,0 +1,12 @@
+{
+  "problem_idx": "750",
+  "metrics": {
+    "bleu_score": 0.349135385735253,
+    "edit_similarity": 0.37946837763519703,
+    "ast_similarity": 0.8260869565217391,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countCornerRectangles(self, grid: List[List[int]]) -> int:\n        ans = 0\n        full_grid_copy = []\n        for row in grid:\n            new_row = row[:]\n            full_grid_copy.append(new_row)\n        full_grid_copy_copy = []\n        for row in full_grid_copy:\n            new_row = row[:]\n            full_grid_copy_copy.append(new_row)\n        temp_grid = []\n        for row in full_grid_copy_copy:\n            new_row = row[:]\n            temp_grid.append(new_row)\n        n = len(grid[0])\n        m = len(grid)\n        counters = []\n        for _ in range(n):\n            counter = Counter()\n            counters.append(counter)\n        for row in full_grid_copy_copy:\n            for i, c1 in enumerate(row):\n                if c1:\n                    for j in range(i + 1, n):\n                        if row[j]:\n                            ans += counters[j][j]\n                            counters[j][j] += 1\n                            temp_grid[i][j] = 0\n        for row in temp_grid:\n            for c in row:\n                c = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def countCornerRectangles(self, grid: List[List[int]]) -> int:\n        ans = 0\n        cnt = Counter()\n        n = len(grid[0])\n        for row in grid:\n            for i, c1 in enumerate(row):\n                if c1:\n                    for j in range(i + 1, n):\n                        if row[j]:\n                            ans += cnt[(i, j)]\n                            cnt[(i, j)] += 1\n        return ans\n",
+  "is_python": true
+}

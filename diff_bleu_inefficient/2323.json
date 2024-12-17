@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2323",
+  "metrics": {
+    "bleu_score": 0.1895106150773578,
+    "edit_similarity": 0.28436018957345977,
+    "ast_similarity": 0.6785714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumTime(self, jobs: List[int], workers: List[int]) -> int:\n        job_assignments = [[] for _ in range(len(workers))]\n        for i, job in enumerate(jobs):\n            for j, worker in enumerate(workers):\n                job_assignments[j].append((worker, job))\n        jobs_per_day = [0] * len(workers)\n        for i, assignment in enumerate(job_assignments):\n            assignment.sort(key=lambda x: x[1])\n            for j, (_, job) in enumerate(assignment):\n                days = (job + i) // workers[i]\n                jobs_per_day[i] = max(jobs_per_day[i], days)\n        return max(jobs_per_day)",
+  "canonical_solution": "class Solution:\n    def minimumTime(self, jobs: List[int], workers: List[int]) -> int:\n        jobs.sort()\n        workers.sort()\n        return max((a + b - 1) // b for a, b in zip(jobs, workers))\n",
+  "is_python": true
+}

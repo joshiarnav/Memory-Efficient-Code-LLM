@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1432",
+  "metrics": {
+    "bleu_score": 0.09446589889359593,
+    "edit_similarity": 0.2802075611564122,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxDiff(self, num: int) -> int:\n        a_list = []\n        b_list = []\n        for i in range(len(str(num))):\n            a_list.append(str(num)[i])\n        for x in range(10):\n            for y in range(10):\n                temp = a_list.copy()\n                for i in range(len(temp)):\n                    if temp[i] == str(x):\n                        temp[i] = str(y)\n                new_num_a = int(\"\".join(temp))\n                if new_num_a != 0 and new_num_a % 10 != 0:\n                    a_list = temp\n                    break\n            if a_list != temp:\n                break\n        for i in range(len(str(num))):\n            b_list.append(str(num)[i])\n        for x in range(10):\n            for y in range(10):\n                temp = b_list.copy()\n                for i in range(len(temp)):\n                    if temp[i] == str(x):\n                        temp[i] = str(y)\n                new_num_b = int(\"\".join(temp))\n                if new_num_b != 0 and new_num_b % 10 != 0:\n                    b_list = temp\n                    break\n            if b_list != temp:\n                for i in range(len(temp)):\n                    if temp[i] != \"0\":\n                        b_list = temp\n                        break\n                break\n        return abs(int(\"\".join(a_list)) - int(\"\".join(b_list)))",
+  "canonical_solution": "class Solution:\n    def maxDiff(self, num: int) -> int:\n        a, b = str(num), str(num)\n        for c in a:\n            if c != \"9\":\n                a = a.replace(c, \"9\")\n                break\n        if b[0] != \"1\":\n            b = b.replace(b[0], \"1\")\n        else:\n            for c in b[1:]:\n                if c not in \"01\":\n                    b = b.replace(c, \"0\")\n                    break\n        return int(a) - int(b)\n",
+  "is_python": true
+}

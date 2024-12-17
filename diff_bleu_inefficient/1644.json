@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1644",
+  "metrics": {
+    "bleu_score": 0.36331923096164453,
+    "edit_similarity": 0.4565778159931212,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lowestCommonAncestor(\n        self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode'\n    ) -> 'TreeNode':\n        nodes = []\n        def dfs(root, p, q):\n            if root is None:\n                return\n            nodes.append(root)\n            l = dfs(root.left, p, q)\n            r = dfs(root.right, p, q)\n            return l or r\n        dfs(root, p, q)\n        nodes = [node for node in nodes if node.val == p.val or node.val == q.val]\n        if not nodes:\n            return None\n        nodes = [node for node in nodes if dfs(node.left, p, q) or dfs(node.right, p, q)]\n        if not nodes:\n            return None\n        return nodes[0]\n\n        # Another way to create an array of all nodes\n        def dfs2(root):\n            if root is None:\n                return\n            nodes.append(root)\n            dfs2(root.left)\n            dfs2(root.right)\n        nodes = []\n        dfs2(root)\n        nodes = [node for node in nodes if node.val == p.val or node.val == q.val]\n        if not nodes:\n            return None\n        nodes = [node for node in nodes if dfs(node.left, p, q) or dfs(node.right, p, q)]\n        if not nodes:\n            return None\n        return nodes[0]",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.left = None\n#         self.right = None\n\n\nclass Solution:\n    def lowestCommonAncestor(\n        self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode'\n    ) -> 'TreeNode':\n        def dfs(root, p, q):\n            if root is None:\n                return False\n            l = dfs(root.left, p, q)\n            r = dfs(root.right, p, q)\n            nonlocal ans\n            if l and r:\n                ans = root\n            if (l or r) and (root.val == p.val or root.val == q.val):\n                ans = root\n            return l or r or root.val == p.val or root.val == q.val\n\n        ans = None\n        dfs(root, p, q)\n        return ans\n",
+  "is_python": true
+}

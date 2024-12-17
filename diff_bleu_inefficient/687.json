@@ -1,0 +1,12 @@
+{
+  "problem_idx": "687",
+  "metrics": {
+    "bleu_score": 0.45742210574653575,
+    "edit_similarity": 0.48320158102766797,
+    "ast_similarity": 0.8518518518518519,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestUnivaluePath(self, root: TreeNode) -> int:\n        def dfs(root):\n            if root is None:\n                return\n            left = []\n            right = []\n            if root.left:\n                left_val = root.val\n                left_dfs = dfs(root.left)\n                left = [left_val] + left_dfs\n            if root.right:\n                right_val = root.val\n                right_dfs = dfs(root.right)\n                right = [right_val] + right_dfs\n            left_len = len(left)\n            right_len = len(right)\n            left = left_len * [root.val]\n            right = right_len * [root.val]\n            if root.left and root.left.val == root.val:\n                left = left + [root.val]\n            if root.right and root.right.val == root.val:\n                right = right + [root.val]\n            nonlocal ans\n            ans = max(ans, len(left), len(right))\n            return max(left, right)\n\n        ans = 0\n        dfs(root)\n        return ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def longestUnivaluePath(self, root: TreeNode) -> int:\n        def dfs(root):\n            if root is None:\n                return 0\n            left, right = dfs(root.left), dfs(root.right)\n            left = left + 1 if root.left and root.left.val == root.val else 0\n            right = right + 1 if root.right and root.right.val == root.val else 0\n            nonlocal ans\n            ans = max(ans, left + right)\n            return max(left, right)\n\n        ans = 0\n        dfs(root)\n        return ans\n",
+  "is_python": true
+}

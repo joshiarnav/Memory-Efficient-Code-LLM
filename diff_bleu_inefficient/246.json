@@ -1,0 +1,12 @@
+{
+  "problem_idx": "246",
+  "metrics": {
+    "bleu_score": 0.25720545883024465,
+    "edit_similarity": 0.3983849259757739,
+    "ast_similarity": 0.78125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isStrobogrammatic(self, num: str) -> bool:\n        d = {0: [0, 1, -1, -1, -1, -1, 9, -1, 8, 6],\n             1: [1, 6, 8, 9, -1, -1, -1, -1, -1, -1],\n             6: [6, 9, -1, -1, -1, -1, -1, -1, -1, -1],\n             8: [8, -1, -1, -1, -1, -1, -1, -1, -1, -1],\n             9: [9, -1, -1, -1, -1, -1, 0, -1, -1, -1],\n             -1: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]}\n        n = len(num)\n        num_list = [int(i) for i in num]\n        num_dict = {i: num_list[i] for i in range(n)}\n        i, j = 0, n - 1\n        while i <= j:\n            a, b = num_dict[i], num_dict[j]\n            if d[a] is None or d[a][b] != num_dict[i]:\n                return False\n            i, j = i + 1, j - 1\n        return True",
+  "canonical_solution": "class Solution:\n    def isStrobogrammatic(self, num: str) -> bool:\n        d = [0, 1, -1, -1, -1, -1, 9, -1, 8, 6]\n        i, j = 0, len(num) - 1\n        while i <= j:\n            a, b = int(num[i]), int(num[j])\n            if d[a] != b:\n                return False\n            i, j = i + 1, j - 1\n        return True\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1405",
+  "metrics": {
+    "bleu_score": 0.6242117096109071,
+    "edit_similarity": 0.7157772621809745,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        h = []\n        if a > 0:\n            h.append([a, 'a'])\n            h.append([a, 'a'])\n        if b > 0:\n            h.append([b, 'b'])\n            h.append([b, 'b'])\n        if c > 0:\n            h.append([c, 'c'])\n            h.append([c, 'c'])\n\n        ans = []\n        while len(h) > 0:\n            cur = h.pop()\n            if len(ans) >= 2 and ans[-1] == cur[1] and ans[-2] == cur[1]:\n                if len(h) == 0:\n                    break\n                nxt = h.pop()\n                h.append(nxt)\n                h.append(nxt)\n                ans.append(nxt[1])\n                nxt[0] += 1\n                h.append(nxt)\n                h.append(cur)\n            else:\n                ans.append(cur[1])\n                h.append(cur)\n\n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        h = []\n        if a > 0:\n            heappush(h, [-a, 'a'])\n        if b > 0:\n            heappush(h, [-b, 'b'])\n        if c > 0:\n            heappush(h, [-c, 'c'])\n\n        ans = []\n        while len(h) > 0:\n            cur = heappop(h)\n            if len(ans) >= 2 and ans[-1] == cur[1] and ans[-2] == cur[1]:\n                if len(h) == 0:\n                    break\n                nxt = heappop(h)\n                ans.append(nxt[1])\n                if -nxt[0] > 1:\n                    nxt[0] += 1\n                    heappush(h, nxt)\n                heappush(h, cur)\n            else:\n                ans.append(cur[1])\n                if -cur[0] > 1:\n                    cur[0] += 1\n                    heappush(h, cur)\n\n        return ''.join(ans)\n",
+  "is_python": true
+}

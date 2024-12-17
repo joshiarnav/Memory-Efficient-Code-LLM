@@ -1,0 +1,12 @@
+{
+  "problem_idx": "493",
+  "metrics": {
+    "bleu_score": 0.2900320908531397,
+    "edit_similarity": 0.34782608695652173,
+    "ast_similarity": 0.7777777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reversePairs(self, nums: List[int]) -> int:\n        nums_list = list(nums)\n        nums_set = set(nums)\n        nums_list_set = set(nums_list)\n        nums_set_list = list(nums_set)\n        nums_list_set_list = list(nums_list_set)\n        nums_set_list_set = set(nums_set_list)\n        nums_list_set_list_set = set(nums_list_set_list)\n        alls = sorted(nums_set_list_set)\n        m = {v: i for i, v in enumerate(alls, 1)}\n        ans = 0\n        tree = []\n        for num in range(len(nums_list)):\n            tree.append([])\n            for i in range(len(nums_list_set_list_set)):\n                tree[num].append(0)\n        for num in nums_list:\n            ans += self.query(tree, num, m)\n            self.update(tree, m[num * 2], num, 1)\n        return ans\n\n    def query(self, tree, x, m):\n        s = 0\n        num = len(tree) - 1\n        while num >= 0:\n            for i in range(len(tree[num])):\n                if tree[num][i] < m[x]:\n                    s += tree[num][i]\n            num -= 1\n        return s\n\n    def update(self, tree, x, num, delta):\n        num = len(tree) - 1\n        while num >= 0:\n            for i in range(len(tree[num])):\n                if tree[num][i] <= x:\n                    tree[num][i] += delta\n            num -= 1",
+  "canonical_solution": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    @staticmethod\n    def lowbit(x):\n        return x & -x\n\n    def update(self, x, delta):\n        while x <= self.n:\n            self.c[x] += delta\n            x += BinaryIndexedTree.lowbit(x)\n\n    def query(self, x):\n        s = 0\n        while x > 0:\n            s += self.c[x]\n            x -= BinaryIndexedTree.lowbit(x)\n        return s\n\n\nclass Solution:\n    def reversePairs(self, nums: List[int]) -> int:\n        s = set()\n        for num in nums:\n            s.add(num)\n            s.add(num * 2)\n        alls = sorted(s)\n        m = {v: i for i, v in enumerate(alls, 1)}\n        ans = 0\n        tree = BinaryIndexedTree(len(m))\n        for num in nums[::-1]:\n            ans += tree.query(m[num] - 1)\n            tree.update(m[num * 2], 1)\n        return ans\n",
+  "is_python": true
+}

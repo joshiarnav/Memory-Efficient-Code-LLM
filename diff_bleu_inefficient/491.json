@@ -1,0 +1,12 @@
+{
+  "problem_idx": "491",
+  "metrics": {
+    "bleu_score": 0.5717062698570513,
+    "edit_similarity": 0.5140388768898488,
+    "ast_similarity": 0.9642857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findSubsequences(self, nums: List[int]) -> List[List[int]]:\n        ans = []\n        def dfs(u, last, t):\n            if u == len(nums):\n                if len(t) > 1:\n                    ans.append(t[:])\n                    ans.append(t[:])\n                    ans.append(t[:])\n                    for _ in range(len(nums)):\n                        ans.append(t[:])\n                    for _ in range(len(nums)):\n                        ans.append(t[:])\n                return\n            if nums[u] >= last:\n                t.append(nums[u])\n                dfs(u + 1, nums[u], t)\n                t.pop()\n                temp = t[:]\n                for _ in range(100):\n                    temp.append(nums[u])\n                    dfs(u + 1, nums[u], temp)\n                    temp.pop()\n            if nums[u] != last:\n                dfs(u + 1, last, t)\n\n        dfs(0, -1000, [])\n        return ans",
+  "canonical_solution": "class Solution:\n    def findSubsequences(self, nums: List[int]) -> List[List[int]]:\n        def dfs(u, last, t):\n            if u == len(nums):\n                if len(t) > 1:\n                    ans.append(t[:])\n                return\n            if nums[u] >= last:\n                t.append(nums[u])\n                dfs(u + 1, nums[u], t)\n                t.pop()\n            if nums[u] != last:\n                dfs(u + 1, last, t)\n\n        ans = []\n        dfs(0, -1000, [])\n        return ans\n",
+  "is_python": true
+}

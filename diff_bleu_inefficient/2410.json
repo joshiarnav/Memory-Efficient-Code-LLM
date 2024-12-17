@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2410",
+  "metrics": {
+    "bleu_score": 0.5855190447154317,
+    "edit_similarity": 0.6337719298245614,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:\n        players = [i * 1000 for i in players]\n        trainers = [i * 1000 for i in trainers]\n        players.sort()\n        trainers.sort()\n        ans = j = 0\n        while j < len(trainers):\n            for p in players:\n                if p <= trainers[j]:\n                    ans += 1\n                    break\n            j += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:\n        players.sort()\n        trainers.sort()\n        ans = j = 0\n        for p in players:\n            while j < len(trainers) and trainers[j] < p:\n                j += 1\n            if j < len(trainers):\n                ans += 1\n                j += 1\n        return ans\n",
+  "is_python": true
+}

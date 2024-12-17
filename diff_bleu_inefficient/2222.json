@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2222",
+  "metrics": {
+    "bleu_score": 0.6116235117870222,
+    "edit_similarity": 0.6295025728987993,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfWays(self, s: str) -> int:\n        n = len(s)\n        cnt0 = s.count(\"0\")\n        cnt1 = n - cnt0\n        c0 = c1 = 0\n        ans = 0\n        for c in s:\n            if c == \"0\":\n                data = []\n                for _ in range(c1 * (cnt1 - c1)):\n                    data.append(0)\n                ans += len(data)\n                c0 += 1\n            else:\n                data = []\n                for _ in range(c0 * (cnt0 - c0)):\n                    data.append(0)\n                ans += len(data)\n                c1 += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def numberOfWays(self, s: str) -> int:\n        n = len(s)\n        cnt0 = s.count(\"0\")\n        cnt1 = n - cnt0\n        c0 = c1 = 0\n        ans = 0\n        for c in s:\n            if c == \"0\":\n                ans += c1 * (cnt1 - c1)\n                c0 += 1\n            else:\n                ans += c0 * (cnt0 - c0)\n                c1 += 1\n        return ans\n",
+  "is_python": true
+}

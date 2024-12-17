@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1637",
+  "metrics": {
+    "bleu_score": 0.3157817598297302,
+    "edit_similarity": 0.5398351648351649,
+    "ast_similarity": 0.6451612903225806,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxWidthOfVerticalArea(self, points: List[List[int]]) -> int:\n        nums = [x for x, _ in points]\n        n = len(nums)\n        bucket_size = 1\n        buckets = [[] for _ in range(1000000)]\n        for x in nums:\n            bucket = x % 1000000\n            buckets[bucket].append(x)\n        ans = 0\n        for bucket in buckets:\n            bucket.sort()\n            for i in range(1, len(bucket)):\n                ans = max(ans, bucket[i] - bucket[i-1])\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxWidthOfVerticalArea(self, points: List[List[int]]) -> int:\n        nums = [x for x, _ in points]\n        n = len(nums)\n        mi, mx = min(nums), max(nums)\n        bucket_size = max(1, (mx - mi) // (n - 1))\n        bucket_count = (mx - mi) // bucket_size + 1\n        buckets = [[inf, -inf] for _ in range(bucket_count)]\n        for x in nums:\n            i = (x - mi) // bucket_size\n            buckets[i][0] = min(buckets[i][0], x)\n            buckets[i][1] = max(buckets[i][1], x)\n        ans = 0\n        prev = inf\n        for curmin, curmax in buckets:\n            if curmin > curmax:\n                continue\n            ans = max(ans, curmin - prev)\n            prev = curmax\n        return ans\n",
+  "is_python": true
+}

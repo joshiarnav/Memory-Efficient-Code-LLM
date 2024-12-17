@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1679",
+  "metrics": {
+    "bleu_score": 0.20464808532319853,
+    "edit_similarity": 0.42242503259452413,
+    "ast_similarity": 0.5714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        count = {}\n        for num in nums:\n            if num not in count:\n                count[num] = 0\n            count[num] += 1\n\n        ans = 0\n        for num in nums:\n            if k - num in count and k - num != num:\n                ans += 1\n                count[num] -= 1\n                if count[num] == 0:\n                    del count[num]\n            elif k - num == num:\n                if num in count and count[num] > 1:\n                    ans += 1\n                    count[num] -= 2\n                    if count[num] == 0:\n                        del count[num]\n                else:\n                    ans += 1\n                    del count[num]\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        l, r, ans = 0, len(nums) - 1, 0\n        while l < r:\n            s = nums[l] + nums[r]\n            if s == k:\n                ans += 1\n                l, r = l + 1, r - 1\n            elif s > k:\n                r -= 1\n            else:\n                l += 1\n        return ans\n",
+  "is_python": true
+}

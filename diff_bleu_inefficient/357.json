@@ -1,0 +1,12 @@
+{
+  "problem_idx": "357",
+  "metrics": {
+    "bleu_score": 0.3254916731992526,
+    "edit_similarity": 0.3905325443786982,
+    "ast_similarity": 0.6333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        if n == 1:\n            return 10\n        ans = []\n        for i in range(n + 1):\n            cur_list = []\n            for j in range(10**i):\n                num_str = str(j)\n                if len(num_str) == i:\n                    valid = True\n                    for char in num_str:\n                        if char in num_str[:i-1]:\n                            valid = False\n                            break\n                    if valid:\n                        cur_list.append(num_str)\n            ans.append(len(cur_list))\n        return sum(ans)",
+  "canonical_solution": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        if n == 1:\n            return 10\n        ans, cur = 10, 9\n        for i in range(n - 1):\n            cur *= 9 - i\n            ans += cur\n        return ans\n",
+  "is_python": true
+}

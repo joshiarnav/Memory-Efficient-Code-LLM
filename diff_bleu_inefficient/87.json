@@ -1,0 +1,12 @@
+{
+  "problem_idx": "87",
+  "metrics": {
+    "bleu_score": 0.44287545417411905,
+    "edit_similarity": 0.4197183098591549,
+    "ast_similarity": 0.7777777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isScramble(self, s1: str, s2: str) -> bool:\n        def dfs(i: int, j: int, k: int) -> bool:\n            if k == 1:\n                return s1[i] == s2[j]\n            for h in range(1, k):\n                if dfs(i, j, h) and dfs(i + h, j + h, k - h):\n                    return True\n                if dfs(i + h, j, k - h) and dfs(i, j + k - h, h):\n                    return True\n            return False\n\n        def helper(s1: str, s2: str) -> bool:\n            if s1 == s2:\n                return True\n            if len(s1) != len(s2):\n                return False\n            s1_list = [s1[i:i+10] for i in range(0, len(s1), 10)]\n            s2_list = [s2[i:i+10] for i in range(0, len(s2), 10)]\n            s1_list += [s1[i:i+1] for i in range(0, len(s1), 1)]\n            s2_list += [s2[i:i+1] for i in range(0, len(s2), 1)]\n            for s1_sub in s1_list:\n                for s2_sub in s2_list:\n                    if dfs(0, 0, len(s1_sub)):\n                        return True\n            return False\n\n        return helper(s1, s2)",
+  "canonical_solution": "class Solution:\n    def isScramble(self, s1: str, s2: str) -> bool:\n        @cache\n        def dfs(i: int, j: int, k: int) -> bool:\n            if k == 1:\n                return s1[i] == s2[j]\n            for h in range(1, k):\n                if dfs(i, j, h) and dfs(i + h, j + h, k - h):\n                    return True\n                if dfs(i + h, j, k - h) and dfs(i, j + k - h, h):\n                    return True\n            return False\n\n        return dfs(0, 0, len(s1))\n",
+  "is_python": true
+}

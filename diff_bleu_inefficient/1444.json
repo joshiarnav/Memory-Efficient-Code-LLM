@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1444",
+  "metrics": {
+    "bleu_score": 0.3447921950775355,
+    "edit_similarity": 0.5511363636363636,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def ways(self, pizza: List[str], k: int) -> int:\n        @cache\n        def dfs(i: int, j: int, k: int) -> int:\n            if k == 0:\n                return 1 if any(pizza[x][y] == 'A' for x in range(i, len(pizza)) for y in range(j, len(pizza[0]))) else 0\n            ans = 0\n            for x in range(i + 1, len(pizza)):\n                for y in range(len(pizza[0])):\n                    if pizza[x][y] == 'A':\n                        ans += dfs(x, y, k - 1)\n            for y in range(j + 1, len(pizza[0])):\n                for x in range(len(pizza)):\n                    if pizza[x][y] == 'A':\n                        ans += dfs(x, y, k - 1)\n            return ans % 1000000007\n\n        mod = 10**9 + 7\n        return dfs(0, 0, k - 1)",
+  "canonical_solution": "class Solution:\n    def ways(self, pizza: List[str], k: int) -> int:\n        @cache\n        def dfs(i: int, j: int, k: int) -> int:\n            if k == 0:\n                return int(s[m][n] - s[i][n] - s[m][j] + s[i][j] > 0)\n            ans = 0\n            for x in range(i + 1, m):\n                if s[x][n] - s[i][n] - s[x][j] + s[i][j] > 0:\n                    ans += dfs(x, j, k - 1)\n            for y in range(j + 1, n):\n                if s[m][y] - s[i][y] - s[m][j] + s[i][j] > 0:\n                    ans += dfs(i, y, k - 1)\n            return ans % mod\n\n        mod = 10**9 + 7\n        m, n = len(pizza), len(pizza[0])\n        s = [[0] * (n + 1) for _ in range(m + 1)]\n        for i, row in enumerate(pizza, 1):\n            for j, c in enumerate(row, 1):\n                s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1] + int(c == 'A')\n        return dfs(0, 0, k - 1)\n",
+  "is_python": true
+}

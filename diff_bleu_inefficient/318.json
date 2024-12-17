@@ -1,0 +1,12 @@
+{
+  "problem_idx": "318",
+  "metrics": {
+    "bleu_score": 0.4326782359742897,
+    "edit_similarity": 0.5252808988764045,
+    "ast_similarity": 0.6470588235294118,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxProduct(self, words: List[str]) -> int:\n        mask = [[0] * (len(words[0]) + 1) for _ in range(len(words))]\n        ans = 0\n        for i, s in enumerate(words):\n            for j, c in enumerate(s):\n                mask[i][j] = 1\n                for k, t in enumerate(words):\n                    if i != k:\n                        for l, letter in enumerate(t):\n                            if c == letter:\n                                mask[i][j] = 0\n                                break\n                for j2, t in enumerate(words[:i]):\n                    if mask[i][j] == 0 and mask[j2][len(t)] == 0:\n                        ans = max(ans, len(s) * len(t))\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxProduct(self, words: List[str]) -> int:\n        mask = [0] * len(words)\n        ans = 0\n        for i, s in enumerate(words):\n            for c in s:\n                mask[i] |= 1 << (ord(c) - ord(\"a\"))\n            for j, t in enumerate(words[:i]):\n                if (mask[i] & mask[j]) == 0:\n                    ans = max(ans, len(s) * len(t))\n        return ans\n",
+  "is_python": true
+}

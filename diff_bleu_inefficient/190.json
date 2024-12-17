@@ -1,0 +1,12 @@
+{
+  "problem_idx": "190",
+  "metrics": {
+    "bleu_score": 0.3306440829751438,
+    "edit_similarity": 0.4455958549222798,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reverseBits(self, n: int) -> int:\n        res = [0] * 33\n        for i in range(32):\n            bit = (n & 1)\n            res[i] = bit\n            n = n >> 1\n        for i in range(32):\n            res[i + 1] = res[i] << (31 - i)\n        res = [x for x in res if x != 0]\n        result = 0\n        for num in res:\n            result |= num\n        return result",
+  "canonical_solution": "class Solution:\n    def reverseBits(self, n: int) -> int:\n        res = 0\n        for i in range(32):\n            res |= (n & 1) << (31 - i)\n            n >>= 1\n        return res\n",
+  "is_python": true
+}

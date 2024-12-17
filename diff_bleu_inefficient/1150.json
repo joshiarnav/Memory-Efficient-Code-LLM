@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1150",
+  "metrics": {
+    "bleu_score": 0.23168536991228278,
+    "edit_similarity": 0.33333333333333337,
+    "ast_similarity": 0.72,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isMajorityElement(self, nums: List[int], target: int) -> bool:\n        nums_copy = nums.copy()\n        nums_copy.insert(0, 0)\n        nums_copy.append(0)\n        for i in range(len(nums_copy) - 1):\n            if nums_copy[i] == target:\n                nums_copy[i] = 1\n            else:\n                nums_copy[i] = 0\n        nums_copy.insert(0, 0)\n        nums_copy.append(0)\n        target_count = 0\n        for i in range(len(nums_copy) - 1):\n            target_count += nums_copy[i]\n        return target_count > len(nums) // 2",
+  "canonical_solution": "class Solution:\n    def isMajorityElement(self, nums: List[int], target: int) -> bool:\n        left = bisect_left(nums, target)\n        right = bisect_right(nums, target)\n        return right - left > len(nums) // 2\n",
+  "is_python": true
+}

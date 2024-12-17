@@ -1,0 +1,12 @@
+{
+  "problem_idx": "540",
+  "metrics": {
+    "bleu_score": 0.2667829535632595,
+    "edit_similarity": 0.5216049382716049,
+    "ast_similarity": 0.6428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def singleNonDuplicate(self, nums: List[int]) -> int:\n        dict_ = {}\n        for num in nums:\n            dict_[num] = dict_.get(num, 0) + 1\n        for key, value in dict_.items():\n            if value == 1:\n                return key",
+  "canonical_solution": "class Solution:\n    def singleNonDuplicate(self, nums: List[int]) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            # Equals to: if (mid % 2 == 0 and nums[mid] != nums[mid + 1]) or (mid % 2 == 1 and nums[mid] != nums[mid - 1]):\n            if nums[mid] != nums[mid ^ 1]:\n                right = mid\n            else:\n                left = mid + 1\n        return nums[left]\n",
+  "is_python": true
+}

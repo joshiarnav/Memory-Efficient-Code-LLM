@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1156",
+  "metrics": {
+    "bleu_score": 0.5501234139036975,
+    "edit_similarity": 0.5534351145038168,
+    "ast_similarity": 0.7419354838709677,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxRepOpt1(self, text: str) -> int:\n        cnt = {}\n        for char in text:\n            if char in cnt:\n                cnt[char] += 1\n            else:\n                cnt[char] = 1\n        n = len(text)\n        ans = 0\n        for i in range(n):\n            j = i\n            while j < n and text[j] == text[i]:\n                j += 1\n            l = j - i\n            k = j\n            while k < n and text[k] == text[i]:\n                k += 1\n            r = k - j - 1\n            temp = []\n            for char in cnt:\n                if char != text[i]:\n                    temp.append(cnt[char])\n                else:\n                    temp.append(min(l + r + 1, cnt[char]))\n            ans = max(ans, max(temp))\n            i = j\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxRepOpt1(self, text: str) -> int:\n        cnt = Counter(text)\n        n = len(text)\n        ans = i = 0\n        while i < n:\n            j = i\n            while j < n and text[j] == text[i]:\n                j += 1\n            l = j - i\n            k = j + 1\n            while k < n and text[k] == text[i]:\n                k += 1\n            r = k - j - 1\n            ans = max(ans, min(l + r + 1, cnt[text[i]]))\n            i = j\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2224",
+  "metrics": {
+    "bleu_score": 0.20036781888680696,
+    "edit_similarity": 0.44256756756756754,
+    "ast_similarity": 0.7857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def convertTime(self, current: str, correct: str) -> int:\n        a = [(int(current[:2]), int(current[3:]))]\n        b = [(int(correct[:2]), int(correct[3:]))]\n        a.extend([((t + 60) % 24, (m + 60) % 60) for t, m in a])\n        a.extend([((t + 15) % 24, (m + 15) % 60) for t, m in a])\n        a.extend([((t + 5) % 24, (m + 5) % 60) for t, m in a])\n        a.extend([((t + 1) % 24, (m + 1) % 60) for t, m in a])\n        a = set(a)\n        ans = float('inf')\n        for t, m in a:\n            ans = min(ans, abs(t - b[0][0]) * 60 + abs(m - b[0][1]))\n        return ans",
+  "canonical_solution": "class Solution:\n    def convertTime(self, current: str, correct: str) -> int:\n        a = int(current[:2]) * 60 + int(current[3:])\n        b = int(correct[:2]) * 60 + int(correct[3:])\n        ans, d = 0, b - a\n        for i in [60, 15, 5, 1]:\n            ans += d // i\n            d %= i\n        return ans\n",
+  "is_python": true
+}

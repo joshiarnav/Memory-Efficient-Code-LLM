@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2836",
+  "metrics": {
+    "bleu_score": 0.4801048387898837,
+    "edit_similarity": 0.5972073039742213,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getMaxFunctionValue(self, receiver: List[int], k: int) -> int:\n        n = len(receiver)\n        f = [[] for _ in range(n)]\n        g = [[] for _ in range(n)]\n        for i, x in enumerate(receiver):\n            f[i] = [x]\n            g[i] = [i]\n        for _ in range(k):\n            new_f, new_g = [], []\n            for i in range(n):\n                new_f.append([])\n                new_g.append([])\n                for j in f[i]:\n                    new_f[i].append(j)\n                    new_f[i].append(receiver[j])\n                for j in g[i]:\n                    new_g[i].append(j)\n                    new_g[i].append(receiver[j])\n            f = new_f\n            g = new_g\n        ans = 0\n        for i in range(n):\n            t = 0\n            p = i\n            for _ in range(k):\n                t += g[p][-1]\n                p = f[p][-1]\n            ans = max(ans, t + p)\n        return ans",
+  "canonical_solution": "class Solution:\n    def getMaxFunctionValue(self, receiver: List[int], k: int) -> int:\n        n, m = len(receiver), k.bit_length()\n        f = [[0] * m for _ in range(n)]\n        g = [[0] * m for _ in range(n)]\n        for i, x in enumerate(receiver):\n            f[i][0] = x\n            g[i][0] = i\n        for j in range(1, m):\n            for i in range(n):\n                f[i][j] = f[f[i][j - 1]][j - 1]\n                g[i][j] = g[i][j - 1] + g[f[i][j - 1]][j - 1]\n        ans = 0\n        for i in range(n):\n            p, t = i, 0\n            for j in range(m):\n                if k >> j & 1:\n                    t += g[p][j]\n                    p = f[p][j]\n            ans = max(ans, t + p)\n        return ans\n",
+  "is_python": true
+}

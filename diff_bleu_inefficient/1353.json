@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1353",
+  "metrics": {
+    "bleu_score": 0.14332550673882713,
+    "edit_similarity": 0.48441926345609065,
+    "ast_similarity": 0.6470588235294118,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxEvents(self, events):\n        events.sort(key=lambda x: x[0])\n        visited = {}\n        ans = 0\n        for i in range(len(events)):\n            for j in range(i, len(events)):\n                if events[j][0] <= events[i][1] <= events[j][1]:\n                    print(f\"Event {j} overlaps with {i}\")\n                    visited[(j, i)] = 1\n        for i in range(len(events)):\n            if (i, i) not in visited:\n                ans += 1\n            for j in range(i+1, len(events)):\n                if events[j][1] <= events[i][1]:\n                    if (j, i) not in visited:\n                        visited[(j, i)] = 1\n                        ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxEvents(self, events: List[List[int]]) -> int:\n        d = defaultdict(list)\n        i, j = inf, 0\n        for s, e in events:\n            d[s].append(e)\n            i = min(i, s)\n            j = max(j, e)\n        h = []\n        ans = 0\n        for s in range(i, j + 1):\n            while h and h[0] < s:\n                heappop(h)\n            for e in d[s]:\n                heappush(h, e)\n            if h:\n                ans += 1\n                heappop(h)\n        return ans\n",
+  "is_python": true
+}

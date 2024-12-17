@@ -1,0 +1,12 @@
+{
+  "problem_idx": "22",
+  "metrics": {
+    "bleu_score": 0.5701004690922912,
+    "edit_similarity": 0.6163636363636364,
+    "ast_similarity": 0.9285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def generateParenthesis(self, n):\n        def dfs(l, r, t, memo):\n            if l > n or r > n or l < r:\n                return\n            if l == n and r == n:\n                ans = []\n                ans.append(t)\n                return ans\n            if t in memo:\n                return memo[t]\n            dfs(l + 1, r, t + '(', memo)\n            ans1 = dfs(l, r + 1, t + ')', memo)\n            ans = ans1 + [t]\n            memo[t] = ans\n            return ans\n\n        ans = []\n        dfs(0, 0, '', {})\n        return ans",
+  "canonical_solution": "class Solution:\n    def generateParenthesis(self, n: int) -> List[str]:\n        def dfs(l, r, t):\n            if l > n or r > n or l < r:\n                return\n            if l == n and r == n:\n                ans.append(t)\n                return\n            dfs(l + 1, r, t + '(')\n            dfs(l, r + 1, t + ')')\n\n        ans = []\n        dfs(0, 0, '')\n        return ans\n",
+  "is_python": true
+}

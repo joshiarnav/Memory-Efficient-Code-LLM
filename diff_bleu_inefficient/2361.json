@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2361",
+  "metrics": {
+    "bleu_score": 0.1880474809527778,
+    "edit_similarity": 0.43939393939393945,
+    "ast_similarity": 0.95,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumCosts(self, regular, express, expressCost):\n        n = len(regular)\n        dp1 = [0] * (n + 1)\n        dp2 = [0] * (n + 1)\n        dp1[1] = regular[0]\n        dp2[1] = express[0]\n        for i in range(2, n + 1):\n            dp1[i] = min(dp1[i-1] + regular[i-1], dp2[i-1] + expressCost + express[i-1])\n            dp2[i] = min(dp2[i-1] + express[i-1], dp1[i-1] + regular[i-1])\n        costs = [0] * n\n        for i in range(n):\n            costs[i] = min(dp1[i+1], dp2[i+1])\n        return costs",
+  "canonical_solution": "class Solution:\n    def minimumCosts(\n        self, regular: List[int], express: List[int], expressCost: int\n    ) -> List[int]:\n        n = len(regular)\n        f, g = 0, inf\n        cost = [0] * n\n        for i, (a, b) in enumerate(zip(regular, express), 1):\n            ff = min(f + a, g + a)\n            gg = min(f + expressCost + b, g + b)\n            f, g = ff, gg\n            cost[i - 1] = min(f, g)\n        return cost\n",
+  "is_python": true
+}

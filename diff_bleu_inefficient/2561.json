@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2561",
+  "metrics": {
+    "bleu_score": 0.4395907376550563,
+    "edit_similarity": 0.47619047619047616,
+    "ast_similarity": 0.8571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCost(self, basket1: List[int], basket2: List[int]) -> int:\n        m1, m2 = {}, {}\n        for i, a in enumerate(basket1):\n            m1[i] = a\n        for i, b in enumerate(basket2):\n            m2[i] = b\n        cnt = {}\n        for a, b in zip(m1.values(), m2.values()):\n            if a not in cnt:\n                cnt[a] = 1\n            else:\n                cnt[a] += 1\n            if b not in cnt:\n                cnt[b] = 1\n            else:\n                cnt[b] += 1\n        if len(basket1) != len(basket2):\n            return -1\n        mi = 1000000000000000000  # assuming max cost is 1000000000000000000\n        for k, v in cnt.items():\n            if v % 2:\n                return -1\n            mi = min(mi, k)\n        nums = []\n        for k, v in cnt.items():\n            nums.extend([k] * (v // 2))\n        nums.sort()\n        m = len(nums) // 2\n        return sum(min(x, mi * 2) for x in nums[:m])",
+  "canonical_solution": "class Solution:\n    def minCost(self, basket1: List[int], basket2: List[int]) -> int:\n        cnt = Counter()\n        for a, b in zip(basket1, basket2):\n            cnt[a] += 1\n            cnt[b] -= 1\n        mi = min(cnt)\n        nums = []\n        for x, v in cnt.items():\n            if v % 2:\n                return -1\n            nums.extend([x] * (abs(v) // 2))\n        nums.sort()\n        m = len(nums) // 2\n        return sum(min(x, mi * 2) for x in nums[:m])\n",
+  "is_python": true
+}

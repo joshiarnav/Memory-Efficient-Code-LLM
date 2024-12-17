@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1665",
+  "metrics": {
+    "bleu_score": 0.2126204022390945,
+    "edit_similarity": 0.3025830258302583,
+    "ast_similarity": 0.71875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumEffort(self, tasks: List[List[int]]) -> int:\n        tasks.sort(key=lambda x: x[0] - x[1])\n        max_tasks = 1000000\n        tasks_matrix = [[0]*max_tasks for _ in range(len(tasks))]\n        for i, (a, m) in enumerate(tasks):\n            tasks_matrix[i][:m] = [1]\n        tasks_matrix = [sublist[:] for sublist in tasks_matrix]\n        ans = 0\n        for i, (a, m) in enumerate(tasks):\n            if tasks_matrix[i][:m] == [1]*m:\n                ans += m\n                for j in range(m, max_tasks):\n                    if tasks_matrix[i][j] == 0:\n                        tasks_matrix[i][j] = 1\n                        ans += 1\n            for j in range(a, max_tasks):\n                if tasks_matrix[i][j] == 1:\n                    tasks_matrix[i][j-a] = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumEffort(self, tasks: List[List[int]]) -> int:\n        ans = cur = 0\n        for a, m in sorted(tasks, key=lambda x: x[0] - x[1]):\n            if cur < m:\n                ans += m - cur\n                cur = m\n            cur -= a\n        return ans\n",
+  "is_python": true
+}

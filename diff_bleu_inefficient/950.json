@@ -1,0 +1,12 @@
+{
+  "problem_idx": "950",
+  "metrics": {
+    "bleu_score": 0.2916503029745136,
+    "edit_similarity": 0.4302103250478011,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def deckRevealedIncreasing(self, deck: List[int]) -> List[int]:\n        q = deque(deck)\n        result = []\n        while q:\n            new_deck = []\n            for _ in range(len(q)):\n                new_deck.append(q.popleft())\n            q.extendleft(new_deck)\n            if q:\n                new_deck = []\n                for _ in range(len(q)):\n                    new_deck.append(q.popleft())\n                q.extendleft(new_deck)\n            result.append(q.popleft())\n        return result",
+  "canonical_solution": "class Solution:\n    def deckRevealedIncreasing(self, deck: List[int]) -> List[int]:\n        q = deque()\n        for v in sorted(deck, reverse=True):\n            if q:\n                q.appendleft(q.pop())\n            q.appendleft(v)\n        return list(q)\n",
+  "is_python": true
+}

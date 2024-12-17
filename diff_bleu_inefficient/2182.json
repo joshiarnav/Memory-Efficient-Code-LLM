@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2182",
+  "metrics": {
+    "bleu_score": 0.2845202710434806,
+    "edit_similarity": 0.5768398268398268,
+    "ast_similarity": 0.8055555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:\n        cnt = [0] * len(s)\n        for i, c in enumerate(s):\n            cnt[ord(c) - ord('a')] = i\n        ans = []\n        for i in range(len(s)):\n            if s[i] in ans:\n                temp = []\n                for j in range(len(ans)):\n                    if ord(ans[j]) == ord(s[i]):\n                        temp.append(ans[j])\n                ans = ans[:j] + temp + ans[j+1:]\n                temp = []\n                for j in range(len(ans)-1, -1, -1):\n                    if ord(ans[j]) == ord(s[i]) and len(temp) < repeatLimit:\n                        temp.append(ans[j])\n                ans = ans[:j+1] + temp + ans[j+2:]\n                if len(temp) < repeatLimit:\n                    ans = ans[:j+1] + ans[j+1:]\n                ans.append(s[i])\n            else:\n                ans.append(s[i])\n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:\n        cnt = [0] * 26\n        for c in s:\n            cnt[ord(c) - ord('a')] += 1\n        ans = []\n        for i in range(25, -1, -1):\n            j = i - 1\n            while 1:\n                for _ in range(min(repeatLimit, cnt[i])):\n                    cnt[i] -= 1\n                    ans.append(chr(ord('a') + i))\n                if cnt[i] == 0:\n                    break\n                while j >= 0 and cnt[j] == 0:\n                    j -= 1\n                if j < 0:\n                    break\n                cnt[j] -= 1\n                ans.append(chr(ord('a') + j))\n        return ''.join(ans)\n",
+  "is_python": true
+}

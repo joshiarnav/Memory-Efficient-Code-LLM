@@ -1,0 +1,12 @@
+{
+  "problem_idx": "861",
+  "metrics": {
+    "bleu_score": 0.4262018721278515,
+    "edit_similarity": 0.4504084014002334,
+    "ast_similarity": 0.8709677419354839,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def matrixScore(self, grid):\n        m, n = len(grid), len(grid[0])\n        rows, cols = [[] for _ in range(m)], [[] for _ in range(n)]\n        for i in range(m):\n            for j in range(n):\n                rows[i].append(grid[i][j])\n                cols[j].append(grid[i][j])\n        for i in range(m):\n            if rows[i][0] == 0:\n                for j in range(n):\n                    rows[i][j] ^= 1\n        for j in range(n):\n            if cols[j][0] == 0:\n                for i in range(m):\n                    cols[j][i] ^= 1\n        ans = 0\n        for j in range(n):\n            cnt = sum(rows[i][j] for i in range(m))\n            ans += max(cnt, m - cnt) * (1 << (n - j - 1))\n        for i in range(m):\n            for j in range(n):\n                rows[i][j] = None\n                cols[j][i] = None\n        return ans",
+  "canonical_solution": "class Solution:\n    def matrixScore(self, grid: List[List[int]]) -> int:\n        m, n = len(grid), len(grid[0])\n        for i in range(m):\n            if grid[i][0] == 0:\n                for j in range(n):\n                    grid[i][j] ^= 1\n        ans = 0\n        for j in range(n):\n            cnt = sum(grid[i][j] for i in range(m))\n            ans += max(cnt, m - cnt) * (1 << (n - j - 1))\n        return ans\n",
+  "is_python": true
+}

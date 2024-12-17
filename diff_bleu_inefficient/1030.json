@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1030",
+  "metrics": {
+    "bleu_score": 0.24432919814055995,
+    "edit_similarity": 0.4746268656716418,
+    "ast_similarity": 0.5135135135135135,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def allCellsDistOrder(self, rows: int, cols: int, rCenter: int, cCenter: int) -> List[List[int]]:\n        ans = []\n        for r in range(rows):\n            for c in range(cols):\n                ans.append([r, c])\n        dist = {}\n        for r in range(rows):\n            for c in range(cols):\n                dist[(r, c)] = abs(r - rCenter) + abs(c - cCenter)\n        sorted_ans = sorted(ans, key=lambda x: dist[x])\n        return sorted_ans",
+  "canonical_solution": "class Solution:\n    def allCellsDistOrder(\n        self, rows: int, cols: int, rCenter: int, cCenter: int\n    ) -> List[List[int]]:\n        q = deque([[rCenter, cCenter]])\n        vis = [[False] * cols for _ in range(rows)]\n        vis[rCenter][cCenter] = True\n        ans = []\n        while q:\n            for _ in range(len(q)):\n                p = q.popleft()\n                ans.append(p)\n                for a, b in pairwise((-1, 0, 1, 0, -1)):\n                    x, y = p[0] + a, p[1] + b\n                    if 0 <= x < rows and 0 <= y < cols and not vis[x][y]:\n                        vis[x][y] = True\n                        q.append([x, y])\n        return ans\n",
+  "is_python": true
+}

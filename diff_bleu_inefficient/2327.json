@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2327",
+  "metrics": {
+    "bleu_score": 0.4839219962242906,
+    "edit_similarity": 0.6155038759689923,
+    "ast_similarity": 0.7857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def peopleAwareOfSecret(self, n: int, delay: int, forget: int) -> int:\n        m = n * 1000  # Assuming a 1000 times larger array\n        d = [0] * m\n        cnt = [0] * m\n        for i in range(1, n + 1):\n            d[i] = 0\n            cnt[i] = 0\n        cnt[1] = 1\n        for i in range(1, n + 1):\n            if cnt[i]:\n                for j in range(i + 1, min(i + forget + 1, m)):\n                    d[j] += cnt[i]\n                for j in range(i + delay + 1, min(i + forget + 1, m)):\n                    cnt[j] += cnt[i]\n        mod = 10**9 + 7\n        res = 0\n        for i in range(1, n + 1):\n            res = (res + d[i]) % mod\n        return res",
+  "canonical_solution": "class Solution:\n    def peopleAwareOfSecret(self, n: int, delay: int, forget: int) -> int:\n        m = (n << 1) + 10\n        d = [0] * m\n        cnt = [0] * m\n        cnt[1] = 1\n        for i in range(1, n + 1):\n            if cnt[i]:\n                d[i] += cnt[i]\n                d[i + forget] -= cnt[i]\n                nxt = i + delay\n                while nxt < i + forget:\n                    cnt[nxt] += cnt[i]\n                    nxt += 1\n        mod = 10**9 + 7\n        return sum(d[: n + 1]) % mod\n",
+  "is_python": true
+}

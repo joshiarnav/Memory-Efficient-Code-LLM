@@ -1,0 +1,12 @@
+{
+  "problem_idx": "781",
+  "metrics": {
+    "bleu_score": 0.47586903137845843,
+    "edit_similarity": 0.34762979683972917,
+    "ast_similarity": 0.7037037037037037,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numRabbits(self, answers: List[int]) -> int:\n        counter = {}\n        for answer in answers:\n            if answer in counter:\n                counter[answer] += 1\n            else:\n                counter[answer] = 1\n\n        total_rabbits = 0\n        for k, v in counter.items():\n            required_pairs = (k + 1) * math.ceil(v / (k + 1))\n            total_rabbits += required_pairs\n\n        return total_rabbits",
+  "canonical_solution": "class Solution:\n    def numRabbits(self, answers: List[int]) -> int:\n        counter = Counter(answers)\n        return sum([math.ceil(v / (k + 1)) * (k + 1) for k, v in counter.items()])\n",
+  "is_python": true
+}

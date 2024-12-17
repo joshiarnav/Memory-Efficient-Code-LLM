@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1720",
+  "metrics": {
+    "bleu_score": 0.42329789296419623,
+    "edit_similarity": 0.3415559772296015,
+    "ast_similarity": 0.84,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def decode(self, encoded: List[int], first: int) -> List[int]:\n        result = []\n        for i in range(1000001):\n            if encoded:\n                new_result = []\n                new_result.append(first)\n                for e in encoded:\n                    new_result.append(new_result[-1] ^ e)\n                if new_result == encoded:\n                    result = new_result\n                    break\n            else:\n                result = [first]\n                break\n        return result",
+  "canonical_solution": "class Solution:\n    def decode(self, encoded: List[int], first: int) -> List[int]:\n        ans = [first]\n        for e in encoded:\n            ans.append(ans[-1] ^ e)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1196",
+  "metrics": {
+    "bleu_score": 0.37560966702615556,
+    "edit_similarity": 0.6755952380952381,
+    "ast_similarity": 0.6451612903225806,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxNumberOfApples(self, weight: List[int]) -> int:\n        weight.sort()\n        baskets = [0]*5001\n        for i, x in enumerate(weight):\n            for j in range(5001):\n                if j + x <= 5000 and baskets[j] == 0:\n                    baskets[j+x] = 1\n        return sum(1 for x in baskets if x == 1)",
+  "canonical_solution": "class Solution:\n    def maxNumberOfApples(self, weight: List[int]) -> int:\n        weight.sort()\n        s = 0\n        for i, x in enumerate(weight):\n            s += x\n            if s > 5000:\n                return i\n        return len(weight)\n",
+  "is_python": true
+}

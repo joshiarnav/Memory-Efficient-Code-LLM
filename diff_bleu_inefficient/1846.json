@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1846",
+  "metrics": {
+    "bleu_score": 0.4254557230384826,
+    "edit_similarity": 0.43449419568822556,
+    "ast_similarity": 0.76,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr_copy = arr[:]  # create a copy of the array\n        arr_copy.sort()  # sort the copy\n        arr_copy[0] = 1  # set the first element to 1\n        max_val = max(arr_copy)  # find the max value in the sorted copy\n        result = []  # create an empty list to store the result\n        for val in arr_copy:\n            if val > max_val:  # if the current value is greater than max_val\n                result.append(val)  # append it to the result list\n                max_val = val  # update max_val\n        for i in range(len(arr)):  # iterate over the original array\n            if arr[i] not in result:  # if the current value is not in the result list\n                d = max(0, arr_copy[i] - arr_copy[i - 1] - 1)  # calculate the decrement\n                arr[i] -= d  # decrement the value\n                result.append(arr[i])  # append the decremented value to the result list\n        return max(result)  # return the max value in the result list",
+  "canonical_solution": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr.sort()\n        arr[0] = 1\n        for i in range(1, len(arr)):\n            d = max(0, arr[i] - arr[i - 1] - 1)\n            arr[i] -= d\n        return max(arr)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1763",
+  "metrics": {
+    "bleu_score": 0.340073488340871,
+    "edit_similarity": 0.42307692307692313,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestNiceSubstring(self, s: str) -> str:\n        n = len(s)\n        visited = set()\n        max_len = 0\n        max_substring = \"\"\n        for i in range(n):\n            for j in range(i, n):\n                substring = s[i:j+1]\n                unique_chars = set(substring)\n                is_nice = True\n                for char in unique_chars:\n                    if char.lower() in substring and char.upper() not in substring:\n                        is_nice = False\n                        break\n                    if char.lower() not in substring and char.upper() in substring:\n                        is_nice = False\n                        break\n                if is_nice and len(substring) > max_len:\n                    max_len = len(substring)\n                    max_substring = substring\n        return max_substring",
+  "canonical_solution": "class Solution:\n    def longestNiceSubstring(self, s: str) -> str:\n        n = len(s)\n        ans = ''\n        for i in range(n):\n            lower = upper = 0\n            for j in range(i, n):\n                if s[j].islower():\n                    lower |= 1 << (ord(s[j]) - ord('a'))\n                else:\n                    upper |= 1 << (ord(s[j]) - ord('A'))\n                if lower == upper and len(ans) < j - i + 1:\n                    ans = s[i : j + 1]\n        return ans\n",
+  "is_python": true
+}

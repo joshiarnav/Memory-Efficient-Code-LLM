@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2896",
+  "metrics": {
+    "bleu_score": 0.2653093659013833,
+    "edit_similarity": 0.504885993485342,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, s1: str, s2: str, x: int) -> int:\n        n = len(s1)\n        ans = float('inf')\n        for i in range(n):\n            s1_ = s1[:i] + '1' * (n - i) + s1[i:]\n            for j in range(n):\n                s2_ = s2[:j] + '1' * (n - j) + s2[j:]\n                ops = 0\n                for k in range(n):\n                    if s1_[k] != s2_[k]:\n                        if k < n - 1:\n                            ops += 1\n                        else:\n                            ops += x\n                ans = min(ans, ops)\n        return -1 if ans == float('inf') else ans",
+  "canonical_solution": "class Solution:\n    def minOperations(self, s1: str, s2: str, x: int) -> int:\n        @cache\n        def dfs(i: int, j: int) -> int:\n            if i > j:\n                return 0\n            a = dfs(i + 1, j - 1) + x\n            b = dfs(i + 2, j) + idx[i + 1] - idx[i]\n            c = dfs(i, j - 2) + idx[j] - idx[j - 1]\n            return min(a, b, c)\n\n        n = len(s1)\n        idx = [i for i in range(n) if s1[i] != s2[i]]\n        m = len(idx)\n        if m & 1:\n            return -1\n        return dfs(0, m - 1)\n",
+  "is_python": true
+}

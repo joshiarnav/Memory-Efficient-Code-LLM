@@ -1,0 +1,12 @@
+{
+  "problem_idx": "909",
+  "metrics": {
+    "bleu_score": 0.48795621741902656,
+    "edit_similarity": 0.6867686768676868,
+    "ast_similarity": 0.9714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def snakesAndLadders(self, board: List[List[int]]) -> int:\n        def get(x):\n            i, j = (x - 1) // n, (x - 1) % n\n            if i & 1:\n                j = n - 1 - j\n            r = n - 1 - i\n            c = j\n            if r % 2 == 0:\n                r += 1\n            return r, c\n\n        n = len(board)\n        bfs = deque([(1, 0)])\n        visited = set([1])\n        while bfs:\n            for _ in range(len(bfs)):\n                curr, steps = bfs.popleft()\n                if curr == n * n:\n                    return steps\n                for next in range(curr + 1, min(curr + 7, n * n + 1)):\n                    r, c = get(next)\n                    if board[r][c] != -1:\n                        next = board[r][c]\n                    if next not in visited:\n                        bfs.append((next, steps + 1))\n                        visited.add(next)\n            for _ in range(len(bfs)):\n                r, c = get(bfs[0][0])\n                board[r][c] = -1\n            for _ in range(len(bfs)):\n                bfs[0] = (bfs[0][0], bfs[0][1] + 1)\n        return -1",
+  "canonical_solution": "class Solution:\n    def snakesAndLadders(self, board: List[List[int]]) -> int:\n        def get(x):\n            i, j = (x - 1) // n, (x - 1) % n\n            if i & 1:\n                j = n - 1 - j\n            return n - 1 - i, j\n\n        n = len(board)\n        q = deque([1])\n        vis = {1}\n        ans = 0\n        while q:\n            for _ in range(len(q)):\n                curr = q.popleft()\n                if curr == n * n:\n                    return ans\n                for next in range(curr + 1, min(curr + 7, n * n + 1)):\n                    i, j = get(next)\n                    if board[i][j] != -1:\n                        next = board[i][j]\n                    if next not in vis:\n                        q.append(next)\n                        vis.add(next)\n            ans += 1\n        return -1\n",
+  "is_python": true
+}

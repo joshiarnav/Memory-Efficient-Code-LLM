@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1954",
+  "metrics": {
+    "bleu_score": 0.24938238455365994,
+    "edit_similarity": 0.5198135198135199,
+    "ast_similarity": 0.5862068965517241,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumPerimeter(self, neededApples: int) -> int:\n        plot_side_lengths = []\n        for i in range(1, 100000):\n            total_apples = 0\n            for x in range(-i, i+1):\n                for y in range(-i, i+1):\n                    total_apples += abs(x) + abs(y)\n            if total_apples >= neededApples:\n                plot_side_lengths.append(i)\n        return min(plot_side_lengths) * 8",
+  "canonical_solution": "class Solution:\n    def minimumPerimeter(self, neededApples: int) -> int:\n        l, r = 1, 100000\n        while l < r:\n            mid = (l + r) >> 1\n            if 2 * mid * (mid + 1) * (2 * mid + 1) >= neededApples:\n                r = mid\n            else:\n                l = mid + 1\n        return l * 8\n",
+  "is_python": true
+}

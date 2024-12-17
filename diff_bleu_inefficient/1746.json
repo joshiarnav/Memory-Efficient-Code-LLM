@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1746",
+  "metrics": {
+    "bleu_score": 0.11317549165381907,
+    "edit_similarity": 0.3503267973856209,
+    "ast_similarity": 0.76,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        # Create a list to store the intermediate results\n        dp = [[-float('inf')] * 2 for _ in range(len(nums))]\n        \n        # Initialize the first element\n        dp[0][0] = nums[0]\n        dp[0][1] = nums[0] ** 2\n        \n        # Initialize the maximum sum\n        max_sum = -float('inf')\n        \n        # Iterate through the array\n        for i in range(1, len(nums)):\n            # Create a new list to store the current intermediate results\n            new_dp = [[-float('inf')] * 2 for _ in range(i + 1)]\n            \n            # Iterate through the previous intermediate results\n            for j in range(i):\n                # Calculate the maximum sum without operation\n                no_op = max(dp[j][0], 0) + nums[i]\n                # Calculate the maximum sum with operation\n                op = max(max(dp[j][0], 0) + nums[i] ** 2, dp[j][1] + nums[i])\n                # Update the current intermediate results\n                new_dp[j][0] = max(new_dp[j][0], no_op)\n                new_dp[j][1] = max(new_dp[j][1], op)\n            \n            # Update the maximum sum\n            max_sum = max(max_sum, new_dp[i-1][0], new_dp[i-1][1])\n            \n            # Update the current intermediate results\n            dp[i][0] = new_dp[i-1][0]\n            dp[i][1] = new_dp[i-1][1]\n        \n        return max_sum",
+  "canonical_solution": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        f = g = 0\n        ans = -inf\n        for x in nums:\n            ff = max(f, 0) + x\n            gg = max(max(f, 0) + x * x, g + x)\n            f, g = ff, gg\n            ans = max(ans, f, g)\n        return ans\n",
+  "is_python": true
+}

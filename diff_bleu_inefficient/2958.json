@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2958",
+  "metrics": {
+    "bleu_score": 0.33667342471799555,
+    "edit_similarity": 0.4185692541856926,
+    "ast_similarity": 0.7407407407407407,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxSubarrayLength(self, nums: List[int], k: int) -> int:\n        freq = {}\n        ans = 0\n        for i, x in enumerate(nums):\n            freq[x] = freq.get(x, 0) + 1\n            for y in freq:\n                if freq[y] > k:\n                    freq = {}\n                    for j in range(i+1):\n                        freq[nums[j]] = freq.get(nums[j], 0) + 1\n                    break\n            temp_freq = {}\n            for y in freq:\n                temp_freq[y] = freq[y]\n                if temp_freq[y] > k:\n                    break\n            ans = max(ans, i - max(temp_freq.keys(), default=0) + 1)\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxSubarrayLength(self, nums: List[int], k: int) -> int:\n        cnt = defaultdict(int)\n        ans = j = 0\n        for i, x in enumerate(nums):\n            cnt[x] += 1\n            while cnt[x] > k:\n                cnt[nums[j]] -= 1\n                j += 1\n            ans = max(ans, i - j + 1)\n        return ans\n",
+  "is_python": true
+}

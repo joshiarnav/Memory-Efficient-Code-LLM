@@ -1,0 +1,12 @@
+{
+  "problem_idx": "329",
+  "metrics": {
+    "bleu_score": 0.3451622078157703,
+    "edit_similarity": 0.35499515033947626,
+    "ast_similarity": 0.7941176470588235,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:\n        m, n = len(matrix), len(matrix[0])\n        memo = [[{} for _ in range(n)] for _ in range(m)]\n        result = 0\n\n        for i in range(m):\n            for j in range(n):\n                visited = set()\n                paths = self.dfs(i, j, matrix, memo, visited)\n                result = max(result, len(paths))\n\n        return result\n\n    def dfs(self, i: int, j: int, matrix: List[List[int]], memo: List[List[Dict[int, int]]], visited: Set[Tuple[int, int]]) -> List[int]:\n        if (i, j) in visited:\n            return []\n\n        visited.add((i, j))\n        paths = []\n\n        for a, b in [(-1, 0), (0, -1), (1, 0), (0, 1)]:\n            x, y = i + a, j + b\n            if 0 <= x < len(matrix) and 0 <= y < len(matrix[0]) and matrix[x][y] > matrix[i][j]:\n                paths.extend(self.dfs(x, y, matrix, memo, visited))\n\n        paths.append(matrix[i][j])\n        memo[i][j] = paths\n        visited.remove((i, j))\n        return paths",
+  "canonical_solution": "class Solution:\n    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:\n        @cache\n        def dfs(i: int, j: int) -> int:\n            ans = 0\n            for a, b in pairwise((-1, 0, 1, 0, -1)):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:\n                    ans = max(ans, dfs(x, y))\n            return ans + 1\n\n        m, n = len(matrix), len(matrix[0])\n        return max(dfs(i, j) for i in range(m) for j in range(n))\n",
+  "is_python": true
+}

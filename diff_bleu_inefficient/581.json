@@ -1,0 +1,12 @@
+{
+  "problem_idx": "581",
+  "metrics": {
+    "bleu_score": 0.2260761958946396,
+    "edit_similarity": 0.4245939675174014,
+    "ast_similarity": 0.5172413793103449,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findUnsortedSubarray(self, nums: List[int]) -> int:\n        n = len(nums)\n        unsorted = [nums[i] for i in range(n)]\n        sorted_num = sorted(unsorted)\n        is_unsorted = [i for i in range(n) if unsorted[i] != sorted_num[i]]\n        return len(is_unsorted) if is_unsorted else 0",
+  "canonical_solution": "class Solution:\n    def findUnsortedSubarray(self, nums: List[int]) -> int:\n        mi, mx = inf, -inf\n        l = r = -1\n        n = len(nums)\n        for i, x in enumerate(nums):\n            if mx > x:\n                r = i\n            else:\n                mx = x\n            if mi < nums[n - i - 1]:\n                l = n - i - 1\n            else:\n                mi = nums[n - i - 1]\n        return 0 if r == -1 else r - l + 1\n",
+  "is_python": true
+}

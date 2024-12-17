@@ -1,0 +1,12 @@
+{
+  "problem_idx": "958",
+  "metrics": {
+    "bleu_score": 0.4845559382844952,
+    "edit_similarity": 0.5178268251273345,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isCompleteTree(self, root: TreeNode) -> bool:\n        q = deque([root])\n        level = 0\n        nodes = []\n        while q:\n            level += 1\n            nodes_in_level = []\n            for _ in range(2**level):\n                node = q.popleft()\n                if node is None:\n                    break\n                nodes_in_level.append(node)\n                q.append(node.left)\n                q.append(node.right)\n            nodes.extend(nodes_in_level)\n        return all(node.left is None and node.right is None for node in nodes[len(nodes)//2:])",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def isCompleteTree(self, root: TreeNode) -> bool:\n        q = deque([root])\n        while q:\n            node = q.popleft()\n            if node is None:\n                break\n            q.append(node.left)\n            q.append(node.right)\n        return all(node is None for node in q)\n",
+  "is_python": true
+}

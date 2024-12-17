@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1874",
+  "metrics": {
+    "bleu_score": 0.3122506707344297,
+    "edit_similarity": 0.4733333333333334,
+    "ast_similarity": 0.7307692307692307,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minProductSum(self, nums1, nums2):\n        n = len(nums1)\n        nums2_copy = nums2[:]  # Create a deep copy of nums2 to avoid modifying the original list\n        nums1_copy = nums1[:]  # Create a deep copy of nums1 to avoid modifying the original list\n        sorted_nums2 = [x for x in nums2_copy]  # Create a new list and populate it with the elements of nums2_copy\n        sorted_nums2.sort()  # Sort the new list\n        sorted_nums1 = [x for x in nums1_copy]  # Create a new list and populate it with the elements of nums1_copy\n        sorted_nums1.sort()  # Sort the new list\n        result = []\n        for i in range(n):\n            result.append(sorted_nums1[i] * sorted_nums2[n - i - 1])  # Multiply corresponding elements and append the result\n        return sum(result)  # Return the sum of the results",
+  "canonical_solution": "class Solution:\n    def minProductSum(self, nums1: List[int], nums2: List[int]) -> int:\n        nums1.sort()\n        nums2.sort()\n        n, res = len(nums1), 0\n        for i in range(n):\n            res += nums1[i] * nums2[n - i - 1]\n        return res\n",
+  "is_python": true
+}

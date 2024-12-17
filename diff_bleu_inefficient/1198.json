@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1198",
+  "metrics": {
+    "bleu_score": 0.37719702849587516,
+    "edit_similarity": 0.6260162601626016,
+    "ast_similarity": 0.7916666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def smallestCommonElement(self, mat: List[List[int]]) -> int:\n        for i in range(len(mat[0])):\n            temp = set()\n            for row in mat:\n                temp.add(row[i])\n            if len(temp) == len(mat):\n                for row in mat:\n                    if row[i] in temp:\n                        return row[i]\n\n        return -1",
+  "canonical_solution": "class Solution:\n    def smallestCommonElement(self, mat: List[List[int]]) -> int:\n        cnt = Counter()\n        for row in mat:\n            for x in row:\n                cnt[x] += 1\n                if cnt[x] == len(mat):\n                    return x\n        return -1\n",
+  "is_python": true
+}

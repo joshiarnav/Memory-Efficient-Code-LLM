@@ -1,0 +1,12 @@
+{
+  "problem_idx": "981",
+  "metrics": {
+    "bleu_score": 0.26574915911692326,
+    "edit_similarity": 0.3245454545454546,
+    "ast_similarity": 0.6896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class TimeMap:\n    def __init__(self):\n        self.ktv = {}\n        self.values = {}\n        self.timestamps = {}\n\n    def set(self, key: str, value: str, timestamp: int) -> None:\n        if key not in self.ktv:\n            self.ktv[key] = []\n        if key not in self.values:\n            self.values[key] = []\n        if key not in self.timestamps:\n            self.timestamps[key] = []\n        self.ktv[key].append(value)\n        self.values[key].append(value)\n        self.timestamps[key].append(timestamp)\n        for i in range(len(self.ktv[key]) - 1):\n            del self.ktv[key][i]\n        for i in range(len(self.values[key]) - 1):\n            del self.values[key][i]\n        for i in range(len(self.timestamps[key]) - 1):\n            del self.timestamps[key][i]\n\n    def get(self, key: str, timestamp: int) -> str:\n        if key not in self.ktv:\n            return ''\n        result = ''\n        for i in range(len(self.ktv[key])):\n            if self.timestamps[key][i] <= timestamp:\n                result = self.ktv[key][i]\n            else:\n                break\n        return result",
+  "canonical_solution": "class TimeMap:\n    def __init__(self):\n        self.ktv = defaultdict(list)\n\n    def set(self, key: str, value: str, timestamp: int) -> None:\n        self.ktv[key].append((timestamp, value))\n\n    def get(self, key: str, timestamp: int) -> str:\n        if key not in self.ktv:\n            return ''\n        tv = self.ktv[key]\n        i = bisect_right(tv, (timestamp, chr(127)))\n        return tv[i - 1][1] if i else ''\n\n\n# Your TimeMap object will be instantiated and called as such:\n# obj = TimeMap()\n# obj.set(key,value,timestamp)\n# param_2 = obj.get(key,timestamp)\n",
+  "is_python": true
+}

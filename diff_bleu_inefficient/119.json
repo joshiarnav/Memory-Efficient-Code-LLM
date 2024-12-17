@@ -1,0 +1,12 @@
+{
+  "problem_idx": "119",
+  "metrics": {
+    "bleu_score": 0.705901217573627,
+    "edit_similarity": 0.8165467625899281,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getRow(self, rowIndex: int) -> List[int]:\n        f = [[1] * (rowIndex + 1) for _ in range(rowIndex + 1)]\n        for i in range(2, rowIndex + 1):\n            for j in range(i - 1, 0, -1):\n                f[i][j] += f[i-1][j-1]\n        return f[rowIndex]",
+  "canonical_solution": "class Solution:\n    def getRow(self, rowIndex: int) -> List[int]:\n        f = [1] * (rowIndex + 1)\n        for i in range(2, rowIndex + 1):\n            for j in range(i - 1, 0, -1):\n                f[j] += f[j - 1]\n        return f\n",
+  "is_python": true
+}

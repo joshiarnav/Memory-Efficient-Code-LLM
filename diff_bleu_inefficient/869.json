@@ -1,0 +1,12 @@
+{
+  "problem_idx": "869",
+  "metrics": {
+    "bleu_score": 0.4227497599557956,
+    "edit_similarity": 0.6062176165803108,
+    "ast_similarity": 0.7272727272727273,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reorderedPowerOf2(self, n: int) -> bool:\n        def convert(n):\n            digits = list(str(n))\n            cnt = {}\n            for digit in digits:\n                if digit in cnt:\n                    cnt[digit] += 1\n                else:\n                    cnt[digit] = 1\n            return cnt\n\n        i, s = 1, convert(n)\n        while i <= 10**9:\n            temp = convert(i)\n            if temp['0'] == 0 and len(temp) == len(s) and all(temp[key] == s[key] for key in temp):\n                return True\n            i <<= 1\n        return False",
+  "canonical_solution": "class Solution:\n    def reorderedPowerOf2(self, n: int) -> bool:\n        def convert(n):\n            cnt = [0] * 10\n            while n:\n                n, v = divmod(n, 10)\n                cnt[v] += 1\n            return cnt\n\n        i, s = 1, convert(n)\n        while i <= 10**9:\n            if convert(i) == s:\n                return True\n            i <<= 1\n        return False\n",
+  "is_python": true
+}

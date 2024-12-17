@@ -1,0 +1,12 @@
+{
+  "problem_idx": "455",
+  "metrics": {
+    "bleu_score": 0.42634360089147355,
+    "edit_similarity": 0.5719626168224299,
+    "ast_similarity": 0.8928571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findContentChildren(self, g: List[int], s: List[int]) -> int:\n        g_copy = [x for x in g]\n        s_copy = [y for y in s]\n        len_g = len(g_copy)\n        len_s = len(s_copy)\n        \n        g_copy.sort()\n        s_copy.sort()\n        \n        j = 0\n        for i in range(len_g):\n            while j < len_s and s_copy[j] < g_copy[i]:\n                s_copy.append(s_copy[j])\n                s_copy.sort()\n                j += 1\n            if j >= len_s:\n                return i\n            j += 1\n        \n        return len_g",
+  "canonical_solution": "class Solution:\n    def findContentChildren(self, g: List[int], s: List[int]) -> int:\n        g.sort()\n        s.sort()\n        j = 0\n        for i, x in enumerate(g):\n            while j < len(s) and s[j] < g[i]:\n                j += 1\n            if j >= len(s):\n                return i\n            j += 1\n        return len(g)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1064",
+  "metrics": {
+    "bleu_score": 0.27836021685224593,
+    "edit_similarity": 0.5,
+    "ast_similarity": 0.625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def fixedPoint(self, arr: List[int]) -> int:\n        # Create a dictionary to store all elements and their indices\n        num_indices = {}\n        for i, num in enumerate(arr):\n            num_indices[num] = i\n\n        # Create a list to store all indices where arr[i] == i\n        indices = []\n        for num, index in num_indices.items():\n            if index == num:\n                indices.append(index)\n\n        # Return the smallest index if it exists, otherwise return -1\n        return min(indices) if indices else -1",
+  "canonical_solution": "class Solution:\n    def fixedPoint(self, arr: List[int]) -> int:\n        left, right = 0, len(arr) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if arr[mid] >= mid:\n                right = mid\n            else:\n                left = mid + 1\n        return left if arr[left] == left else -1\n",
+  "is_python": true
+}

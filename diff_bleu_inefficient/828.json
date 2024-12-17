@@ -1,0 +1,12 @@
+{
+  "problem_idx": "828",
+  "metrics": {
+    "bleu_score": 0.2373964998557181,
+    "edit_similarity": 0.24696645253390437,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import sys\n\nclass Solution:\n    def uniqueLetterString(self, s: str) -> int:\n        d = {c: [] for c in set(s)}\n        for i, c in enumerate(s):\n            d[c].append(i)\n        ans = 0\n        for v in d.values():\n            v = [-1] + v + [len(s)] + [sys.maxsize]\n            v_copy = v.copy()\n            for i in range(1, len(v) - 1):\n                v_copy = v_copy[1:] + v_copy[:1]\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                v_copy = v_copy[1:] + v_copy[:1]\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n        return ans",
+  "canonical_solution": "class Solution:\n    def uniqueLetterString(self, s: str) -> int:\n        d = defaultdict(list)\n        for i, c in enumerate(s):\n            d[c].append(i)\n        ans = 0\n        for v in d.values():\n            v = [-1] + v + [len(s)]\n            for i in range(1, len(v) - 1):\n                ans += (v[i] - v[i - 1]) * (v[i + 1] - v[i])\n        return ans\n",
+  "is_python": true
+}

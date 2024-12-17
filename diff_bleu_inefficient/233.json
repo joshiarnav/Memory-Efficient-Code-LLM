@@ -1,0 +1,12 @@
+{
+  "problem_idx": "233",
+  "metrics": {
+    "bleu_score": 0.1534147604039535,
+    "edit_similarity": 0.3321678321678322,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countDigitOne(self, n: int) -> int:\n        if n == 0:\n            return 0\n\n        max_digits = self.get_max_digits(n)\n        result = []\n        for i in range(max_digits + 1):\n            result.append([0] * i)\n\n        self.fill_result(result, n)\n        return sum(sum(row) for row in result)\n\n    def get_max_digits(self, n: int) -> int:\n        count = 0\n        while n:\n            n //= 10\n            count += 1\n        return count\n\n    def fill_result(self, result, n: int):\n        for i in range(len(result)):\n            row = result[i]\n            for j in range(len(row)):\n                if i == 0 and j == 0:\n                    row[j] = 1\n                else:\n                    row[j] = self.count_digit_1(n)\n                    n -= 1\n                if n == 0:\n                    break\n                if n % 10 == 1:\n                    row[j] += 1\n                    n -= 1\n                n //= 10\n            if n == 0:\n                break\n\n    def count_digit_1(self, n: int) -> int:\n        count = 0\n        while n:\n            count += n % 10\n            n //= 10\n        return count",
+  "canonical_solution": "class Solution:\n    def countDigitOne(self, n: int) -> int:\n        @cache\n        def dfs(pos, cnt, limit):\n            if pos <= 0:\n                return cnt\n            up = a[pos] if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                ans += dfs(pos - 1, cnt + (i == 1), limit and i == up)\n            return ans\n\n        a = [0] * 12\n        l = 1\n        while n:\n            a[l] = n % 10\n            n //= 10\n            l += 1\n        return dfs(l, 0, True)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1296",
+  "metrics": {
+    "bleu_score": 0.2615288038333796,
+    "edit_similarity": 0.5400696864111498,
+    "ast_similarity": 0.7241379310344828,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isPossibleDivide(self, nums: List[int], k: int) -> bool:\n        n = len(nums)\n        nums_set = set(nums)\n        nums_copy = nums[:] * (n * k)\n        nums_copy.sort()\n        \n        i = 0\n        while i < len(nums_copy):\n            curr_set = set()\n            for j in range(i, i + k):\n                if nums_copy[j] in nums_set:\n                    curr_set.add(nums_copy[j])\n            if len(curr_set) != k:\n                return False\n            for num in curr_set:\n                nums_set.remove(num)\n            i += k\n        return True",
+  "canonical_solution": "class Solution:\n    def isPossibleDivide(self, nums: List[int], k: int) -> bool:\n        cnt = Counter(nums)\n        for v in sorted(nums):\n            if cnt[v]:\n                for x in range(v, v + k):\n                    if cnt[x] == 0:\n                        return False\n                    cnt[x] -= 1\n                    if cnt[x] == 0:\n                        cnt.pop(x)\n        return True\n",
+  "is_python": true
+}

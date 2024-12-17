@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1541",
+  "metrics": {
+    "bleu_score": 0.3009824390673209,
+    "edit_similarity": 0.5991902834008097,
+    "ast_similarity": 0.8064516129032258,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minInsertions(self, s: str) -> int:\n        res = []\n        for i, char in enumerate(s):\n            if char == '(':\n                res.append([i, char])\n        for i, char in enumerate(s):\n            if char == ')':\n                res.append([i, char])\n        ans = 0\n        for i in range(len(res)):\n            if res[i][1] == '(':\n                ans += 1\n            else:\n                if i + 1 < len(res) and res[i + 1][1] == ')':\n                    i += 1\n                else:\n                    ans += 1\n                if i - 1 >= 0 and res[i - 1][1] == '(':\n                    ans += 1\n                else:\n                    i -= 1\n        ans += (len(res) - len(s)) << 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def minInsertions(self, s: str) -> int:\n        ans = x = 0\n        i, n = 0, len(s)\n        while i < n:\n            if s[i] == '(':\n                x += 1\n            else:\n                if i < n - 1 and s[i + 1] == ')':\n                    i += 1\n                else:\n                    ans += 1\n                if x == 0:\n                    ans += 1\n                else:\n                    x -= 1\n            i += 1\n        ans += x << 1\n        return ans\n",
+  "is_python": true
+}

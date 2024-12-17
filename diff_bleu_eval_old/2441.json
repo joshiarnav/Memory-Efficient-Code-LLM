@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2441",
+  "description": "\nGiven an integer array `nums` that **does not contain** any zeros, find **the largest positive** integer `k` such that `-k` also exists in the array.\n\n\nReturn *the positive integer* `k`. If there is no such integer, return `-1`.\n\n\n\u00a0\n\n\n**Example 1:**\n\n\n\n```\n\n**Input:** nums = [-1,2,-3,3]\n**Output:** 3\n**Explanation:** 3 is the only valid k we can find in the array.\n\n```\n\n**Example 2:**\n\n\n\n```\n\n**Input:** nums = [-1,10,6,7,-7,1]\n**Output:** 7\n**Explanation:** Both 1 and 7 have their corresponding negative values in the array. 7 has a larger value.\n\n```\n\n**Example 3:**\n\n\n\n```\n\n**Input:** nums = [-10,8,6,7,-2,-3]\n**Output:** -1\n**Explanation:** There is no a single valid k, we return -1.\n\n```\n\n\u00a0\n\n\n**Constraints:**\n\n\n* `1 <= nums.length <= 1000`\n* `-1000 <= nums[i] <= 1000`\n* `nums[i] != 0`\n\n\n",
+  "inefficient_solution": "def findMaxK(nums):\n    num_dict = {}\n    for i in range(len(nums)):\n        num_dict[nums[i]] = i\n\n    max_k = -1\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] == -nums[j]:\n                max_k = max(max_k, abs(nums[i]))\n    return max_k",
+  "canonical_solution": "class Solution:\n    def findMaxK(self, nums: List[int]) -> int:\n        s = set(nums)\n        return max((x for x in s if -x in s), default=-1)\n",
+  "finetuned_model_solution": "class Solution:\n    def findMaxK(self, nums: List[int]) -> int:\n        cnt = Counter(nums)\n        ans = -1\n        for x in nums:\n            if -x in cnt and x * 2 <= sum(cnt):\n                ans = max(ans, abs(x))\n        return ans",
+  "raw_model_solution": "def findMaxK(nums):\n    \"\"\"\n    Find the largest positive integer k such that -k also exists in the array.\n\n    Args:\n        nums (list): A list of integers that does not contain any zeros.\n\n    Returns:\n        int: The largest positive integer k. If there is no such integer, return -1.\n    \"\"\"\n    num_set = set()\n    max_k = -1\n\n    # Populate the set with the absolute values of the numbers in the array\n    for num in nums:\n        num_set.add(abs(num))\n\n    # Iterate through the set to find the largest positive integer k\n    for num in num_set:\n        if -num in num_set:\n            max_k = max(max_k, num)\n\n    return max_k",
+  "finetuned_model_diff_bleu": 0.7462571826504258,
+  "raw_model_diff_bleu": 0.6007178012569417,
+  "is_python": true,
+  "diff_bleu_delta": 0.1455393813934841
+}

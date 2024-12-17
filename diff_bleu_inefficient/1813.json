@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1813",
+  "metrics": {
+    "bleu_score": 0.3821312845464379,
+    "edit_similarity": 0.5635245901639344,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:\n        words1 = sentence1.split()\n        words2 = sentence2.split()\n        if len(words1) < len(words2):\n            words1, words2 = words2, words1\n        similar = []\n        for i in range(len(words1)):\n            for j in range(len(words2)):\n                if words1[i] == words2[j]:\n                    similar.append((i, j))\n        return any(i + j >= len(words2) for i, j in similar)",
+  "canonical_solution": "class Solution:\n    def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:\n        words1, words2 = sentence1.split(), sentence2.split()\n        m, n = len(words1), len(words2)\n        if m < n:\n            words1, words2 = words2, words1\n            m, n = n, m\n        i = j = 0\n        while i < n and words1[i] == words2[i]:\n            i += 1\n        while j < n and words1[m - 1 - j] == words2[n - 1 - j]:\n            j += 1\n        return i + j >= n\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "91",
+  "metrics": {
+    "bleu_score": 0.2688242349896584,
+    "edit_similarity": 0.5368421052631579,
+    "ast_similarity": 0.7878787878787878,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numDecodings(self, s: str) -> int:\n        if len(s) < 1:\n            return 0\n        dp = [0] * (len(s) + 1)\n        dp[0] = 1\n        for i in range(len(s)):\n            if s[i] != \"0\":\n                dp[i + 1] += dp[i]\n            if i > 0 and int(s[i - 1:i + 1]) <= 26 and s[i - 1] != \"0\":\n                dp[i + 1] += dp[i - 1]\n        return dp[-1]",
+  "canonical_solution": "class Solution:\n    def numDecodings(self, s: str) -> int:\n        f, g = 0, 1\n        for i, c in enumerate(s, 1):\n            h = g if c != \"0\" else 0\n            if i > 1 and s[i - 2] != \"0\" and int(s[i - 2 : i]) <= 26:\n                h += f\n            f, g = g, h\n        return g\n",
+  "is_python": true
+}

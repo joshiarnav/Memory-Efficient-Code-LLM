@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1013",
+  "metrics": {
+    "bleu_score": 0.2598912530658824,
+    "edit_similarity": 0.42590673575129534,
+    "ast_similarity": 0.7058823529411765,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canThreePartsEqualSum(self, arr: List[int]) -> bool:\n        s = sum(arr)\n        if s % 3 != 0:\n            return False\n        sums = []\n        total = 0\n        for num in arr:\n            total += num\n            sums.append(total)\n        i = 0\n        while i < len(sums):\n            sums.append(sums[i])\n            i += 1\n        i = 0\n        while i < len(sums):\n            sums.append(sums[i])\n            i += 1\n        i = 0\n        while i < len(sums):\n            sums.append(sums[i])\n            i += 1\n        a = b = c = 0\n        i = 0\n        while i < len(sums):\n            if sums[i] == s // 3:\n                a += 1\n            i += 1\n        i = 0\n        while i < len(sums):\n            if sums[i] == 2 * s // 3:\n                b += 1\n            i += 1\n        i = 0\n        while i < len(sums):\n            if sums[i] == 3 * s // 3:\n                c += 1\n            i += 1\n        return a == b == c == 1",
+  "canonical_solution": "class Solution:\n    def canThreePartsEqualSum(self, arr: List[int]) -> bool:\n        s = sum(arr)\n        if s % 3 != 0:\n            return False\n        i, j = 0, len(arr) - 1\n        a = b = 0\n        while i < len(arr):\n            a += arr[i]\n            if a == s // 3:\n                break\n            i += 1\n        while ~j:\n            b += arr[j]\n            if b == s // 3:\n                break\n            j -= 1\n        return i < j - 1\n",
+  "is_python": true
+}

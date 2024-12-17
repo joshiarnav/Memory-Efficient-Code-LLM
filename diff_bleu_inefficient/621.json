@@ -1,0 +1,12 @@
+{
+  "problem_idx": "621",
+  "metrics": {
+    "bleu_score": 0.21674333656532596,
+    "edit_similarity": 0.24434389140271495,
+    "ast_similarity": 0.6333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def leastInterval(self, tasks: List[str], n: int) -> int:\n        # Create a dictionary to count the occurrence of each task\n        task_count = {}\n        for task in tasks:\n            if task not in task_count:\n                task_count[task] = 0\n            task_count[task] += 1\n        \n        # Create a list to store the count of each task\n        task_counts = [0] * len(task_count)\n        for key, value in task_count.items():\n            task_counts[value] += 1\n        \n        # Create a list to store the count of each task for each unit of time\n        time_units = [0] * (n + 1)\n        for i in range(len(task_counts)):\n            for j in range(i):\n                time_units[j] += task_counts[i]\n        \n        # Calculate the maximum number of idle units in a row\n        max_idle_units = max(time_units)\n        \n        # Calculate the number of tasks that can be done in max_idle_units units\n        done_tasks = 0\n        for i in range(n + 1):\n            done_tasks += time_units[i]\n        \n        # Calculate the total number of units needed\n        total_units = len(tasks)\n        if max_idle_units > 0:\n            total_units = max(len(tasks), (max_idle_units - 1) * (n + 1) + done_tasks)\n        else:\n            total_units = len(tasks)\n        \n        return total_units",
+  "canonical_solution": "class Solution:\n    def leastInterval(self, tasks: List[str], n: int) -> int:\n        cnt = Counter(tasks)\n        x = max(cnt.values())\n        s = sum(v == x for v in cnt.values())\n        return max(len(tasks), (x - 1) * (n + 1) + s)\n",
+  "is_python": true
+}

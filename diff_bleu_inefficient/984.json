@@ -1,0 +1,12 @@
+{
+  "problem_idx": "984",
+  "metrics": {
+    "bleu_score": 0.38974977914675624,
+    "edit_similarity": 0.6469740634005764,
+    "ast_similarity": 0.7241379310344828,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def strWithout3a3b(self, a: int, b: int) -> str:\n        ans = []\n        for _ in range(a + b + 100):\n            ans.append('')\n\n        for _ in range(a + b):\n            if a > b:\n                for _ in range(2):\n                    ans.append('a')\n                a -= 2\n                b -= 1\n            elif a < b:\n                for _ in range(2):\n                    ans.append('b')\n                a -= 1\n                b -= 2\n            else:\n                ans.append('a')\n                a -= 1\n                b -= 1\n\n        for _ in range(a):\n            ans.append('a')\n\n        for _ in range(b):\n            ans.append('b')\n\n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def strWithout3a3b(self, a: int, b: int) -> str:\n        ans = []\n        while a and b:\n            if a > b:\n                ans.append('aab')\n                a, b = a - 2, b - 1\n            elif a < b:\n                ans.append('bba')\n                a, b = a - 1, b - 2\n            else:\n                ans.append('ab')\n                a, b = a - 1, b - 1\n        if a:\n            ans.append('a' * a)\n        if b:\n            ans.append('b' * b)\n        return ''.join(ans)\n",
+  "is_python": true
+}

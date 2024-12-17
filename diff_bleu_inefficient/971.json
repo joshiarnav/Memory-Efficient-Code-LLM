@@ -1,0 +1,12 @@
+{
+  "problem_idx": "971",
+  "metrics": {
+    "bleu_score": 0.464553635311657,
+    "edit_similarity": 0.4731343283582089,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def flipMatchVoyage(self, root: Optional[TreeNode], voyage: List[int]) -> List[int]:\n        self.ans = []\n        self.i = 0\n        self.ok = True\n        self.voyage = voyage\n        self.dfs(root)\n        return self.ans if self.ok else [-1]\n\n    def dfs(self, root):\n        if root is None:\n            return\n        self.dfs(root.left)\n        if root.val != self.voyage[self.i]:\n            self.ok = False\n            return\n        self.i += 1\n        if root.right is not None and root.right.val != self.voyage[self.i]:\n            self.ans.append(root.val)\n            self.i += 1\n        self.dfs(root.right)\n        self.dfs(root.left)",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def flipMatchVoyage(self, root: Optional[TreeNode], voyage: List[int]) -> List[int]:\n        def dfs(root):\n            nonlocal i, ok\n            if root is None or not ok:\n                return\n            if root.val != voyage[i]:\n                ok = False\n                return\n            i += 1\n            if root.left is None or root.left.val == voyage[i]:\n                dfs(root.left)\n                dfs(root.right)\n            else:\n                ans.append(root.val)\n                dfs(root.right)\n                dfs(root.left)\n\n        ans = []\n        i = 0\n        ok = True\n        dfs(root)\n        return ans if ok else [-1]\n",
+  "is_python": true
+}

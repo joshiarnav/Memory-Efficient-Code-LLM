@@ -1,0 +1,12 @@
+{
+  "problem_idx": "857",
+  "metrics": {
+    "bleu_score": 0.2493719111176792,
+    "edit_similarity": 0.3191881918819188,
+    "ast_similarity": 0.7297297297297297,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from typing import List\n\nclass Solution:\n    def mincostToHireWorkers(\n        self, quality: List[int], wage: List[int], k: int\n    ) -> float:\n        import copy\n        import random\n        workers = []\n        for q, w in zip(quality, wage):\n            workers.append({\n                \"quality\": q,\n                \"wage\": w\n            })\n        random.shuffle(workers)\n        ans = float('inf')\n        for i in range(len(workers)):\n            for j in range(i + 1, len(workers)):\n                for k in range(j + 1, len(workers)):\n                    group = [workers[i], workers[j], workers[k]]\n                    group.sort(key=lambda x: x[\"wage\"] / x[\"quality\"])\n                    cost = 0\n                    for worker in group:\n                        if cost < worker[\"wage\"]:\n                            cost += worker[\"wage\"]\n                        else:\n                            cost += worker[\"wage\"] * worker[\"quality\"] / group[0][\"quality\"]\n                    if cost < ans and len(group) == k:\n                        ans = cost\n        return ans",
+  "canonical_solution": "class Solution:\n    def mincostToHireWorkers(\n        self, quality: List[int], wage: List[int], k: int\n    ) -> float:\n        t = sorted(zip(quality, wage), key=lambda x: x[1] / x[0])\n        ans, tot = inf, 0\n        h = []\n        for q, w in t:\n            tot += q\n            heappush(h, -q)\n            if len(h) == k:\n                ans = min(ans, w / q * tot)\n                tot += heappop(h)\n        return ans\n",
+  "is_python": true
+}

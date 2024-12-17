@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2871",
+  "metrics": {
+    "bleu_score": 0.3303109817996167,
+    "edit_similarity": 0.5388235294117647,
+    "ast_similarity": 0.8461538461538461,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxSubarrays(self, nums):\n        # Initialize a dictionary to store the score of each subarray\n        scores = {}\n        # Initialize a variable to store the maximum score\n        max_score = 0\n        # Initialize a variable to store the number of subarrays\n        num_subarrays = 0\n        # Initialize a variable to store the current score\n        current_score = -1\n        # Iterate over each number in the array\n        for num in nums:\n            # Calculate the current score by performing a bitwise AND operation\n            current_score = current_score & num\n            # If the current score is 0, reset it and increment the number of subarrays\n            if current_score == 0:\n                current_score = -1\n                num_subarrays += 1\n        # If there's only one subarray, return 1\n        if num_subarrays == 1:\n            return 1\n        # Otherwise, return the number of subarrays minus 1\n        else:\n            return num_subarrays - 1",
+  "canonical_solution": "class Solution:\n    def maxSubarrays(self, nums: List[int]) -> int:\n        score, ans = -1, 1\n        for num in nums:\n            score &= num\n            if score == 0:\n                score = -1\n                ans += 1\n        return 1 if ans == 1 else ans - 1\n",
+  "is_python": true
+}

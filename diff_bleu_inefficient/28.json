@@ -1,0 +1,12 @@
+{
+  "problem_idx": "28",
+  "metrics": {
+    "bleu_score": 0.5192949290461547,
+    "edit_similarity": 0.6010498687664042,
+    "ast_similarity": 0.7931034482758621,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def strStr(self, haystack: str, needle: str) -> int:\n        n, m = len(haystack), len(needle)\n        result = []\n        for i in range(n - m + 1):\n            check = []\n            for j in range(m):\n                check.append(haystack[i + j])\n            if check == needle:\n                result.append(i)\n        return -1 if not result else result[0]",
+  "canonical_solution": "class Solution:\n    def strStr(self, haystack: str, needle: str) -> int:\n        n, m = len(haystack), len(needle)\n        for i in range(n - m + 1):\n            if haystack[i : i + m] == needle:\n                return i\n        return -1\n",
+  "is_python": true
+}

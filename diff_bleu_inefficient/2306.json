@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2306",
+  "metrics": {
+    "bleu_score": 0.7550378086205045,
+    "edit_similarity": 0.7718865598027127,
+    "ast_similarity": 0.8928571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def distinctNames(self, ideas: List[str]) -> int:\n        s = set(ideas)\n        f = [[0 for _ in range(26 * 10**6)] for _ in range(26)]\n        for v in ideas:\n            i = ord(v[0]) - ord('a')\n            t = list(v)\n            for j in range(26):\n                t[0] = chr(ord('a') + j)\n                t_str = ''.join(t)\n                if t_str not in s:\n                    f[i][j] += 1\n        ans = 0\n        for v in ideas:\n            i = ord(v[0]) - ord('a')\n            t = list(v)\n            for j in range(26):\n                t[0] = chr(ord('a') + j)\n                t_str = ''.join(t)\n                if t_str not in s:\n                    for k in range(26 * 10**6):\n                        if f[k][i] > 0:\n                            ans += f[k][i]\n        return ans",
+  "canonical_solution": "class Solution:\n    def distinctNames(self, ideas: List[str]) -> int:\n        s = set(ideas)\n        f = [[0] * 26 for _ in range(26)]\n        for v in ideas:\n            i = ord(v[0]) - ord('a')\n            t = list(v)\n            for j in range(26):\n                t[0] = chr(ord('a') + j)\n                if ''.join(t) not in s:\n                    f[i][j] += 1\n        ans = 0\n        for v in ideas:\n            i = ord(v[0]) - ord('a')\n            t = list(v)\n            for j in range(26):\n                t[0] = chr(ord('a') + j)\n                if ''.join(t) not in s:\n                    ans += f[j][i]\n        return ans\n",
+  "is_python": true
+}

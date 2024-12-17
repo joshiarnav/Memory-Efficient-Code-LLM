@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2595",
+  "description": "\nYou are given a **positive** integer `n`.\n\n\nLet `even` denote the number of even indices in the binary representation of `n` (**0-indexed**) with value `1`.\n\n\nLet `odd` denote the number of odd indices in the binary representation of `n` (**0-indexed**) with value `1`.\n\n\nReturn *an integer array* `answer` *where* `answer = [even, odd]`.\n\n\n\u00a0\n\n\n**Example 1:**\n\n\n\n```\n\n**Input:** n = 17\n**Output:** [2,0]\n**Explanation:** The binary representation of 17 is 10001. \nIt contains 1 on the 0th and 4th indices. \nThere are 2 even and 0 odd indices.\n\n```\n\n**Example 2:**\n\n\n\n```\n\n**Input:** n = 2\n**Output:** [0,1]\n**Explanation:** The binary representation of 2 is 10.\nIt contains 1 on the 1st index. \nThere are 0 even and 1 odd indices.\n\n```\n\n\u00a0\n\n\n**Constraints:**\n\n\n* `1 <= n <= 1000`\n\n\n",
+  "inefficient_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        binary = bin(n)[2:]\n        even = []\n        odd = []\n        even_count = 0\n        odd_count = 0\n        for i, char in enumerate(binary):\n            if char == '1' and i % 2 == 0:\n                even.append(i)\n            elif char == '1' and i % 2 != 0:\n                odd.append(i)\n        for index in even:\n            even_count += 1\n        for index in odd:\n            odd_count += 1\n        return [even_count, odd_count]",
+  "canonical_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        mask = 0x5555\n        even = (n & mask).bit_count()\n        odd = (n & ~mask).bit_count()\n        return [even, odd]\n",
+  "finetuned_model_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        cnt = 0\n        ans = [0, 0]\n        while n:\n            n &= n << 1\n            cnt += 1\n            if n & 1:\n                ans[cnt & 1] += 1\n        return ans",
+  "raw_model_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        even_count = 0\n        odd_count = 0\n        while n:\n            bit = n & 1\n            n >>= 1\n            if bit:\n                even_count += n % 2 == 0\n                odd_count += not n % 2\n        return [even_count, odd_count]",
+  "finetuned_model_diff_bleu": 0.7368560295031619,
+  "raw_model_diff_bleu": 0.6557329064925661,
+  "is_python": true,
+  "diff_bleu_delta": 0.08112312301059577
+}

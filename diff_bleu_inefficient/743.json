@@ -1,0 +1,12 @@
+{
+  "problem_idx": "743",
+  "metrics": {
+    "bleu_score": 0.5653480769825427,
+    "edit_similarity": 0.6982097186700768,
+    "ast_similarity": 0.9375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:\n        INF = 0x3F3F\n        g = defaultdict(list)\n        for u, v, w in times:\n            g[u - 1] = [(v - 1, w)] + g[u - 1]\n        dist = [INF] * n\n        dist_array = [dist[:]]\n        for _ in range(n):\n            dist = [INF if i != k - 1 else 0] + dist\n            dist_array.append(dist[:])\n        q = [(0, k - 1)]\n        while q:\n            _, u = heappop(q)\n            for v, w in g[u]:\n                if dist_array[n - 1][v] > dist_array[n - len(q)][u] + w:\n                    dist_array[n - 1][v] = dist_array[n - len(q)][u] + w\n                    heappush(q, (dist_array[n - 1][v], v))\n        ans = max(dist_array[n - 1])\n        return -1 if ans == INF else ans",
+  "canonical_solution": "class Solution:\n    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:\n        INF = 0x3F3F\n        g = defaultdict(list)\n        for u, v, w in times:\n            g[u - 1].append((v - 1, w))\n        dist = [INF] * n\n        dist[k - 1] = 0\n        q = [(0, k - 1)]\n        while q:\n            _, u = heappop(q)\n            for v, w in g[u]:\n                if dist[v] > dist[u] + w:\n                    dist[v] = dist[u] + w\n                    heappush(q, (dist[v], v))\n        ans = max(dist)\n        return -1 if ans == INF else ans\n",
+  "is_python": true
+}

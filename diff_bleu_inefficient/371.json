@@ -1,0 +1,12 @@
+{
+  "problem_idx": "371",
+  "metrics": {
+    "bleu_score": 0.21378312071338304,
+    "edit_similarity": 0.27502876869965476,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getSum(self, a: int, b: int) -> int:\n        result_list = []\n        a, b = a & 0xFFFFFFFF, b & 0xFFFFFFFF\n        while b:\n            carry_dict = {\"shifted\": ((a & b) << 1), \"binary\": bin(a & b)}\n            a_list = list(bin(a))[2:]\n            b_list = list(bin(b))[2:]\n            a_binary = ''.join(a_list).zfill(32) + '0' * 32\n            b_binary = ''.join(b_list).zfill(32) + '0' * 32\n            carry = self.binary_to_int(carry_dict[\"shifted\"], 32)\n            a_int = self.binary_to_int(a_binary, 32)\n            b_int = self.binary_to_int(b_binary, 32)\n            a, b = a_int ^ b_int, carry\n            result_list.append(a)\n            result_list.append(b)\n        return result_list[-1] if result_list[-1] < 0x80000000 else ~result_list[-1]\n\n    def binary_to_int(self, binary_str, num_bits):\n        return int(binary_str, 2)",
+  "canonical_solution": "class Solution:\n    def getSum(self, a: int, b: int) -> int:\n        a, b = a & 0xFFFFFFFF, b & 0xFFFFFFFF\n        while b:\n            carry = ((a & b) << 1) & 0xFFFFFFFF\n            a, b = a ^ b, carry\n        return a if a < 0x80000000 else ~(a ^ 0xFFFFFFFF)\n",
+  "is_python": true
+}

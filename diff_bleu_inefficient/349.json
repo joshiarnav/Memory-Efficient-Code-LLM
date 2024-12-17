@@ -1,0 +1,12 @@
+{
+  "problem_idx": "349",
+  "metrics": {
+    "bleu_score": 0.17757041281924507,
+    "edit_similarity": 0.1649746192893401,
+    "ast_similarity": 0.3225806451612903,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Create a list of all possible integers in the range of nums1 and nums2\n        all_nums = [i for i in range(1001)]\n        \n        # Create a dictionary to store the count of each number in nums1 and nums2\n        nums1_dict = {}\n        for num in nums1:\n            if num in nums1_dict:\n                nums1_dict[num] += 1\n            else:\n                nums1_dict[num] = 1\n        \n        nums2_dict = {}\n        for num in nums2:\n            if num in nums2_dict:\n                nums2_dict[num] += 1\n            else:\n                nums2_dict[num] = 1\n        \n        # Initialize an empty list to store the intersection\n        intersection = []\n        \n        # Iterate over all possible integers\n        for num in all_nums:\n            # Check if the number exists in both dictionaries and its count is greater than 0\n            if num in nums1_dict and num in nums2_dict and nums1_dict[num] > 0 and nums2_dict[num] > 0:\n                # Add the number to the intersection list\n                intersection.append(num)\n                # Decrement the count of the number in both dictionaries\n                nums1_dict[num] -= 1\n                nums2_dict[num] -= 1\n        \n        # Return the intersection list\n        return intersection",
+  "canonical_solution": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        return list(set(nums1) & set(nums2))\n",
+  "is_python": true
+}

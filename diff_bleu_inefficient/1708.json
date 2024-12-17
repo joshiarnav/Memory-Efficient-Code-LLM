@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1708",
+  "metrics": {
+    "bleu_score": 0.22303424968144123,
+    "edit_similarity": 0.1958384332925337,
+    "ast_similarity": 0.6206896551724138,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        max_subarray = []\n        max_length = 0\n        for i in range(len(nums) - k + 1):\n            subarray = nums[i : i + k]\n            if len(subarray) > max_length:\n                max_length = len(subarray)\n                max_subarray = subarray[:]\n                max_subarray.sort(reverse=True)\n                max_subarray = [x for x in max_subarray if x in nums]\n        max_subarray.sort(reverse=True)\n        max_subarray = [x for x in max_subarray if x in nums]\n        for i in range(len(nums) - k + 1):\n            subarray = nums[i : i + k]\n            subarray.sort(reverse=True)\n            subarray = [x for x in subarray if x in nums]\n            if subarray == max_subarray:\n                return subarray",
+  "canonical_solution": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        i = nums.index(max(nums[: len(nums) - k + 1]))\n        return nums[i : i + k]\n",
+  "is_python": true
+}

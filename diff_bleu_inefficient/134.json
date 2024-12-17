@@ -1,0 +1,12 @@
+{
+  "problem_idx": "134",
+  "metrics": {
+    "bleu_score": 0.3243824037452397,
+    "edit_similarity": 0.46143437077131255,
+    "ast_similarity": 0.6470588235294118,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        gas_list = []\n        cost_list = []\n        for i in range(n):\n            gas_list.append(gas[i] * 1000)  # multiply by 1000 to increase memory usage\n            cost_list.append(cost[i] * 1000)  # multiply by 1000 to increase memory usage\n        gas_total = sum(gas_list)\n        cost_total = sum(cost_list)\n        if gas_total < cost_total:\n            return -1\n        start = 0\n        while start < n:\n            tank = 0\n            for i in range(start, n):\n                tank += gas_list[i] - cost_list[i]\n                if tank < 0:\n                    start = i + 1\n                    break\n            if tank >= 0:\n                return start\n            start += 1\n        return -1",
+  "canonical_solution": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        i = j = n - 1\n        cnt = s = 0\n        while cnt < n:\n            s += gas[j] - cost[j]\n            cnt += 1\n            j = (j + 1) % n\n            while s < 0 and cnt < n:\n                i -= 1\n                s += gas[i] - cost[i]\n                cnt += 1\n        return -1 if s < 0 else i\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2941",
+  "metrics": {
+    "bleu_score": 0.3514888927377986,
+    "edit_similarity": 0.558408215661104,
+    "ast_similarity": 0.7948717948717948,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import math\nfrom typing import List\n\nclass Solution:\n    def maxGcdSum(self, nums: List[int], k: int) -> int:\n        s = [0] * len(nums)\n        for i, v in enumerate(nums):\n            s[i] = sum(nums[:i+1])\n        f = [None] * len(nums)\n        for i in range(len(nums)):\n            g = []\n            for j in range(i):\n                x = f[j]\n                if x is not None:\n                    y = math.gcd(x[1], nums[i])\n                    if not g or g[-1][1] != y:\n                        g.append((j, y))\n            f[i] = (i, nums[i])\n            for j in range(i+1):\n                if f[j] is not None and j - f[j][0] + 1 >= k:\n                    ans = max(ans, s[i+1] - s[j] + (s[i+1] - s[j]) * f[j][1] // math.gcd(s[i+1] - s[j], f[j][1]))\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxGcdSum(self, nums: List[int], k: int) -> int:\n        s = list(accumulate(nums, initial=0))\n        f = []\n        ans = 0\n        for i, v in enumerate(nums):\n            g = []\n            for j, x in f:\n                y = gcd(x, v)\n                if not g or g[-1][1] != y:\n                    g.append((j, y))\n            f = g\n            f.append((i, v))\n            for j, x in f:\n                if i - j + 1 >= k:\n                    ans = max(ans, (s[i + 1] - s[j]) * x)\n        return ans\n",
+  "is_python": true
+}

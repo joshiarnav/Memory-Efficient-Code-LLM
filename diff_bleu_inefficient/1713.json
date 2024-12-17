@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1713",
+  "metrics": {
+    "bleu_score": 0.2636912883641727,
+    "edit_similarity": 0.35363457760314343,
+    "ast_similarity": 0.7297297297297297,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class InefficientSolution:\n    def minOperations(self, target: List[int], arr: List[int]) -> int:\n        d = {v: i for i, v in enumerate(target)}\n        nums = [[] for _ in range(len(d))]\n        for v in arr:\n            if v in d:\n                nums[d[v]].append(v)\n        \n        def lengthOfLIS(nums):\n            m = {}\n            ans = 0\n            for i, num in enumerate(nums, 1):\n                m[num] = i\n                t = 0\n                for j in range(1, i):\n                    if nums[j-1] < num:\n                        t = max(t, m[nums[j-1]] + 1)\n                ans = max(ans, t)\n            return ans\n        \n        ans = len(target)\n        for i, num in enumerate(nums):\n            ans -= lengthOfLIS([j for j in nums if j > num])\n        \n        return ans",
+  "canonical_solution": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    @staticmethod\n    def lowbit(x):\n        return x & -x\n\n    def update(self, x, val):\n        while x <= self.n:\n            self.c[x] = max(self.c[x], val)\n            x += BinaryIndexedTree.lowbit(x)\n\n    def query(self, x):\n        s = 0\n        while x:\n            s = max(s, self.c[x])\n            x -= BinaryIndexedTree.lowbit(x)\n        return s\n\n\nclass Solution:\n    def minOperations(self, target: List[int], arr: List[int]) -> int:\n        d = {v: i for i, v in enumerate(target)}\n        nums = [d[v] for v in arr if v in d]\n        return len(target) - self.lengthOfLIS(nums)\n\n    def lengthOfLIS(self, nums):\n        s = sorted(set(nums))\n        m = {v: i for i, v in enumerate(s, 1)}\n        tree = BinaryIndexedTree(len(m))\n        ans = 0\n        for v in nums:\n            x = m[v]\n            t = tree.query(x - 1) + 1\n            ans = max(ans, t)\n            tree.update(x, t)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2098",
+  "metrics": {
+    "bleu_score": 0.1634648525241051,
+    "edit_similarity": 0.423728813559322,
+    "ast_similarity": 0.8666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestEvenSum(self, nums, k):\n        nums = nums.copy()  # create a copy of the original list\n        nums2 = nums.copy()  # create another copy of the original list\n        nums3 = nums.copy()  # create yet another copy of the original list\n        nums.sort()\n        n = len(nums)\n        max_sum = sum(nums[-k:])\n        if max_sum % 2 == 0:\n            return max_sum\n        for i in range(n):\n            nums2[i] = nums[i] * 10  # multiply all elements by 10\n        for i in range(n):\n            nums3[i] = nums[i] + 1  # add 1 to all elements\n        def check_subsequence(nums, k):\n            subseq = []\n            for i in range(n - k + 1):\n                for j in range(k):\n                    subseq.append(nums[i + j])\n            subseq.sort()\n            return sum(subseq[-k:])\n        max_even_sum = -1\n        for i in range(n):\n            for j in range(k):\n                subseq = []\n                for x in range(i, n - k + 1):\n                    subseq.append(nums[x + j])\n                if len(subseq) == k:\n                    max_even_sum = max(max_even_sum, check_subsequence(subseq, k))\n        return max_even_sum",
+  "canonical_solution": "class Solution:\n    def largestEvenSum(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        ans = sum(nums[-k:])\n        if ans % 2 == 0:\n            return ans\n        n = len(nums)\n        mx1 = mx2 = -inf\n        for x in nums[: n - k]:\n            if x & 1:\n                mx1 = x\n            else:\n                mx2 = x\n        mi1 = mi2 = inf\n        for x in nums[-k:][::-1]:\n            if x & 1:\n                mi2 = x\n            else:\n                mi1 = x\n        ans = max(ans - mi1 + mx1, ans - mi2 + mx2, -1)\n        return -1 if ans % 2 else ans\n",
+  "is_python": true
+}

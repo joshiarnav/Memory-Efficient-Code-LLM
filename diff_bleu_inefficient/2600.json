@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2600",
+  "metrics": {
+    "bleu_score": 0.34566318850755745,
+    "edit_similarity": 0.551219512195122,
+    "ast_similarity": 0.3333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kItemsWithMaximumSum(\n        self, numOnes: int, numZeros: int, numNegOnes: int, k: int\n    ) -> int:\n        # create a list to store all the items\n        items = [1] * numOnes + [0] * numZeros + [-1] * numNegOnes\n        \n        # create a list to store all possible sums\n        sums = []\n        \n        # generate all possible combinations of k items\n        from itertools import combinations\n        for combination in combinations(items, k):\n            # calculate the sum of the current combination\n            current_sum = sum(combination)\n            \n            # add the current sum to the list of sums\n            sums.append(current_sum)\n        \n        # return the maximum sum\n        return max(sums)",
+  "canonical_solution": "class Solution:\n    def kItemsWithMaximumSum(\n        self, numOnes: int, numZeros: int, numNegOnes: int, k: int\n    ) -> int:\n        if numOnes >= k:\n            return k\n        if numZeros >= k - numOnes:\n            return numOnes\n        return numOnes - (k - numOnes - numZeros)\n",
+  "is_python": true
+}

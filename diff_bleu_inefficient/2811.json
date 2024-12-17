@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2811",
+  "metrics": {
+    "bleu_score": 0.47371324936340037,
+    "edit_similarity": 0.5807327001356852,
+    "ast_similarity": 0.8275862068965517,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canSplitArray(self, nums: List[int], m: int) -> bool:\n        def dfs(i: int, j: int, memo: dict) -> bool:\n            if (i, j) in memo:\n                return memo[(i, j)]\n\n            if i == j:\n                return True\n\n            for k in range(i, j):\n                a = k == i or sum(nums[i:k+1]) >= m\n                b = k == j - 1 or sum(nums[k+1:j+1]) >= m\n                if a and b:\n                    memo[(i, k)] = dfs(i, k, memo)\n                    memo[(k+1, j)] = dfs(k+1, j, memo)\n                    if memo[(i, k)] and memo[(k+1, j)]:\n                        return True\n\n            memo[(i, j)] = False\n            return False\n\n        memo = {}\n        return dfs(0, len(nums) - 1, memo)",
+  "canonical_solution": "class Solution:\n    def canSplitArray(self, nums: List[int], m: int) -> bool:\n        @cache\n        def dfs(i: int, j: int) -> bool:\n            if i == j:\n                return True\n            for k in range(i, j):\n                a = k == i or s[k + 1] - s[i] >= m\n                b = k == j - 1 or s[j + 1] - s[k + 1] >= m\n                if a and b and dfs(i, k) and dfs(k + 1, j):\n                    return True\n            return False\n\n        s = list(accumulate(nums, initial=0))\n        return dfs(0, len(nums) - 1)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1899",
+  "metrics": {
+    "bleu_score": 0.37109793703630656,
+    "edit_similarity": 0.4594972067039106,
+    "ast_similarity": 0.7857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:\n        x, y, z = target\n        max_triplet = []\n        for _ in range(1000 * 1000 * 3):  # allocate extra memory\n            max_triplet.append([0, 0, 0])\n        \n        for a, b, c in triplets:\n            if a <= x and b <= y and c <= z:\n                max_triplet.copy()  # create a new copy of the list\n                max_triplet[0][0] = max(max_triplet[0][0], a)\n                max_triplet[0][1] = max(max_triplet[0][1], b)\n                max_triplet[0][2] = max(max_triplet[0][2], c)\n        \n        max_value = 0\n        for m in max_triplet:\n            v = 1\n            for j in m:\n                v *= j\n            max_value += v\n        \n        return max_value == x * y * z",
+  "canonical_solution": "class Solution:\n    def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:\n        x, y, z = target\n        d = e = f = 0\n        for a, b, c in triplets:\n            if a <= x and b <= y and c <= z:\n                d = max(d, a)\n                e = max(e, b)\n                f = max(f, c)\n        return [d, e, f] == target\n",
+  "is_python": true
+}

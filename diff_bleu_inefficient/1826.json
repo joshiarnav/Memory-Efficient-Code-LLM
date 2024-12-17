@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1826",
+  "metrics": {
+    "bleu_score": 0.24400782930634432,
+    "edit_similarity": 0.4883720930232558,
+    "ast_similarity": 0.6451612903225806,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def badSensor(self, sensor1: List[int], sensor2: List[int]) -> int:\n        n = len(sensor1)\n        lists = [[sensor1, 1], [sensor2, 2]]\n        for i in range(n):\n            for j in range(n - i - 1):\n                new_sensor1 = sensor1[:i + j + 1] + sensor1[i + j + 2:] + [random.randint(1, 100)]\n                new_sensor2 = sensor2[:i + j + 1] + sensor2[i + j + 2:] + [random.randint(1, 100)]\n                if new_sensor1 == new_sensor2:\n                    return -1\n                if new_sensor1 == lists[0][0]:\n                    return lists[0][1]\n                if new_sensor2 == lists[1][0]:\n                    return lists[1][1]\n        return -1",
+  "canonical_solution": "class Solution:\n    def badSensor(self, sensor1: List[int], sensor2: List[int]) -> int:\n        i, n = 0, len(sensor1)\n        while i < n - 1:\n            if sensor1[i] != sensor2[i]:\n                break\n            i += 1\n        while i < n - 1:\n            if sensor1[i + 1] != sensor2[i]:\n                return 1\n            if sensor1[i] != sensor2[i + 1]:\n                return 2\n            i += 1\n        return -1\n",
+  "is_python": true
+}

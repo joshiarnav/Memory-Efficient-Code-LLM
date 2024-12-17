@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2187",
+  "metrics": {
+    "bleu_score": 0.3048207169838496,
+    "edit_similarity": 0.410958904109589,
+    "ast_similarity": 0.5172413793103449,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumTime(self, time: List[int], totalTrips: int) -> int:\n        def check(t):\n            count = 0\n            for trip in time:\n                count += t // trip\n            return count >= totalTrips\n\n        l, r = 1, max(time) * totalTrips\n        while l < r:\n            mid = (l + r) // 2\n            if check(mid):\n                r = mid\n            else:\n                l = mid + 1\n        return l",
+  "canonical_solution": "class Solution:\n    def minimumTime(self, time: List[int], totalTrips: int) -> int:\n        mx = min(time) * totalTrips\n        return bisect_left(\n            range(mx), totalTrips, key=lambda x: sum(x // v for v in time)\n        )\n",
+  "is_python": true
+}

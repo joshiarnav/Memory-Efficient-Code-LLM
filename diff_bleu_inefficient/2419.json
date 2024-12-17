@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2419",
+  "metrics": {
+    "bleu_score": 0.15734121275028676,
+    "edit_similarity": 0.27254098360655743,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestSubarray(self, nums: List[int]) -> int:\n        n = len(nums)\n        max_val = max(nums)\n        ans = 0\n        max_subarray = [[] for _ in range(max_val + 1)]\n        and_values = [[] for _ in range(n)]\n        for i, v in enumerate(nums):\n            and_values[i] = []\n            for j in range(31, -1, -1):\n                if v & (1 << j) != 0:\n                    and_values[i].append(j)\n            for mask in range(1 << 31):\n                if bin(mask).count('1') == 0:\n                    subarray = []\n                    for k in range(i, n):\n                        if mask & (1 << x) == 0:\n                            subarray.append(nums[k])\n                        else:\n                            break\n                        if nums[k] == max_val:\n                            max_subarray[max_val].append(subarray)\n        for subarray in max_subarray[max_val]:\n            ans = max(ans, len(subarray))\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestSubarray(self, nums: List[int]) -> int:\n        mx = max(nums)\n        ans = cnt = 0\n        for v in nums:\n            if v == mx:\n                cnt += 1\n                ans = max(ans, cnt)\n            else:\n                cnt = 0\n        return ans\n",
+  "is_python": true
+}

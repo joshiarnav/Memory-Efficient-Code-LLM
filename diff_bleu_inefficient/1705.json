@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1705",
+  "metrics": {
+    "bleu_score": 0.31591619000472126,
+    "edit_similarity": 0.41100601891659505,
+    "ast_similarity": 0.8484848484848485,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def eatenApples(self, apples: List[int], days: List[int]) -> int:\n        n = len(days)\n        i = ans = 0\n        q = []\n        trees = [0] * (n + 10)\n        fruits = [0] * (n + 10)\n        while i < n or q:\n            for j in range(i, min(i + 10, n)):\n                if apples[j]:\n                    trees[j] = j + days[j]\n                    fruits[j] = apples[j]\n            while q and q[0][0] < i:\n                q.pop(0)\n            if q:\n                t, v = q[0]\n                v -= 1\n                ans += 1\n                if v and t > i:\n                    q.insert(0, (t, v))\n            i += 1\n            for j in range(len(q)):\n                t, v = q[j]\n                if t <= i:\n                    fruits[t] -= 1\n                    if fruits[t] == 0:\n                        fruits[t] = 0\n                    if v <= 1:\n                        fruits[t] = 0\n                    if fruits[t] and t > i:\n                        q[j] = (t, v)\n            for j in range(i, min(i + 10, n)):\n                if fruits[j]:\n                    q.append((trees[j], fruits[j]))\n            q.sort()\n        return ans",
+  "canonical_solution": "class Solution:\n    def eatenApples(self, apples: List[int], days: List[int]) -> int:\n        n = len(days)\n        i = ans = 0\n        q = []\n        while i < n or q:\n            if i < n and apples[i]:\n                heappush(q, (i + days[i] - 1, apples[i]))\n            while q and q[0][0] < i:\n                heappop(q)\n            if q:\n                t, v = heappop(q)\n                v -= 1\n                ans += 1\n                if v and t > i:\n                    heappush(q, (t, v))\n            i += 1\n        return ans\n",
+  "is_python": true
+}

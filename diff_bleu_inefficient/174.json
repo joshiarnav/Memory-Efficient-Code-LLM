@@ -1,0 +1,12 @@
+{
+  "problem_idx": "174",
+  "metrics": {
+    "bleu_score": 0.3621287862442599,
+    "edit_similarity": 0.4632627646326276,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:\n        m, n = len(dungeon), len(dungeon[0])\n        dp = [[None] * (n * 2) for _ in range(m * 2)]\n        for i in range(m * 2):\n            dp[i][0] = 0\n        for j in range(n * 2):\n            dp[0][j] = 0\n        for i in range(1, m * 2):\n            for j in range(1, n * 2):\n                if dungeon[i // 2 - 1][j // 2 - 1] == 0:\n                    dp[i][j] = max(1, dp[i-1][j] + dp[i][j-1])\n                elif dungeon[i // 2 - 1][j // 2 - 1] > 0:\n                    dp[i][j] = max(1, min(dp[i-1][j], dp[i][j-1]) + dungeon[i // 2 - 1][j // 2 - 1])\n                else:\n                    dp[i][j] = max(1, min(dp[i-1][j], dp[i][j-1]) - dungeon[i // 2 - 1][j // 2 - 1])\n        return dp[m*2 - 1][n*2 - 1]",
+  "canonical_solution": "class Solution:\n    def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:\n        m, n = len(dungeon), len(dungeon[0])\n        dp = [[inf] * (n + 1) for _ in range(m + 1)]\n        dp[m][n - 1] = dp[m - 1][n] = 1\n        for i in range(m - 1, -1, -1):\n            for j in range(n - 1, -1, -1):\n                dp[i][j] = max(1, min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j])\n        return dp[0][0]\n",
+  "is_python": true
+}

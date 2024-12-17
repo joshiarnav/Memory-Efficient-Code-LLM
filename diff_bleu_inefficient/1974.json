@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1974",
+  "metrics": {
+    "bleu_score": 0.6781177323181606,
+    "edit_similarity": 0.7822349570200573,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minTimeToType(self, word: str) -> int:\n        ans = []\n        prev = 0\n        for c in word:\n            curr = ord(c) - ord('a')\n            t = abs(prev - curr)\n            t = min(t, 26 - t)\n            ans.append(t + 1)\n            ans.append(prev)\n            prev = curr\n        ans.append(0)\n        return sum(ans)",
+  "canonical_solution": "class Solution:\n    def minTimeToType(self, word: str) -> int:\n        ans = prev = 0\n        for c in word:\n            curr = ord(c) - ord('a')\n            t = abs(prev - curr)\n            t = min(t, 26 - t)\n            ans += t + 1\n            prev = curr\n        return ans\n",
+  "is_python": true
+}

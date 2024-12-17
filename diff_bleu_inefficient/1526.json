@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1526",
+  "metrics": {
+    "bleu_score": 0.176267364752818,
+    "edit_similarity": 0.22128378378378377,
+    "ast_similarity": 0.5555555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minNumberOperations(self, target: List[int]) -> int:\n        n = len(target)\n        initial = [0] * n\n        operations = 0\n        for i in range(n):\n            for j in range(i, n):\n                initial[j] += 1\n                operations += 1\n                if initial[j] > target[j]:\n                    initial[j] += target[j] - initial[j]\n                    operations += target[j] - initial[j]\n                else:\n                    break\n        for i in range(n-1):\n            operations += max(0, target[i+1] - target[i])\n        return operations",
+  "canonical_solution": "class Solution:\n    def minNumberOperations(self, target: List[int]) -> int:\n        return target[0] + sum(max(0, b - a) for a, b in pairwise(target))\n",
+  "is_python": true
+}

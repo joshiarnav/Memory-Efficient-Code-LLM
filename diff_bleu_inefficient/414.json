@@ -1,0 +1,12 @@
+{
+  "problem_idx": "414",
+  "metrics": {
+    "bleu_score": 0.24010320207265307,
+    "edit_similarity": 0.5240506329113924,
+    "ast_similarity": 0.4666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def thirdMax(self, nums: List[int]) -> int:\n        max_dict = {}\n        for num in nums:\n            max_dict[num] = None\n        max_nums = list(max_dict.keys())\n        max_nums.sort(reverse=True)\n        if len(max_nums) < 3:\n            return max_nums[0]\n        else:\n            return max_nums[2]",
+  "canonical_solution": "class Solution:\n    def thirdMax(self, nums: List[int]) -> int:\n        m1 = m2 = m3 = -inf\n        for num in nums:\n            if num in [m1, m2, m3]:\n                continue\n            if num > m1:\n                m3, m2, m1 = m2, m1, num\n            elif num > m2:\n                m3, m2 = m2, num\n            elif num > m3:\n                m3 = num\n        return m3 if m3 != -inf else m1\n",
+  "is_python": true
+}

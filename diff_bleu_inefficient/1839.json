@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1839",
+  "metrics": {
+    "bleu_score": 0.18248673773825383,
+    "edit_similarity": 0.47672253258845443,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestBeautifulSubstring(self, word: str) -> int:\n        n = len(word)\n        for i in range(n):\n            vowels_in_substring = []\n            for j in range(i, n):\n                if word[j] in ['a', 'e', 'i', 'o', 'u']:\n                    vowels_in_substring.append(word[j])\n                else:\n                    break\n            if len(vowels_in_substring) >= 5 and vowels_in_substring == sorted(vowels_in_substring):\n                ans = max(ans, len(vowels_in_substring))\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestBeautifulSubstring(self, word: str) -> int:\n        arr = []\n        n = len(word)\n        i = 0\n        while i < n:\n            j = i\n            while j < n and word[j] == word[i]:\n                j += 1\n            arr.append((word[i], j - i))\n            i = j\n        ans = 0\n        for i in range(len(arr) - 4):\n            a, b, c, d, e = arr[i : i + 5]\n            if a[0] + b[0] + c[0] + d[0] + e[0] == \"aeiou\":\n                ans = max(ans, a[1] + b[1] + c[1] + d[1] + e[1])\n        return ans\n",
+  "is_python": true
+}

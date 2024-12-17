@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1330",
+  "metrics": {
+    "bleu_score": 0.19217980749257327,
+    "edit_similarity": 0.48319999999999996,
+    "ast_similarity": 0.7241379310344828,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxValueAfterReverse(self, nums):\n        ans = 0\n        for _ in range(len(nums) * len(nums)):\n            arr = [x for x in nums]\n            for i in range(len(nums)):\n                for j in range(i + 1, len(nums)):\n                    if arr[i] > arr[j]:\n                        arr[i], arr[j] = arr[j], arr[i]\n                    elif nums[i] < nums[j]:\n                        arr[i], arr[j] = arr[j], arr[i]\n            s = sum(abs(x - y) for x, y in zip(arr, arr[1:]))\n            ans = max(ans, s)\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxValueAfterReverse(self, nums: List[int]) -> int:\n        ans = s = sum(abs(x - y) for x, y in pairwise(nums))\n        for x, y in pairwise(nums):\n            ans = max(ans, s + abs(nums[0] - y) - abs(x - y))\n            ans = max(ans, s + abs(nums[-1] - x) - abs(x - y))\n        for k1, k2 in pairwise((1, -1, -1, 1, 1)):\n            mx, mi = -inf, inf\n            for x, y in pairwise(nums):\n                a = k1 * x + k2 * y\n                b = abs(x - y)\n                mx = max(mx, a - b)\n                mi = min(mi, a + b)\n            ans = max(ans, s + max(mx - mi, 0))\n        return ans\n",
+  "is_python": true
+}

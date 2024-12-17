@@ -1,0 +1,12 @@
+{
+  "problem_idx": "202",
+  "metrics": {
+    "bleu_score": 0.3259409689325921,
+    "edit_similarity": 0.5384615384615384,
+    "ast_similarity": 0.5714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isHappy(self, n: int) -> bool:\n        def next(x):\n            return sum(int(digit) ** 2 for digit in str(x))\n\n        numbers = []\n        while n not in numbers:\n            numbers.append(n)\n            n = next(n)\n        return n == 1",
+  "canonical_solution": "class Solution:\n    def isHappy(self, n: int) -> bool:\n        def next(x):\n            y = 0\n            while x:\n                x, v = divmod(x, 10)\n                y += v * v\n            return y\n\n        slow, fast = n, next(n)\n        while slow != fast:\n            slow, fast = next(slow), next(next(fast))\n        return slow == 1\n",
+  "is_python": true
+}

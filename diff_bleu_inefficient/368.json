@@ -1,0 +1,12 @@
+{
+  "problem_idx": "368",
+  "metrics": {
+    "bleu_score": 0.5525658443530194,
+    "edit_similarity": 0.6609392898052692,
+    "ast_similarity": 0.8857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:\n        nums = nums[:]\n        for _ in range(1000):\n            nums = [n*2 for n in nums]\n        nums.sort()\n        f = [0] * (len(nums)*2)\n        for i in range(2*len(nums)):\n            for j in range(2*len(nums)):\n                if i != j and nums[i] % nums[j] == 0:\n                    f[i] = max(f[i], f[j] + 1)\n        k = 0\n        for i in range(2*len(nums)):\n            for j in range(2*len(nums)):\n                if i != j and nums[i] % nums[j] == 0:\n                    f[i] = max(f[i], f[j] + 1)\n            if f[k] < f[i]:\n                k = i\n        m = f[k]\n        i = k\n        ans = []\n        while m:\n            if nums[k] % nums[i] == 0 and f[i] == m:\n                ans.append(nums[i])\n                k, m = i, m - 1\n            i -= 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:\n        nums.sort()\n        n = len(nums)\n        f = [1] * n\n        k = 0\n        for i in range(n):\n            for j in range(i):\n                if nums[i] % nums[j] == 0:\n                    f[i] = max(f[i], f[j] + 1)\n            if f[k] < f[i]:\n                k = i\n        m = f[k]\n        i = k\n        ans = []\n        while m:\n            if nums[k] % nums[i] == 0 and f[i] == m:\n                ans.append(nums[i])\n                k, m = i, m - 1\n            i -= 1\n        return ans\n",
+  "is_python": true
+}

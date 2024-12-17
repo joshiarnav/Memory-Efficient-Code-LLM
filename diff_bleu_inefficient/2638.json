@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2638",
+  "metrics": {
+    "bleu_score": 0.3599768222193016,
+    "edit_similarity": 0.5915678524374177,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class InefficientSolution:\n    def countTheNumOfKFreeSubsets(self, nums, k):\n        nums.sort()\n        groups = {}\n        for x in nums:\n            if x % k not in groups:\n                groups[x % k] = []\n            groups[x % k].append(x)\n        result = 1\n        for group in groups.values():\n            factorials = [1] * (len(group) + 1)\n            for i in range(len(group)):\n                factorials[i + 1] = factorials[i] * (2 ** (i + 1))\n            for i in range(2, len(group)):\n                if group[i] - group[i - 1] == k:\n                    factorials[i] = factorials[i - 1] + factorials[i - 2]\n                else:\n                    factorials[i] = factorials[i - 1]\n            result *= factorials[-1]\n        return result",
+  "canonical_solution": "class Solution:\n    def countTheNumOfKFreeSubsets(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        g = defaultdict(list)\n        for x in nums:\n            g[x % k].append(x)\n        ans = 1\n        for arr in g.values():\n            m = len(arr)\n            f = [0] * (m + 1)\n            f[0] = 1\n            f[1] = 2\n            for i in range(2, m + 1):\n                if arr[i - 1] - arr[i - 2] == k:\n                    f[i] = f[i - 1] + f[i - 2]\n                else:\n                    f[i] = f[i - 1] * 2\n            ans *= f[m]\n        return ans\n",
+  "is_python": true
+}

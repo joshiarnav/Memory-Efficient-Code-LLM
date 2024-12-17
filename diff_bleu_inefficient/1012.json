@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1012",
+  "metrics": {
+    "bleu_score": 0.7019760014814888,
+    "edit_similarity": 0.8113612004287245,
+    "ast_similarity": 0.8292682926829268,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numDupDigitsAtMostN(self, n: int) -> int:\n        return self.f(n, 1000000000)\n\n    def f(self, n: int, max_num: int) -> int:\n        def dfs(pos: int, num: int, mask: int, lead: bool, limit: bool) -> int:\n            if pos < 0:\n                if num > n:\n                    return 0\n                return 1 if num <= n else 0\n            up = max_num // (10 ** pos) if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                if mask & (1 << i):\n                    continue\n                if i == 0 and lead:\n                    ans += dfs(pos - 1, num * 10 + i, mask, lead, limit and i == up)\n                else:\n                    ans += dfs(pos - 1, num * 10 + i, mask | (1 << i), False, limit and i == up)\n            return ans\n\n        nums = []\n        while n:\n            nums.append(n % 10)\n            n //= 10\n        return dfs(len(nums) - 1, 0, 0, True, True)",
+  "canonical_solution": "class Solution:\n    def numDupDigitsAtMostN(self, n: int) -> int:\n        return n - self.f(n)\n\n    def f(self, n: int) -> int:\n        @cache\n        def dfs(pos: int, mask: int, lead: bool, limit: bool) -> int:\n            if pos < 0:\n                return int(lead) ^ 1\n            up = nums[pos] if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                if mask >> i & 1:\n                    continue\n                if i == 0 and lead:\n                    ans += dfs(pos - 1, mask, lead, limit and i == up)\n                else:\n                    ans += dfs(pos - 1, mask | 1 << i, False, limit and i == up)\n            return ans\n\n        nums = []\n        while n:\n            nums.append(n % 10)\n            n //= 10\n        return dfs(len(nums) - 1, 0, True, True)\n",
+  "is_python": true
+}

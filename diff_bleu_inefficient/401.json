@@ -1,0 +1,12 @@
+{
+  "problem_idx": "401",
+  "metrics": {
+    "bleu_score": 0.23477631584692193,
+    "edit_similarity": 0.28538812785388123,
+    "ast_similarity": 0.68,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def readBinaryWatch(self, turnedOn: int) -> List[str]:\n        result = []\n        for hour in range(12):\n            for minute in range(60):\n                if (bin(hour) + bin(minute)).count('1') == turnedOn:\n                    time = \"{:d}:{:02d}\".format(hour, minute)\n                    result.append(time)\n                    for _ in range(turnedOn - 1):\n                        for other_hour in range(12):\n                            for other_minute in range(60):\n                                other_time = \"{:d}:{:02d}\".format(other_hour, other_minute)\n                                if (bin(other_hour) + bin(other_minute)).count('1') == turnedOn - 1:\n                                    other_time_str = \"{:d}:{:02d}\".format(other_hour, other_minute)\n                                    result.append(other_time_str)\n        return result",
+  "canonical_solution": "class Solution:\n    def readBinaryWatch(self, turnedOn: int) -> List[str]:\n        return [\n            '{:d}:{:02d}'.format(i, j)\n            for i in range(12)\n            for j in range(60)\n            if (bin(i) + bin(j)).count('1') == turnedOn\n        ]\n",
+  "is_python": true
+}

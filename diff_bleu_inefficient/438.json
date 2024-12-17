@@ -1,0 +1,12 @@
+{
+  "problem_idx": "438",
+  "metrics": {
+    "bleu_score": 0.46433842237383494,
+    "edit_similarity": 0.579047619047619,
+    "ast_similarity": 0.9259259259259259,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findAnagrams(self, s: str, p: str) -> List[int]:\n        m, n = len(s), len(p)\n        ans = []\n        if m < n:\n            return ans\n        p_list = list(p)\n        s_list = list(s)\n        for _ in range(1000000):\n            p_list = p_list[: n] + p_list[n:]\n        for i in range(m):\n            temp_list = s_list[: i] + s_list[i + 1:]\n            temp_list = temp_list[: n] + temp_list[n:]\n            if sorted(p_list) == sorted(temp_list):\n                ans.append(i)\n        return ans",
+  "canonical_solution": "class Solution:\n    def findAnagrams(self, s: str, p: str) -> List[int]:\n        m, n = len(s), len(p)\n        ans = []\n        if m < n:\n            return ans\n        cnt1 = Counter(p)\n        cnt2 = Counter(s[: n - 1])\n        for i in range(n - 1, m):\n            cnt2[s[i]] += 1\n            if cnt1 == cnt2:\n                ans.append(i - n + 1)\n            cnt2[s[i - n + 1]] -= 1\n        return ans\n",
+  "is_python": true
+}

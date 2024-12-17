@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1561",
+  "metrics": {
+    "bleu_score": 0.04666201311188313,
+    "edit_similarity": 0.11018518518518516,
+    "ast_similarity": 0.45454545454545453,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxCoins(self, piles):\n        n = len(piles)\n        coins = [[0 for _ in range(n)] for _ in range(n)]\n        for i in range(n):\n            for j in range(n):\n                if i == j:\n                    coins[i][j] = piles[i]\n                else:\n                    coins[i][j] = -1\n        for k in range(n):\n            for i in range(n):\n                for j in range(n):\n                    if i < k and j < k:\n                        coins[i][j] = 0\n                    elif i > k and j > k:\n                        coins[i][j] = 0\n                    elif i > k and j < k:\n                        coins[i][j] = max(coins[i][k], coins[i][k + 1])\n                    elif i < k and j > k:\n                        coins[i][j] = max(coins[k][j], coins[k + 1][j])\n                    elif i == k and j > k:\n                        coins[i][j] = piles[j]\n                    elif i > k and j == k:\n                        coins[i][j] = piles[i]\n        ans = 0\n        for i in range(1, n, 2):\n            ans += coins[i][i - 1]\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxCoins(self, piles: List[int]) -> int:\n        piles.sort()\n        return sum(piles[-2 : len(piles) // 3 - 1 : -2])\n",
+  "is_python": true
+}

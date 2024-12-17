@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1898",
+  "metrics": {
+    "bleu_score": 0.5602333460640019,
+    "edit_similarity": 0.6615925058548009,
+    "ast_similarity": 0.7647058823529411,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:\n        def check(k):\n            s_list = list(s)\n            for i in range(k):\n                s_list[removable[i]] = 'X'\n            s_list = [c for c in s_list if c != 'X']\n            s_str = ''.join(s_list)\n            i = j = 0\n            while i < len(s_str) and j < len(p):\n                if s_str[i] == p[j]:\n                    j += 1\n                i += 1\n            return j == len(p)\n\n        m, n = len(s), len(p)\n        removable_dict = {i: c for i, c in enumerate(s)}\n        removable_set = set(removable)\n        left, right = 0, len(removable)\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if check(mid):\n                left = mid\n            else:\n                right = mid - 1\n        return left",
+  "canonical_solution": "class Solution:\n    def maximumRemovals(self, s: str, p: str, removable: List[int]) -> int:\n        def check(k):\n            i = j = 0\n            ids = set(removable[:k])\n            while i < m and j < n:\n                if i not in ids and s[i] == p[j]:\n                    j += 1\n                i += 1\n            return j == n\n\n        m, n = len(s), len(p)\n        left, right = 0, len(removable)\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if check(mid):\n                left = mid\n            else:\n                right = mid - 1\n        return left\n",
+  "is_python": true
+}

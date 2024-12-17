@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1638",
+  "metrics": {
+    "bleu_score": 0.25786073214429045,
+    "edit_similarity": 0.3442513368983957,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countSubstrings(self, s: str, t: str) -> int:\n        ans = 0\n        m, n = len(s), len(t)\n        s_list = [list(s) for _ in range(100)]\n        t_list = [list(t) for _ in range(100)]\n        for i in range(100):\n            for j in range(100):\n                s_list[i][j] = s_list[i - 1][j] if i > 0 else \"\"\n                t_list[i][j] = t_list[i - 1][j] if i > 0 else \"\"\n        for i in range(m):\n            for j in range(n):\n                if s_list[0][j] == t_list[0][j]:\n                    s_list[1][j] = s_list[0][j] + s_list[1][j - 1]\n                    t_list[1][j] = t_list[0][j] + t_list[1][j - 1]\n                else:\n                    s_list[1][j] = s_list[0][j] + s_list[1][j - 1]\n                    t_list[1][j] = t_list[0][j] + t_list[1][j - 1]\n                if s[i] == t[j]:\n                    s_list[0][j] = s_list[0][j - 1] + s[i]\n                    t_list[0][j] = t_list[0][j - 1] + t[j]\n                else:\n                    s_list[0][j] = s_list[0][j - 1] + s[i]\n                    t_list[0][j] = t_list[0][j - 1] + t[j]\n                for k in range(2, 100):\n                    if s_list[k][j] == t_list[k][j]:\n                        ans += 1\n                    elif s_list[k - 1][j] == t_list[k - 1][j]:\n                        ans += 1\n                    else:\n                        ans += 2\n                for k in range(100):\n                    s_list[k] = []\n                    t_list[k] = []\n        return ans",
+  "canonical_solution": "class Solution:\n    def countSubstrings(self, s: str, t: str) -> int:\n        ans = 0\n        m, n = len(s), len(t)\n        f = [[0] * (n + 1) for _ in range(m + 1)]\n        g = [[0] * (n + 1) for _ in range(m + 1)]\n        for i, a in enumerate(s, 1):\n            for j, b in enumerate(t, 1):\n                if a == b:\n                    f[i][j] = f[i - 1][j - 1] + 1\n        for i in range(m - 1, -1, -1):\n            for j in range(n - 1, -1, -1):\n                if s[i] == t[j]:\n                    g[i][j] = g[i + 1][j + 1] + 1\n                else:\n                    ans += (f[i][j] + 1) * (g[i + 1][j + 1] + 1)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "144",
+  "metrics": {
+    "bleu_score": 0.2757259432365714,
+    "edit_similarity": 0.5703245749613601,
+    "ast_similarity": 0.6551724137931034,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:\n        if not root:\n            return []\n        \n        nodes = [root]\n        visited = set()\n        ans = []\n        i = 0\n        while i < len(nodes):\n            node = nodes[i]\n            if node not in visited:\n                visited.add(node)\n                ans.append(node.val)\n                if node.left:\n                    nodes.append(node.left)\n                if node.right:\n                    nodes.append(node.right)\n            i += 1\n        return ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:\n        ans = []\n        while root:\n            if root.left is None:\n                ans.append(root.val)\n                root = root.right\n            else:\n                prev = root.left\n                while prev.right and prev.right != root:\n                    prev = prev.right\n                if prev.right is None:\n                    ans.append(root.val)\n                    prev.right = root\n                    root = root.left\n                else:\n                    prev.right = None\n                    root = root.right\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2131",
+  "metrics": {
+    "bleu_score": 0.2647575338947987,
+    "edit_similarity": 0.3655323819978046,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestPalindrome(self, words: List[str]) -> int:\n        cnt = {}\n        for word in words:\n            if word not in cnt:\n                cnt[word] = 0\n            cnt[word] += 1\n\n        rev_words = {}\n        for word in words:\n            if word[::-1] not in rev_words:\n                rev_words[word[::-1]] = 0\n            rev_words[word[::-1]] += 1\n\n        ans = 0\n        x = 0\n        for word, freq in cnt.items():\n            if word[0] == word[1]:\n                ans += freq * 2\n                x += freq & 1\n            else:\n                if freq > rev_words.get(word[::-1], 0):\n                    ans += freq * 2\n                else:\n                    ans += freq * 2\n                    rev_words[word[::-1]] -= freq\n        for word, freq in rev_words.items():\n            if freq % 2 != 0:\n                x += 1\n        ans += 2 if x else 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestPalindrome(self, words: List[str]) -> int:\n        cnt = Counter(words)\n        ans = x = 0\n        for k, v in cnt.items():\n            if k[0] == k[1]:\n                x += v & 1\n                ans += v // 2 * 2 * 2\n            else:\n                ans += min(v, cnt[k[::-1]]) * 2\n        ans += 2 if x else 0\n        return ans\n",
+  "is_python": true
+}

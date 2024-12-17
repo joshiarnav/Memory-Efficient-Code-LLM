@@ -1,0 +1,12 @@
+{
+  "problem_idx": "241",
+  "metrics": {
+    "bleu_score": 0.5714030264311376,
+    "edit_similarity": 0.7122381477398015,
+    "ast_similarity": 0.9310344827586207,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import sys\nimport copy\n\nclass Solution:\n    def diffWaysToCompute(self, expression):\n        def dfs(exp):\n            if exp.isdigit():\n                return [int(exp)]\n            ans = []\n            for i, c in enumerate(exp):\n                if c in '-+*':\n                    left = dfs(exp[:i])\n                    right = dfs(exp[i + 1 :])\n                    for a in left:\n                        for b in right:\n                            if c == '-':\n                                ans.append([a - b])\n                            elif c == '+':\n                                ans.append([a + b])\n                            else:\n                                ans.append([a * b])\n            return ans\n\n        ans = dfs(expression)\n        result = []\n        for i in range(len(ans)):\n            for j in range(len(ans[i])):\n                result.append(ans[i][j])\n        return result",
+  "canonical_solution": "class Solution:\n    def diffWaysToCompute(self, expression: str) -> List[int]:\n        @cache\n        def dfs(exp):\n            if exp.isdigit():\n                return [int(exp)]\n            ans = []\n            for i, c in enumerate(exp):\n                if c in '-+*':\n                    left, right = dfs(exp[:i]), dfs(exp[i + 1 :])\n                    for a in left:\n                        for b in right:\n                            if c == '-':\n                                ans.append(a - b)\n                            elif c == '+':\n                                ans.append(a + b)\n                            else:\n                                ans.append(a * b)\n            return ans\n\n        return dfs(expression)\n",
+  "is_python": true
+}

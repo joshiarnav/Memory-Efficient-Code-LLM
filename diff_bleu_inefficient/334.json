@@ -1,0 +1,12 @@
+{
+  "problem_idx": "334",
+  "metrics": {
+    "bleu_score": 0.25725529990385504,
+    "edit_similarity": 0.5820105820105821,
+    "ast_similarity": 0.625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def increasingTriplet(self, nums: List[int]) -> bool:\n        triplets = [num for num in nums]\n        for i in range(len(triplets)):\n            for j in range(len(triplets)):\n                for k in range(len(triplets)):\n                    if i < j < k and triplets[i] < triplets[j] < triplets[k]:\n                        return True\n        return False",
+  "canonical_solution": "class Solution:\n    def increasingTriplet(self, nums: List[int]) -> bool:\n        mi, mid = inf, inf\n        for num in nums:\n            if num > mid:\n                return True\n            if num <= mi:\n                mi = num\n            else:\n                mid = num\n        return False\n",
+  "is_python": true
+}

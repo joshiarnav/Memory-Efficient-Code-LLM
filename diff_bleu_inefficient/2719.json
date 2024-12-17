@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2719",
+  "metrics": {
+    "bleu_score": 0.1868177541213464,
+    "edit_similarity": 0.3933393339333934,
+    "ast_similarity": 0.5454545454545454,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def count(self, num1: str, num2: str, min_sum: int, max_sum: int) -> int:\n        mod = 10**9 + 7\n        num = num2\n        dp = {}\n        ans = 0\n        for i in range(1 << len(num)):\n            s = sum(int(num[j]) for j in range(len(num)) if (i >> j) & 1)\n            limit = all((i >> j) & 1 for j in range(len(num)))\n            if s < min_sum or s > max_sum: continue\n            ans = (ans + 1) % mod\n            for k in range(len(num)):\n                if not (i >> k) & 1:\n                    for j in range(10):\n                        dp[(i | (1 << k), s + j, limit and j == int(num[k]))] = 1\n        for i in range(1 << len(num1)):\n            s = sum(int(num1[j]) for j in range(len(num1)) if (i >> j) & 1)\n            limit = all((i >> j) & 1 for j in range(len(num1)))\n            if s < min_sum or s > max_sum: continue\n            ans = (ans + 1) % mod\n            for k in range(len(num1)):\n                if not (i >> k) & 1:\n                    for j in range(10):\n                        dp[(i | (1 << k), s + j, limit and j == int(num1[k]))] = 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def count(self, num1: str, num2: str, min_sum: int, max_sum: int) -> int:\n        @cache\n        def dfs(pos: int, s: int, limit: bool) -> int:\n            if pos >= len(num):\n                return 1 if min_sum <= s <= max_sum else 0\n            up = int(num[pos]) if limit else 9\n            return (\n                sum(dfs(pos + 1, s + i, limit and i == up) for i in range(up + 1)) % mod\n            )\n\n        mod = 10**9 + 7\n        num = num2\n        ans = dfs(0, 0, True)\n        dfs.cache_clear()\n        num = str(int(num1) - 1)\n        ans -= dfs(0, 0, True)\n        return ans % mod\n",
+  "is_python": true
+}

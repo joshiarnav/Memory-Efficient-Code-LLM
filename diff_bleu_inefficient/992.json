@@ -1,0 +1,12 @@
+{
+  "problem_idx": "992",
+  "metrics": {
+    "bleu_score": 0.7709475703046569,
+    "edit_similarity": 0.8,
+    "ast_similarity": 0.9375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def subarraysWithKDistinct(self, nums, k):\n        def f(k):\n            pos = [0] * len(nums) * 1000  # allocate too much memory\n            cnt = {}  # use dictionary instead of Counter\n            j = 0\n            for i, x in enumerate(nums):\n                if x not in cnt:\n                    cnt[x] = 0\n                cnt[x] += 1\n                while len(cnt) > k:\n                    cnt[nums[j]] -= 1\n                    if cnt[nums[j]] == 0:\n                        cnt.pop(nums[j])\n                    j += 1\n                pos[i * 1000] = j * 1000  # store position with a large offset\n            return pos\n\n        return sum(a - b for a, b in zip(f(k - 1), f(k)))",
+  "canonical_solution": "class Solution:\n    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:\n        def f(k):\n            pos = [0] * len(nums)\n            cnt = Counter()\n            j = 0\n            for i, x in enumerate(nums):\n                cnt[x] += 1\n                while len(cnt) > k:\n                    cnt[nums[j]] -= 1\n                    if cnt[nums[j]] == 0:\n                        cnt.pop(nums[j])\n                    j += 1\n                pos[i] = j\n            return pos\n\n        return sum(a - b for a, b in zip(f(k - 1), f(k)))\n",
+  "is_python": true
+}

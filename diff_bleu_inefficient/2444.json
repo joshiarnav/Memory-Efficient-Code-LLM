@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2444",
+  "metrics": {
+    "bleu_score": 0.13098428400339177,
+    "edit_similarity": 0.47263681592039797,
+    "ast_similarity": 0.45454545454545453,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countSubarrays(self, nums, minK, maxK):\n        subarrays = []\n        for i in range(len(nums)):\n            subarray = []\n            for j in range(i, len(nums)):\n                if nums[j] not in [minK, maxK]:\n                    break\n                subarray.append(nums[j])\n            if subarray:\n                subarrays.append(subarray)\n        return len(subarrays)",
+  "canonical_solution": "class Solution:\n    def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:\n        j1 = j2 = k = -1\n        ans = 0\n        for i, v in enumerate(nums):\n            if v < minK or v > maxK:\n                k = i\n            if v == minK:\n                j1 = i\n            if v == maxK:\n                j2 = i\n            ans += max(0, min(j1, j2) - k)\n        return ans\n",
+  "is_python": true
+}

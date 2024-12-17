@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1130",
+  "metrics": {
+    "bleu_score": 0.2748512649521573,
+    "edit_similarity": 0.4981343283582089,
+    "ast_similarity": 0.6,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mctFromLeafValues(self, arr: List[int]) -> int:\n        def dfs(i, j, memo):\n            if i > j:\n                return float('inf')\n            if (i, j) in memo:\n                return memo[(i, j)]\n            res = float('inf')\n            for k in range(i, j):\n                res = min(res, dfs(i, k, memo) + dfs(k + 1, j, memo) + max(arr[i], arr[k]) * max(arr[k + 1], arr[j]))\n            memo[(i, j)] = res\n            return res\n\n        n = len(arr)\n        memo = {}\n        return dfs(0, n - 1, memo)",
+  "canonical_solution": "class Solution:\n    def mctFromLeafValues(self, arr: List[int]) -> int:\n        n = len(arr)\n        f = [[0] * n for _ in range(n)]\n        g = [[0] * n for _ in range(n)]\n        for i in range(n - 1, -1, -1):\n            g[i][i] = arr[i]\n            for j in range(i + 1, n):\n                g[i][j] = max(g[i][j - 1], arr[j])\n                f[i][j] = min(\n                    f[i][k] + f[k + 1][j] + g[i][k] * g[k + 1][j] for k in range(i, j)\n                )\n        return f[0][n - 1]\n",
+  "is_python": true
+}

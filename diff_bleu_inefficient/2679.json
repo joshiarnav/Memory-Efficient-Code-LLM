@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2679",
+  "metrics": {
+    "bleu_score": 0.34309764581245716,
+    "edit_similarity": 0.36,
+    "ast_similarity": 0.6086956521739131,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        total_memory_used = 0\n        max_removed = []\n        for row in nums:\n            sort_copy = row.copy()\n            sort_copy.sort()\n            max_removed.extend([sort_copy.pop()] * len(sort_copy))\n            total_memory_used += len(sort_copy)\n        max_removed.sort(reverse=True)\n        return sum(max_removed)",
+  "canonical_solution": "class Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        for row in nums:\n            row.sort()\n        return sum(map(max, zip(*nums)))\n",
+  "is_python": true
+}

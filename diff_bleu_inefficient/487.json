@@ -1,0 +1,12 @@
+{
+  "problem_idx": "487",
+  "metrics": {
+    "bleu_score": 0.0729158517113313,
+    "edit_similarity": 0.3023758099352052,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMaxConsecutiveOnes(self, nums):\n        ones = []\n        zeros = []\n        max_count = 0\n        for num in nums:\n            if num == 1:\n                ones.append(num)\n            else:\n                zeros.append(num)\n            temp = ones + zeros\n            temp.sort()\n            temp = list(set(temp))\n            ones = [x for x in temp if x == 1]\n            zeros = [x for x in temp if x == 0]\n            if len(ones) > 0 and len(zeros) > 0:\n                temp_ones = ones[:]\n                temp_zeros = zeros[:]\n                temp_ones.remove(1)\n                temp_zeros.remove(0)\n                temp = temp_ones + temp_zeros\n                temp.sort()\n                temp = list(set(temp))\n                ones = [x for x in temp if x == 1]\n                zeros = [x for x in temp if x == 0]\n            max_count = max(max_count, len(ones))\n        return max_count",
+  "canonical_solution": "class Solution:\n    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:\n        l = r = 0\n        k = 1\n        while r < len(nums):\n            if nums[r] == 0:\n                k -= 1\n            if k < 0:\n                if nums[l] == 0:\n                    k += 1\n                l += 1\n            r += 1\n        return r - l\n",
+  "is_python": true
+}

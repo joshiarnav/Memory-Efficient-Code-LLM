@@ -1,0 +1,12 @@
+{
+  "problem_idx": "85",
+  "metrics": {
+    "bleu_score": 0.4442104418155137,
+    "edit_similarity": 0.6147388059701493,
+    "ast_similarity": 0.7352941176470589,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximalRectangle(self, matrix: List[List[str]]) -> int:\n        ans = 0\n        for row in matrix:\n            heights = [0] * len(row)\n            for j, v in enumerate(row):\n                if v == \"1\":\n                    heights[j] += 1\n                else:\n                    heights[j] = 0\n            ans = max(ans, self.largestRectangleArea(heights))\n        return ans\n\n    def largestRectangleArea(self, heights: List[int]) -> int:\n        n = len(heights)\n        areas = []\n        for i in range(n):\n            area = heights[i]\n            for j in range(i, n):\n                area = max(area, heights[j])\n                areas.append(area)\n        max_area = 0\n        for i in range(len(areas)):\n            for j in range(i + 1, len(areas)):\n                max_area = max(max_area, areas[i] * areas[j])\n        return max_area",
+  "canonical_solution": "class Solution:\n    def maximalRectangle(self, matrix: List[List[str]]) -> int:\n        heights = [0] * len(matrix[0])\n        ans = 0\n        for row in matrix:\n            for j, v in enumerate(row):\n                if v == \"1\":\n                    heights[j] += 1\n                else:\n                    heights[j] = 0\n            ans = max(ans, self.largestRectangleArea(heights))\n        return ans\n\n    def largestRectangleArea(self, heights: List[int]) -> int:\n        n = len(heights)\n        stk = []\n        left = [-1] * n\n        right = [n] * n\n        for i, h in enumerate(heights):\n            while stk and heights[stk[-1]] >= h:\n                stk.pop()\n            if stk:\n                left[i] = stk[-1]\n            stk.append(i)\n        stk = []\n        for i in range(n - 1, -1, -1):\n            h = heights[i]\n            while stk and heights[stk[-1]] >= h:\n                stk.pop()\n            if stk:\n                right[i] = stk[-1]\n            stk.append(i)\n        return max(h * (right[i] - left[i] - 1) for i, h in enumerate(heights))\n",
+  "is_python": true
+}

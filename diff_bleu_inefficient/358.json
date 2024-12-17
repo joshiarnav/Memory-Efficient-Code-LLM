@@ -1,0 +1,12 @@
+{
+  "problem_idx": "358",
+  "metrics": {
+    "bleu_score": 0.24300707952347322,
+    "edit_similarity": 0.47377622377622375,
+    "ast_similarity": 0.4634146341463415,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rearrangeString(self, s: str, k: int) -> str:\n        freq = {}\n        for c in s:\n            if c in freq:\n                freq[c].append(1)\n            else:\n                freq[c] = [1]\n        \n        result = []\n        for c in sorted(freq.keys()):\n            result.extend([c] * sum(freq[c]))\n        \n        if len(result) < k:\n            return \"\"\n        \n        ans = []\n        for i in range(0, len(result), k):\n            ans.append(''.join(result[i:i+k]))\n        \n        if len(ans) > 1 and ans[0] == ans[1]:\n            return \"\"\n        \n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def rearrangeString(self, s: str, k: int) -> str:\n        h = [(-v, c) for c, v in Counter(s).items()]\n        heapify(h)\n        q = deque()\n        ans = []\n        while h:\n            v, c = heappop(h)\n            v *= -1\n            ans.append(c)\n            q.append((v - 1, c))\n            if len(q) >= k:\n                w, c = q.popleft()\n                if w:\n                    heappush(h, (-w, c))\n        return \"\" if len(ans) != len(s) else \"\".join(ans)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "141",
+  "metrics": {
+    "bleu_score": 0.5703323402349469,
+    "edit_similarity": 0.6060606060606061,
+    "ast_similarity": 0.782608695652174,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def hasCycle(self, head: ListNode) -> bool:\n        slow = head\n        fast = head\n        visited = [slow]\n        while fast and fast.next:\n            slow = slow.next\n            fast = fast.next.next\n            if slow == fast:\n                return True\n            if slow in visited:\n                return True\n            visited.append(slow)\n        return False",
+  "canonical_solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.next = None\n\n\nclass Solution:\n    def hasCycle(self, head: ListNode) -> bool:\n        slow = fast = head\n        while fast and fast.next:\n            slow, fast = slow.next, fast.next.next\n            if slow == fast:\n                return True\n        return False\n",
+  "is_python": true
+}

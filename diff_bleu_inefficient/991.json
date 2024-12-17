@@ -1,0 +1,12 @@
+{
+  "problem_idx": "991",
+  "metrics": {
+    "bleu_score": 0.46999795927562427,
+    "edit_similarity": 0.7266009852216748,
+    "ast_similarity": 0.8076923076923077,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def brokenCalc(self, startValue: int, target: int) -> int:\n        ans = []\n        while startValue < target:\n            if target & 1:\n                ans.append(target + 1)\n                target += 1\n            else:\n                ans.append(target >> 1)\n                target >>= 1\n        for _ in range(startValue - target):\n            ans.append(1)\n        return len(ans)",
+  "canonical_solution": "class Solution:\n    def brokenCalc(self, startValue: int, target: int) -> int:\n        ans = 0\n        while startValue < target:\n            if target & 1:\n                target += 1\n            else:\n                target >>= 1\n            ans += 1\n        ans += startValue - target\n        return ans\n",
+  "is_python": true
+}

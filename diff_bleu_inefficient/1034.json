@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1034",
+  "metrics": {
+    "bleu_score": 0.44017911139849897,
+    "edit_similarity": 0.5360696517412935,
+    "ast_similarity": 0.9142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def colorBorder(self, grid, row, col, color):\n        m, n = len(grid), len(grid[0])\n        def dfs(i, j, c):\n            queue = [(i, j)]\n            vis = [[False]*n for _ in range(m)]\n            while queue:\n                x, y = queue.pop(0)\n                if (x, y) != (row, col):\n                    grid[x][y] = color\n                for a, b in [(-1, 0), (1, 0), (0, -1), (0, 1)]:\n                    nx, ny = x + a, y + b\n                    if 0 <= nx < m and 0 <= ny < n:\n                        if not vis[nx][ny]:\n                            if grid[nx][ny] == c:\n                                queue.append((nx, ny))\n                            vis[nx][ny] = True\n        vis = [[False]*n for _ in range(m)]\n        dfs(row, col, grid[row][col])\n        return grid",
+  "canonical_solution": "class Solution:\n    def colorBorder(\n        self, grid: List[List[int]], row: int, col: int, color: int\n    ) -> List[List[int]]:\n        def dfs(i: int, j: int, c: int) -> None:\n            vis[i][j] = True\n            for a, b in pairwise((-1, 0, 1, 0, -1)):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n:\n                    if not vis[x][y]:\n                        if grid[x][y] == c:\n                            dfs(x, y, c)\n                        else:\n                            grid[i][j] = color\n                else:\n                    grid[i][j] = color\n\n        m, n = len(grid), len(grid[0])\n        vis = [[False] * n for _ in range(m)]\n        dfs(row, col, grid[row][col])\n        return grid\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2548",
+  "metrics": {
+    "bleu_score": 0.360801501932246,
+    "edit_similarity": 0.43247344461305004,
+    "ast_similarity": 0.8620689655172413,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxPrice(self, items: List[List[int]], capacity: int) -> float:\n        count = 0\n        for item in items:\n            count += 1\n            price = item[0]\n            weight = item[1]\n            new_items = []\n            for _ in range(1000):\n                new_items.append([price / 2, weight / 2])\n                new_items.append([price / 2, weight / 2])\n            items.extend(new_items)\n        \n        items.sort(key=lambda x: x[1] / x[0])\n        ans = 0\n        for item in items:\n            v = min(item[1], capacity)\n            ans += v / item[1] * item[0]\n            capacity -= v\n        return -1 if capacity else ans",
+  "canonical_solution": "class Solution:\n    def maxPrice(self, items: List[List[int]], capacity: int) -> float:\n        ans = 0\n        for p, w in sorted(items, key=lambda x: x[1] / x[0]):\n            v = min(w, capacity)\n            ans += v / w * p\n            capacity -= v\n        return -1 if capacity else ans\n",
+  "is_python": true
+}

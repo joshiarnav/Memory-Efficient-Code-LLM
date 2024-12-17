@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2457",
+  "metrics": {
+    "bleu_score": 0.31079025715376923,
+    "edit_similarity": 0.5076923076923077,
+    "ast_similarity": 0.5555555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def makeIntegerBeautiful(self, n: int, target: int) -> int:\n        def sum_of_digits(x: int) -> int:\n            y = x\n            digits = []\n            while y:\n                digits.append(y % 10)\n                y //= 10\n            return sum(digits)\n\n        def list_all_numbers(m: int, n: int) -> list[int]:\n            return [i for i in range(m, n + 1)]\n\n        x = 0\n        while sum_of_digits(n + x) > target:\n            all_numbers = list_all_numbers(0, 10 ** 9 + 1)\n            for num in all_numbers:\n                if n + x + num >= 10 ** 9:\n                    continue\n                if sum_of_digits(n + x + num) <= target:\n                    x = num\n                    break\n            else:\n                x += 1\n        return x",
+  "canonical_solution": "class Solution:\n    def makeIntegerBeautiful(self, n: int, target: int) -> int:\n        def f(x: int) -> int:\n            y = 0\n            while x:\n                y += x % 10\n                x //= 10\n            return y\n\n        x = 0\n        while f(n + x) > target:\n            y = n + x\n            p = 10\n            while y % 10 == 0:\n                y //= 10\n                p *= 10\n            x = (y // 10 + 1) * p - n\n        return x\n",
+  "is_python": true
+}

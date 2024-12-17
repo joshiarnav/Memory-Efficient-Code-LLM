@@ -1,0 +1,12 @@
+{
+  "problem_idx": "779",
+  "metrics": {
+    "bleu_score": 0.13297366717503045,
+    "edit_similarity": 0.17204301075268813,
+    "ast_similarity": 0.43333333333333335,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kthGrammar(self, n: int, k: int) -> int:\n        table = []\n        for i in range(n):\n            row = ['0'] * (2 ** i)\n            table.append(row)\n        for i in range(n - 1, -1, -1):\n            for j in range(2 ** i):\n                if j % 2 == 0:\n                    table[i][j] = '0'\n                else:\n                    table[i][j] = '1'\n        for i in range(len(table) - 1, -1, -1):\n            row = ''.join(table[i])\n            if k <= len(row):\n                return int(row[k - 1])\n            k -= len(row)",
+  "canonical_solution": "class Solution:\n    def kthGrammar(self, n: int, k: int) -> int:\n        return (k - 1).bit_count() & 1\n",
+  "is_python": true
+}

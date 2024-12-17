@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2106",
+  "metrics": {
+    "bleu_score": 0.21385752048991571,
+    "edit_similarity": 0.40228789323164915,
+    "ast_similarity": 0.5833333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:\n        n = len(fruits)\n        memo = [[0]*n for _ in range(2*n+1)]\n        for i in range(n):\n            for j in range(2*n+1):\n                memo[j][i] = -1\n        def dfs(pos, steps):\n            if pos < 0 or pos >= 2*n or steps < 0:\n                return 0\n            if memo[pos][steps] != -1:\n                return memo[pos][steps]\n            res = 0\n            if steps > 0:\n                res = dfs(pos-1, steps-1)\n            if steps > 0:\n                res = max(res, dfs(pos+1, steps-1))\n            for i in range(n):\n                if abs(pos-fruits[i][0]) <= steps:\n                    res = max(res, fruits[i][1] + dfs(pos-fruits[i][0], steps-2*abs(pos-fruits[i][0])))\n            memo[pos][steps] = res\n            return res\n        ans = 0\n        for i in range(n):\n            if abs(startPos-fruits[i][0]) <= k:\n                ans = max(ans, dfs(fruits[i][0], k-2*abs(startPos-fruits[i][0])))\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:\n        ans = i = s = 0\n        for j, (pj, fj) in enumerate(fruits):\n            s += fj\n            while (\n                i <= j\n                and pj\n                - fruits[i][0]\n                + min(abs(startPos - fruits[i][0]), abs(startPos - fruits[j][0]))\n                > k\n            ):\n                s -= fruits[i][1]\n                i += 1\n            ans = max(ans, s)\n        return ans\n",
+  "is_python": true
+}

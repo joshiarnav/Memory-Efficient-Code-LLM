@@ -1,0 +1,12 @@
+{
+  "problem_idx": "917",
+  "metrics": {
+    "bleu_score": 0.21398480840534012,
+    "edit_similarity": 0.3866348448687351,
+    "ast_similarity": 0.6216216216216216,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reverseOnlyLetters(self, s: str) -> str:\n        s = s.split(\" \")\n        s = [char for char in s]\n        for i, c in enumerate(s):\n            if not c.isalpha():\n                s[i] = ''\n        s = [char if not char == '' else '' for char in s]\n        s = [''.join(char) if isinstance(char, list) else char for char in s]\n        res = []\n        for char in s:\n            if char != '':\n                res.append(char)\n        s = ''.join(res)\n        res = []\n        for c in s:\n            if not c.isalpha():\n                res.append(c)\n            else:\n                res.append(c)\n                j = len(s) - 1\n                while not s[j].isalpha():\n                    res.append(s[j])\n                    j -= 1\n                res.pop()\n        res = res[::-1]\n        return ''.join(res)",
+  "canonical_solution": "class Solution:\n    def reverseOnlyLetters(self, s: str) -> str:\n        s = list(s)\n        i, j = 0, len(s) - 1\n        while i < j:\n            while i < j and not s[i].isalpha():\n                i += 1\n            while i < j and not s[j].isalpha():\n                j -= 1\n            if i < j:\n                s[i], s[j] = s[j], s[i]\n                i, j = i + 1, j - 1\n        return ''.join(s)\n",
+  "is_python": true
+}

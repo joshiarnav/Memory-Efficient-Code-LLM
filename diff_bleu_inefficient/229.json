@@ -1,0 +1,12 @@
+{
+  "problem_idx": "229",
+  "metrics": {
+    "bleu_score": 0.2701629204888899,
+    "edit_similarity": 0.5208333333333333,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def majorityElement(self, nums: List[int]) -> List[int]:\n        elements = set()\n        counts = {}\n        for m in nums:\n            elements.add(m)\n            counts[m] = counts.get(m, 0) + 1\n        threshold = len(nums) // 3\n        result = []\n        for element in elements:\n            if counts[element] > threshold:\n                result.append([element])\n        return [item for sublist in result for item in sublist]",
+  "canonical_solution": "class Solution:\n    def majorityElement(self, nums: List[int]) -> List[int]:\n        n1 = n2 = 0\n        m1, m2 = 0, 1\n        for m in nums:\n            if m == m1:\n                n1 += 1\n            elif m == m2:\n                n2 += 1\n            elif n1 == 0:\n                m1, n1 = m, 1\n            elif n2 == 0:\n                m2, n2 = m, 1\n            else:\n                n1, n2 = n1 - 1, n2 - 1\n        return [m for m in [m1, m2] if nums.count(m) > len(nums) // 3]\n",
+  "is_python": true
+}

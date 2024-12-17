@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1955",
+  "metrics": {
+    "bleu_score": 0.27117767254491704,
+    "edit_similarity": 0.42885973763874874,
+    "ast_similarity": 0.8518518518518519,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countSpecialSubsequences(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        n = len(nums)\n        dp = [[[] for _ in range(3)] for _ in range(n)]\n        for i in range(n):\n            for j in range(3):\n                dp[i][j] = [0] * 10\n        for i in range(n):\n            dp[i][0][0] = 1 if nums[i] == 0 else 0\n        for i in range(1, n):\n            for j in range(3):\n                for k in range(len(dp[i-1][j])):\n                    dp[i][j][k] = 0\n            for j in range(3):\n                if nums[i] == 0:\n                    dp[i][0][0] = (2 * dp[i-1][0][0] + dp[i-1][0][0]) % mod\n                elif nums[i] == 1:\n                    dp[i][1][0] = (dp[i-1][0][0] + 2 * dp[i-1][1][0]) % mod\n                else:\n                    dp[i][2][0] = (dp[i-1][1][0] + 2 * dp[i-1][2][0]) % mod\n        ans = 0\n        for i in range(n):\n            for j in range(3):\n                ans = (ans + dp[n-1][j][0]) % mod\n        return ans",
+  "canonical_solution": "class Solution:\n    def countSpecialSubsequences(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        n = len(nums)\n        f = [0] * 3\n        f[0] = nums[0] == 0\n        for i in range(1, n):\n            if nums[i] == 0:\n                f[0] = (2 * f[0] + 1) % mod\n            elif nums[i] == 1:\n                f[1] = (f[0] + 2 * f[1]) % mod\n            else:\n                f[2] = (f[1] + 2 * f[2]) % mod\n        return f[2]\n",
+  "is_python": true
+}

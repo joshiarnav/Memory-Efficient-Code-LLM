@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1650",
+  "metrics": {
+    "bleu_score": 0.3997839271998576,
+    "edit_similarity": 0.4897959183673469,
+    "ast_similarity": 0.6818181818181818,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':\n        ancestors = []\n        current = p\n        while current:\n            ancestors.append(current)\n            current = current.parent\n\n        current = q\n        while current:\n            if current in ancestors:\n                return current\n            current = current.parent\n\n        return None",
+  "canonical_solution": "\"\"\"\n# Definition for a Node.\nclass Node:\n    def __init__(self, val):\n        self.val = val\n        self.left = None\n        self.right = None\n        self.parent = None\n\"\"\"\n\n\nclass Solution:\n    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':\n        a, b = p, q\n        while a != b:\n            a = a.parent if a.parent else q\n            b = b.parent if b.parent else p\n        return a\n",
+  "is_python": true
+}

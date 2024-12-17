@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1176",
+  "metrics": {
+    "bleu_score": 0.48040230742572376,
+    "edit_similarity": 0.7247311827956989,
+    "ast_similarity": 0.9230769230769231,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def dietPlanPerformance(self, calories, k, lower, upper):\n        def check(s):\n            if s < lower:\n                return -1\n            if s > upper:\n                return 1\n            return 0\n\n        ans = 0\n        for i in range(len(calories)):\n            s = 0\n            for j in range(max(0, i - k + 1), i + 1):\n                s += calories[j]\n            ans += check(s)\n        return ans",
+  "canonical_solution": "class Solution:\n    def dietPlanPerformance(\n        self, calories: List[int], k: int, lower: int, upper: int\n    ) -> int:\n        def check(s):\n            if s < lower:\n                return -1\n            if s > upper:\n                return 1\n            return 0\n\n        s, n = sum(calories[:k]), len(calories)\n        ans = check(s)\n        for i in range(k, n):\n            s += calories[i] - calories[i - k]\n            ans += check(s)\n        return ans\n",
+  "is_python": true
+}

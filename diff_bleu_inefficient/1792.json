@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1792",
+  "metrics": {
+    "bleu_score": 0.236544951971578,
+    "edit_similarity": 0.4616477272727273,
+    "ast_similarity": 0.75,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:\n        ratios = []\n        for i, (passi, totali) in enumerate(classes):\n            ratios.append((passi / totali, i))\n        for _ in range(extraStudents):\n            ratios.sort(key=lambda x: x[0])\n            passi, totali = classes[ratios[0][1]]\n            new_passi, new_totali = passi + 1, totali + 1\n            classes[ratios[0][1]] = [new_passi, new_totali]\n            ratios[0] = (new_passi / new_totali, ratios[0][1])\n        ratios.sort(key=lambda x: x[0], reverse=True)\n        return sum(classes[ratio[1]][0] / classes[ratio[1]][1] for ratio in ratios[:len(classes)]) / len(classes)",
+  "canonical_solution": "class Solution:\n    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:\n        h = [(a / b - (a + 1) / (b + 1), a, b) for a, b in classes]\n        heapify(h)\n        for _ in range(extraStudents):\n            _, a, b = heappop(h)\n            a, b = a + 1, b + 1\n            heappush(h, (a / b - (a + 1) / (b + 1), a, b))\n        return sum(v[1] / v[2] for v in h) / len(classes)\n",
+  "is_python": true
+}

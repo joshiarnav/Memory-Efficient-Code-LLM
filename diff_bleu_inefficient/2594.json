@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2594",
+  "metrics": {
+    "bleu_score": 0.4076554169184447,
+    "edit_similarity": 0.44783715012722647,
+    "ast_similarity": 0.6071428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def repairCars(self, ranks: List[int], cars: int) -> int:\n        def check(t):\n            n_cars = 0\n            for r in ranks:\n                n = int((t // r) ** 0.5)\n                n_cars += min(n, cars)\n                cars -= n\n            return n_cars >= cars\n\n        t = 1\n        while True:\n            if check(t):\n                return t\n            t *= 2",
+  "canonical_solution": "class Solution:\n    def repairCars(self, ranks: List[int], cars: int) -> int:\n        def check(t: int) -> bool:\n            return sum(int(sqrt(t // r)) for r in ranks) >= cars\n\n        return bisect_left(range(ranks[0] * cars * cars), True, key=check)\n",
+  "is_python": true
+}

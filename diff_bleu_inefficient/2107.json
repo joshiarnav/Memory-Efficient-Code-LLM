@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2107",
+  "metrics": {
+    "bleu_score": 0.3600256654855688,
+    "edit_similarity": 0.5,
+    "ast_similarity": 0.76,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shareCandies(self, candies: List[int], k: int) -> int:\n        max_unique_flavors = 0\n        all_flavors = []\n        for i in range(len(candies) - k + 1):\n            unique_flavors = []\n            for j in range(k):\n                unique_flavors.append(candies[i + j])\n            all_flavors.append(unique_flavors)\n        for unique_flavors in all_flavors:\n            flavor_set = set(unique_flavors)\n            max_unique_flavors = max(max_unique_flavors, len(flavor_set))\n        return max_unique_flavors",
+  "canonical_solution": "class Solution:\n    def shareCandies(self, candies: List[int], k: int) -> int:\n        cnt = Counter(candies[k:])\n        ans = len(cnt)\n        for i in range(k, len(candies)):\n            cnt[candies[i - k]] += 1\n            cnt[candies[i]] -= 1\n            if cnt[candies[i]] == 0:\n                cnt.pop(candies[i])\n            ans = max(ans, len(cnt))\n        return ans\n",
+  "is_python": true
+}

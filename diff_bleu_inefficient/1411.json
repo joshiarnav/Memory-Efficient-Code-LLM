@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1411",
+  "metrics": {
+    "bleu_score": 0.3252681182820042,
+    "edit_similarity": 0.3737796373779637,
+    "ast_similarity": 0.7692307692307693,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numOfWays(self, n: int) -> int:\n        mod = 10**9 + 7\n        f0 = f1 = 6\n        memo = {}\n        for _ in range(n - 1):\n            g0 = g1 = 0\n            if (0, 0) in memo:\n                g0 = memo[(0, 0)]\n            if (1, 0) in memo:\n                g0 += memo[(1, 0)]\n            if (0, 1) in memo:\n                g1 = memo[(0, 1)]\n            if (1, 1) in memo:\n                g1 += memo[(1, 1)]\n            memo[(0, 0)] = (3 * f0 + 2 * f1) % mod\n            memo[(1, 0)] = (2 * f0 + 2 * f1) % mod\n            memo[(0, 1)] = (2 * f0 + 2 * f1) % mod\n            memo[(1, 1)] = (3 * f0 + 2 * f1) % mod\n            f0, f1 = memo[(0, 0)], memo[(1, 0)]\n        return (f0 + f1) % mod",
+  "canonical_solution": "class Solution:\n    def numOfWays(self, n: int) -> int:\n        mod = 10**9 + 7\n        f0 = f1 = 6\n        for _ in range(n - 1):\n            g0 = (3 * f0 + 2 * f1) % mod\n            g1 = (2 * f0 + 2 * f1) % mod\n            f0, f1 = g0, g1\n        return (f0 + f1) % mod\n",
+  "is_python": true
+}

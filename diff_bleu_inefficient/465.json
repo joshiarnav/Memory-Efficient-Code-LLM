@@ -1,0 +1,12 @@
+{
+  "problem_idx": "465",
+  "metrics": {
+    "bleu_score": 0.4925187434169088,
+    "edit_similarity": 0.5729537366548043,
+    "ast_similarity": 0.868421052631579,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minTransfers(self, transactions):\n        g = {}\n        result = 0\n        for f, t, x in transactions:\n            if f not in g:\n                g[f] = 0\n            if t not in g:\n                g[t] = 0\n            g[f] -= x\n            g[t] += x\n        nums = [x for x in g.values() if x]\n        m = len(nums)\n        f = [float('inf')] * (1 << m)\n        for state in range(1 << m):\n            for j in range(m):\n                if state >> j & 1:\n                    s = 0\n                    for k in range(m):\n                        if not (state >> k & 1):\n                            s += nums[k]\n                    if s == 0:\n                        f[state] = min(f[state], j.bit_count() - 1)\n                        f[state] = min(f[state], f[state ^ (1 << j)] + j.bit_count())\n        return f[-1]",
+  "canonical_solution": "class Solution:\n    def minTransfers(self, transactions: List[List[int]]) -> int:\n        g = defaultdict(int)\n        for f, t, x in transactions:\n            g[f] -= x\n            g[t] += x\n        nums = [x for x in g.values() if x]\n        m = len(nums)\n        f = [inf] * (1 << m)\n        f[0] = 0\n        for i in range(1, 1 << m):\n            s = 0\n            for j, x in enumerate(nums):\n                if i >> j & 1:\n                    s += x\n            if s == 0:\n                f[i] = i.bit_count() - 1\n                j = (i - 1) & i\n                while j > 0:\n                    f[i] = min(f[i], f[j] + f[i ^ j])\n                    j = (j - 1) & i\n        return f[-1]\n",
+  "is_python": true
+}

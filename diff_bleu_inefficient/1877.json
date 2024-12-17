@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1877",
+  "metrics": {
+    "bleu_score": 0.3410238704949039,
+    "edit_similarity": 0.40960451977401124,
+    "ast_similarity": 0.6923076923076923,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minPairSum(self, nums: List[int]) -> int:\n        n = len(nums)\n        sum_list = [x + y for x in nums for y in nums]\n        sorted_nums = sorted(nums)\n        max_sum = 0\n        for i in range(n >> 1):\n            for j in range(n - i - 1, n):\n                max_sum = max(max_sum, sum_list[i * n + j])\n        return max_sum",
+  "canonical_solution": "class Solution:\n    def minPairSum(self, nums: List[int]) -> int:\n        nums.sort()\n        n = len(nums)\n        return max(x + nums[n - i - 1] for i, x in enumerate(nums[: n >> 1]))\n",
+  "is_python": true
+}

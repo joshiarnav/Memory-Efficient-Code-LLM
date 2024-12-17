@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2342",
+  "metrics": {
+    "bleu_score": 0.29439639040252485,
+    "edit_similarity": 0.34033149171270716,
+    "ast_similarity": 0.7647058823529411,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumSum(self, nums: List[int]) -> int:\n        d = {}\n        ans = -1\n        for v in nums:\n            digits = []\n            temp = v\n            while temp:\n                digits.append(temp % 10)\n                temp //= 10\n            for i in range(len(digits)):\n                for j in range(i + 1, len(digits)):\n                    x, y = 0, 0\n                    for k in range(len(digits)):\n                        if k != i and k != j:\n                            x += digits[k]\n                        if k != i:\n                            y += digits[k]\n                    if x in d:\n                        d[x].append((v, y))\n                    else:\n                        d[x] = [(v, y)]\n            for k, v in d.items():\n                for z in v:\n                    if z[1] == x:\n                        ans = max(ans, z[0] + v)\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumSum(self, nums: List[int]) -> int:\n        d = defaultdict(int)\n        ans = -1\n        for v in nums:\n            x, y = 0, v\n            while y:\n                x += y % 10\n                y //= 10\n            if x in d:\n                ans = max(ans, d[x] + v)\n            d[x] = max(d[x], v)\n        return ans\n",
+  "is_python": true
+}

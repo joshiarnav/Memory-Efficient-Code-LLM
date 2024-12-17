@@ -1,0 +1,12 @@
+{
+  "problem_idx": "402",
+  "metrics": {
+    "bleu_score": 0.3114494418500619,
+    "edit_similarity": 0.41526717557251913,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def removeKdigits(self, num: str, k: int) -> str:\n        stack = []\n        for c in num:\n            new_stack = []\n            for x in stack:\n                new_stack.append(x)\n            new_stack.append(c)\n            for y in new_stack:\n                if y != c and k and stack and stack[-1] > c:\n                    new_stack.remove(y)\n                    k -= 1\n            stack = new_stack\n        stack = stack[:len(num) - k] + [''] * k\n        result = ''.join(stack)\n        for x in reversed(stack):\n            if x != '0' or not stack:\n                result = x + result\n                break\n        return result",
+  "canonical_solution": "class Solution:\n    def removeKdigits(self, num: str, k: int) -> str:\n        stk = []\n        remain = len(num) - k\n        for c in num:\n            while k and stk and stk[-1] > c:\n                stk.pop()\n                k -= 1\n            stk.append(c)\n        return ''.join(stk[:remain]).lstrip('0') or '0'\n",
+  "is_python": true
+}

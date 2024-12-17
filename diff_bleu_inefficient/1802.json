@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1802",
+  "metrics": {
+    "bleu_score": 0.23721480688773788,
+    "edit_similarity": 0.4968152866242038,
+    "ast_similarity": 0.5428571428571428,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxValue(self, n: int, index: int, maxSum: int) -> int:\n        nums = [0] * n\n        max_val = 1\n\n        for i in range(n):\n            for j in range(1, max_val + 1):\n                temp = nums.copy()\n                temp[i] = j\n                total = sum(temp)\n                if total > maxSum:\n                    break\n                for k in range(n):\n                    if k != i and abs(temp[i] - temp[k]) > 1:\n                        total = float('inf')\n                        break\n                if total <= maxSum:\n                    max_val = max(max_val, j)\n\n        return max_val",
+  "canonical_solution": "class Solution:\n    def maxValue(self, n: int, index: int, maxSum: int) -> int:\n        def sum(x, cnt):\n            return (\n                (x + x - cnt + 1) * cnt // 2 if x >= cnt else (x + 1) * x // 2 + cnt - x\n            )\n\n        left, right = 1, maxSum\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if sum(mid - 1, index) + sum(mid, n - index) <= maxSum:\n                left = mid\n            else:\n                right = mid - 1\n        return left\n",
+  "is_python": true
+}

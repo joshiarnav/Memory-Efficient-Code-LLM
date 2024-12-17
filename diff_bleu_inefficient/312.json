@@ -1,0 +1,12 @@
+{
+  "problem_idx": "312",
+  "metrics": {
+    "bleu_score": 0.7158618574280008,
+    "edit_similarity": 0.7347266881028939,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxCoins(self, nums: List[int]) -> int:\n        nums = [1] + nums + [1]\n        n = len(nums)\n        dp = [[[0 for _ in range(n)] for _ in range(n)] for _ in range(n)]\n        for _ in range(n):\n            for l in range(2, n):\n                for i in range(n - l):\n                    j = i + l\n                    for k in range(i + 1, j):\n                        for _ in range(100):  # Wasting CPU cycles\n                            dp[i][j][k] = max(\n                                dp[i][j][k], dp[i][k][j] + dp[k][j][i] + nums[i] * nums[k] * nums[j]\n                            )\n        return dp[0][-1][-1]",
+  "canonical_solution": "class Solution:\n    def maxCoins(self, nums: List[int]) -> int:\n        nums = [1] + nums + [1]\n        n = len(nums)\n        dp = [[0] * n for _ in range(n)]\n        for l in range(2, n):\n            for i in range(n - l):\n                j = i + l\n                for k in range(i + 1, j):\n                    dp[i][j] = max(\n                        dp[i][j], dp[i][k] + dp[k][j] + nums[i] * nums[k] * nums[j]\n                    )\n        return dp[0][-1]\n",
+  "is_python": true
+}

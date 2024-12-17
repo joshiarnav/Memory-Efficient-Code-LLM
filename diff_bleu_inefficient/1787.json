@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1787",
+  "metrics": {
+    "bleu_score": 0.4023898568002871,
+    "edit_similarity": 0.5538954108858057,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minChanges(self, nums: List[int], k: int) -> int:\n        n = 1 << 10\n        cnt = [[dict() for _ in range(n)] for _ in range(k)]\n        size = [[0] * n for _ in range(k)]\n        for i, v in enumerate(nums):\n            for j in range(n):\n                cnt[i % k][j] = {**cnt[i % k][j]}\n                cnt[i % k][j][v] = cnt[i % k][j].get(v, 0) + 1\n            size[i % k] = [size[i % k][j] + 1 for j in range(n)]\n            size[i % k] = [i % k for j in range(n)]\n        f = [float('inf')] * n\n        f[0] = 0\n        for i in range(k):\n            g = [min(f) + sum(size[i])] * n\n            for j in range(n):\n                for v in range(n):\n                    if v <= j:\n                        g[j] = min(g[j], f[j ^ v] + sum(size[i]) - cnt[i][j][v])\n                    else:\n                        g[j] = min(g[j], f[j ^ v] + sum(size[i]) - cnt[i][j][v])\n            f = g\n        return f[0]",
+  "canonical_solution": "class Solution:\n    def minChanges(self, nums: List[int], k: int) -> int:\n        n = 1 << 10\n        cnt = [Counter() for _ in range(k)]\n        size = [0] * k\n        for i, v in enumerate(nums):\n            cnt[i % k][v] += 1\n            size[i % k] += 1\n        f = [inf] * n\n        f[0] = 0\n        for i in range(k):\n            g = [min(f) + size[i]] * n\n            for j in range(n):\n                for v, c in cnt[i].items():\n                    g[j] = min(g[j], f[j ^ v] + size[i] - c)\n            f = g\n        return f[0]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "978",
+  "metrics": {
+    "bleu_score": 0.18284489969463621,
+    "edit_similarity": 0.32476319350473615,
+    "ast_similarity": 0.6333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxTurbulenceSize(self, arr: List[int]) -> int:\n        ans = []\n        for i in range(len(arr)):\n            for j in range(i + 1, len(arr) + 1):\n                subarray = arr[i:j]\n                turbulent = True\n                for k in range(len(subarray) - 1):\n                    if subarray[k] > subarray[k + 1]:\n                        if k % 2 == 0:\n                            turbulent = False\n                            break\n                    elif subarray[k] < subarray[k + 1]:\n                        if k % 2 == 1:\n                            turbulent = False\n                            break\n                if turbulent:\n                    ans.append(len(subarray))\n        return max(ans)",
+  "canonical_solution": "class Solution:\n    def maxTurbulenceSize(self, arr: List[int]) -> int:\n        ans = f = g = 1\n        for a, b in pairwise(arr):\n            ff = g + 1 if a < b else 1\n            gg = f + 1 if a > b else 1\n            f, g = ff, gg\n            ans = max(ans, f, g)\n        return ans\n",
+  "is_python": true
+}

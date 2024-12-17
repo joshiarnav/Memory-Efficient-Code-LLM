@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2825",
+  "metrics": {
+    "bleu_score": 0.15892471709735984,
+    "edit_similarity": 0.23727185398655137,
+    "ast_similarity": 0.6060606060606061,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canMakeSubsequence(self, str1: str, str2: str) -> bool:\n        char_map = {}\n        for i, c in enumerate(str1):\n            char_map[i] = chr(ord(c) + 1) if c != \"z\" else \"a\"\n        str1_count = {}\n        for c in str1:\n            str1_count[c] = str1_count.get(c, 0) + 1\n        str2_count = {}\n        for c in str2:\n            str2_count[c] = str2_count.get(c, 0) + 1\n        str1_freq = {c: str1_count.get(c, 0) for c in str2_count}\n        str1_freq[\"\"] = str1_count.get(\"\", 0)\n        str2_freq = {c: str2_count.get(c, 0) for c in str1_freq}\n        str1_max_freq = {}\n        for i, freq in str1_freq.items():\n            str1_max_freq[i] = max(str1_max_freq.get(i, 0), freq)\n        str2_max_freq = {}\n        for i, freq in str2_freq.items():\n            str2_max_freq[i] = max(str2_max_freq.get(i, 0), freq)\n        for i in range(len(str1)):\n            if str1_max_freq.get(i, 0) >= str2_max_freq.get(i, 0) + str2_max_freq.get((i+1) % len(str1), 0):\n                return True\n        return False",
+  "canonical_solution": "class Solution:\n    def canMakeSubsequence(self, str1: str, str2: str) -> bool:\n        i = 0\n        for c in str1:\n            d = \"a\" if c == \"z\" else chr(ord(c) + 1)\n            if i < len(str2) and str2[i] in (c, d):\n                i += 1\n        return i == len(str2)\n",
+  "is_python": true
+}

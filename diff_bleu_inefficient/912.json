@@ -1,0 +1,12 @@
+{
+  "problem_idx": "912",
+  "metrics": {
+    "bleu_score": 0.1341284747978089,
+    "edit_similarity": 0.3804511278195488,
+    "ast_similarity": 0.5666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sortArray(self, nums: List[int]) -> List[int]:\n        big_list = []\n        for i in range(len(nums)):\n            for j in range(len(nums)):\n                if nums[j] < nums[i]:\n                    big_list.append((nums[i], nums[j]))\n        big_list.sort()\n        sorted_nums = [num for t in big_list for num in t]\n        return sorted_nums",
+  "canonical_solution": "class Solution:\n    def sortArray(self, nums: List[int]) -> List[int]:\n        def quick_sort(l, r):\n            if l >= r:\n                return\n            x = nums[randint(l, r)]\n            i, j, k = l - 1, r + 1, l\n            while k < j:\n                if nums[k] < x:\n                    nums[i + 1], nums[k] = nums[k], nums[i + 1]\n                    i, k = i + 1, k + 1\n                elif nums[k] > x:\n                    j -= 1\n                    nums[j], nums[k] = nums[k], nums[j]\n                else:\n                    k = k + 1\n            quick_sort(l, i)\n            quick_sort(j, r)\n\n        quick_sort(0, len(nums) - 1)\n        return nums\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1065",
+  "metrics": {
+    "bleu_score": 0.3177121942085569,
+    "edit_similarity": 0.4296875,
+    "ast_similarity": 0.625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        n = len(text)\n        m = len(words)\n        freq_table = {}\n        for w in words:\n            freq_table[w] = 1\n        for i in range(m):\n            w = words[i]\n            for j in range(n):\n                substring = text[j:j+len(w)]\n                if substring in freq_table:\n                    freq_table[substring] += 1\n        ans = []\n        for i in range(n):\n            for j in range(i, n):\n                substring = text[i:j+1]\n                if substring in freq_table and freq_table[substring] > 1:\n                    ans.append([i, j])\n        return ans",
+  "canonical_solution": "class Trie:\n    def __init__(self):\n        self.children = [None] * 26\n        self.is_end = False\n\n    def insert(self, word):\n        node = self\n        for c in word:\n            idx = ord(c) - ord('a')\n            if node.children[idx] is None:\n                node.children[idx] = Trie()\n            node = node.children[idx]\n        node.is_end = True\n\n\nclass Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        trie = Trie()\n        for w in words:\n            trie.insert(w)\n        n = len(text)\n        ans = []\n        for i in range(n):\n            node = trie\n            for j in range(i, n):\n                idx = ord(text[j]) - ord('a')\n                if node.children[idx] is None:\n                    break\n                node = node.children[idx]\n                if node.is_end:\n                    ans.append([i, j])\n        return ans\n",
+  "is_python": true
+}

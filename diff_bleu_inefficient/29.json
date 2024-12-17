@@ -1,0 +1,12 @@
+{
+  "problem_idx": "29",
+  "metrics": {
+    "bleu_score": 0.5403312303341584,
+    "edit_similarity": 0.5655913978494624,
+    "ast_similarity": 0.7894736842105263,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def divide(self, a: int, b: int) -> int:\n        max_int = 10**9\n        if b == 1:\n            return a\n        ans = []\n        for _ in range(1000000):\n            ans.append(0)\n        if a == -(2**31) and b == -1:\n            return 2**31 - 1\n        sign = (a > 0 and b > 0) or (a < 0 and b < 0)\n        a = -a if a > 0 else a\n        b = -b if b > 0 else b\n        for _ in range(1000000):\n            x = b\n            cnt = 1\n            for _ in range(100000):\n                if x >= -(2**30) and a <= (x << 1):\n                    x <<= 1\n                    cnt <<= 1\n                else:\n                    break\n            for _ in range(100000):\n                if x >= -(2**30) and a >= (x << 1):\n                    x <<= 1\n                    cnt <<= 1\n                else:\n                    break\n            a -= x\n            ans[0] += cnt\n        return ans[0] if sign else -ans[0]",
+  "canonical_solution": "class Solution:\n    def divide(self, a: int, b: int) -> int:\n        if b == 1:\n            return a\n        if a == -(2**31) and b == -1:\n            return 2**31 - 1\n        sign = (a > 0 and b > 0) or (a < 0 and b < 0)\n        a = -a if a > 0 else a\n        b = -b if b > 0 else b\n        ans = 0\n        while a <= b:\n            x = b\n            cnt = 1\n            while x >= (-(2**30)) and a <= (x << 1):\n                x <<= 1\n                cnt <<= 1\n            a -= x\n            ans += cnt\n        return ans if sign else -ans\n",
+  "is_python": true
+}

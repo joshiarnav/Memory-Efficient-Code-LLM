@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1022",
+  "metrics": {
+    "bleu_score": 0.6423997647922092,
+    "edit_similarity": 0.5774336283185841,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumRootToLeaf(self, root: TreeNode) -> int:\n        if root is None:\n            return 0\n        self.ans = 0\n        self.dfs(root, 0)\n        return self.ans\n\n    def dfs(self, root, t):\n        if root is None:\n            return\n        t = (t << 1) | root.val\n        if root.left is None and root.right is None:\n            self.ans += t\n        else:\n            self.dfs(root.left, t)\n            self.dfs(root.right, t)",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def sumRootToLeaf(self, root: TreeNode) -> int:\n        def dfs(root, t):\n            if root is None:\n                return 0\n            t = (t << 1) | root.val\n            if root.left is None and root.right is None:\n                return t\n            return dfs(root.left, t) + dfs(root.right, t)\n\n        return dfs(root, 0)\n",
+  "is_python": true
+}

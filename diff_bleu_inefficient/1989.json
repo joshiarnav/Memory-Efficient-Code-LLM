@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1989",
+  "metrics": {
+    "bleu_score": 0.3556105811739054,
+    "edit_similarity": 0.4825072886297376,
+    "ast_similarity": 0.6470588235294118,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def catchMaximumAmountofPeople(self, team: List[int], dist: int) -> int:\n        n = len(team)\n        it_array = []\n        not_it_array = []\n        for i, x in enumerate(team):\n            if x:\n                it_array.append(i)\n            else:\n                not_it_array.append(i)\n        \n        max_catch = 0\n        for it in it_array:\n            temp_not_it_array = [not_it for not_it in not_it_array if abs(it - not_it) <= dist]\n            not_it_array = [not_it for not_it in not_it_array if not_it not in temp_not_it_array]\n            max_catch += len(temp_not_it_array)\n            not_it_array = not_it_array + temp_not_it_array\n        return max_catch",
+  "canonical_solution": "class Solution:\n    def catchMaximumAmountofPeople(self, team: List[int], dist: int) -> int:\n        ans = j = 0\n        n = len(team)\n        for i, x in enumerate(team):\n            if x:\n                while j < n and (team[j] or i - j > dist):\n                    j += 1\n                if j < n and abs(i - j) <= dist:\n                    ans += 1\n                    j += 1\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1675",
+  "metrics": {
+    "bleu_score": 0.46339240838163204,
+    "edit_similarity": 0.6130952380952381,
+    "ast_similarity": 0.967741935483871,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumDeviation(self, nums: List[int]) -> int:\n        h = []\n        mi = inf\n        map_ = {}\n        for v in nums:\n            if v & 1:\n                v <<= 1\n            map_[v] = 0\n            h.append(v)\n            mi = min(mi, v)\n        h.sort()\n        ans = h[-1] - mi\n        while h[0] % 2 == 0:\n            h.pop(0)\n            new_list = []\n            for i in range(len(h)):\n                new_list.append(h[i] // 2)\n            h = new_list\n            h.sort()\n            mi = min(mi, h[0])\n            ans = min(ans, h[-1] - mi)\n            map_ = {}\n            for v in h:\n                map_[v] = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumDeviation(self, nums: List[int]) -> int:\n        h = []\n        mi = inf\n        for v in nums:\n            if v & 1:\n                v <<= 1\n            h.append(-v)\n            mi = min(mi, v)\n        heapify(h)\n        ans = -h[0] - mi\n        while h[0] % 2 == 0:\n            x = heappop(h) // 2\n            heappush(h, x)\n            mi = min(mi, -x)\n            ans = min(ans, -h[0] - mi)\n        return ans\n",
+  "is_python": true
+}

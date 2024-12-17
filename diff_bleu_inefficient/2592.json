@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2592",
+  "metrics": {
+    "bleu_score": 0.1920394901948028,
+    "edit_similarity": 0.24748201438848916,
+    "ast_similarity": 0.9090909090909091,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximizeGreatness(self, nums: List[int]) -> int:\n        nums_copy = nums[:]\n        nums_copy.sort()\n        original_nums = nums[:]\n        max_greatness = 0\n        for i in range(len(nums_copy)):\n            temp_nums = nums_copy[:]\n            temp_nums.remove(nums_copy[i])\n            temp_nums.insert(i, nums_copy[i])\n            temp_greatness = self.count_greatness(original_nums, temp_nums)\n            max_greatness = max(max_greatness, temp_greatness)\n        return max_greatness\n\n    def count_greatness(self, nums, perm):\n        count = 0\n        for i in range(len(nums)):\n            if perm[i] > nums[i]:\n                count += 1\n        return count",
+  "canonical_solution": "class Solution:\n    def maximizeGreatness(self, nums: List[int]) -> int:\n        nums.sort()\n        i = 0\n        for x in nums:\n            i += x > nums[i]\n        return i\n",
+  "is_python": true
+}

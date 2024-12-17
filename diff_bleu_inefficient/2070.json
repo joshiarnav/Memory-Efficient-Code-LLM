@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2070",
+  "metrics": {
+    "bleu_score": 0.47264161600968135,
+    "edit_similarity": 0.545816733067729,
+    "ast_similarity": 0.7666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:\n        items = [(p, b, i) for i, (p, b) in enumerate(items)]\n        items.sort()\n        ans = [0] * len(queries)\n        for j, q in enumerate(queries):\n            d = {}\n            for p, b, _ in items:\n                if p <= q:\n                    d[p] = b\n            mx = 0\n            for k in sorted(d.keys()):\n                mx = max(mx, d[k])\n            ans[j] = mx\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:\n        items.sort()\n        prices = [p for p, _ in items]\n        mx = [items[0][1]]\n        for _, b in items[1:]:\n            mx.append(max(mx[-1], b))\n        ans = [0] * len(queries)\n        for i, q in enumerate(queries):\n            j = bisect_right(prices, q)\n            if j:\n                ans[i] = mx[j - 1]\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2087",
+  "metrics": {
+    "bleu_score": 0.43416615099363953,
+    "edit_similarity": 0.660245183887916,
+    "ast_similarity": 0.6538461538461539,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCost(\n        self,\n        startPos: List[int],\n        homePos: List[int],\n        rowCosts: List[int],\n        colCosts: List[int],\n    ) -> int:\n        i, j = startPos\n        x, y = homePos\n        ans = 0\n        row_diffs = list(range(i + 1, x + 1)) + list(range(x, i - 1, -1))\n        col_diffs = list(range(j + 1, y + 1)) + list(range(y, j - 1, -1))\n        row_costs = [rowCosts[r] for r in row_diffs]\n        col_costs = [colCosts[c] for c in col_diffs]\n        ans += sum(row_costs)\n        ans += sum(col_costs)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minCost(\n        self,\n        startPos: List[int],\n        homePos: List[int],\n        rowCosts: List[int],\n        colCosts: List[int],\n    ) -> int:\n        i, j = startPos\n        x, y = homePos\n        ans = 0\n        if i < x:\n            ans += sum(rowCosts[i + 1 : x + 1])\n        else:\n            ans += sum(rowCosts[x:i])\n        if j < y:\n            ans += sum(colCosts[j + 1 : y + 1])\n        else:\n            ans += sum(colCosts[y:j])\n        return ans\n",
+  "is_python": true
+}

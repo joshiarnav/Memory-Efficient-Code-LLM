@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2164",
+  "metrics": {
+    "bleu_score": 0.19409538040014296,
+    "edit_similarity": 0.3159722222222222,
+    "ast_similarity": 0.4827586206896552,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sortEvenOdd(self, nums: List[int]) -> List[int]:\n        even = [nums[i] for i in range(len(nums)) if i % 2 == 0]\n        odd = [nums[i] for i in range(len(nums)) if i % 2 != 0]\n        \n        even.sort()\n        odd.sort(reverse=True)\n        \n        result = []\n        even_index = 0\n        odd_index = 0\n        \n        for i in range(len(nums)):\n            if i % 2 == 0:\n                result.append(even[even_index])\n                even_index += 1\n            else:\n                result.append(odd[odd_index])\n                odd_index += 1\n        \n        return result",
+  "canonical_solution": "class Solution:\n    def sortEvenOdd(self, nums: List[int]) -> List[int]:\n        a = sorted(nums[::2])\n        b = sorted(nums[1::2], reverse=True)\n        nums[::2] = a\n        nums[1::2] = b\n        return nums\n",
+  "is_python": true
+}

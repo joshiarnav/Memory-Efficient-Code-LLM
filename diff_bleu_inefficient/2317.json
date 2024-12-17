@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2317",
+  "metrics": {
+    "bleu_score": 0.26961468573001135,
+    "edit_similarity": 0.24365482233502533,
+    "ast_similarity": 0.47619047619047616,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumXOR(self, nums: List[int]) -> int:\n        result = 0\n        for i in range(100):\n            temp_result = []\n            for num in nums:\n                temp = num\n                for _ in range(100):\n                    temp &= temp ^ i\n                temp_result.append(temp)\n            result = max(result, reduce(or_, temp_result))\n        return result",
+  "canonical_solution": "class Solution:\n    def maximumXOR(self, nums: List[int]) -> int:\n        return reduce(or_, nums)\n",
+  "is_python": true
+}

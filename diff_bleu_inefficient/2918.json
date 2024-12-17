@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2918",
+  "metrics": {
+    "bleu_score": 0.1915956254867573,
+    "edit_similarity": 0.25276752767527677,
+    "ast_similarity": 0.6774193548387096,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSum(self, nums1: List[int], nums2: List[int]) -> int:\n        # Create a set to store unique numbers from both arrays\n        unique_nums = set()\n        for num in nums1:\n            unique_nums.add(num)\n        for num in nums2:\n            unique_nums.add(num)\n        \n        # Create a dictionary to map each number to its frequency in both arrays\n        freq_dict = {}\n        for num in unique_nums:\n            freq_dict[num] = [nums1.count(num), nums2.count(num)]\n        \n        # Create a list to store all possible sums\n        all_sums = []\n        for num in unique_nums:\n            all_sums.append((num, num, num, num))\n        \n        # Calculate all possible sums\n        possible_sums = []\n        for i in range(len(all_sums)):\n            for j in range(len(all_sums)):\n                for k in range(len(all_sums)):\n                    for m in range(len(all_sums)):\n                        if all_sums[i][0] + all_sums[j][1] + all_sums[k][2] + all_sums[m][3] == sum(nums1) + nums1.count(0):\n                            possible_sums.append(all_sums[i][0] + all_sums[j][1] + all_sums[k][2] + all_sums[m][3])\n        \n        # Find the minimum sum that is greater than or equal to sum of nums2\n        min_sum = min([s for s in possible_sums if s >= sum(nums2) + nums2.count(0)])\n        \n        # If no such sum is found, return -1\n        if min_sum == float('inf'):\n            return -1\n        else:\n            return min_sum",
+  "canonical_solution": "class Solution:\n    def minSum(self, nums1: List[int], nums2: List[int]) -> int:\n        s1 = sum(nums1) + nums1.count(0)\n        s2 = sum(nums2) + nums2.count(0)\n        if s1 > s2:\n            return self.minSum(nums2, nums1)\n        if s1 == s2:\n            return s1\n        return -1 if nums1.count(0) == 0 else s2\n",
+  "is_python": true
+}

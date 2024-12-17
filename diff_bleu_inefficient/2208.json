@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2208",
+  "metrics": {
+    "bleu_score": 0.3285666086947006,
+    "edit_similarity": 0.4948096885813149,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s = sum(nums) / 2\n        vals = []\n        for v in nums:\n            vals.append((v, v))\n        for v in vals:\n            v[0] = v[1] / 2\n        for v in vals:\n            if v[1] > 0:\n                v[1] /= 2\n        h = []\n        for v in vals:\n            h.append(v)\n        ans = 0\n        while s > 0:\n            t = max(h, key=lambda x: x[0])\n            h.remove(t)\n            t = (t[0] / 2, t[1] / 2)\n            h.append(t)\n            s -= t[1]\n            ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s = sum(nums) / 2\n        h = []\n        for v in nums:\n            heappush(h, -v)\n        ans = 0\n        while s > 0:\n            t = -heappop(h) / 2\n            s -= t\n            heappush(h, -t)\n            ans += 1\n        return ans\n",
+  "is_python": true
+}

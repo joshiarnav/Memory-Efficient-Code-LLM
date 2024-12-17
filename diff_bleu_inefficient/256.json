@@ -1,0 +1,12 @@
+{
+  "problem_idx": "256",
+  "metrics": {
+    "bleu_score": 0.3781182778483311,
+    "edit_similarity": 0.5164835164835164,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCost(self, costs: List[List[int]]) -> int:\n        memory = []\n        for ca, cb, cc in costs:\n            temp = []\n            for x, y, z in memory:\n                temp.append(min(y, z) + ca)\n                temp.append(min(x, z) + cb)\n                temp.append(min(x, y) + cc)\n            memory = temp\n        return min(memory)",
+  "canonical_solution": "class Solution:\n    def minCost(self, costs: List[List[int]]) -> int:\n        a = b = c = 0\n        for ca, cb, cc in costs:\n            a, b, c = min(b, c) + ca, min(a, c) + cb, min(a, b) + cc\n        return min(a, b, c)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1310",
+  "metrics": {
+    "bleu_score": 0.16852366153848553,
+    "edit_similarity": 0.24810606060606055,
+    "ast_similarity": 0.7037037037037037,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def xorQueries(self, arr, queries):\n        n = len(arr)\n        table = []\n        for i in range(n):\n            table.append([])\n            for j in range(n - i):\n                table[i].append(arr[i + j])\n        result = []\n        for l, r in queries:\n            subtable = [row[l:r+1] for row in table]\n            element = subtable[0][0]\n            for row in subtable:\n                for item in row:\n                    element ^= item\n            result.append(element)\n        return result",
+  "canonical_solution": "class Solution:\n    def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:\n        s = list(accumulate(arr, xor, initial=0))\n        return [s[r + 1] ^ s[l] for l, r in queries]\n",
+  "is_python": true
+}

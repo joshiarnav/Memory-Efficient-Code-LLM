@@ -1,0 +1,12 @@
+{
+  "problem_idx": "942",
+  "metrics": {
+    "bleu_score": 0.23331475281446665,
+    "edit_similarity": 0.4779411764705882,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def diStringMatch(self, s: str) -> List[int]:\n        n = len(s)\n        low = [0] * (n + 1)\n        high = [n] * (n + 1)\n        ans = [0] * (n + 1)\n        for i in range(n):\n            if s[i] == 'I':\n                low[i + 1] = low[i] + 1\n                for j in range(i):\n                    ans[j] = low[j]\n                for j in range(i + 1, n + 1):\n                    ans[j] = low[i]\n            else:\n                high[i + 1] = high[i] - 1\n                for j in range(i):\n                    ans[j] = high[i]\n                for j in range(i + 1, n + 1):\n                    ans[j] = high[i + 1]\n        ans[n] = low[-1]\n        return ans",
+  "canonical_solution": "class Solution:\n    def diStringMatch(self, s: str) -> List[int]:\n        n = len(s)\n        low, high = 0, n\n        ans = []\n        for i in range(n):\n            if s[i] == 'I':\n                ans.append(low)\n                low += 1\n            else:\n                ans.append(high)\n                high -= 1\n        ans.append(low)\n        return ans\n",
+  "is_python": true
+}

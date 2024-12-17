@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1356",
+  "description": "\nYou are given an integer array `arr`. Sort the integers in the array\u00a0in ascending order by the number of `1`'s\u00a0in their binary representation and in case of two or more integers have the same number of `1`'s you have to sort them in ascending order.\n\n\nReturn *the array after sorting it*.\n\n\n\u00a0\n\n\n**Example 1:**\n\n\n\n```\n\n**Input:** arr = [0,1,2,3,4,5,6,7,8]\n**Output:** [0,1,2,4,8,3,5,6,7]\n**Explantion:** [0] is the only integer with 0 bits.\n[1,2,4,8] all have 1 bit.\n[3,5,6] have 2 bits.\n[7] has 3 bits.\nThe sorted array by bits is [0,1,2,4,8,3,5,6,7]\n\n```\n\n**Example 2:**\n\n\n\n```\n\n**Input:** arr = [1024,512,256,128,64,32,16,8,4,2,1]\n**Output:** [1,2,4,8,16,32,64,128,256,512,1024]\n**Explantion:** All integers have 1 bit in the binary representation, you should just sort them in ascending order.\n\n```\n\n\u00a0\n\n\n**Constraints:**\n\n\n* `1 <= arr.length <= 500`\n* `0 <= arr[i] <= 104`\n\n\n",
+  "inefficient_solution": "class Solution:\n    def sortByBits(self, arr):\n        n = len(arr)\n        bits = [0] * n\n        for i in range(n):\n            bits[i] = bin(arr[i]).count('1')\n        bit_counts = [0] * 500\n        for i in range(n):\n            bit_counts[bits[i]] += 1\n        counts = [0] * 500\n        for i in range(500):\n            counts[i] = [0] * bit_counts[i]\n        for i in range(n):\n            counts[bits[i]][0] = arr[i]\n            counts[bits[i]][1] = i\n        sorted_counts = [0] * 500\n        for i in range(500):\n            sorted_counts[i] = sorted(counts[i], key=lambda x: x[0])\n        sorted_arr = [0] * n\n        for i in range(500):\n            for j in range(bit_counts[i]):\n                sorted_arr[sorted_counts[i][j][1]] = sorted_counts[i][j][0]\n        return sorted_arr",
+  "canonical_solution": "class Solution:\n    def sortByBits(self, arr: List[int]) -> List[int]:\n        return sorted(arr, key=lambda x: (x.bit_count(), x))\n",
+  "finetuned_model_solution": "class Solution:\n    def sortByBits(self, arr: List[int]) -> List[int]:\n        arr.sort(key=lambda x: (x & 0x1111) + (x >> 4))\n        return arr",
+  "raw_model_solution": "class Solution:\n    def sortByBits(self, arr):\n        return sorted(arr, key=lambda x: (bin(x).count('1'), x))",
+  "finetuned_model_diff_bleu": 0.9330549969806254,
+  "raw_model_diff_bleu": 0.8518141755089575,
+  "is_python": true,
+  "diff_bleu_delta": 0.08124082147166789
+}

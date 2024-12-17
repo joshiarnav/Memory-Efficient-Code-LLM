@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1749",
+  "metrics": {
+    "bleu_score": 0.09546926075361933,
+    "edit_similarity": 0.35910652920962194,
+    "ast_similarity": 0.6956521739130435,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxAbsoluteSum(self, nums):\n        n = len(nums)\n        max_sum = [0] * n\n        min_sum = [0] * n\n        max_abs_sum = [0] * n\n        max_abs = 0\n\n        for i in range(n):\n            for j in range(i, -1, -1):\n                max_sum[i] = max(max_sum[i], max_sum[j] + nums[i]) if j != i else nums[i]\n                min_sum[i] = min(min_sum[i], min_sum[j] + nums[i]) if j != i else nums[i]\n                max_abs_sum[i] = max(max_abs_sum[i], max(max_sum[i], abs(min_sum[i])))\n            max_abs = max(max_abs, max_abs_sum[i])\n        return max_abs",
+  "canonical_solution": "class Solution:\n    def maxAbsoluteSum(self, nums: List[int]) -> int:\n        f = g = 0\n        ans = 0\n        for x in nums:\n            f = max(f, 0) + x\n            g = min(g, 0) + x\n            ans = max(ans, f, abs(g))\n        return ans\n",
+  "is_python": true
+}

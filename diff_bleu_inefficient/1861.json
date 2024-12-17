@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1861",
+  "metrics": {
+    "bleu_score": 0.3771107495770765,
+    "edit_similarity": 0.5535055350553506,
+    "ast_similarity": 0.7647058823529411,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:\n        m, n = len(box), len(box[0])\n        ans = [[None] * m for _ in range(m * n)]\n        for i in range(m):\n            for j in range(n):\n                ans[j + i * m] = [box[i][j]]\n        for i in range(m * n):\n            ans[i] *= 10\n        for j in range(m * n):\n            for k in range(10 * m * n):\n                ans[j][k] = None\n        for j in range(m * n):\n            for i in range(10 * m * n - 1, -1, -1):\n                if ans[j][i] == '*':\n                    for k in range(10 * m * n):\n                        ans[j][k] = None\n                elif ans[j][i] == '.':\n                    for k in range(10 * m * n):\n                        ans[j][k] = '.'\n                elif ans[j][i - 1] == '#':\n                    ans[j][i - 1] = '.'\n                    ans[j][i] = '#'\n                    break\n                elif ans[j][i] == '#':\n                    pass\n        for j in range(m * n):\n            ans[j] = ans[j][:m]\n        return [ans[j] for j in range(m * n) // m]",
+  "canonical_solution": "class Solution:\n    def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:\n        m, n = len(box), len(box[0])\n        ans = [[None] * m for _ in range(n)]\n        for i in range(m):\n            for j in range(n):\n                ans[j][m - i - 1] = box[i][j]\n        for j in range(m):\n            q = deque()\n            for i in range(n - 1, -1, -1):\n                if ans[i][j] == '*':\n                    q.clear()\n                elif ans[i][j] == '.':\n                    q.append(i)\n                elif q:\n                    ans[q.popleft()][j] = '#'\n                    ans[i][j] = '.'\n                    q.append(i)\n        return ans\n",
+  "is_python": true
+}

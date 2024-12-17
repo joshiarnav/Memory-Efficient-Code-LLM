@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1318",
+  "metrics": {
+    "bleu_score": 0.36027486778727474,
+    "edit_similarity": 0.5010615711252654,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minFlips(self, a: int, b: int, c: int) -> int:\n        ans = 0\n        for _ in range(a.bit_length() + b.bit_length() + c.bit_length()):\n            x = a & 1\n            y = b & 1\n            z = c & 1\n            ans += 1\n            a >>= 1\n            b >>= 1\n            c >>= 1\n            if x | y == z:\n                ans -= 1\n                a = a << 1 | x\n                b = b << 1 | y\n                c = c << 1 | z\n        return ans",
+  "canonical_solution": "class Solution:\n    def minFlips(self, a: int, b: int, c: int) -> int:\n        ans = 0\n        for i in range(30):\n            x, y, z = a >> i & 1, b >> i & 1, c >> i & 1\n            if x | y != z:\n                ans += 2 if x == 1 and y == 1 else 1\n        return ans\n",
+  "is_python": true
+}

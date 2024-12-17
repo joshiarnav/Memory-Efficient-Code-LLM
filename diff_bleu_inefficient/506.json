@@ -1,0 +1,12 @@
+{
+  "problem_idx": "506",
+  "metrics": {
+    "bleu_score": 0.6989930467513578,
+    "edit_similarity": 0.7111111111111111,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findRelativeRanks(self, score: List[int]) -> List[str]:\n        n = len(score)\n        sorted_list = list(range(n))\n        score_with_index = [(score[i], i) for i in range(n)]\n        sorted_score_with_index = sorted(score_with_index, key=lambda x: -x[0])\n        top3 = ['Gold Medal', 'Silver Medal', 'Bronze Medal']\n        ans = [None] * n\n        for i in range(n):\n            ans[sorted_score_with_index[i][1]] = top3[i] if i < 3 else str(i + 1)\n        return ans",
+  "canonical_solution": "class Solution:\n    def findRelativeRanks(self, score: List[int]) -> List[str]:\n        n = len(score)\n        idx = list(range(n))\n        idx.sort(key=lambda x: -score[x])\n        top3 = ['Gold Medal', 'Silver Medal', 'Bronze Medal']\n        ans = [None] * n\n        for i in range(n):\n            ans[idx[i]] = top3[i] if i < 3 else str(i + 1)\n        return ans\n",
+  "is_python": true
+}

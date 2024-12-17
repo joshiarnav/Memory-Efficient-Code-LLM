@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2593",
+  "metrics": {
+    "bleu_score": 0.5114468088740699,
+    "edit_similarity": 0.5482954545454546,
+    "ast_similarity": 0.8285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        vis = [False] * (10**6)\n        q = [(x, i) for i, x in enumerate(nums)]\n        marked = [False] * (10**6)\n        score = [0] * n\n        ans = 0\n        for _ in range(n):\n            temp_q = q.copy()\n            q = []\n            for x, i in temp_q:\n                if not marked[i]:\n                    q.append((x, i))\n                    marked[i] = True\n            while q:\n                x, i = q.pop()\n                ans += x\n                marked[i] = True\n                for j in (i - 1, i + 1):\n                    if 0 <= j < n:\n                        marked[j] = True\n        return ans",
+  "canonical_solution": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        vis = [False] * n\n        q = [(x, i) for i, x in enumerate(nums)]\n        heapify(q)\n        ans = 0\n        while q:\n            x, i = heappop(q)\n            ans += x\n            vis[i] = True\n            for j in (i - 1, i + 1):\n                if 0 <= j < n:\n                    vis[j] = True\n            while q and vis[q[0][1]]:\n                heappop(q)\n        return ans\n",
+  "is_python": true
+}

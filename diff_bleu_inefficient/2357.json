@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2357",
+  "metrics": {
+    "bleu_score": 0.15760994791558142,
+    "edit_similarity": 0.17741935483870963,
+    "ast_similarity": 0.3870967741935484,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        non_zero_nums = []\n        for num in nums:\n            if num != 0:\n                non_zero_nums.append(num)\n        \n        memo = {}\n        def dfs(arr):\n            if not arr:\n                return 0\n            if tuple(arr) in memo:\n                return memo[tuple(arr)]\n            min_val = min(arr)\n            new_arr = [x - min_val for x in arr if x > 0]\n            if not any(new_arr):\n                return 1\n            memo[tuple(arr)] = 1 + dfs(new_arr)\n            return memo[tuple(arr)]\n        \n        return dfs(non_zero_nums)",
+  "canonical_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        return len({x for x in nums if x})\n",
+  "is_python": true
+}

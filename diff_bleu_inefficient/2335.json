@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2335",
+  "metrics": {
+    "bleu_score": 0.16023631894305698,
+    "edit_similarity": 0.30597014925373134,
+    "ast_similarity": 0.6071428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def fillCups(self, amount: List[int]) -> int:\n        amount_copy = amount.copy()\n        max_fill = 100000\n        fill_times = [[0 for _ in range(3)] for _ in range(max_fill)]\n        for i in range(max_fill):\n            for j in range(3):\n                fill_times[i][j] = amount_copy[j] // 2 + (amount_copy[j] % 2)\n                if i > 0:\n                    fill_times[i][j] += fill_times[i-1][j]\n            amount_copy[fill_times[i].index(min(fill_times[i]))] -= min(fill_times[i])\n        return max_fill",
+  "canonical_solution": "class Solution:\n    def fillCups(self, amount: List[int]) -> int:\n        amount.sort()\n        if amount[0] + amount[1] <= amount[2]:\n            return amount[2]\n        return (sum(amount) + 1) // 2\n",
+  "is_python": true
+}

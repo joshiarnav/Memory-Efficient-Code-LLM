@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1885",
+  "metrics": {
+    "bleu_score": 0.38837679446174966,
+    "edit_similarity": 0.4158653846153846,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countPairs(self, nums1, nums2):\n        n = len(nums1)\n        temp = [nums1[i] - nums2[i] for i in range(n)]\n        temp.sort()\n        temp2 = [(nums1[i] - nums2[i], i) for i in range(n)]\n        temp2.sort()\n        count = 0\n        for i, v in enumerate(temp):\n            for j in range(i + 1, n):\n                if v + temp[j] > 0:\n                    count += 1\n        return count",
+  "canonical_solution": "class Solution:\n    def countPairs(self, nums1: List[int], nums2: List[int]) -> int:\n        n = len(nums1)\n        d = [nums1[i] - nums2[i] for i in range(n)]\n        d.sort()\n        return sum(n - bisect_right(d, -v, lo=i + 1) for i, v in enumerate(d))\n",
+  "is_python": true
+}

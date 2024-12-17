@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1337",
+  "metrics": {
+    "bleu_score": 0.464533222747836,
+    "edit_similarity": 0.41996233521657256,
+    "ast_similarity": 0.6129032258064516,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:\n        m, n = len(mat), len(mat[0])\n        soldier_counts = []\n        for row in mat:\n            soldier_count = 0\n            row_copy = row[:]\n            while row_copy:\n                soldier_count += row_copy.pop(0)\n            soldier_counts.append(soldier_count)\n        sorted_soldier_counts = [i for _, i in sorted((soldier_count, idx) for idx, soldier_count in enumerate(soldier_counts))]\n        return sorted_soldier_counts[:k]",
+  "canonical_solution": "class Solution:\n    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:\n        m, n = len(mat), len(mat[0])\n        ans = [n - bisect_right(row[::-1], 0) for row in mat]\n        idx = list(range(m))\n        idx.sort(key=lambda i: ans[i])\n        return idx[:k]\n",
+  "is_python": true
+}

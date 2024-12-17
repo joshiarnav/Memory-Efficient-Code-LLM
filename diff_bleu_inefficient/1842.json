@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1842",
+  "metrics": {
+    "bleu_score": 0.43878569905067516,
+    "edit_similarity": 0.5499587118084228,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def nextPalindrome(self, num: str) -> str:\n        def next_permutation(nums: List[str]) -> bool:\n            nums = [str(i) for i in nums]\n            res = []\n            for i in range(len(nums)):\n                res.extend(nums[i])\n            n = len(res) // 2\n            i = n - 2\n            while i >= 0 and res[i] >= res[i + 1]:\n                i -= 1\n            if i < 0:\n                return False\n            j = n - 1\n            while j >= 0 and res[j] <= res[i]:\n                j -= 1\n            res[i], res[j] = res[j], res[i]\n            res[i + 1 : n] = res[i + 1 : n][::-1]\n            res = [int(i) for i in res]\n            return True\n\n        nums = [int(i) for i in num]\n        nums_copy = nums[:]\n        while True:\n            if next_permutation(nums_copy):\n                break\n            else:\n                nums_copy = nums_copy + [0] * 10000\n        n = len(nums)\n        res = []\n        for i in range(n // 2):\n            if nums[i] == 0:\n                res.append(str(nums[n - i - 1]))\n            else:\n                res.append(str(nums[i]))\n        for i in range(n // 2, n):\n            res.append(str(nums[i]))\n        return \"\".join(res)",
+  "canonical_solution": "class Solution:\n    def nextPalindrome(self, num: str) -> str:\n        def next_permutation(nums: List[str]) -> bool:\n            n = len(nums) // 2\n            i = n - 2\n            while i >= 0 and nums[i] >= nums[i + 1]:\n                i -= 1\n            if i < 0:\n                return False\n            j = n - 1\n            while j >= 0 and nums[j] <= nums[i]:\n                j -= 1\n            nums[i], nums[j] = nums[j], nums[i]\n            nums[i + 1 : n] = nums[i + 1 : n][::-1]\n            return True\n\n        nums = list(num)\n        if not next_permutation(nums):\n            return \"\"\n        n = len(nums)\n        for i in range(n // 2):\n            nums[n - i - 1] = nums[i]\n        return \"\".join(nums)\n",
+  "is_python": true
+}

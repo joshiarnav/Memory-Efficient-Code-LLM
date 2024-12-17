@@ -1,0 +1,12 @@
+{
+  "problem_idx": "344",
+  "metrics": {
+    "bleu_score": 0.31044558371468994,
+    "edit_similarity": 0.4755700325732899,
+    "ast_similarity": 0.5185185185185185,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reverseString(self, s: List[str]) -> None:\n        reversed_s = [\"\"] * len(s)\n        for i, c in enumerate(s):\n            reversed_s[i] = c\n\n        temp_s = [\"\" for _ in range(len(s))]\n        for i, c in enumerate(reversed_s):\n            temp_s[i] = c\n\n        s[:] = temp_s[::-1]",
+  "canonical_solution": "class Solution:\n    def reverseString(self, s: List[str]) -> None:\n        i, j = 0, len(s) - 1\n        while i < j:\n            s[i], s[j] = s[j], s[i]\n            i, j = i + 1, j - 1\n",
+  "is_python": true
+}

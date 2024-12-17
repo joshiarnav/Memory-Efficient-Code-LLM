@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1009",
+  "metrics": {
+    "bleu_score": 0.432260877853527,
+    "edit_similarity": 0.6522727272727273,
+    "ast_similarity": 0.6,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def bitwiseComplement(self, n: int) -> int:\n        result = []\n        for i in range(0, 30):\n            result.append(0)\n        if n == 0:\n            result[0] = 1\n        else:\n            for i in range(30, -1, -1):\n                b = n & (1 << i)\n                if b != 0:\n                    result[30-i] = 1\n        ans = 0\n        for i in range(30):\n            ans = ans * 2 + result[i]\n        return ans",
+  "canonical_solution": "class Solution:\n    def bitwiseComplement(self, n: int) -> int:\n        if n == 0:\n            return 1\n        ans = 0\n        find = False\n        for i in range(30, -1, -1):\n            b = n & (1 << i)\n            if not find and b == 0:\n                continue\n            find = True\n            if b == 0:\n                ans |= 1 << i\n        return ans\n",
+  "is_python": true
+}

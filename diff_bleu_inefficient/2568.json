@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2568",
+  "metrics": {
+    "bleu_score": 0.3589058546724852,
+    "edit_similarity": 0.3659147869674185,
+    "ast_similarity": 0.5862068965517241,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minImpossibleOR(self, nums: List[int]) -> int:\n        s = set(nums)\n        seen = set()\n        for i in range(32):\n            for j in range(i * 32, (i + 1) * 32):\n                num = (1 << i) + (j >> i) << i\n                if num not in s and num not in seen:\n                    seen.add(num)\n                    break\n            else:\n                return 1 << i",
+  "canonical_solution": "class Solution:\n    def minImpossibleOR(self, nums: List[int]) -> int:\n        s = set(nums)\n        return next(1 << i for i in range(32) if 1 << i not in s)\n",
+  "is_python": true
+}

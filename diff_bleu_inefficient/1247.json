@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1247",
+  "metrics": {
+    "bleu_score": 0.14897246795651378,
+    "edit_similarity": 0.26243781094527363,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        char_counts = {}\n        for char in s1 + s2:\n            if char not in char_counts:\n                char_counts[char] = 0\n            char_counts[char] += 1\n\n        if char_counts['x'] != char_counts['y']:\n            return -1\n\n        swap_pairs = {}\n        for i in range(len(s1)):\n            if s1[i] != s2[i]:\n                swap_pairs[(s1[i], s2[i])] = swap_pairs.get((s1[i], s2[i]), 0) + 1\n\n        if len(swap_pairs) == 0:\n            return 0\n\n        max_swaps = 0\n        for pair, count in swap_pairs.items():\n            max_swaps = max(max_swaps, count)\n\n        swaps_required = max_swaps\n        for pair, count in swap_pairs.items():\n            swaps_required += (count - 1) // 2\n\n        return swaps_required",
+  "canonical_solution": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        xy = yx = 0\n        for a, b in zip(s1, s2):\n            xy += a < b\n            yx += a > b\n        if (xy + yx) % 2:\n            return -1\n        return xy // 2 + yx // 2 + xy % 2 + yx % 2\n",
+  "is_python": true
+}

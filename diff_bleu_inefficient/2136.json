@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2136",
+  "metrics": {
+    "bleu_score": 0.2834169091969017,
+    "edit_similarity": 0.3136729222520107,
+    "ast_similarity": 0.6551724137931034,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from typing import List\n\nclass Solution:\n    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:\n        n = len(plantTime)\n        plantTime_copy = plantTime[:]\n        growTime_copy = growTime[:]\n        ans = float('-inf')\n        t = 0\n        for _ in range(n * n):\n            max_index = -1\n            max_value = 0\n            for i in range(n):\n                value = growTime_copy[i] + plantTime_copy[i]\n                if value > max_value:\n                    max_value = value\n                    max_index = i\n            t += plantTime_copy[max_index]\n            plantTime_copy[max_index] = 0\n            growTime_copy[max_index] = max_value\n            ans = max(ans, t + max_value)\n        return ans",
+  "canonical_solution": "class Solution:\n    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:\n        ans = t = 0\n        for pt, gt in sorted(zip(plantTime, growTime), key=lambda x: -x[1]):\n            t += pt\n            ans = max(ans, t + gt)\n        return ans\n",
+  "is_python": true
+}

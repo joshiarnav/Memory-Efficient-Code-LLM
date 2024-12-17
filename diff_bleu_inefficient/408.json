@@ -1,0 +1,12 @@
+{
+  "problem_idx": "408",
+  "metrics": {
+    "bleu_score": 0.43195225781787283,
+    "edit_similarity": 0.5851318944844125,
+    "ast_similarity": 0.8055555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def validWordAbbreviation(self, word: str, abbr: str) -> bool:\n        m, n = len(word), len(abbr)\n        i, j = 0, 0\n        arr = [0] * (n + 1)\n        while i < m and j < n:\n            if abbr[j].isdigit():\n                temp = ''\n                while j < n and abbr[j].isdigit():\n                    temp += abbr[j]\n                    j += 1\n                arr[j] = int(temp)\n                if arr[j] == 0 and j == 0:\n                    return False\n            else:\n                temp = ''\n                while j < n and not abbr[j].isdigit():\n                    temp += abbr[j]\n                    j += 1\n                if i >= m or word[i] != temp:\n                    return False\n                i += 1\n        return i + sum(arr[j:] if arr[j] != 0 else 0 for j in range(n)) == m and j == n",
+  "canonical_solution": "class Solution:\n    def validWordAbbreviation(self, word: str, abbr: str) -> bool:\n        m, n = len(word), len(abbr)\n        i = j = x = 0\n        while i < m and j < n:\n            if abbr[j].isdigit():\n                if abbr[j] == \"0\" and x == 0:\n                    return False\n                x = x * 10 + int(abbr[j])\n            else:\n                i += x\n                x = 0\n                if i >= m or word[i] != abbr[j]:\n                    return False\n                i += 1\n            j += 1\n        return i + x == m and j == n\n",
+  "is_python": true
+}

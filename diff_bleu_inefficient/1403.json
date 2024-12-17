@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1403",
+  "metrics": {
+    "bleu_score": 0.21003373970514302,
+    "edit_similarity": 0.4184027777777778,
+    "ast_similarity": 0.75,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSubsequence(self, nums: List[int]) -> List[int]:\n        ans = []\n        nums_copy = nums[:]\n        s = sum(nums)\n        for i in range(len(nums_copy)):\n            for j in range(i, len(nums_copy)):\n                temp = nums_copy[:i] + nums_copy[i+1:j] + nums_copy[j+1:]\n                t = sum(nums_copy[:i]) + sum(nums_copy[i+1:j]) + sum(nums_copy[j+1:])\n                if sum(nums_copy[:i]) + nums_copy[i] > t:\n                    ans = sorted(nums_copy[:i] + [nums_copy[i]], reverse=True)\n                    return ans\n        return ans",
+  "canonical_solution": "class Solution:\n    def minSubsequence(self, nums: List[int]) -> List[int]:\n        ans = []\n        s, t = sum(nums), 0\n        for x in sorted(nums, reverse=True):\n            t += x\n            ans.append(x)\n            if t > s - t:\n                break\n        return ans\n",
+  "is_python": true
+}

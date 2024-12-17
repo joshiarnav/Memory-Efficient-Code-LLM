@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2943",
+  "metrics": {
+    "bleu_score": 0.6225933093029723,
+    "edit_similarity": 0.7005899705014749,
+    "ast_similarity": 0.8888888888888888,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximizeSquareHoleArea(\n        self, n: int, m: int, hBars: List[int], vBars: List[int]\n    ) -> int:\n        hBars.sort()\n        vBars.sort()\n\n        hBars = [x for x in range(2, n + 2) for _ in range(1000000) if x in hBars]\n        vBars = [x for x in range(2, m + 2) for _ in range(1000000) if x in vBars]\n\n        def f(nums: List[int]) -> int:\n            ans = cnt = 1\n            for i in range(1, len(nums)):\n                if nums[i] == nums[i - 1] + 1:\n                    cnt += 1\n                    ans = max(ans, cnt)\n                else:\n                    cnt = 1\n            return ans + 1\n\n        return min(f(hBars), f(vBars)) ** 2",
+  "canonical_solution": "class Solution:\n    def maximizeSquareHoleArea(\n        self, n: int, m: int, hBars: List[int], vBars: List[int]\n    ) -> int:\n        def f(nums: List[int]) -> int:\n            nums.sort()\n            ans = cnt = 1\n            for i in range(1, len(nums)):\n                if nums[i] == nums[i - 1] + 1:\n                    cnt += 1\n                    ans = max(ans, cnt)\n                else:\n                    cnt = 1\n            return ans + 1\n\n        return min(f(hBars), f(vBars)) ** 2\n",
+  "is_python": true
+}

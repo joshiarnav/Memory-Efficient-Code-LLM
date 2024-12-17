@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2456",
+  "metrics": {
+    "bleu_score": 0.3084301412240487,
+    "edit_similarity": 0.36499068901303533,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mostPopularCreator(\n        self, creators: List[str], ids: List[str], views: List[int]\n    ) -> List[List[str]]:\n        creator_dict = {}\n        views_dict = {}\n        for i, (c, id, v) in enumerate(zip(creators, ids, views)):\n            if c not in creator_dict:\n                creator_dict[c] = {}\n                views_dict[c] = []\n            creator_dict[c][i] = v\n            views_dict[c].append((v, i))\n\n        all_popularity = []\n        for c in creator_dict:\n            popularity = sum(list(creator_dict[c].values()))\n            all_popularity.append((popularity, c))\n\n        max_popularity = max(all_popularity)[0]\n        max_creators = [c[1] for c in all_popularity if c[0] == max_popularity]\n\n        answer = []\n        for creator in max_creators:\n            view_count = [v for v, _ in views_dict[creator]]\n            max_view = max(view_count)\n            max_index = view_count.index(max_view)\n            max_id = ids[views_dict[creator][max_index][1]]\n            answer.append([creator, max_id])\n\n        return answer",
+  "canonical_solution": "class Solution:\n    def mostPopularCreator(\n        self, creators: List[str], ids: List[str], views: List[int]\n    ) -> List[List[str]]:\n        cnt = defaultdict(int)\n        d = defaultdict(int)\n        for k, (c, i, v) in enumerate(zip(creators, ids, views)):\n            cnt[c] += v\n            if c not in d or views[d[c]] < v or (views[d[c]] == v and ids[d[c]] > i):\n                d[c] = k\n        mx = max(cnt.values())\n        return [[c, ids[d[c]]] for c, x in cnt.items() if x == mx]\n",
+  "is_python": true
+}

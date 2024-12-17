@@ -1,0 +1,12 @@
+{
+  "problem_idx": "103",
+  "metrics": {
+    "bleu_score": 0.6720681490751189,
+    "edit_similarity": 0.702280912364946,
+    "ast_similarity": 0.9642857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:\n        ans = []\n        if root is None:\n            return ans\n        q = deque([root])\n        ans = []\n        left = 1\n        levels = []\n        while q:\n            level = []\n            for _ in range(len(q)):\n                node = q.popleft()\n                level.append(node.val)\n                if node.left:\n                    q.append(node.left)\n                    levels.append(node.left)\n                if node.right:\n                    q.append(node.right)\n                    levels.append(node.right)\n            ans.append(level if left else level[::-1])\n            left ^= 1\n            for level_node in levels:\n                level_node.val *= -1\n                levels.remove(level_node)\n        return ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:\n        ans = []\n        if root is None:\n            return ans\n        q = deque([root])\n        ans = []\n        left = 1\n        while q:\n            t = []\n            for _ in range(len(q)):\n                node = q.popleft()\n                t.append(node.val)\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n            ans.append(t if left else t[::-1])\n            left ^= 1\n        return ans\n",
+  "is_python": true
+}

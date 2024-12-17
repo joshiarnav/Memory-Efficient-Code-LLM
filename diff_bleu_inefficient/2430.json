@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2430",
+  "metrics": {
+    "bleu_score": 0.536074625814172,
+    "edit_similarity": 0.6878172588832487,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def deleteString(self, s: str) -> int:\n        n = len(s)\n        dp = [0] * (n + 1)\n        for i in range(n):\n            dp[i + 1] = 1\n            for j in range(1, (n - i) // 2 + 1):\n                if s[i : i + j] == s[i + j : i + j + j]:\n                    dp[i + j + j] = max(dp[i + j + j], dp[i + j] + 1)\n        return max(dp)",
+  "canonical_solution": "class Solution:\n    def deleteString(self, s: str) -> int:\n        @cache\n        def dfs(i: int) -> int:\n            if i == n:\n                return 0\n            ans = 1\n            for j in range(1, (n - i) // 2 + 1):\n                if s[i : i + j] == s[i + j : i + j + j]:\n                    ans = max(ans, 1 + dfs(i + j))\n            return ans\n\n        n = len(s)\n        return dfs(0)\n",
+  "is_python": true
+}

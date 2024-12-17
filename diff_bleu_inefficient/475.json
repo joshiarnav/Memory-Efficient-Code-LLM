@@ -1,0 +1,12 @@
+{
+  "problem_idx": "475",
+  "metrics": {
+    "bleu_score": 0.6815867110436742,
+    "edit_similarity": 0.7186654643823265,
+    "ast_similarity": 0.7575757575757576,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findRadius(self, houses: List[int], heaters: List[int]) -> int:\n        houses = {house: True for house in houses}\n        heaters = {heater: True for heater in heaters}\n\n        def check(r):\n            m, n = len(houses), len(heaters)\n            i = j = 0\n            while i < m:\n                if j >= n:\n                    return False\n                mi = heaters[j] - r\n                mx = heaters[j] + r\n                if houses[i] < mi:\n                    return False\n                if houses[i] > mx:\n                    j += 1\n                else:\n                    i += 1\n            return True\n\n        left, right = 0, int(1e9)\n        while left < right:\n            mid = (left + right) >> 1\n            temp_houses = {house: True for house in houses}\n            for heater in heaters:\n                for i in range(heater - mid, heater + mid + 1):\n                    if i in temp_houses:\n                        del temp_houses[i]\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left",
+  "canonical_solution": "class Solution:\n    def findRadius(self, houses: List[int], heaters: List[int]) -> int:\n        houses.sort()\n        heaters.sort()\n\n        def check(r):\n            m, n = len(houses), len(heaters)\n            i = j = 0\n            while i < m:\n                if j >= n:\n                    return False\n                mi = heaters[j] - r\n                mx = heaters[j] + r\n                if houses[i] < mi:\n                    return False\n                if houses[i] > mx:\n                    j += 1\n                else:\n                    i += 1\n            return True\n\n        left, right = 0, int(1e9)\n        while left < right:\n            mid = (left + right) >> 1\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left\n",
+  "is_python": true
+}

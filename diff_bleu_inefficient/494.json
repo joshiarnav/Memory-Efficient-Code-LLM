@@ -1,0 +1,12 @@
+{
+  "problem_idx": "494",
+  "metrics": {
+    "bleu_score": 0.3405248355743538,
+    "edit_similarity": 0.5271317829457365,
+    "ast_similarity": 0.6470588235294118,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findTargetSumWays(self, nums: List[int], target: int) -> int:\n        n = len(nums)\n        dp = [[0] * 2001 for _ in range(21)]\n        for i in range(21):\n            dp[i][1000] = 1\n        for i in range(20):\n            for j in range(2001):\n                for v in nums:\n                    if 0 <= j-v <= 2000:\n                        dp[i+1][j-v] += dp[i][j]\n        res = 0\n        for i in range(2001):\n            if i == target:\n                res += dp[n][i]\n        return res",
+  "canonical_solution": "class Solution:\n    def findTargetSumWays(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target or (s - target) % 2 != 0:\n            return 0\n        n = (s - target) // 2\n        dp = [0] * (n + 1)\n        dp[0] = 1\n        for v in nums:\n            for j in range(n, v - 1, -1):\n                dp[j] += dp[j - v]\n        return dp[-1]\n",
+  "is_python": true
+}

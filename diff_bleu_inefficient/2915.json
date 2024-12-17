@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2915",
+  "metrics": {
+    "bleu_score": 0.20201812221426776,
+    "edit_similarity": 0.3627287853577371,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lengthOfLongestSubsequence(self, nums, target):\n        mem = {}\n        for i, x in enumerate(nums):\n            mem[x] = i\n        cache = {}\n        for x in nums:\n            for y in nums:\n                if y + x <= target:\n                    cache.setdefault(y, []).append(x)\n        max_len = 0\n        for x in nums:\n            for y in cache.get(x, []):\n                len_sum = mem[x] + 1\n                for z in cache.get(y, []):\n                    len_sum += 1\n                    max_len = max(max_len, len_sum)\n        return -1 if max_len <= 0 else max_len",
+  "canonical_solution": "class Solution:\n    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:\n        f = [0] + [-inf] * target\n        for x in nums:\n            for j in range(target, x - 1, -1):\n                f[j] = max(f[j], f[j - x] + 1)\n        return -1 if f[-1] <= 0 else f[-1]\n",
+  "is_python": true
+}

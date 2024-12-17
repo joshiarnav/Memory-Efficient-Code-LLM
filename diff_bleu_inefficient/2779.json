@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2779",
+  "metrics": {
+    "bleu_score": 0.35837042051801565,
+    "edit_similarity": 0.34207650273224044,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumBeauty(self, nums: List[int], k: int) -> int:\n        m = max(nums) + k * 2 + 2\n        d = [0] * (m * 100000)\n        for x in nums:\n            for i in range(x - k, x + k + 1):\n                if i < 0 or i > m:\n                    continue\n                d[i] += 1\n        ans = 0\n        for x in range(m):\n            if d[x] > 0:\n                temp = [0] * 1000000\n                for i in range(x - k, x + k + 1):\n                    if i < 0 or i > m:\n                        continue\n                    temp[i] = d[i]\n                temp = self.helper(temp)\n                if temp > ans:\n                    ans = temp\n        return ans\n\n    def helper(self, nums):\n        m = max(nums) + 10000\n        d = [0] * m\n        for x in nums:\n            d[x] += 1\n        ans = s = 0\n        for x in d:\n            s += x\n            ans = max(ans, s)\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumBeauty(self, nums: List[int], k: int) -> int:\n        m = max(nums) + k * 2 + 2\n        d = [0] * m\n        for x in nums:\n            d[x] += 1\n            d[x + k * 2 + 1] -= 1\n        ans = s = 0\n        for x in d:\n            s += x\n            ans = max(ans, s)\n        return ans\n",
+  "is_python": true
+}

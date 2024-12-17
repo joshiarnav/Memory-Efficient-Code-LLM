@@ -1,0 +1,12 @@
+{
+  "problem_idx": "309",
+  "metrics": {
+    "bleu_score": 0.16167402555280336,
+    "edit_similarity": 0.3066132264529058,
+    "ast_similarity": 0.7916666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxProfit(self, prices):\n        profits = []\n        cooldowns = []\n        for x in prices:\n            new_cooldowns = []\n            new_profits = []\n            for p, c in zip(profits, cooldowns):\n                new_profits.append(max(p, c + x))\n                new_cooldowns.append(max(c, p - x))\n            new_profits.append(0)\n            new_cooldowns.append(-x)\n            profits = new_profits\n            cooldowns = new_cooldowns\n        return max(profits)",
+  "canonical_solution": "class Solution:\n    def maxProfit(self, prices: List[int]) -> int:\n        f, f0, f1 = 0, 0, -prices[0]\n        for x in prices[1:]:\n            f, f0, f1 = f0, max(f0, f1 + x), max(f1, f - x)\n        return f0\n",
+  "is_python": true
+}

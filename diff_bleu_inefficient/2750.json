@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2750",
+  "metrics": {
+    "bleu_score": 0.43798328848604,
+    "edit_similarity": 0.696035242290749,
+    "ast_similarity": 0.90625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfGoodSubarraySplits(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        ans = [1]\n        j = [-1]*len(nums)\n        for i, x in enumerate(nums):\n            if x == 0:\n                j[i] = j[i-1] if i > 0 else -1\n                continue\n            if j[i] > -1:\n                ans.append(ans[i]*((i-j[i])%mod))\n                ans = ans[-1]\n            j[i] = i\n        return 0 if j[-1] == -1 else ans[-1]",
+  "canonical_solution": "class Solution:\n    def numberOfGoodSubarraySplits(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        ans, j = 1, -1\n        for i, x in enumerate(nums):\n            if x == 0:\n                continue\n            if j > -1:\n                ans = ans * (i - j) % mod\n            j = i\n        return 0 if j == -1 else ans\n",
+  "is_python": true
+}

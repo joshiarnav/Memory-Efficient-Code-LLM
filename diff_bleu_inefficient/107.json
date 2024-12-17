@@ -1,0 +1,12 @@
+{
+  "problem_idx": "107",
+  "metrics": {
+    "bleu_score": 0.6259377955062608,
+    "edit_similarity": 0.5774436090225563,
+    "ast_similarity": 0.9583333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def levelOrderBottom(root: Optional[TreeNode]) -> List[List[int]]:\n    ans = []\n    if root is None:\n        return ans\n    \n    q = deque([root])\n    q2 = deque([root])\n    while q:\n        t = []\n        for _ in range(len(q)):\n            node = q.popleft()\n            t.append(node.val)\n            if node.left:\n                q.append(node.left)\n                q2.append(node.left)\n            if node.right:\n                q.append(node.right)\n                q2.append(node.right)\n        ans.append(t)\n        t2 = []\n        for _ in range(len(q2)):\n            node = q2.popleft()\n            t2.append(node.val)\n        q2.extend(t2)\n    return ans[::-1]",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:\n        ans = []\n        if root is None:\n            return ans\n        q = deque([root])\n        while q:\n            t = []\n            for _ in range(len(q)):\n                node = q.popleft()\n                t.append(node.val)\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n            ans.append(t)\n        return ans[::-1]\n",
+  "is_python": true
+}

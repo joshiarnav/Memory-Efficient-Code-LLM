@@ -1,0 +1,12 @@
+{
+  "problem_idx": "31",
+  "metrics": {
+    "bleu_score": 0.5487765125673065,
+    "edit_similarity": 0.6025641025641026,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def nextPermutation(self, nums):\n        n = len(nums)\n        nums2 = [None] * (n * 2)\n        nums3 = [None] * (n * 2 * 2)\n        \n        i = next((i for i in range(n - 2, -1, -1) if nums[i] < nums[i + 1]), -1)\n        if ~i:\n            j = next((j for j in range(n - 1, i, -1) if nums[j] > nums[i]))\n            nums2 = [x for x in nums]\n            nums2[i], nums2[j] = nums2[j], nums2[i]\n            nums3 = [x for x in nums2]\n        else:\n            nums3 = [x for x in nums]\n            nums3.sort()\n        \n        nums[:] = nums3",
+  "canonical_solution": "class Solution:\n    def nextPermutation(self, nums: List[int]) -> None:\n        n = len(nums)\n        i = next((i for i in range(n - 2, -1, -1) if nums[i] < nums[i + 1]), -1)\n        if ~i:\n            j = next((j for j in range(n - 1, i, -1) if nums[j] > nums[i]))\n            nums[i], nums[j] = nums[j], nums[i]\n        nums[i + 1 :] = nums[i + 1 :][::-1]\n",
+  "is_python": true
+}

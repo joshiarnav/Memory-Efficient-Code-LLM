@@ -1,0 +1,12 @@
+{
+  "problem_idx": "852",
+  "metrics": {
+    "bleu_score": 0.08278337173942897,
+    "edit_similarity": 0.26428571428571423,
+    "ast_similarity": 0.5454545454545454,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def peakIndexInMountainArray(self, arr):\n        self.bad_arr = [x for x in arr]\n        self.indexes = [i for i in range(len(arr))]\n        self.temp = [arr[i] for i in range(len(arr))]\n        self.peak_index = -1\n        for i in range(len(arr)):\n            for j in range(i + 1, len(arr)):\n                if self.check_if_peak(arr, i, j):\n                    self.peak_index = i\n                    break\n            if self.peak_index != -1:\n                break\n        return self.peak_index\n\n    def check_if_peak(self, arr, i, j):\n        for k in range(i, j):\n            if arr[k] <= arr[k + 1]:\n                return False\n        return True\n\n    def get_max_index(self, arr):\n        max_index = 0\n        for i in range(1, len(arr)):\n            if arr[i] > arr[max_index]:\n                max_index = i\n        return max_index\n\n    def check_arr(self, arr, i, j):\n        for k in range(i, j):\n            print(k, arr[k])\n        return True",
+  "canonical_solution": "class Solution:\n    def peakIndexInMountainArray(self, arr: List[int]) -> int:\n        left, right = 1, len(arr) - 2\n        while left < right:\n            mid = (left + right) >> 1\n            if arr[mid] > arr[mid + 1]:\n                right = mid\n            else:\n                left = mid + 1\n        return left\n",
+  "is_python": true
+}

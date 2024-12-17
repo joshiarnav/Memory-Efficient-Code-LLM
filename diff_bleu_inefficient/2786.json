@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2786",
+  "metrics": {
+    "bleu_score": 0.20768017955970303,
+    "edit_similarity": 0.464935064935065,
+    "ast_similarity": 0.7666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxScore(self, nums, x):\n        dp = [[-float('inf')] * len(nums) for _ in range(2)]\n        dp[nums[0] & 1][0] = nums[0]\n        for i in range(1, len(nums)):\n            for j in range(2):\n                dp[j][i] = max(dp[j][i-1], dp[j ^ 1][i-1] + nums[i] - x if (nums[i-1] & 1) != j else dp[j ^ 1][i-1] + nums[i])\n        return max(max(row) for row in dp)",
+  "canonical_solution": "class Solution:\n    def maxScore(self, nums: List[int], x: int) -> int:\n        f = [-inf] * 2\n        f[nums[0] & 1] = nums[0]\n        for v in nums[1:]:\n            f[v & 1] = max(f[v & 1] + v, f[v & 1 ^ 1] + v - x)\n        return max(f)\n",
+  "is_python": true
+}

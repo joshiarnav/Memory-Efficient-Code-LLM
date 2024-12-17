@@ -1,0 +1,12 @@
+{
+  "problem_idx": "600",
+  "metrics": {
+    "bleu_score": 0.5215737983058681,
+    "edit_similarity": 0.7121212121212122,
+    "ast_similarity": 0.7714285714285715,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findIntegers(self, n: int) -> int:\n        def dfs(pos, pre, limit, memo):\n            if pos < 0:\n                return 1\n            if (pos, pre, limit) in memo:\n                return memo[(pos, pre, limit)]\n            up = 1\n            ans = 0\n            for i in range(up + 1):\n                if pre == 1 and i == 1:\n                    continue\n                ans += dfs(pos - 1, i, limit and i == up, memo)\n            memo[(pos, pre, limit)] = ans\n            return ans\n\n        a = [0] * (n + 1)\n        l = 0\n        for i in range(n + 1):\n            a[i] = i & 1\n        memo = {}\n        return dfs(l, 0, True, memo)",
+  "canonical_solution": "class Solution:\n    def findIntegers(self, n: int) -> int:\n        @cache\n        def dfs(pos, pre, limit):\n            if pos <= 0:\n                return 1\n            up = a[pos] if limit else 1\n            ans = 0\n            for i in range(up + 1):\n                if pre == 1 and i == 1:\n                    continue\n                ans += dfs(pos - 1, i, limit and i == up)\n            return ans\n\n        a = [0] * 33\n        l = 0\n        while n:\n            l += 1\n            a[l] = n & 1\n            n >>= 1\n        return dfs(l, 0, True)\n",
+  "is_python": true
+}

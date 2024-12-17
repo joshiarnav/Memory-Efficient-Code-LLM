@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2378",
+  "metrics": {
+    "bleu_score": 0.3534346243947579,
+    "edit_similarity": 0.4260429835651075,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxScore(self, edges: List[List[int]]) -> int:\n        def dfs(i, path, visited, memo):\n            if i == -1:\n                return 0\n            if (i, tuple(path)) in memo:\n                return memo[(i, tuple(path))]\n            a = b = t = 0\n            for j, w in edges[i+1:]:\n                x = dfs(j, path + (j,), visited | {i}, memo)\n                if not visited & {j}:\n                    y = dfs(j, path + (j,), visited | {i}, memo)\n                else:\n                    y = 0\n                a += y\n                b += y\n                t = max(t, x - y + w)\n            b += t\n            memo[(i, tuple(path))] = b\n            return b\n\n        visited = set()\n        visited.add(0)\n        memo = {}\n        return dfs(0, (), visited, memo)",
+  "canonical_solution": "class Solution:\n    def maxScore(self, edges: List[List[int]]) -> int:\n        def dfs(i):\n            a = b = t = 0\n            for j, w in g[i]:\n                x, y = dfs(j)\n                a += y\n                b += y\n                t = max(t, x - y + w)\n            b += t\n            return a, b\n\n        g = defaultdict(list)\n        for i, (p, w) in enumerate(edges[1:], 1):\n            g[p].append((i, w))\n        return dfs(0)[1]\n",
+  "is_python": true
+}

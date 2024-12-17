@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1927",
+  "metrics": {
+    "bleu_score": 0.31958841367516405,
+    "edit_similarity": 0.44035346097201766,
+    "ast_similarity": 0.7428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumGame(self, num: str) -> bool:\n        n = len(num)\n        case1 = [num[i] for i in range(n) if i < n // 2 and num[i] == \"?\"]\n        case2 = [num[i] for i in range(n) if i >= n // 2 and num[i] == \"?\"]\n        case3 = [int(x) for x in num[:n // 2] if x != \"?\"]\n        case4 = [int(x) for x in num[n // 2:] if x != \"?\"]\n        case5 = num[:n // 2]\n        case6 = num[n // 2:]\n        case7 = [0] * 10\n        case8 = [0] * 10\n        for x in case3:\n            case7[int(x)] += 1\n        for x in case4:\n            case8[int(x)] += 1\n        return (len(case1) + len(case2)) % 2 == 1 or sum(case7) - sum(case8) != 9 * (len(case2) - len(case1)) // 2",
+  "canonical_solution": "class Solution:\n    def sumGame(self, num: str) -> bool:\n        n = len(num)\n        cnt1 = num[: n // 2].count(\"?\")\n        cnt2 = num[n // 2 :].count(\"?\")\n        s1 = sum(int(x) for x in num[: n // 2] if x != \"?\")\n        s2 = sum(int(x) for x in num[n // 2 :] if x != \"?\")\n        return (cnt1 + cnt2) % 2 == 1 or s1 - s2 != 9 * (cnt2 - cnt1) // 2\n",
+  "is_python": true
+}

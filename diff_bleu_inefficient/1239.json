@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1239",
+  "metrics": {
+    "bleu_score": 0.5108150892973133,
+    "edit_similarity": 0.6564986737400531,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxLength(self, arr: List[str]) -> int:\n        ans = 0\n        masks = [0]\n        for s in arr:\n            mask = 0\n            chars = list(s)\n            for c in chars[:]:\n                i = ord(c) - ord('a')\n                if mask >> i & 1:\n                    chars.remove(c)\n                else:\n                    mask |= 1 << i\n            if not chars:\n                continue\n            new_nums = []\n            for m in masks:\n                new_nums.append(m << len(chars))\n            for m in new_nums:\n                for c in chars:\n                    i = ord(c) - ord('a')\n                    m |= 1 << i\n                masks.append(m)\n                ans = max(ans, m.bit_count())\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxLength(self, arr: List[str]) -> int:\n        ans = 0\n        masks = [0]\n        for s in arr:\n            mask = 0\n            for c in s:\n                i = ord(c) - ord('a')\n                if mask >> i & 1:\n                    mask = 0\n                    break\n                mask |= 1 << i\n            if mask == 0:\n                continue\n            for m in masks:\n                if m & mask == 0:\n                    masks.append(m | mask)\n                    ans = max(ans, (m | mask).bit_count())\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1610",
+  "metrics": {
+    "bleu_score": 0.3947766690760287,
+    "edit_similarity": 0.5521936459909229,
+    "ast_similarity": 0.8571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def visiblePoints(self, points, angle, location):\n        import math\n        import bisect\n        n = len(points)\n        angle = math.radians(angle)\n        v = []\n        for xi, yi in points:\n            if xi == location[0] and yi == location[1]:\n                v.append(0)\n            else:\n                v.append(math.atan2(yi - location[1], xi - location[0]))\n        v.sort()\n        v += [deg + 2 * math.pi for deg in v]\n        max_visible = 0\n        for i in range(len(v)):\n            count = bisect.bisect_right(v, v[i] + angle) - i\n            max_visible = max(max_visible, count)\n        return max_visible + v.count(0)",
+  "canonical_solution": "class Solution:\n    def visiblePoints(\n        self, points: List[List[int]], angle: int, location: List[int]\n    ) -> int:\n        v = []\n        x, y = location\n        same = 0\n        for xi, yi in points:\n            if xi == x and yi == y:\n                same += 1\n            else:\n                v.append(atan2(yi - y, xi - x))\n        v.sort()\n        n = len(v)\n        v += [deg + 2 * pi for deg in v]\n        t = angle * pi / 180\n        mx = max((bisect_right(v, v[i] + t) - i for i in range(n)), default=0)\n        return mx + same\n",
+  "is_python": true
+}

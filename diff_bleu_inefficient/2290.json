@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2290",
+  "metrics": {
+    "bleu_score": 0.37046778460795093,
+    "edit_similarity": 0.6247288503253796,
+    "ast_similarity": 0.7631578947368421,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumObstacles(self, grid: List[List[int]]) -> int:\n        m, n = len(grid), len(grid[0])\n        visited = [[] for _ in range(m * n)]\n        for i in range(m * n):\n            visited[i].extend([[] for _ in range(n * 2)])\n        q = []\n        for i in range(m):\n            for j in range(n):\n                if (i, j) == (0, 0):\n                    q.append((i, j, 0))\n        while q:\n            x, y, k = q.pop(0)\n            if x == m - 1 and y == n - 1:\n                return k\n            for i in range(5):\n                if i < 2:\n                    xx, yy = x + i // 2, y + (i % 2) * 2\n                else:\n                    xx, yy = x + (i % 2), y + (i // 2) * 2\n                if 0 <= xx < m and 0 <= yy < n:\n                    if grid[xx][yy] == 0:\n                        q.append((xx, yy, k))\n                    else:\n                        q.append((xx, yy, k + 1))",
+  "canonical_solution": "class Solution:\n    def minimumObstacles(self, grid: List[List[int]]) -> int:\n        m, n = len(grid), len(grid[0])\n        q = deque([(0, 0, 0)])\n        vis = set()\n        dirs = (-1, 0, 1, 0, -1)\n        while 1:\n            i, j, k = q.popleft()\n            if i == m - 1 and j == n - 1:\n                return k\n            if (i, j) in vis:\n                continue\n            vis.add((i, j))\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n:\n                    if grid[x][y] == 0:\n                        q.appendleft((x, y, k))\n                    else:\n                        q.append((x, y, k + 1))\n",
+  "is_python": true
+}

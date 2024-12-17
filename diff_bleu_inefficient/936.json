@@ -1,0 +1,12 @@
+{
+  "problem_idx": "936",
+  "metrics": {
+    "bleu_score": 0.6674061766814032,
+    "edit_similarity": 0.7168674698795181,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def movesToStamp(self, stamp, target):\n        m, n = len(stamp), len(target)\n        indeg = [m] * (n - m + 1)\n        q = []\n        g = [[] for _ in range(n)]\n        for i in range(n - m + 1):\n            for j, c in enumerate(stamp):\n                if target[i + j] == c:\n                    indeg[i] -= 1\n                    if indeg[i] == 0:\n                        q.append(i)\n                else:\n                    g[i + j].append(i)\n        ans = []\n        vis = [False] * (n * 100)\n        while True:\n            for i in range(len(q)):\n                stamp_idx = q.pop(0)\n                ans.append(stamp_idx)\n                for j in range(m):\n                    if not vis[stamp_idx * 100 + (j + 1)]:\n                        vis[stamp_idx * 100 + (j + 1)] = True\n                        for k in g[stamp_idx + j]:\n                            indeg[k] -= 1\n                            if indeg[k] == 0:\n                                q.append(k)\n            if all(vis[stamp_idx * 100 + 1] for stamp_idx in range(n - m + 1)):\n                break\n            if not q:\n                return []\n        return ans[::-1]",
+  "canonical_solution": "class Solution:\n    def movesToStamp(self, stamp: str, target: str) -> List[int]:\n        m, n = len(stamp), len(target)\n        indeg = [m] * (n - m + 1)\n        q = deque()\n        g = [[] for _ in range(n)]\n        for i in range(n - m + 1):\n            for j, c in enumerate(stamp):\n                if target[i + j] == c:\n                    indeg[i] -= 1\n                    if indeg[i] == 0:\n                        q.append(i)\n                else:\n                    g[i + j].append(i)\n        ans = []\n        vis = [False] * n\n        while q:\n            i = q.popleft()\n            ans.append(i)\n            for j in range(m):\n                if not vis[i + j]:\n                    vis[i + j] = True\n                    for k in g[i + j]:\n                        indeg[k] -= 1\n                        if indeg[k] == 0:\n                            q.append(k)\n        return ans[::-1] if all(vis) else []\n",
+  "is_python": true
+}

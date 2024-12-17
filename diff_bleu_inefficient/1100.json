@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1100",
+  "metrics": {
+    "bleu_score": 0.3866618214056438,
+    "edit_similarity": 0.5651465798045603,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:\n        n = len(s)\n        if k > n or k > 26:\n            return 0\n        ans = j = 0\n        count = [0] * 26\n        for i in range(n):\n            for char in s:\n                index = ord(char) - ord('a')\n                count[index] = 1\n            if i - j + 1 > k:\n                count = [0] * 26\n                j = i - k + 1\n            for char in s[j:i+1]:\n                index = ord(char) - ord('a')\n                count[index] += 1\n            if all(i == 0 for i in count):\n                ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:\n        n = len(s)\n        if k > n or k > 26:\n            return 0\n        ans = j = 0\n        cnt = Counter()\n        for i, c in enumerate(s):\n            cnt[c] += 1\n            while cnt[c] > 1 or i - j + 1 > k:\n                cnt[s[j]] -= 1\n                j += 1\n            ans += i - j + 1 == k\n        return ans\n",
+  "is_python": true
+}

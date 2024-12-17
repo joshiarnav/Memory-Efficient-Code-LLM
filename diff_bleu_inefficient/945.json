@@ -1,0 +1,12 @@
+{
+  "problem_idx": "945",
+  "metrics": {
+    "bleu_score": 0.09001494369396414,
+    "edit_similarity": 0.2723618090452261,
+    "ast_similarity": 0.7096774193548387,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minIncrementForUnique(self, nums):\n        nums = [x for x in nums]\n        counts = {}\n        for num in nums:\n            if num in counts:\n                counts[num] += 1\n            else:\n                counts[num] = 1\n        unique_nums = []\n        for num in range(max(nums) + 1):\n            if num in counts:\n                unique_nums.extend([num] * counts[num])\n            else:\n                unique_nums.append(num)\n        counts = {}\n        for num in unique_nums:\n            if num in counts:\n                counts[num] += 1\n            else:\n                counts[num] = 1\n        max_num = max(unique_nums)\n        min_moves = 0\n        for num in nums:\n            if counts[num] > 1:\n                d = counts[num] - 1\n                if num < max_num:\n                    max_num += 1\n                min_moves += d\n                counts[num] -= d\n                counts[max_num] = 1\n                max_num += 1\n        return min_moves",
+  "canonical_solution": "class Solution:\n    def minIncrementForUnique(self, nums: List[int]) -> int:\n        nums.sort()\n        ans = 0\n        for i in range(1, len(nums)):\n            if nums[i] <= nums[i - 1]:\n                d = nums[i - 1] - nums[i] + 1\n                nums[i] += d\n                ans += d\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1764",
+  "metrics": {
+    "bleu_score": 0.39699883099707317,
+    "edit_similarity": 0.46039603960396036,
+    "ast_similarity": 0.8064516129032258,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canChoose(self, groups, nums):\n        n, m = len(groups), len(nums)\n        i = j = 0\n        result = []\n        while i < n and j < m:\n            g = groups[i]\n            temp = []\n            for k in range(j, m):\n                if g == nums[k : k + len(g)]:\n                    temp.append(nums[k : k + len(g)])\n                    j = k + len(g)\n                    break\n                if k == m - 1:\n                    j = k + 1\n                    break\n            if temp:\n                result.append(temp[0])\n                i += 1\n        return len(result) == n",
+  "canonical_solution": "class Solution:\n    def canChoose(self, groups: List[List[int]], nums: List[int]) -> bool:\n        n, m = len(groups), len(nums)\n        i = j = 0\n        while i < n and j < m:\n            g = groups[i]\n            if g == nums[j : j + len(g)]:\n                j += len(g)\n                i += 1\n            else:\n                j += 1\n        return i == n\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "816",
+  "metrics": {
+    "bleu_score": 0.39572855241543137,
+    "edit_similarity": 0.438715953307393,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(i, j):\n            res = []\n            for k in range(1, j - i + 1):\n                l = s[i : i + k]\n                r = s[i + k : j]\n                for p in range(j - i):\n                    for q in range(p, p + 3):\n                        for m in range(3):\n                            l1 = f\"{l[:q]}{l[q]}.{l[q + 1:m + 1]}\"\n                            l2 = f\"{l[:q]}.{l[q:q + 1]}{l[q + 1:m + 1]}\"\n                            r1 = f\"{r[:p]}{r[p]}.{r[p + 1:m + 1]}\"\n                            r2 = f\"{r[:p]}.{r[p:q]}{r[q:q + 1]}{r[q + 1:m + 1]}\"\n                            if (l1 == '0' or not l1.startswith('0')) and (r1 == '0' or not r1.startswith('0')):\n                                res.append(f\"({l1}, {r1})\")\n                                res.append(f\"({l2}, {r2})\")\n            return res\n\n        n = len(s)\n        return [f'({x}, {y})' for i in range(2, n - 1) for x in f(1, i) for y in f(i, n - 1) for _ in range(10000)]",
+  "canonical_solution": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(i, j):\n            res = []\n            for k in range(1, j - i + 1):\n                l, r = s[i : i + k], s[i + k : j]\n                ok = (l == '0' or not l.startswith('0')) and not r.endswith('0')\n                if ok:\n                    res.append(l + ('.' if k < j - i else '') + r)\n            return res\n\n        n = len(s)\n        return [\n            f'({x}, {y})' for i in range(2, n - 1) for x in f(1, i) for y in f(i, n - 1)\n        ]\n",
+  "is_python": true
+}

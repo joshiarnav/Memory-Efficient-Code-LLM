@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1049",
+  "metrics": {
+    "bleu_score": 0.22673392411239285,
+    "edit_similarity": 0.3593272171253823,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lastStoneWeightII(self, stones):\n        s = sum(stones)\n        m = len(stones)\n        dp = [[0 for _ in range(s + 1)] for _ in range(m + 1)]\n        for i in range(m):\n            for j in range(s + 1):\n                if j >= stones[i]:\n                    dp[i + 1][j] = max(dp[i][j], dp[i][j - stones[i]] + stones[i])\n                else:\n                    dp[i + 1][j] = dp[i][j]\n        ans = [0] * (s + 1)\n        for i in range(s - 1, -1, -1):\n            for j in range(m + 1):\n                if i <= s - j:\n                    if dp[m][s] == dp[m][s - i]:\n                        ans[i] = 1\n        return min(ans)",
+  "canonical_solution": "class Solution:\n    def lastStoneWeightII(self, stones: List[int]) -> int:\n        s = sum(stones)\n        m, n = len(stones), s >> 1\n        dp = [0] * (n + 1)\n        for v in stones:\n            for j in range(n, v - 1, -1):\n                dp[j] = max(dp[j], dp[j - v] + v)\n        return s - dp[-1] * 2\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2570",
+  "metrics": {
+    "bleu_score": 0.1732366638655806,
+    "edit_similarity": 0.20775623268698062,
+    "ast_similarity": 0.68,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mergeArrays(\n        self, nums1: List[List[int]], nums2: List[List[int]]\n    ) -> List[List[int]]:\n        merge_result = []\n        for id1, val1 in nums1:\n            merge_result.append((id1, val1))\n        for id2, val2 in nums2:\n            merge_result.append((id2, val2))\n        seen = set()\n        new_merge_result = []\n        for id, val in merge_result:\n            if id not in seen:\n                new_merge_result.append((id, val))\n                seen.add(id)\n        id_set1 = set()\n        id_set2 = set()\n        for id, _ in nums1:\n            id_set1.add(id)\n        for id, _ in nums2:\n            id_set2.add(id)\n        id_set = id_set1.union(id_set2)\n        final_result = []\n        for id in sorted(id_set):\n            val1 = 0\n            val2 = 0\n            for id1, val11 in nums1:\n                if id1 == id:\n                    val1 = val11\n            for id2, val22 in nums2:\n                if id2 == id:\n                    val2 = val22\n            final_result.append((id, val1 + val2))\n        return final_result",
+  "canonical_solution": "class Solution:\n    def mergeArrays(\n        self, nums1: List[List[int]], nums2: List[List[int]]\n    ) -> List[List[int]]:\n        cnt = Counter()\n        for i, v in nums1 + nums2:\n            cnt[i] += v\n        return sorted(cnt.items())\n",
+  "is_python": true
+}

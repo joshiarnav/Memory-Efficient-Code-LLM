@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2589",
+  "metrics": {
+    "bleu_score": 0.4910217854822622,
+    "edit_similarity": 0.6547619047619048,
+    "ast_similarity": 0.8108108108108109,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMinimumTime(self, tasks: List[List[int]]) -> int:\n        tasks.sort(key=lambda x: x[1])\n        vis = [0] * 2001\n        ans = 0\n        for start, end, duration in tasks:\n            duration -= sum(vis[start : end + 1])\n            temp = []\n            for i in range(end, start - 1, -1):\n                temp.append((i, i, 1))\n                vis[i] = 1\n            for i in range(len(temp) - 1, -1, -1):\n                if duration > 0:\n                    duration -= 1\n                    ans += 1\n                else:\n                    break\n                vis[temp[i][0]] = 0\n                vis[temp[i][1]] = 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def findMinimumTime(self, tasks: List[List[int]]) -> int:\n        tasks.sort(key=lambda x: x[1])\n        vis = [0] * 2010\n        ans = 0\n        for start, end, duration in tasks:\n            duration -= sum(vis[start : end + 1])\n            i = end\n            while i >= start and duration > 0:\n                if not vis[i]:\n                    duration -= 1\n                    vis[i] = 1\n                    ans += 1\n                i -= 1\n        return ans\n",
+  "is_python": true
+}

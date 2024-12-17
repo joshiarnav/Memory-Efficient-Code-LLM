@@ -1,0 +1,12 @@
+{
+  "problem_idx": "315",
+  "metrics": {
+    "bleu_score": 0.35497391670201633,
+    "edit_similarity": 0.3503105590062112,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countSmaller(self, nums: List[int]) -> List[int]:\n        alls = sorted(set(nums))\n        m = {v: i for i, v in enumerate(alls, 1)}\n        m_inv = {v: i for i, v in enumerate(alls, 1)}\n        mapping = {v: [] for i, v in enumerate(alls, 1)}\n        for v in nums:\n            mapping[v].append(v)\n        ans = []\n        for v in nums[::-1]:\n            x = m[v]\n            # Create a copy of the mapping dictionary for each element\n            temp = mapping.copy()\n            # Create a new list for each element\n            temp[v] = [v]\n            for v2 in temp:\n                for v3 in temp[v2]:\n                    # Update the index of each element to be the current index plus the number of smaller elements to its right\n                    m_inv[v3] += len(temp[v2])\n            # Create a new dictionary for each element\n            m_inv = {v: i for i, v in enumerate(alls, 1)}\n            # Append the number of smaller elements to the right of the current element to the answer list\n            ans.append(m_inv[v])\n            # Remove the current element from the mapping dictionary\n            del mapping[v]\n        return ans[::-1]",
+  "canonical_solution": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    @staticmethod\n    def lowbit(x):\n        return x & -x\n\n    def update(self, x, delta):\n        while x <= self.n:\n            self.c[x] += delta\n            x += BinaryIndexedTree.lowbit(x)\n\n    def query(self, x):\n        s = 0\n        while x > 0:\n            s += self.c[x]\n            x -= BinaryIndexedTree.lowbit(x)\n        return s\n\n\nclass Solution:\n    def countSmaller(self, nums: List[int]) -> List[int]:\n        alls = sorted(set(nums))\n        m = {v: i for i, v in enumerate(alls, 1)}\n        tree = BinaryIndexedTree(len(m))\n        ans = []\n        for v in nums[::-1]:\n            x = m[v]\n            tree.update(x, 1)\n            ans.append(tree.query(x - 1))\n        return ans[::-1]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1524",
+  "metrics": {
+    "bleu_score": 0.16033886306248815,
+    "edit_similarity": 0.32288828337874664,
+    "ast_similarity": 0.59375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numOfSubarrays(self, arr: List[int]) -> int:\n        mod = 10**9 + 7\n        max_len = len(arr)\n        arr2 = [[0]*max_len for _ in range(max_len)]\n        cnt = {}\n        for i, x in enumerate(arr):\n            arr2[i][i] = x % 2\n            cnt[arr2[i][i]] = cnt.get(arr2[i][i], 0) + 1\n        for i in range(max_len):\n            for j in range(i+1, max_len):\n                arr2[i][j] = arr2[i][j-1] + arr2[j][j] + arr[j]\n                arr2[i][j] %= 2\n                cnt[arr2[i][j]] = cnt.get(arr2[i][j], 0) + 1\n        ans = 0\n        for i, j in enumerate(arr2):\n            for k, val in enumerate(j):\n                if val == 1:\n                    ans += 1\n        ans %= mod\n        return ans",
+  "canonical_solution": "class Solution:\n    def numOfSubarrays(self, arr: List[int]) -> int:\n        mod = 10**9 + 7\n        cnt = [1, 0]\n        ans = s = 0\n        for x in arr:\n            s += x\n            ans = (ans + cnt[s & 1 ^ 1]) % mod\n            cnt[s & 1] += 1\n        return ans\n",
+  "is_python": true
+}

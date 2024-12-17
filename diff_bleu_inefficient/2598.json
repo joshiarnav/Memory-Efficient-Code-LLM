@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2598",
+  "metrics": {
+    "bleu_score": 0.24923348020721536,
+    "edit_similarity": 0.33574529667149056,
+    "ast_similarity": 0.5277777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findSmallestInteger(self, nums: List[int], value: int) -> int:\n        counts = {}\n        for num in nums:\n            remainder = num % value\n            if remainder not in counts:\n                counts[remainder] = []\n            counts[remainder].append(num)\n        max_mex = float('-inf')\n        for remainder in range(value):\n            count = []\n            if remainder in counts:\n                count = counts[remainder]\n            for i in range(len(nums)):\n                if len(count) > 0 and count[0] == nums[i]:\n                    del count[0]\n                else:\n                    max_mex = max(max_mex, i // value)\n        return max_mex",
+  "canonical_solution": "class Solution:\n    def findSmallestInteger(self, nums: List[int], value: int) -> int:\n        cnt = Counter(x % value for x in nums)\n        for i in range(len(nums) + 1):\n            if cnt[i % value] == 0:\n                return i\n            cnt[i % value] -= 1\n",
+  "is_python": true
+}

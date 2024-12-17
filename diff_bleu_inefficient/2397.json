@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2397",
+  "metrics": {
+    "bleu_score": 0.19188246822917704,
+    "edit_similarity": 0.29819879919946635,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumRows(self, matrix: List[List[int]], numSelect: int) -> int:\n        rows = [list(map(int, ''.join(map(str, row)))) for row in matrix]\n        all_cols = [list(map(int, ''.join(map(str, [row[i] for row in matrix])))) for i in range(len(matrix[0]))]\n        all_cols = [col + [0] * (12 - len(col)) for col in all_cols]\n        all_cols = [col + [0] * (12 * 12 - len(col)) for col in all_cols]\n        all_cols = [col + [0] * (12 * 12 * 12 - len(col)) for col in all_cols]\n\n        ans = 0\n        for mask in range(1 << len(matrix[0])):\n            if mask.bit_count() != numSelect:\n                continue\n            t = sum((x & mask) == x for x in rows)\n            ans = max(ans, t)\n\n        for i in range(len(all_cols)):\n            all_cols[i] = all_cols[i] + [0] * (len(all_cols[i]) * 10)\n            all_cols[i] = all_cols[i] + [0] * (len(all_cols[i]) * 100)\n            all_cols[i] = all_cols[i] + [0] * (len(all_cols[i]) * 1000)\n            all_cols[i] = all_cols[i] + [0] * (len(all_cols[i]) * 10000)\n\n        for mask in range(1 << len(matrix[0])):\n            if mask.bit_count() != numSelect:\n                continue\n            t = sum((x & mask) == x for x in rows)\n            ans = max(ans, t)\n            for col in all_cols:\n                col = col + [0] * (len(col) * 10)\n                col = col + [0] * (len(col) * 100)\n                col = col + [0] * (len(col) * 1000)\n                col = col + [0] * (len(col) * 10000)\n\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumRows(self, matrix: List[List[int]], numSelect: int) -> int:\n        rows = []\n        for row in matrix:\n            mask = reduce(or_, (1 << j for j, x in enumerate(row) if x), 0)\n            rows.append(mask)\n\n        ans = 0\n        for mask in range(1 << len(matrix[0])):\n            if mask.bit_count() != numSelect:\n                continue\n            t = sum((x & mask) == x for x in rows)\n            ans = max(ans, t)\n        return ans\n",
+  "is_python": true
+}

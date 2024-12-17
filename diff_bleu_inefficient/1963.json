@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1963",
+  "metrics": {
+    "bleu_score": 0.125889397421688,
+    "edit_similarity": 0.26694329183955745,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSwaps(self, s: str) -> int:\n        brackets = ['[', ']']\n        a = [0] * len(s)\n        b = [0] * len(s)\n        for i, c in enumerate(s):\n            if c == brackets[0]:\n                a[i] = 1\n            else:\n                b[i] = 1\n        stack = []\n        swaps = 0\n        for i in range(len(s)):\n            if a[i]:\n                while stack and stack[-1] == 1:\n                    stack.pop()\n                stack.append(0)\n            elif b[i]:\n                while stack and stack[-1] == 0:\n                    stack.pop()\n                stack.append(1)\n            if stack and stack[-1] == 1:\n                swaps += 1\n                stack.pop()\n        return swaps",
+  "canonical_solution": "class Solution:\n    def minSwaps(self, s: str) -> int:\n        x = 0\n        for c in s:\n            if c == \"[\":\n                x += 1\n            elif x:\n                x -= 1\n        return (x + 1) >> 1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2375",
+  "metrics": {
+    "bleu_score": 0.6300564521421846,
+    "edit_similarity": 0.6850393700787402,
+    "ast_similarity": 0.9117647058823529,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def smallestNumber(self, pattern: str) -> str:\n        def dfs(u, t, vis, ans):\n            if ans:\n                return\n            if u == len(pattern) + 1:\n                ans = t[:]\n                return\n            for i in range(1, 10):\n                if not vis[i]:\n                    for j in range(1, 10):\n                        if not vis[j]:\n                            if u and pattern[u - 1] == 'I' and j >= i:\n                                continue\n                            if u and pattern[u - 1] == 'D' and j <= i:\n                                continue\n                            vis[i] = True\n                            vis[j] = True\n                            t.append(str(j))\n                            dfs(u + 1, t, vis, ans)\n                            t.pop()\n                            vis[j] = False\n                    vis[i] = False\n\n        vis = [False] * 1000\n        t = []\n        ans = None\n        dfs(0, t, vis, ans)\n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def smallestNumber(self, pattern: str) -> str:\n        def dfs(u):\n            nonlocal ans\n            if ans:\n                return\n            if u == len(pattern) + 1:\n                ans = ''.join(t)\n                return\n            for i in range(1, 10):\n                if not vis[i]:\n                    if u and pattern[u - 1] == 'I' and int(t[-1]) >= i:\n                        continue\n                    if u and pattern[u - 1] == 'D' and int(t[-1]) <= i:\n                        continue\n                    vis[i] = True\n                    t.append(str(i))\n                    dfs(u + 1)\n                    vis[i] = False\n                    t.pop()\n\n        vis = [False] * 10\n        t = []\n        ans = None\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

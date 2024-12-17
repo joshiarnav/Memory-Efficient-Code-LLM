@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1465",
+  "metrics": {
+    "bleu_score": 0.26804995172057805,
+    "edit_similarity": 0.3134020618556701,
+    "ast_similarity": 0.8461538461538461,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:\n        horizontalCuts.sort()\n        verticalCuts.sort()\n        \n        max_horizontal_gap = 0\n        for i in range(len(horizontalCuts) - 1):\n            max_horizontal_gap = max(max_horizontal_gap, horizontalCuts[i+1] - horizontalCuts[i])\n        \n        max_vertical_gap = 0\n        for i in range(len(verticalCuts) - 1):\n            max_vertical_gap = max(max_vertical_gap, verticalCuts[i+1] - verticalCuts[i])\n        \n        # Create a list to store the maximum height at each column\n        max_height_at_each_column = [0] * w\n        for i in range(w):\n            max_height_at_each_column[i] = max_horizontal_gap\n        \n        # Create a list to store the maximum width at each row\n        max_width_at_each_row = [0] * h\n        for i in range(h):\n            max_width_at_each_row[i] = max_vertical_gap\n        \n        # Simulate the cutting process\n        area = 0\n        for i in range(w):\n            for j in range(h):\n                area = max(area, max_height_at_each_column[i] * max_width_at_each_row[j])\n        \n        return area % (10**9 + 7)",
+  "canonical_solution": "class Solution:\n    def maxArea(\n        self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]\n    ) -> int:\n        horizontalCuts.extend([0, h])\n        verticalCuts.extend([0, w])\n        horizontalCuts.sort()\n        verticalCuts.sort()\n        x = max(b - a for a, b in pairwise(horizontalCuts))\n        y = max(b - a for a, b in pairwise(verticalCuts))\n        return (x * y) % (10**9 + 7)\n",
+  "is_python": true
+}

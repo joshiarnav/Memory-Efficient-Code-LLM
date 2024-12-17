@@ -1,0 +1,12 @@
+{
+  "problem_idx": "777",
+  "metrics": {
+    "bleu_score": 0.614716016979958,
+    "edit_similarity": 0.655793025871766,
+    "ast_similarity": 0.9333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canTransform(self, start: str, end: str) -> bool:\n        n = len(start) + 1\n        start = list(start) + ['']\n        end = list(end) + ['']\n        i = j = 0\n        while i < n:\n            while i < n and start[i] == 'X':\n                i += 1\n            while j < n and end[j] == 'X':\n                j += 1\n            if i >= n and j >= n:\n                return True\n            if i >= n or j >= n or start[i] != end[j]:\n                return False\n            if start[i] == 'L' and i < j:\n                i += 1\n                start = start[:i] + [''] + start[i:]\n            if start[i] == 'R' and i > j:\n                j += 1\n                end = end[:j] + [''] + end[j:]\n            if start[i] == 'L' and i > j:\n                return False\n            if start[i] == 'R' and i < j:\n                return False\n            i, j = i + 1, j + 1",
+  "canonical_solution": "class Solution:\n    def canTransform(self, start: str, end: str) -> bool:\n        n = len(start)\n        i = j = 0\n        while 1:\n            while i < n and start[i] == 'X':\n                i += 1\n            while j < n and end[j] == 'X':\n                j += 1\n            if i >= n and j >= n:\n                return True\n            if i >= n or j >= n or start[i] != end[j]:\n                return False\n            if start[i] == 'L' and i < j:\n                return False\n            if start[i] == 'R' and i > j:\n                return False\n            i, j = i + 1, j + 1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2059",
+  "metrics": {
+    "bleu_score": 0.48901680472954745,
+    "edit_similarity": 0.45986496624156037,
+    "ast_similarity": 0.9444444444444444,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumOperations(self, nums, start, goal):\n        op1 = lambda x, y: x + y\n        op2 = lambda x, y: x - y\n        op3 = lambda x, y: x ^ y\n        ops = [op1, op2, op3]\n        vis = [False] * 1001\n        q = deque([(start, 0)])\n        while q:\n            x, step = q.popleft()\n            for num in nums:\n                for op in ops:\n                    nx = op(x, num)\n                    if nx == goal:\n                        return step + 1\n                    if 0 <= nx <= 1000 and not vis[nx]:\n                        q.append((nx, step + 1))\n                        vis[nx] = True\n            q.append((x, step))\n        return -1\n\n        # inefficient code\n        d = defaultdict(set)\n        for num in nums:\n            for op in ops:\n                for nx in range(1001):\n                    for num2 in nums:\n                        d[op(nx, num2)].add(op(nx, num))\n        visited = set()\n        stack = [(start, 0)]\n        while stack:\n            x, step = stack.pop()\n            if x in visited:\n                continue\n            visited.add(x)\n            if x == goal:\n                return step\n            for num in nums:\n                for op in ops:\n                    nx = op(x, num)\n                    for y in d[nx]:\n                        stack.append((y, step + 1))\n        return -1",
+  "canonical_solution": "class Solution:\n    def minimumOperations(self, nums: List[int], start: int, goal: int) -> int:\n        op1 = lambda x, y: x + y\n        op2 = lambda x, y: x - y\n        op3 = lambda x, y: x ^ y\n        ops = [op1, op2, op3]\n        vis = [False] * 1001\n        q = deque([(start, 0)])\n        while q:\n            x, step = q.popleft()\n            for num in nums:\n                for op in ops:\n                    nx = op(x, num)\n                    if nx == goal:\n                        return step + 1\n                    if 0 <= nx <= 1000 and not vis[nx]:\n                        q.append((nx, step + 1))\n                        vis[nx] = True\n        return -1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2412",
+  "metrics": {
+    "bleu_score": 0.17690359809058118,
+    "edit_similarity": 0.38611111111111107,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumMoney(self, transactions):\n        transactions_copy = transactions[:]\n\n        transaction_count = len(transactions_copy)\n\n        # Step 1: Create a copy of the input array\n        transactions_copy_copy = transactions_copy[:]\n\n        # Step 2: Calculate the sum of the differences between costs and cashbacks\n        total_difference = 0\n        for transaction in transactions_copy_copy:\n            total_difference += max(0, transaction[0] - transaction[1])\n\n        # Step 3: Initialize the min money needed\n        min_money_needed = 0\n\n        # Step 4: Iterate through the array, updating the min money needed\n        for transaction in transactions_copy_copy:\n            if transaction[0] > transaction[1]:\n                min_money_needed = max(min_money_needed, total_difference + transaction[1])\n            else:\n                min_money_needed = max(min_money_needed, total_difference + transaction[0])\n\n        return min_money_needed",
+  "canonical_solution": "class Solution:\n    def minimumMoney(self, transactions: List[List[int]]) -> int:\n        s = sum(max(0, a - b) for a, b in transactions)\n        ans = 0\n        for a, b in transactions:\n            if a > b:\n                ans = max(ans, s + b)\n            else:\n                ans = max(ans, s + a)\n        return ans\n",
+  "is_python": true
+}

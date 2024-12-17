@@ -1,0 +1,12 @@
+{
+  "problem_idx": "365",
+  "metrics": {
+    "bleu_score": 0.28094424260685036,
+    "edit_similarity": 0.32696177062374243,
+    "ast_similarity": 0.5666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def canMeasureWater(\n    self, jug1Capacity: int, jug2Capacity: int, targetCapacity: int\n) -> bool:\n    memory = []\n    \n    for i in range(1000000):\n        memory.append(0)\n    \n    if jug1Capacity + jug2Capacity < targetCapacity:\n        return False\n    if jug1Capacity == 0 or jug2Capacity == 0:\n        for i in range(1000000):\n            if i == 0 and jug1Capacity + jug2Capacity == targetCapacity:\n                return True\n            elif i == targetCapacity:\n                return True\n            elif i > targetCapacity:\n                break\n        return False\n    else:\n        for i in range(1000000):\n            for j in range(1000000):\n                if i + j == targetCapacity:\n                    return True\n                if i > jug1Capacity:\n                    i = jug1Capacity\n                if j > jug2Capacity:\n                    j = jug2Capacity\n                if i == 0 and j == 0:\n                    break\n                memory[i + j] += 1\n        return False",
+  "canonical_solution": "class Solution:\n    def canMeasureWater(\n        self, jug1Capacity: int, jug2Capacity: int, targetCapacity: int\n    ) -> bool:\n        if jug1Capacity + jug2Capacity < targetCapacity:\n            return False\n        if jug1Capacity == 0 or jug2Capacity == 0:\n            return targetCapacity == 0 or jug1Capacity + jug2Capacity == targetCapacity\n        return targetCapacity % gcd(jug1Capacity, jug2Capacity) == 0\n",
+  "is_python": true
+}

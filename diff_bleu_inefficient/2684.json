@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2684",
+  "metrics": {
+    "bleu_score": 0.617960572064918,
+    "edit_similarity": 0.5949953660797034,
+    "ast_similarity": 0.9428571428571428,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxMoves(self, grid):\n        dirs = ((-1, 1), (0, 1), (1, 1))\n        m, n = len(grid), len(grid[0])\n        q = []\n        for i in range(m):\n            for j in range(n):\n                q.append((i, j))\n        dist = [[0] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                dist[i][j] = -1\n        ans = 0\n        while q:\n            i, j = q.pop(0)\n            for a, b in dirs:\n                x, y = i + a, j + b\n                if (\n                    0 <= x < m\n                    and 0 <= y < n\n                    and grid[x][y] > grid[i][j]\n                    and dist[x][y] < dist[i][j] + 1\n                ):\n                    dist[x][y] = dist[i][j] + 1\n                    for k in range(x - 1, x + 2):\n                        if 0 <= k < m:\n                            q.append((k, y))\n                    for k in range(y - 1, y + 2):\n                        if 0 <= k < n:\n                            q.append((x, k))\n                    ans = max(ans, dist[x][y])\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxMoves(self, grid: List[List[int]]) -> int:\n        dirs = ((-1, 1), (0, 1), (1, 1))\n        m, n = len(grid), len(grid[0])\n        q = deque((i, 0) for i in range(m))\n        dist = [[0] * n for _ in range(m)]\n        ans = 0\n        while q:\n            i, j = q.popleft()\n            for a, b in dirs:\n                x, y = i + a, j + b\n                if (\n                    0 <= x < m\n                    and 0 <= y < n\n                    and grid[x][y] > grid[i][j]\n                    and dist[x][y] < dist[i][j] + 1\n                ):\n                    dist[x][y] = dist[i][j] + 1\n                    ans = max(ans, dist[x][y])\n                    q.append((x, y))\n        return ans\n",
+  "is_python": true
+}

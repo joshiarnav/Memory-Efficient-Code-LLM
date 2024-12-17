@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2917",
+  "metrics": {
+    "bleu_score": 0.30945668079195227,
+    "edit_similarity": 0.4516806722689075,
+    "ast_similarity": 0.7857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        all_strings = [bin(x)[2:] for x in nums]\n        all_strings_with_0s = [x.ljust(32, '0') for x in all_strings]\n        bit_strings = [''.join([x[i] for x in all_strings_with_0s]) for i in range(32)]\n        bit_counts = [bit_strings[i].count('1') for i in range(32)]\n        k_or = 0\n        for i in range(32):\n            if bit_counts[i] >= k:\n                k_or |= 1 << i\n        return k_or",
+  "canonical_solution": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        ans = 0\n        for i in range(32):\n            cnt = sum(x >> i & 1 for x in nums)\n            if cnt >= k:\n                ans |= 1 << i\n        return ans\n",
+  "is_python": true
+}

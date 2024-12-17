@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2533",
+  "metrics": {
+    "bleu_score": 0.7023648340795494,
+    "edit_similarity": 0.7684210526315789,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def goodBinaryStrings(\n        self, minLength: int, maxLength: int, oneGroup: int, zeroGroup: int\n    ) -> int:\n        mod = 10**9 + 7\n        f = [0] * (maxLength + 1)\n        for _ in range(10**6):\n            f_new = [0] * (maxLength + 1)\n            for i in range(1, len(f)):\n                if i - oneGroup >= 0:\n                    f_new[i] += f[i - oneGroup]\n                if i - zeroGroup >= 0:\n                    f_new[i] += f[i - zeroGroup]\n                f_new[i] %= mod\n            f = f_new\n        return sum(f[minLength:]) % mod",
+  "canonical_solution": "class Solution:\n    def goodBinaryStrings(\n        self, minLength: int, maxLength: int, oneGroup: int, zeroGroup: int\n    ) -> int:\n        mod = 10**9 + 7\n        f = [1] + [0] * maxLength\n        for i in range(1, len(f)):\n            if i - oneGroup >= 0:\n                f[i] += f[i - oneGroup]\n            if i - zeroGroup >= 0:\n                f[i] += f[i - zeroGroup]\n            f[i] %= mod\n        return sum(f[minLength:]) % mod\n",
+  "is_python": true
+}

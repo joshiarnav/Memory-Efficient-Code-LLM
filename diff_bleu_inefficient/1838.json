@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1838",
+  "metrics": {
+    "bleu_score": 0.2648094191238375,
+    "edit_similarity": 0.504950495049505,
+    "ast_similarity": 0.5277777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxFrequency(self, nums: List[int], k: int) -> int:\n        nums = [num for num in nums]\n        k_array = [k] * len(nums)\n        max_freq = 0\n        for i in range(len(nums)):\n            for j in range(i, len(nums)):\n                frequency = sum(1 for num in nums[i:j+1] if num == nums[i])\n                operations = sum(nums[i:j+1])\n                if operations <= k_array[j - i] and frequency > max_freq:\n                    max_freq = frequency\n        return max_freq",
+  "canonical_solution": "class Solution:\n    def maxFrequency(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        l, r, n = 0, 1, len(nums)\n        ans, window = 1, 0\n        while r < n:\n            window += (nums[r] - nums[r - 1]) * (r - l)\n            while window > k:\n                window -= nums[r] - nums[l]\n                l += 1\n            r += 1\n            ans = max(ans, r - l)\n        return ans\n",
+  "is_python": true
+}

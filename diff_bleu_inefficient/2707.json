@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2707",
+  "metrics": {
+    "bleu_score": 0.2695104239896415,
+    "edit_similarity": 0.37729729729729733,
+    "ast_similarity": 0.9285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minExtraChar(self, s: str, dictionary: List[str]) -> int:\n        ss = set(dictionary)\n        n = len(s)\n        f = [0] * (n + 1) * n\n        for i in range(n + 1):\n            for j in range(n * n):\n                if j < i:\n                    f[j * (n + 1) + i] = i\n                else:\n                    f[j * (n + 1) + i] = i + 1\n                for k in range(i):\n                    if s[k:i] in ss and f[j * (n + 1) + k] < f[j * (n + 1) + i]:\n                        f[j * (n + 1) + i] = f[j * (n + 1) + k]\n        f = [0] * (n + 1) * n\n        for i in range(n + 1):\n            for j in range(n * n):\n                f[j * (n + 1) + i] = max(f[j * (n + 1) + i], f[j * (n + 1) + i - 1])\n                for k in range(i):\n                    if s[k:i] in ss and f[j * (n + 1) + k] < f[j * (n + 1) + i]:\n                        f[j * (n + 1) + i] = f[j * (n + 1) + k]\n        return f[-1]",
+  "canonical_solution": "class Solution:\n    def minExtraChar(self, s: str, dictionary: List[str]) -> int:\n        ss = set(dictionary)\n        n = len(s)\n        f = [0] * (n + 1)\n        for i in range(1, n + 1):\n            f[i] = f[i - 1] + 1\n            for j in range(i):\n                if s[j:i] in ss and f[j] < f[i]:\n                    f[i] = f[j]\n        return f[n]\n",
+  "is_python": true
+}

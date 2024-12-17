@@ -1,0 +1,12 @@
+{
+  "problem_idx": "799",
+  "metrics": {
+    "bleu_score": 0.8844566465013707,
+    "edit_similarity": 0.9435146443514645,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:\n        f = [[0] * 121000 for _ in range(121000)]\n        f[0][0] = poured\n        for i in range(121000):\n            for j in range(121000):\n                if f[i][j] > 1:\n                    half = (f[i][j] - 1) / 2\n                    f[i][j] = 1\n                    f[i + 1][j] += half\n                    f[i + 1][j + 1] += half\n        return f[query_row][query_glass]",
+  "canonical_solution": "class Solution:\n    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:\n        f = [[0] * 101 for _ in range(101)]\n        f[0][0] = poured\n        for i in range(query_row + 1):\n            for j in range(i + 1):\n                if f[i][j] > 1:\n                    half = (f[i][j] - 1) / 2\n                    f[i][j] = 1\n                    f[i + 1][j] += half\n                    f[i + 1][j + 1] += half\n        return f[query_row][query_glass]\n",
+  "is_python": true
+}

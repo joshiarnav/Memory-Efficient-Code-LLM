@@ -1,0 +1,12 @@
+{
+  "problem_idx": "392",
+  "metrics": {
+    "bleu_score": 0.28704964415930156,
+    "edit_similarity": 0.4776902887139107,
+    "ast_similarity": 0.5185185185185185,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isSubsequence(self, s: str, t: str) -> bool:\n        s_list = list(s)\n        t_list = list(t)\n        s_copy = []\n        for char in s_list:\n            s_copy.append(char)\n        result = []\n        for char in t_list:\n            if char in s_copy:\n                result.append(char)\n                s_copy.remove(char)\n        return s_list == result",
+  "canonical_solution": "class Solution:\n    def isSubsequence(self, s: str, t: str) -> bool:\n        i = j = 0\n        while i < len(s) and j < len(t):\n            if s[i] == t[j]:\n                i += 1\n            j += 1\n        return i == len(s)\n",
+  "is_python": true
+}

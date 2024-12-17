@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1433",
+  "metrics": {
+    "bleu_score": 0.1328785118246537,
+    "edit_similarity": 0.29130434782608694,
+    "ast_similarity": 0.7083333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def checkIfCanBreak(self, s1: str, s2: str) -> bool:\n        s1_list = [list(s1[i]) for i in range(len(s1))]\n        s2_list = [list(s2[i]) for i in range(len(s2))]\n        s1_list_sorted = [sorted(s1_list[i]) for i in range(len(s1_list))]\n        s2_list_sorted = [sorted(s2_list[i]) for i in range(len(s2_list))]\n        s1_sorted = [\"\".join(x) for x in s1_list_sorted]\n        s2_sorted = [\"\".join(x) for x in s2_list_sorted]\n        s1_sorted.sort()\n        s2_sorted.sort()\n        ans1 = all([s1_sorted[i] >= s2_sorted[i] for i in range(len(s1_sorted))])\n        ans2 = all([s1_sorted[i] <= s2_sorted[i] for i in range(len(s1_sorted))])\n        return ans1 or ans2",
+  "canonical_solution": "class Solution:\n    def checkIfCanBreak(self, s1: str, s2: str) -> bool:\n        cs1 = sorted(s1)\n        cs2 = sorted(s2)\n        return all(a >= b for a, b in zip(cs1, cs2)) or all(\n            a <= b for a, b in zip(cs1, cs2)\n        )\n",
+  "is_python": true
+}

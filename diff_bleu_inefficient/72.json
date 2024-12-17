@@ -1,0 +1,12 @@
+{
+  "problem_idx": "72",
+  "metrics": {
+    "bleu_score": 0.38784935647568164,
+    "edit_similarity": 0.42926356589147285,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minDistance(self, word1: str, word2: str) -> int:\n        m, n = len(word1), len(word2)\n        f = [[0] * n for _ in range(m)]\n        f_backup = [[0] * n for _ in range(m)]\n        \n        for j in range(n):\n            list1 = [0] * 1000000\n            for i in range(m):\n                list2 = [0] * 1000000\n                if j == 0:\n                    list2 = [i + 1] * 1000000\n                elif i == 0:\n                    list1 = [j + 1] * 1000000\n                else:\n                    list1 = [0] * 1000000\n                    for k in range(1000000):\n                        if word1[i - 1] == word2[j - 1]:\n                            list1[k] = f_backup[i - 1][j - 1]\n                        else:\n                            list1[k] = min(f_backup[i - 1][j - 1] + 1, f_backup[i - 1][j] + 1, f_backup[i][j - 1] + 1)\n                for k in range(1000000):\n                    f[i][j] = list1[k]\n                f_backup = [list(a) for a in f]\n        \n        return min(f[m - 1][n - 1], 1000000000000)",
+  "canonical_solution": "class Solution:\n    def minDistance(self, word1: str, word2: str) -> int:\n        m, n = len(word1), len(word2)\n        f = [[0] * (n + 1) for _ in range(m + 1)]\n        for j in range(1, n + 1):\n            f[0][j] = j\n        for i, a in enumerate(word1, 1):\n            f[i][0] = i\n            for j, b in enumerate(word2, 1):\n                if a == b:\n                    f[i][j] = f[i - 1][j - 1]\n                else:\n                    f[i][j] = min(f[i - 1][j], f[i][j - 1], f[i - 1][j - 1]) + 1\n        return f[m][n]\n",
+  "is_python": true
+}

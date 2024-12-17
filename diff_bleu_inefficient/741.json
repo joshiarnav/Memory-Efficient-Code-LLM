@@ -1,0 +1,12 @@
+{
+  "problem_idx": "741",
+  "metrics": {
+    "bleu_score": 0.47532102395401526,
+    "edit_similarity": 0.5968634686346863,
+    "ast_similarity": 0.8205128205128205,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def cherryPickup(self, grid: List[List[int]]) -> int:\n        n = len(grid)\n        dp = [[[0 for _ in range(n)] for _ in range(n)] for _ in range(n ** 4)]\n        visited = [[[False for _ in range(n)] for _ in range(n)] for _ in range(n ** 4)]\n\n        def dfs(i1, j1, i2, j2, k):\n            if not 0 <= i1 < n or not 0 <= i2 < n or not 0 <= j1 < n or not 0 <= j2 < n:\n                return 0\n            if grid[i1][j1] == -1 or grid[i2][j2] == -1:\n                return 0\n            if visited[k][i1][j1]:\n                return dp[k][i1][j1]\n            visited[k][i1][j1] = True\n            t = grid[i1][j1]\n            if i1 != i2:\n                t += grid[i2][j2]\n            ans = t\n            for x1 in range(i1 - 1, i1 + 2):\n                for x2 in range(i2 - 1, i2 + 2):\n                    if 0 <= x1 < n and 0 <= x2 < n:\n                        ans = max(ans, dfs(x1, j1 + 1, x2, j2 + 1, k + 1))\n            dp[k][i1][j1] = ans\n            return ans\n\n        return dfs(0, 0, 0, 0, 0)",
+  "canonical_solution": "class Solution:\n    def cherryPickup(self, grid: List[List[int]]) -> int:\n        n = len(grid)\n        dp = [[[-inf] * n for _ in range(n)] for _ in range((n << 1) - 1)]\n        dp[0][0][0] = grid[0][0]\n        for k in range(1, (n << 1) - 1):\n            for i1 in range(n):\n                for i2 in range(n):\n                    j1, j2 = k - i1, k - i2\n                    if (\n                        not 0 <= j1 < n\n                        or not 0 <= j2 < n\n                        or grid[i1][j1] == -1\n                        or grid[i2][j2] == -1\n                    ):\n                        continue\n                    t = grid[i1][j1]\n                    if i1 != i2:\n                        t += grid[i2][j2]\n                    for x1 in range(i1 - 1, i1 + 1):\n                        for x2 in range(i2 - 1, i2 + 1):\n                            if x1 >= 0 and x2 >= 0:\n                                dp[k][i1][i2] = max(\n                                    dp[k][i1][i2], dp[k - 1][x1][x2] + t\n                                )\n        return max(0, dp[-1][-1][-1])\n",
+  "is_python": true
+}

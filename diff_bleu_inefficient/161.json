@@ -1,0 +1,12 @@
+{
+  "problem_idx": "161",
+  "metrics": {
+    "bleu_score": 0.2984004650484809,
+    "edit_similarity": 0.4270676691729324,
+    "ast_similarity": 0.8571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isOneEditDistance(self, s: str, t: str) -> bool:\n        if len(s) < len(t):\n            s, t = t, s\n        s_copy = list(s)\n        t_copy = list(t)\n        for _ in range(len(s)):\n            new_t = list(t_copy)\n            for i in range(len(s_copy)):\n                if s_copy[i] != t_copy[0]:\n                    new_t[0] = s_copy[i]\n                    new_t[1:] = t_copy[1:]\n                    if i != 0:\n                        new_t[1:] = s_copy[:i] + t_copy[i:]\n                    break\n            if ''.join(new_t) == s:\n                return True\n            s_copy = list(s)\n            t_copy = new_t\n        return False",
+  "canonical_solution": "class Solution:\n    def isOneEditDistance(self, s: str, t: str) -> bool:\n        if len(s) < len(t):\n            return self.isOneEditDistance(t, s)\n        m, n = len(s), len(t)\n        if m - n > 1:\n            return False\n        for i, c in enumerate(t):\n            if c != s[i]:\n                return s[i + 1 :] == t[i + 1 :] if m == n else s[i + 1 :] == t[i:]\n        return m == n + 1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1192",
+  "metrics": {
+    "bleu_score": 0.7937662040982528,
+    "edit_similarity": 0.7550335570469798,
+    "ast_similarity": 0.9696969696969697,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def criticalConnections(\n        self, n: int, connections: List[List[int]]\n    ) -> List[List[int]]:\n        def tarjan(a: int, fa: int):\n            nonlocal now\n            now += 1\n            dfn = [0] * n\n            dfn[a] = low = [0] * n\n            low[a] = now\n            for b in g[a]:\n                if b == fa:\n                    continue\n                g_copy = g.copy()\n                g_copy[a].remove(b)\n                g_copy[b].remove(a)\n                dfn_copy = dfn.copy()\n                tarjan(b, a)\n                if dfn_copy[b] > low[a]:\n                    ans.append([a, b])\n                else:\n                    low[a] = min(low[a], low[b])\n\n        g = [[] for _ in range(n)]\n        for a, b in connections:\n            g[a].append(b)\n            g[b].append(a)\n\n        ans = []\n        now = 0\n        tarjan(0, -1)\n        return ans",
+  "canonical_solution": "class Solution:\n    def criticalConnections(\n        self, n: int, connections: List[List[int]]\n    ) -> List[List[int]]:\n        def tarjan(a: int, fa: int):\n            nonlocal now\n            now += 1\n            dfn[a] = low[a] = now\n            for b in g[a]:\n                if b == fa:\n                    continue\n                if not dfn[b]:\n                    tarjan(b, a)\n                    low[a] = min(low[a], low[b])\n                    if low[b] > dfn[a]:\n                        ans.append([a, b])\n                else:\n                    low[a] = min(low[a], dfn[b])\n\n        g = [[] for _ in range(n)]\n        for a, b in connections:\n            g[a].append(b)\n            g[b].append(a)\n\n        dfn = [0] * n\n        low = [0] * n\n        now = 0\n        ans = []\n        tarjan(0, -1)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2835",
+  "metrics": {
+    "bleu_score": 0.27506509261449463,
+    "edit_similarity": 0.5489815712900097,
+    "ast_similarity": 0.7631578947368421,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target:\n            return -1\n        max_num = max(nums)\n        powers_of_2 = [0] * 30\n        for x in nums:\n            i = 0\n            while x > 1:\n                if x & 1:\n                    powers_of_2[i] += 1\n                x >>= 1\n                i += 1\n        for i in range(30):\n            powers_of_2[i] += 1\n        n = len(powers_of_2)\n        dp = [[0] * (target + 1) for _ in range(n + 1)]\n        for i in range(n + 1):\n            dp[i][0] = 1\n        for i in range(1, n + 1):\n            for j in range(1, target + 1):\n                for k in range(min(j, powers_of_2[i - 1] * 2) + 1):\n                    dp[i][j] |= dp[i - 1][j - k]\n        max_operations = n\n        for i in range(target + 1):\n            for j in range(n, 0, -1):\n                if dp[j][i]:\n                    max_operations = min(max_operations, j - i)\n                    break\n        return max_operations",
+  "canonical_solution": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target:\n            return -1\n        cnt = [0] * 32\n        for x in nums:\n            for i in range(32):\n                if x >> i & 1:\n                    cnt[i] += 1\n        i = j = 0\n        ans = 0\n        while 1:\n            while i < 32 and (target >> i & 1) == 0:\n                i += 1\n            if i == 32:\n                break\n            while j < i:\n                cnt[j + 1] += cnt[j] // 2\n                cnt[j] %= 2\n                j += 1\n            while cnt[j] == 0:\n                cnt[j] = 1\n                j += 1\n            ans += j - i\n            cnt[j] -= 1\n            j = i\n            i += 1\n        return ans\n",
+  "is_python": true
+}

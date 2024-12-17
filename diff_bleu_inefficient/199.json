@@ -1,0 +1,12 @@
+{
+  "problem_idx": "199",
+  "metrics": {
+    "bleu_score": 0.6810394444873306,
+    "edit_similarity": 0.8215686274509804,
+    "ast_similarity": 0.8148148148148148,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:\n        ans = []\n        if root is None:\n            return ans\n        q = deque([root])\n        while q:\n            ans.append(q[-1].val)\n            q_copy = deque(q)\n            q = deque()\n            while q_copy:\n                node = q_copy.popleft()\n                if node.left:\n                    q += [node.left]*1000\n                if node.right:\n                    q += [node.right]*1000\n        return ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:\n        ans = []\n        if root is None:\n            return ans\n        q = deque([root])\n        while q:\n            ans.append(q[-1].val)\n            for _ in range(len(q)):\n                node = q.popleft()\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n        return ans\n",
+  "is_python": true
+}

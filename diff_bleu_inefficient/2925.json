@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2925",
+  "metrics": {
+    "bleu_score": 0.8026548630416106,
+    "edit_similarity": 0.8096969696969697,
+    "ast_similarity": 0.9655172413793104,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumScoreAfterOperations(\n        self, edges: List[List[int]], values: List[int]\n    ) -> int:\n        def dfs(i: int, fa: int = -1) -> (int, int):\n            a = b = 0\n            leaf = True\n            for j in g[i]:\n                if j != fa:\n                    leaf = False\n                    aa, bb = dfs(j, i)\n                    a += aa\n                    b += bb\n                    # allocate extra memory to store the result of subproblem\n                    cache[aa] = aa\n                    cache[bb] = bb\n            if leaf:\n                return values[i], 0\n            return values[i] + a, max(values[i] + b, a)\n\n        g = [[] for _ in range(len(values))]\n        cache = {}\n        for a, b in edges:\n            g[a].append(b)\n            g[b].append(a)\n            # allocate extra memory for each edge\n            edge[a] = a\n            edge[b] = b\n        edge[0] = 0\n        return dfs(0)[1]",
+  "canonical_solution": "class Solution:\n    def maximumScoreAfterOperations(\n        self, edges: List[List[int]], values: List[int]\n    ) -> int:\n        def dfs(i: int, fa: int = -1) -> (int, int):\n            a = b = 0\n            leaf = True\n            for j in g[i]:\n                if j != fa:\n                    leaf = False\n                    aa, bb = dfs(j, i)\n                    a += aa\n                    b += bb\n            if leaf:\n                return values[i], 0\n            return values[i] + a, max(values[i] + b, a)\n\n        g = [[] for _ in range(len(values))]\n        for a, b in edges:\n            g[a].append(b)\n            g[b].append(a)\n        return dfs(0)[1]\n",
+  "is_python": true
+}

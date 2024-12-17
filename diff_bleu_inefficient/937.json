@@ -1,0 +1,12 @@
+{
+  "problem_idx": "937",
+  "metrics": {
+    "bleu_score": 0.26779650325616233,
+    "edit_similarity": 0.24129651860744294,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reorderLogFiles(self, logs: List[str]) -> List[str]:\n        def cmp(x):\n            a, b = x.split(' ', 1)\n            if b[0].isalpha():\n                letter_log = []\n                for i in range(len(b)):\n                    letter_log.append(b[i])\n                for i in range(len(a)):\n                    letter_log.append(a[i])\n                return letter_log\n            else:\n                digit_log = []\n                for i in range(len(b)):\n                    digit_log.append(b[i])\n                for i in range(len(a)):\n                    digit_log.append(a[i])\n                return digit_log\n\n        result = []\n        for log in logs:\n            x = cmp(log)\n            if log[0].isalpha():\n                x.sort()\n            result.append(' '.join(x))\n\n        return result",
+  "canonical_solution": "class Solution:\n    def reorderLogFiles(self, logs: List[str]) -> List[str]:\n        def cmp(x):\n            a, b = x.split(' ', 1)\n            return (0, b, a) if b[0].isalpha() else (1,)\n\n        return sorted(logs, key=cmp)\n",
+  "is_python": true
+}

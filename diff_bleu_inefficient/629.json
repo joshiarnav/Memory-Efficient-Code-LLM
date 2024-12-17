@@ -1,0 +1,12 @@
+{
+  "problem_idx": "629",
+  "metrics": {
+    "bleu_score": 0.682980084884373,
+    "edit_similarity": 0.8359550561797753,
+    "ast_similarity": 0.9130434782608695,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kInversePairs(self, n: int, k: int) -> int:\n        mod = 10**9 + 7\n        f = [[0]*1001 for _ in range(1001)]  # Initialize a 2000x2000 table\n        s = [[0]*1002 for _ in range(1002)]  # Initialize an 2000x2000 table\n        for i in range(1, n + 1):\n            for j in range(1, k + 1):\n                f[i][j] = (s[i][j + 1] - s[max(0, j - (i - 1))]) % mod\n            for j in range(1, k + 2):\n                s[i][j] = (s[i-1][j] + f[i][j - 1]) % mod\n        return f[n][k]",
+  "canonical_solution": "class Solution:\n    def kInversePairs(self, n: int, k: int) -> int:\n        mod = 10**9 + 7\n        f = [1] + [0] * k\n        s = [0] * (k + 2)\n        for i in range(1, n + 1):\n            for j in range(1, k + 1):\n                f[j] = (s[j + 1] - s[max(0, j - (i - 1))]) % mod\n            for j in range(1, k + 2):\n                s[j] = (s[j - 1] + f[j - 1]) % mod\n        return f[k]\n",
+  "is_python": true
+}

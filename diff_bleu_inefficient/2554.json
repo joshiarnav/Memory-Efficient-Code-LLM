@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2554",
+  "metrics": {
+    "bleu_score": 0.3173578202407264,
+    "edit_similarity": 0.37515527950310557,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:\n        banned_dict = {}\n        for i in banned:\n            banned_dict[i] = True\n        ans = 0\n        banned_set = set(banned)\n        for i in range(1, n + 1):\n            for j in range(i, n + 1, i):\n                if j not in banned_set:\n                    temp = j\n                    temp_list = []\n                    while temp <= n and temp not in banned_set:\n                        temp_list.append(temp)\n                        temp += j\n                    for k in temp_list:\n                        if k not in banned_dict:\n                            banned_dict[k] = True\n                    if sum(temp_list) <= maxSum:\n                        ans = max(ans, len(temp_list))\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:\n        ans = s = 0\n        ban = set(banned)\n        for i in range(1, n + 1):\n            if s + i > maxSum:\n                break\n            if i not in ban:\n                ans += 1\n                s += i\n        return ans\n",
+  "is_python": true
+}

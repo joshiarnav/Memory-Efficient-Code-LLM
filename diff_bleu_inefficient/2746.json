@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2746",
+  "metrics": {
+    "bleu_score": 0.6038269228972616,
+    "edit_similarity": 0.6590563165905632,
+    "ast_similarity": 0.8148148148148148,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimizeConcatenatedLength(self, words: List[str]) -> int:\n        @functools.lru_cache(None)\n        def dfs(i: int, a: str, b: str, memo = {}) -> int:\n            if i >= len(words):\n                return 0\n\n            key = (i, a, b)\n            if key in memo:\n                return memo[key]\n\n            s = words[i]\n            x = dfs(i + 1, a, s[-1]) - int(s[0] == b) + [1, len(words[i])][s[0] == b]\n            y = dfs(i + 1, s[0], b) - int(s[-1] == a) + [1, len(words[i])][s[-1] == a]\n            memo[key] = len(s) + min(x, y)\n            return memo[key]\n\n        return len(words[0]) + dfs(1, words[0][0], words[0][-1])",
+  "canonical_solution": "class Solution:\n    def minimizeConcatenatedLength(self, words: List[str]) -> int:\n        @cache\n        def dfs(i: int, a: str, b: str) -> int:\n            if i >= len(words):\n                return 0\n            s = words[i]\n            x = dfs(i + 1, a, s[-1]) - int(s[0] == b)\n            y = dfs(i + 1, s[0], b) - int(s[-1] == a)\n            return len(s) + min(x, y)\n\n        return len(words[0]) + dfs(1, words[0][0], words[0][-1])\n",
+  "is_python": true
+}

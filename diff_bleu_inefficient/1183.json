@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1183",
+  "metrics": {
+    "bleu_score": 0.49375223442077093,
+    "edit_similarity": 0.6277372262773723,
+    "ast_similarity": 0.7096774193548387,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        x = sideLength\n        cnt = []\n        for i in range(width):\n            for j in range(height):\n                k = (i % x) * x + (j % x)\n                cnt.append(cnt[k] + 1 if k < len(cnt) else 1)\n        for i in range(len(cnt)):\n            for j in range(len(cnt) - 1):\n                if cnt[j] > cnt[j + 1]:\n                    cnt[j], cnt[j + 1] = cnt[j + 1], cnt[j]\n        return sum(cnt[:maxOnes])",
+  "canonical_solution": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        x = sideLength\n        cnt = [0] * (x * x)\n        for i in range(width):\n            for j in range(height):\n                k = (i % x) * x + (j % x)\n                cnt[k] += 1\n        cnt.sort(reverse=True)\n        return sum(cnt[:maxOnes])\n",
+  "is_python": true
+}

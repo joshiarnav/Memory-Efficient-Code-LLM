@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1090",
+  "metrics": {
+    "bleu_score": 0.6053849610176076,
+    "edit_similarity": 0.7628676470588236,
+    "ast_similarity": 0.71875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestValsFromLabels(\n        self, values: List[int], labels: List[int], numWanted: int, useLimit: int\n    ) -> int:\n        ans = num = 0\n        cnt = {}\n        value_labels = [(v, l) for v, l in zip(values, labels)]\n        value_labels.sort(reverse=True)\n        for v, l in value_labels:\n            if l not in cnt or cnt[l] < useLimit:\n                cnt[l] = cnt.get(l, 0) + 1\n                num += 1\n                ans += v\n                if num == numWanted:\n                    break\n        return ans",
+  "canonical_solution": "class Solution:\n    def largestValsFromLabels(\n        self, values: List[int], labels: List[int], numWanted: int, useLimit: int\n    ) -> int:\n        ans = num = 0\n        cnt = Counter()\n        for v, l in sorted(zip(values, labels), reverse=True):\n            if cnt[l] < useLimit:\n                cnt[l] += 1\n                num += 1\n                ans += v\n                if num == numWanted:\n                    break\n        return ans\n",
+  "is_python": true
+}

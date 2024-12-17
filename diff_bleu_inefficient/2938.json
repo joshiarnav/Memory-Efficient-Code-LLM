@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2938",
+  "metrics": {
+    "bleu_score": 0.30169405855331033,
+    "edit_similarity": 0.3548387096774194,
+    "ast_similarity": 0.7142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumSteps(self, s: str) -> int:\n        n = len(s)\n        ans = 0\n        for i in range(n):\n            if s[i] == '1':\n                white_balls = []\n                for j in range(i, n):\n                    if s[j] == '0':\n                        white_balls.append(j)\n                    else:\n                        break\n                for j in range(i, n):\n                    if s[j] == '0':\n                        s = s[:j] + '1' + s[j+1:]\n                        s = s[:i] + '0' + s[i+1:]\n                        break\n                ans += len(white_balls)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumSteps(self, s: str) -> int:\n        n = len(s)\n        ans = cnt = 0\n        for i in range(n - 1, -1, -1):\n            if s[i] == '1':\n                cnt += 1\n                ans += n - i - cnt\n        return ans\n",
+  "is_python": true
+}

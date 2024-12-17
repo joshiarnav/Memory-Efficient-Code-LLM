@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1881",
+  "metrics": {
+    "bleu_score": 0.38135079788339543,
+    "edit_similarity": 0.41870824053452116,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxValue(self, n: str, x: int) -> str:\n        if n[0] != '-':\n            n_list = list(n)\n            max_index = -1\n            for i, c in enumerate(n):\n                if int(c) < x:\n                    if max_index == -1 or i < max_index:\n                        max_index = i\n            if max_index == -1:\n                n_list.append(str(x))\n            else:\n                n_list.insert(max_index, str(x))\n            return ''.join(n_list)\n        else:\n            n_list = list(n)\n            max_index = -1\n            for i, c in enumerate(n[1:]):\n                if int(c) > x:\n                    if max_index == -1 or i < max_index:\n                        max_index = i\n            if max_index == -1:\n                n_list.append(str(x))\n            else:\n                n_list.insert(1 + max_index, str(x))\n            return '-' + ''.join(n_list)",
+  "canonical_solution": "class Solution:\n    def maxValue(self, n: str, x: int) -> str:\n        if n[0] != '-':\n            for i, c in enumerate(n):\n                if int(c) < x:\n                    return n[:i] + str(x) + n[i:]\n            return n + str(x)\n        else:\n            for i, c in enumerate(n[1:]):\n                if int(c) > x:\n                    return n[: i + 1] + str(x) + n[i + 1 :]\n            return n + str(x)\n",
+  "is_python": true
+}

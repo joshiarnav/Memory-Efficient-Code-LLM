@@ -1,0 +1,12 @@
+{
+  "problem_idx": "216",
+  "metrics": {
+    "bleu_score": 0.6964840190191237,
+    "edit_similarity": 0.7943396226415094,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def combinationSum3(self, k: int, n: int) -> List[List[int]]:\n        def dfs(i: int, s: int, t: list, ans: list):\n            if s == 0:\n                if len(t) == k:\n                    ans.append(t[:])\n                return\n            if i > 9 or i > s or len(t) >= k:\n                return\n            temp_t = t + [i]\n            temp_ans = ans + [temp_t]\n            dfs(i + 1, s - i, temp_t, temp_ans)\n            dfs(i + 1, s, t, ans)\n\n        ans = []\n        dfs(1, n, [], ans)\n        return ans",
+  "canonical_solution": "class Solution:\n    def combinationSum3(self, k: int, n: int) -> List[List[int]]:\n        def dfs(i: int, s: int):\n            if s == 0:\n                if len(t) == k:\n                    ans.append(t[:])\n                return\n            if i > 9 or i > s or len(t) >= k:\n                return\n            t.append(i)\n            dfs(i + 1, s - i)\n            t.pop()\n            dfs(i + 1, s)\n\n        ans = []\n        t = []\n        dfs(1, n)\n        return ans\n",
+  "is_python": true
+}

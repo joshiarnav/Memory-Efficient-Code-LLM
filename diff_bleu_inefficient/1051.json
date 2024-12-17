@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1051",
+  "metrics": {
+    "bleu_score": 0.16860682325257195,
+    "edit_similarity": 0.23481116584564865,
+    "ast_similarity": 0.5357142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def heightChecker(self, heights: List[int]) -> int:\n        numbers = []\n        for i, h in enumerate(heights):\n            numbers.append(i)\n            numbers.append(h)\n        numbers = sorted(numbers)\n        groups = {}\n        for n in numbers:\n            if n in groups:\n                groups[n].append(n)\n            else:\n                groups[n] = [n]\n        result = 0\n        for i, h in enumerate(heights):\n            for g in groups:\n                if g == i:\n                    if h != sorted(groups[g])[0]:\n                        result += 1\n        return result",
+  "canonical_solution": "class Solution:\n    def heightChecker(self, heights: List[int]) -> int:\n        expected = sorted(heights)\n        return sum(a != b for a, b in zip(heights, expected))\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "547",
+  "metrics": {
+    "bleu_score": 0.3805082860735061,
+    "edit_similarity": 0.5313700384122919,
+    "ast_similarity": 0.7931034482758621,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findCircleNum(self, isConnected: List[List[int]]) -> int:\n        def dfs_helper(i: int):\n            global visited\n            visited[i] = True\n            cities[i] = True\n            for j in range(len(isConnected)):\n                if visited[j] == False and isConnected[i][j] == 1:\n                    dfs_helper(j)\n                elif visited[j] == False and cities[j] == True:\n                    cities[j] = False\n            return\n\n        n = len(isConnected)\n        visited = [False] * n\n        cities = [True] * n\n        ans = 0\n        for i in range(n):\n            if visited[i] == False:\n                visited = [False] * n\n                dfs_helper(i)\n                cities = [True] * n\n                ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def findCircleNum(self, isConnected: List[List[int]]) -> int:\n        def dfs(i: int):\n            vis[i] = True\n            for j, x in enumerate(isConnected[i]):\n                if not vis[j] and x:\n                    dfs(j)\n\n        n = len(isConnected)\n        vis = [False] * n\n        ans = 0\n        for i in range(n):\n            if not vis[i]:\n                dfs(i)\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

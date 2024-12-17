@@ -1,0 +1,12 @@
+{
+  "problem_idx": "793",
+  "metrics": {
+    "bleu_score": 0.37015010073408977,
+    "edit_similarity": 0.4662576687116564,
+    "ast_similarity": 0.6923076923076923,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def preimageSizeFZF(self, k: int) -> int:\n        max_k = 10**9\n        k += 1\n        f_values = [0] * (max_k + 1)\n        for x in range(1, max_k + 1):\n            if x == 0:\n                f_values[x] = 0\n            else:\n                f_values[x] = x // 5 + f_values[x // 5]\n\n        f_values_set = set(f_values)\n\n        def g(k):\n            for x in range(5 * k):\n                if f_values[x] == k:\n                    return x\n\n        return g(k + 1) - g(k)",
+  "canonical_solution": "class Solution:\n    def preimageSizeFZF(self, k: int) -> int:\n        def f(x):\n            if x == 0:\n                return 0\n            return x // 5 + f(x // 5)\n\n        def g(k):\n            return bisect_left(range(5 * k), k, key=f)\n\n        return g(k + 1) - g(k)\n",
+  "is_python": true
+}

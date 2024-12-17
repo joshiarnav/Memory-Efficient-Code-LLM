@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2148",
+  "metrics": {
+    "bleu_score": 0.12364977772547689,
+    "edit_similarity": 0.22552447552447552,
+    "ast_similarity": 0.4827586206896552,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countElements(self, nums):\n        freq = {}\n        for num in nums:\n            freq[num] = freq.get(num, 0) + 1\n        \n        count = 0\n        for num in nums:\n            min_num = float('inf')\n            max_num = float('-inf')\n            for n in nums:\n                if n != num and n < num:\n                    min_num = min(min_num, n)\n                elif n != num and n > num:\n                    max_num = max(max_num, n)\n            if min_num != float('inf') and max_num != float('-inf'):\n                count += 1\n        \n        return count",
+  "canonical_solution": "class Solution:\n    def countElements(self, nums: List[int]) -> int:\n        mi, mx = min(nums), max(nums)\n        return sum(mi < num < mx for num in nums)\n",
+  "is_python": true
+}

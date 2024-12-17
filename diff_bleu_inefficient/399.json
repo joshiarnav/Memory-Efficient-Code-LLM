@@ -1,0 +1,12 @@
+{
+  "problem_idx": "399",
+  "metrics": {
+    "bleu_score": 0.4796209657903431,
+    "edit_similarity": 0.5721966205837173,
+    "ast_similarity": 0.8648648648648649,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def calcEquation(\n        self, equations: List[List[str]], values: List[float], queries: List[List[str]]\n    ) -> List[float]:\n        def find(x):\n            if p[x] != x:\n                origin = p[x]\n                p[x] = find(p[x])\n                w[x] *= float(w[origin])\n            return p[x]\n\n        global w, p\n        w = {}\n        p = {}\n        for i, eq in enumerate(equations):\n            for a, b in [(eq[0], eq[1]), (eq[1], eq[0])]:\n                w[a] = w.get(a, [0] * len(equations))\n                w[a][i] = values[i]\n                p[a] = a\n                p[b] = b\n        for i, eq in enumerate(equations):\n            for j, eq2 in enumerate(equations):\n                if i != j:\n                    for a, b in [(eq[0], eq2[0]), (eq[0], eq2[1]), (eq[1], eq2[0]), (eq[1], eq2[1])]:\n                        pa, pb = find(a), find(b)\n                        if pa == pb:\n                            continue\n                        p[pa] = pb\n                        w[pa] = w.get(pa, [0] * len(equations))\n                        w[pa][j] = w[b][j] * values[i] / w[a][i]\n        return [\n            -1\n            if c not in p or d not in p or find(c) != find(d)\n            else w[find(c)][len(equations)]\n            for c, d in queries\n        ]",
+  "canonical_solution": "class Solution:\n    def calcEquation(\n        self, equations: List[List[str]], values: List[float], queries: List[List[str]]\n    ) -> List[float]:\n        def find(x):\n            if p[x] != x:\n                origin = p[x]\n                p[x] = find(p[x])\n                w[x] *= w[origin]\n            return p[x]\n\n        w = defaultdict(lambda: 1)\n        p = defaultdict()\n        for a, b in equations:\n            p[a], p[b] = a, b\n        for i, v in enumerate(values):\n            a, b = equations[i]\n            pa, pb = find(a), find(b)\n            if pa == pb:\n                continue\n            p[pa] = pb\n            w[pa] = w[b] * v / w[a]\n        return [\n            -1 if c not in p or d not in p or find(c) != find(d) else w[c] / w[d]\n            for c, d in queries\n        ]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1257",
+  "metrics": {
+    "bleu_score": 0.3436120333082146,
+    "edit_similarity": 0.47351351351351356,
+    "ast_similarity": 0.88,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findSmallestRegion(\n        self, regions: List[List[str]], region1: str, region2: str\n    ) -> str:\n        large_dict = {}\n        for region in regions:\n            temp_dict = {}\n            for r in region[1:]:\n                temp_dict[r] = region[0]\n            large_dict[region[0]] = temp_dict\n\n        s = set()\n        while region1 in large_dict:\n            temp_set = set()\n            for k, v in large_dict[region1].items():\n                temp_set.add(k)\n            for item in temp_set:\n                if item in s:\n                    return item\n            for key in temp_dict:\n                if key in s:\n                    return key\n            for k, v in large_dict[region1].items():\n                s.add(k)\n                large_dict[v] = large_dict[v].copy()\n                del large_dict[v][k]\n            region1 = list(large_dict.keys())[0]\n\n        return region1",
+  "canonical_solution": "class Solution:\n    def findSmallestRegion(\n        self, regions: List[List[str]], region1: str, region2: str\n    ) -> str:\n        m = {}\n        for region in regions:\n            for r in region[1:]:\n                m[r] = region[0]\n        s = set()\n        while m.get(region1):\n            s.add(region1)\n            region1 = m[region1]\n        while m.get(region2):\n            if region2 in s:\n                return region2\n            region2 = m[region2]\n        return region1\n",
+  "is_python": true
+}

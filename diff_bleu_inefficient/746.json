@@ -1,0 +1,12 @@
+{
+  "problem_idx": "746",
+  "metrics": {
+    "bleu_score": 0.3481801364936192,
+    "edit_similarity": 0.5273224043715847,
+    "ast_similarity": 0.7727272727272727,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCostClimbingStairs(self, cost: List[int]) -> int:\n        min_costs = [0] * (len(cost) + 1)\n        min_costs[1] = cost[0]\n        min_costs[2] = min(cost[0], cost[1])\n        for i in range(3, len(cost) + 1):\n            min_costs[i] = min(min_costs[i - 2], min_costs[i - 1]) + cost[i - 1]\n        return min(min_costs[-2], min_costs[-1])",
+  "canonical_solution": "class Solution:\n    def minCostClimbingStairs(self, cost: List[int]) -> int:\n        f = g = 0\n        for i in range(2, len(cost) + 1):\n            f, g = g, min(f + cost[i - 2], g + cost[i - 1])\n        return g\n",
+  "is_python": true
+}

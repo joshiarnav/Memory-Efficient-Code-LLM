@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1937",
+  "metrics": {
+    "bleu_score": 0.31722751927512016,
+    "edit_similarity": 0.574468085106383,
+    "ast_similarity": 0.6551724137931034,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxPoints(self, points: List[List[int]]) -> int:\n        m, n = len(points), len(points[0])\n        f = [[0] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                for k in range(m):\n                    if k != i:\n                        for l in range(n):\n                            if l != j:\n                                f[i][j] = max(f[i][j], points[k][l] + abs(k - i) * abs(l - j))\n        return max(max(row) for row in f)",
+  "canonical_solution": "class Solution:\n    def maxPoints(self, points: List[List[int]]) -> int:\n        n = len(points[0])\n        f = points[0][:]\n        for p in points[1:]:\n            g = [0] * n\n            lmx = -inf\n            for j in range(n):\n                lmx = max(lmx, f[j] + j)\n                g[j] = max(g[j], p[j] + lmx - j)\n            rmx = -inf\n            for j in range(n - 1, -1, -1):\n                rmx = max(rmx, f[j] - j)\n                g[j] = max(g[j], p[j] + rmx + j)\n            f = g\n        return max(f)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2555",
+  "metrics": {
+    "bleu_score": 0.19109877844670967,
+    "edit_similarity": 0.2805628847845206,
+    "ast_similarity": 0.5454545454545454,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        mem = {}\n        f = {}\n        ans = 0\n        for i in range(n):\n            j = self.binarySearch(prizePositions, prizePositions[i] - k)\n            ans = max(ans, self.getAns(i, j, mem, f))\n            self.update(i, i, mem, f)\n        return ans\n\n    def binarySearch(self, prizePositions, target):\n        left, right = 0, len(prizePositions) - 1\n        while left <= right:\n            mid = left + (right - left) // 2\n            if prizePositions[mid] < target:\n                left = mid + 1\n            else:\n                right = mid - 1\n        return left\n\n    def getAns(self, i, j, mem, f):\n        if (i, j) in mem:\n            return mem[(i, j)]\n        if i == j:\n            return 1\n        ans = 0\n        for x in range(i, j + 1):\n            ans = max(ans, self.getAns(x, x, mem, f) + j - x + 1)\n        mem[(i, j)] = ans\n        return ans\n\n    def update(self, i, j, mem, f):\n        if (i, j) in mem:\n            f[j + 1] = max(f.get(j + 1, 0), mem[(i, j)])\n            del mem[(i, j)]",
+  "canonical_solution": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        f = [0] * (n + 1)\n        ans = 0\n        for i, x in enumerate(prizePositions, 1):\n            j = bisect_left(prizePositions, x - k)\n            ans = max(ans, f[j] + i - j)\n            f[i] = max(f[i - 1], i - j)\n        return ans\n",
+  "is_python": true
+}

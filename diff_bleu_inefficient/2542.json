@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2542",
+  "metrics": {
+    "bleu_score": 0.31357481365549555,
+    "edit_similarity": 0.5601851851851851,
+    "ast_similarity": 0.6206896551724138,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:\n        n = len(nums1)\n        min_nums2 = [min(nums2[i-k+1:i+1]) for i in range(n)]\n        max_score = 0\n        for i in range(n):\n            for j in range(i, n):\n                subsequence = nums1[i:j+1]\n                score = sum(subsequence) * min_nums2[i]\n                max_score = max(max_score, score)\n        return max_score",
+  "canonical_solution": "class Solution:\n    def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:\n        nums = sorted(zip(nums2, nums1), reverse=True)\n        q = []\n        ans = s = 0\n        for a, b in nums:\n            s += b\n            heappush(q, b)\n            if len(q) == k:\n                ans = max(ans, s * a)\n                s -= heappop(q)\n        return ans\n",
+  "is_python": true
+}

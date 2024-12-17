@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1004",
+  "metrics": {
+    "bleu_score": 0.18324997491525577,
+    "edit_similarity": 0.24523809523809526,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestOnes(self, nums: List[int], k: int) -> int:\n        visited = [False] * len(nums)\n        ones = [False] * len(nums)\n        max_count = 0\n        current_count = 0\n        zero_count = 0\n        for i in range(len(nums)):\n            visited[i] = True\n            if nums[i] == 1:\n                ones[i] = True\n                current_count += 1\n            else:\n                zero_count += 1\n            if zero_count > k:\n                for j in range(len(nums)):\n                    visited[j] = False\n                    if not visited[j]:\n                        if nums[j] == 1:\n                            ones[j] = False\n                            current_count -= 1\n                        if nums[j] == 0:\n                            zero_count -= 1\n                    if j == i:\n                        break\n                zero_count -= 1\n                if nums[i] == 0:\n                    zero_count += 1\n                if nums[i] == 1:\n                    current_count += 1\n        for i in range(len(nums)):\n            if ones[i]:\n                max_count = max(max_count, current_count)\n                current_count = 0\n            else:\n                current_count += 1\n        return max_count",
+  "canonical_solution": "class Solution:\n    def longestOnes(self, nums: List[int], k: int) -> int:\n        l = r = -1\n        while r < len(nums) - 1:\n            r += 1\n            if nums[r] == 0:\n                k -= 1\n            if k < 0:\n                l += 1\n                if nums[l] == 0:\n                    k += 1\n        return r - l\n",
+  "is_python": true
+}

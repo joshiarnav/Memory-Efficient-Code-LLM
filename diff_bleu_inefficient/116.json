@@ -1,0 +1,12 @@
+{
+  "problem_idx": "116",
+  "metrics": {
+    "bleu_score": 0.4795168586032723,
+    "edit_similarity": 0.7521514629948365,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def connect(self, root: \"Optional[Node]\") -> \"Optional[Node]\":\n        if root is None:\n            return root\n        nodes = []\n        nodes.append(root)\n        while nodes:\n            temp = []\n            for i in range(len(nodes) - 1):\n                node = nodes[i]\n                if i < len(nodes) - 1:\n                    node.next = nodes[i + 1]\n                if node.left:\n                    temp.append(node.left)\n                if node.right:\n                    temp.append(node.right)\n            nodes = temp + nodes\n        return root",
+  "canonical_solution": "\"\"\"\n# Definition for a Node.\nclass Node:\n    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):\n        self.val = val\n        self.left = left\n        self.right = right\n        self.next = next\n\"\"\"\n\n\nclass Solution:\n    def connect(self, root: \"Optional[Node]\") -> \"Optional[Node]\":\n        if root is None:\n            return root\n        q = deque([root])\n        while q:\n            p = None\n            for _ in range(len(q)):\n                node = q.popleft()\n                if p:\n                    p.next = node\n                p = node\n                if node.left:\n                    q.append(node.left)\n                if node.right:\n                    q.append(node.right)\n        return root\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "668",
+  "metrics": {
+    "bleu_score": 0.3857229021248954,
+    "edit_similarity": 0.44387755102040816,
+    "ast_similarity": 0.4838709677419355,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findKthNumber(self, m: int, n: int, k: int) -> int:\n        table = [[i * j for j in range(1, n + 1)] for i in range(1, m + 1)]\n        flattened_table = [num for row in table for num in row]\n        flattened_table.sort()\n        return flattened_table[k - 1]",
+  "canonical_solution": "class Solution:\n    def findKthNumber(self, m: int, n: int, k: int) -> int:\n        left, right = 1, m * n\n        while left < right:\n            mid = (left + right) >> 1\n            cnt = 0\n            for i in range(1, m + 1):\n                cnt += min(mid // i, n)\n            if cnt >= k:\n                right = mid\n            else:\n                left = mid + 1\n        return left\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1959",
+  "metrics": {
+    "bleu_score": 0.2754004105990619,
+    "edit_similarity": 0.4869816779170685,
+    "ast_similarity": 0.9583333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSpaceWastedKResizing(self, nums, k):\n        n = len(nums)\n        sizes = [nums[0]] + [0] * n\n        wasted = [nums[0]] + [0] * n\n        for i in range(1, n):\n            sizes[i] = sizes[i - 1] + nums[i]\n            wasted[i] = sizes[i] - nums[i]\n        dp = [[float('inf')] * (k + 1) for _ in range(n + 1)]\n        for i in range(n):\n            dp[i][0] = 0\n            for j in range(i, -1, -1):\n                for h in range(i):\n                    dp[i + 1][0] = min(dp[i + 1][0], dp[h][0] + wasted[h] + sizes[h])\n                for h in range(i - 1, -1, -1):\n                    dp[i + 1][0] = min(dp[i + 1][0], dp[h][0] + wasted[h] + sizes[h])\n                for j2 in range(1, k + 1):\n                    for h in range(i):\n                        dp[i + 1][j2] = min(dp[i + 1][j2], dp[h][j2 - 1] + wasted[h] + sizes[h])\n                    for h in range(i - 1, -1, -1):\n                        dp[i + 1][j2] = min(dp[i + 1][j2], dp[h][j2 - 1] + wasted[h] + sizes[h])\n        return dp[-1][-1]",
+  "canonical_solution": "class Solution:\n    def minSpaceWastedKResizing(self, nums: List[int], k: int) -> int:\n        k += 1\n        n = len(nums)\n        g = [[0] * n for _ in range(n)]\n        for i in range(n):\n            s = mx = 0\n            for j in range(i, n):\n                s += nums[j]\n                mx = max(mx, nums[j])\n                g[i][j] = mx * (j - i + 1) - s\n        f = [[inf] * (k + 1) for _ in range(n + 1)]\n        f[0][0] = 0\n        for i in range(1, n + 1):\n            for j in range(1, k + 1):\n                for h in range(i):\n                    f[i][j] = min(f[i][j], f[h][j - 1] + g[h][i - 1])\n        return f[-1][-1]\n",
+  "is_python": true
+}

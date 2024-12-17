@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1953",
+  "metrics": {
+    "bleu_score": 0.16987601250606094,
+    "edit_similarity": 0.2831423895253683,
+    "ast_similarity": 0.5161290322580645,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numberOfWeeks(self, milestones: List[int]) -> int:\n        mils = []\n        for i in range(len(milestones)):\n            for j in range(milestones[i]):\n                mils.append([i, j])\n        mils.sort(key=lambda x: x[1])\n        next_mil = 0\n        weeks = 0\n        for i in range(len(mils)):\n            if i % 2 == 0:\n                if next_mil == mils[i][1]:\n                    next_mil += 1\n                else:\n                    weeks += 1\n                    next_mil += 1\n            else:\n                weeks += 1\n                next_mil += 1\n        return weeks",
+  "canonical_solution": "class Solution:\n    def numberOfWeeks(self, milestones: List[int]) -> int:\n        mx, s = max(milestones), sum(milestones)\n        rest = s - mx\n        return rest * 2 + 1 if mx > rest + 1 else s\n",
+  "is_python": true
+}

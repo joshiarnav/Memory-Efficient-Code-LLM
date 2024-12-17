@@ -1,0 +1,12 @@
+{
+  "problem_idx": "868",
+  "metrics": {
+    "bleu_score": 0.2289716185225643,
+    "edit_similarity": 0.4463937621832359,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def binaryGap(self, n: int) -> int:\n        str_n = str(n)\n        int_n = [int(i) for i in str_n]\n        len_n = len(int_n)\n        max_distance = 0\n        distances = []\n        for i in range(len_n):\n            if int_n[i] == 1:\n                if i != 0:\n                    distances.append(i - 1)\n                if i != len_n - 1:\n                    distances.append(len_n - i - 1)\n        if len(distances) > 0:\n            max_distance = max(distances)\n        return max_distance",
+  "canonical_solution": "class Solution:\n    def binaryGap(self, n: int) -> int:\n        ans, j = 0, -1\n        for i in range(32):\n            if n & 1:\n                if j != -1:\n                    ans = max(ans, i - j)\n                j = i\n            n >>= 1\n        return ans\n",
+  "is_python": true
+}

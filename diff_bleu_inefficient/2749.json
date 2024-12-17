@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2749",
+  "metrics": {
+    "bleu_score": 0.3388714363186176,
+    "edit_similarity": 0.6621621621621622,
+    "ast_similarity": 0.6774193548387096,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def makeTheIntegerZero(self, num1: int, num2: int) -> int:\n        ops = []\n        for i in range(61):\n            while num1 >= 2*i + num2:\n                ops.append(i)\n                num1 -= (2*i + num2)\n        if num1 == 0:\n            return len(ops)\n        return -1",
+  "canonical_solution": "class Solution:\n    def makeTheIntegerZero(self, num1: int, num2: int) -> int:\n        for k in count(1):\n            x = num1 - k * num2\n            if x < 0:\n                break\n            if x.bit_count() <= k <= x:\n                return k\n        return -1\n",
+  "is_python": true
+}

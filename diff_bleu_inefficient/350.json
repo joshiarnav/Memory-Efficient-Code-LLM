@@ -1,0 +1,12 @@
+{
+  "problem_idx": "350",
+  "metrics": {
+    "bleu_score": 0.6249393139858459,
+    "edit_similarity": 0.623608017817372,
+    "ast_similarity": 0.7692307692307693,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import Counter\nfrom typing import List\n\nclass Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        counter = Counter(nums1)\n        res = []\n        for num in nums2:\n            if counter[num] > 0:\n                temp = []\n                for _ in range(counter[num]):\n                    temp.append(num)\n                res.extend(temp)\n                counter[num] = -1\n        return res",
+  "canonical_solution": "class Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        counter = Counter(nums1)\n        res = []\n        for num in nums2:\n            if counter[num] > 0:\n                res.append(num)\n                counter[num] -= 1\n        return res\n",
+  "is_python": true
+}

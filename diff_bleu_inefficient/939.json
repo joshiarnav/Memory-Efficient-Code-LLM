@@ -1,0 +1,12 @@
+{
+  "problem_idx": "939",
+  "metrics": {
+    "bleu_score": 0.24631939986721746,
+    "edit_similarity": 0.5596816976127321,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minAreaRect(self, points: List[List[int]]) -> int:\n        d = defaultdict(list)\n        for x, y in points:\n            d[str(x)].append(str(y))\n        ans = 1e9\n        for i, p1 in enumerate(points):\n            for j in range(i + 1, len(points)):\n                p2 = points[j]\n                if set([p1[0], p1[1]]) == set([p2[0], p2[1]]):\n                    continue\n                for x in range(min(p1[0], p2[0]), max(p1[0], p2[0]) + 1):\n                    for y in range(min(p1[1], p2[1]), max(p1[1], p2[1]) + 1):\n                        if [x, y] in d[str(p1[0])] and [x, y] in d[str(p2[0])]:\n                            ans = min(ans, abs(p1[0] - p2[0]) * abs(p1[1] - p2[1]))\n        return 0 if ans == 1e9 else ans",
+  "canonical_solution": "class Solution:\n    def minAreaRect(self, points: List[List[int]]) -> int:\n        d = defaultdict(list)\n        for x, y in points:\n            d[x].append(y)\n        pos = {}\n        ans = inf\n        for x in sorted(d):\n            ys = d[x]\n            ys.sort()\n            n = len(ys)\n            for i, y1 in enumerate(ys):\n                for y2 in ys[i + 1 :]:\n                    if (y1, y2) in pos:\n                        ans = min(ans, (x - pos[(y1, y2)]) * (y2 - y1))\n                    pos[(y1, y2)] = x\n        return 0 if ans == inf else ans\n",
+  "is_python": true
+}

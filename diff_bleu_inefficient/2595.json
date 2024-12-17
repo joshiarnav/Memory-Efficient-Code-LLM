@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2595",
+  "metrics": {
+    "bleu_score": 0.18178636851400334,
+    "edit_similarity": 0.30708661417322836,
+    "ast_similarity": 0.5,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        binary = bin(n)[2:]\n        even = []\n        odd = []\n        even_count = 0\n        odd_count = 0\n        for i, char in enumerate(binary):\n            if char == '1' and i % 2 == 0:\n                even.append(i)\n            elif char == '1' and i % 2 != 0:\n                odd.append(i)\n        for index in even:\n            even_count += 1\n        for index in odd:\n            odd_count += 1\n        return [even_count, odd_count]",
+  "canonical_solution": "class Solution:\n    def evenOddBit(self, n: int) -> List[int]:\n        mask = 0x5555\n        even = (n & mask).bit_count()\n        odd = (n & ~mask).bit_count()\n        return [even, odd]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2116",
+  "metrics": {
+    "bleu_score": 0.3677486950717943,
+    "edit_similarity": 0.4491456468673718,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canBeValid(self, s: str, locked: str) -> bool:\n        n = len(s)\n        if n & 1:\n            return False\n        locked_list = [int(i) for i in locked]\n        s_list = [i for i in s]\n        new_s = []\n        for i in range(n):\n            if locked_list[i] == 0:\n                new_s.append(0)\n            else:\n                new_s.append(s_list[i])\n        s_list = new_s\n        for i in range(n):\n            if s_list[i] == 1:\n                new_s.append(1)\n            elif s_list[i] == 2:\n                new_s.append(2)\n        s_list = new_s\n        x = 0\n        for i in range(n):\n            if s_list[i] == 1 or locked_list[i] == 0:\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        new_s = []\n        for i in range(n):\n            if s_list[i] == 1:\n                new_s.append(1)\n            elif s_list[i] == 2:\n                new_s.append(2)\n        s_list = new_s\n        x = 0\n        for i in range(n - 1, -1, -1):\n            if s_list[i] == 2 or locked_list[i] == 0:\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        return True",
+  "canonical_solution": "class Solution:\n    def canBeValid(self, s: str, locked: str) -> bool:\n        n = len(s)\n        if n & 1:\n            return False\n        x = 0\n        for i in range(n):\n            if s[i] == '(' or locked[i] == '0':\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        x = 0\n        for i in range(n - 1, -1, -1):\n            if s[i] == ')' or locked[i] == '0':\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        return True\n",
+  "is_python": true
+}

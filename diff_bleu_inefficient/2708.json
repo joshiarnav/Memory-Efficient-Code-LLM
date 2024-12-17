@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2708",
+  "metrics": {
+    "bleu_score": 0.1519719513774116,
+    "edit_similarity": 0.397422126745435,
+    "ast_similarity": 0.5555555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxStrength(self, nums: List[int]) -> int:\n        # Create a dictionary to store the frequency of each number\n        num_freq = {}\n        for num in nums:\n            if num not in num_freq:\n                num_freq[num] = 1\n            else:\n                num_freq[num] += 1\n\n        # Create a list to store all possible combinations of numbers\n        combinations = []\n        for num in num_freq:\n            temp = [num]\n            self.generate_combinations(temp, num_freq, combinations)\n\n        # Calculate the strength of each combination\n        strengths = []\n        for combination in combinations:\n            strength = 1\n            for num in combination:\n                strength *= num\n            strengths.append(strength)\n\n        # Return the maximum strength\n        return max(strengths)\n\n    def generate_combinations(self, current, num_freq, combinations):\n        if len(current) > 13:  # arbitrary limit\n            return\n        combinations.append(current[:])\n        for num in num_freq:\n            current.append(num)\n            self.generate_combinations(current, num_freq, combinations)\n            current.pop()",
+  "canonical_solution": "class Solution:\n    def maxStrength(self, nums: List[int]) -> int:\n        nums.sort()\n        n = len(nums)\n        if n == 1:\n            return nums[0]\n        if nums[1] == nums[-1] == 0:\n            return 0\n        ans, i = 1, 0\n        while i < n:\n            if nums[i] < 0 and i + 1 < n and nums[i + 1] < 0:\n                ans *= nums[i] * nums[i + 1]\n                i += 2\n            elif nums[i] <= 0:\n                i += 1\n            else:\n                ans *= nums[i]\n                i += 1\n        return ans\n",
+  "is_python": true
+}

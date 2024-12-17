@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2363",
+  "metrics": {
+    "bleu_score": 0.22411645930547205,
+    "edit_similarity": 0.30462724935732644,
+    "ast_similarity": 0.5517241379310345,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mergeSimilarItems(\n        self, items1: List[List[int]], items2: List[List[int]]\n    ) -> List[List[int]]:\n        # Create a dictionary with keys as item values and values as dictionaries of weights\n        items1_dict = {i[0]: {} for i in items1}\n        for v, w in items1:\n            items1_dict[v][v] = w\n        \n        items2_dict = {i[0]: {} for i in items2}\n        for v, w in items2:\n            items2_dict[v][v] = w\n        \n        # Create a list to store the merged weights for each item value\n        merged_weights = []\n        \n        # Iterate over both dictionaries and calculate the merged weights\n        for v in set(list(items1_dict.keys()) + list(items2_dict.keys())):\n            weights = []\n            if v in items1_dict:\n                weights.append(items1_dict[v][v])\n            if v in items2_dict:\n                weights.append(items2_dict[v][v])\n            merged_weights.append([v, sum(weights)])\n        \n        # Sort the merged weights list\n        merged_weights.sort(key=lambda x: x[0])\n        \n        return merged_weights",
+  "canonical_solution": "class Solution:\n    def mergeSimilarItems(\n        self, items1: List[List[int]], items2: List[List[int]]\n    ) -> List[List[int]]:\n        cnt = Counter()\n        for v, w in chain(items1, items2):\n            cnt[v] += w\n        return sorted(cnt.items())\n",
+  "is_python": true
+}

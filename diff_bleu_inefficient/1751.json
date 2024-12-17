@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1751",
+  "metrics": {
+    "bleu_score": 0.23871128937929026,
+    "edit_similarity": 0.2573057733428368,
+    "ast_similarity": 0.7428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxValue(self, events, k):\n        n = len(events)\n        events.sort(key=lambda x: x[1])\n        dp = [[0]*k for _ in range(n+1)]\n        mem = [[0]*k for _ in range(n+1)]\n        mem2 = [[0]*k for _ in range(n+1)]\n        mem3 = [[0]*k for _ in range(n+1)]\n        for i, (st, ed, val) in enumerate(events, 1):\n            for j in range(1, k+1):\n                p = self.binary_search(events, st, hi=i-1, key=lambda x: x[1])\n                dp[i][j] = max(dp[i-1][j], self.max_val(mem, mem2, mem3, p, j-1, val))\n        return dp[n][k]\n\n    def binary_search(self, arr, target, lo=0, hi=None, key=lambda x: x):\n        if hi is None:\n            hi = len(arr) - 1\n        while lo <= hi:\n            mid = (lo + hi) // 2\n            if key(arr[mid]) < target:\n                lo = mid + 1\n            else:\n                hi = mid - 1\n        return lo\n\n    def max_val(self, mem1, mem2, mem3, idx, k, val):\n        if k == 0:\n            return 0\n        if mem1[idx][k] != 0:\n            return mem1[idx][k]\n        if mem2[idx][k] != 0:\n            return mem2[idx][k]\n        if mem3[idx][k] != 0:\n            return mem3[idx][k]\n        res = 0\n        for i in range(idx+1, len(mem1)):\n            res = max(res, self.max_val(mem1, mem2, mem3, i, k-1, 0))\n        mem1[idx][k] = res + val\n        mem2[idx][k] = res\n        mem3[idx][k] = res\n        return mem1[idx][k]",
+  "canonical_solution": "class Solution:\n    def maxValue(self, events: List[List[int]], k: int) -> int:\n        events.sort(key=lambda x: x[1])\n        n = len(events)\n        f = [[0] * (k + 1) for _ in range(n + 1)]\n        for i, (st, _, val) in enumerate(events, 1):\n            p = bisect_left(events, st, hi=i - 1, key=lambda x: x[1])\n            for j in range(1, k + 1):\n                f[i][j] = max(f[i - 1][j], f[p][j - 1] + val)\n        return f[n][k]\n",
+  "is_python": true
+}

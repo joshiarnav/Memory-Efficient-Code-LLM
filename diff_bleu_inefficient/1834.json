@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1834",
+  "metrics": {
+    "bleu_score": 0.42719960099178705,
+    "edit_similarity": 0.5948275862068966,
+    "ast_similarity": 0.9375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getOrder(self, tasks):\n        tasks_with_idx = []\n        for i, task in enumerate(tasks):\n            task_with_idx = task + [i]\n            tasks_with_idx.extend(task_with_idx)\n        tasks_with_idx.sort()\n        \n        ans = []\n        q = []\n        n = len(tasks)\n        i = t = 0\n        while q or i < n * 3:\n            if not q:\n                t = max(t, tasks_with_idx[i*3])\n            while i < n * 3 and tasks_with_idx[i*3] <= t:\n                q_with_idx = (tasks_with_idx[i*3+1], tasks_with_idx[i*3+2], i)\n                q.append(q_with_idx)\n                i += 3\n            if q:\n                pt, j, idx = min(q)\n                q.remove((pt, j, idx))\n                ans.append(idx)\n                t += pt\n            else:\n                t += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def getOrder(self, tasks: List[List[int]]) -> List[int]:\n        for i, task in enumerate(tasks):\n            task.append(i)\n        tasks.sort()\n        ans = []\n        q = []\n        n = len(tasks)\n        i = t = 0\n        while q or i < n:\n            if not q:\n                t = max(t, tasks[i][0])\n            while i < n and tasks[i][0] <= t:\n                heappush(q, (tasks[i][1], tasks[i][2]))\n                i += 1\n            pt, j = heappop(q)\n            ans.append(j)\n            t += pt\n        return ans\n",
+  "is_python": true
+}

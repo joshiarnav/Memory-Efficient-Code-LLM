@@ -1,0 +1,12 @@
+{
+  "problem_idx": "532",
+  "metrics": {
+    "bleu_score": 0.15619158480619233,
+    "edit_similarity": 0.4143835616438356,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findPairs(self, nums, k):\n        count_dict = {}\n        for num in nums:\n            if num in count_dict:\n                count_dict[num] += 1\n            else:\n                count_dict[num] = 1\n        pairs = set()\n        for key in count_dict.keys():\n            if k != 0:\n                if key - k in count_dict and key - k not in pairs:\n                    pairs.add((key, key - k))\n                    pairs.add((key - k, key))\n            else:\n                if key in pairs:\n                    pairs.add((key, key))\n        return len(pairs)",
+  "canonical_solution": "class Solution:\n    def findPairs(self, nums: List[int], k: int) -> int:\n        vis, ans = set(), set()\n        for v in nums:\n            if v - k in vis:\n                ans.add(v - k)\n            if v + k in vis:\n                ans.add(v)\n            vis.add(v)\n        return len(ans)\n",
+  "is_python": true
+}

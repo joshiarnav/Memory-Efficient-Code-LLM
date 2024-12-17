@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2170",
+  "metrics": {
+    "bleu_score": 0.30437122761955865,
+    "edit_similarity": 0.36351531291611183,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        def get(i):\n            res = []\n            for j in range(len(nums)):\n                if j % 2 == i:\n                    res.append((nums[j], 1))\n            return res\n\n        n = len(nums)\n        ans = n\n        for a, x in get(0):\n            for b, y in get(1):\n                if a != b:\n                    temp = x + y\n                    for i in range(n):\n                        if i % 2 == 0:\n                            if a != nums[i]:\n                                temp += 1\n                        else:\n                            if b != nums[i]:\n                                temp += 1\n                    ans = min(ans, temp)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        def get(i):\n            c = Counter(nums[i::2]).most_common(2)\n            if not c:\n                return [(0, 0), (0, 0)]\n            if len(c) == 1:\n                return [c[0], (0, 0)]\n            return c\n\n        n = len(nums)\n        return min(n - (n1 + n2) for a, n1 in get(0) for b, n2 in get(1) if a != b)\n",
+  "is_python": true
+}

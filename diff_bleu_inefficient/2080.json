@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2080",
+  "metrics": {
+    "bleu_score": 0.24640933982288288,
+    "edit_similarity": 0.28299223712067745,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import defaultdict\nfrom bisect import bisect_right\n\nclass RangeFreqQuery:\n    def __init__(self, arr: list[int]):\n        self.arr = arr\n        self.mp = defaultdict(list)\n        for i, x in enumerate(arr):\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n            self.mp[x].append(i)\n\n    def query(self, left: int, right: int, value: int) -> int:\n        if value not in self.mp:\n            return 0\n        arr = self.mp[value]\n        l, r = bisect_right(arr, left - 1), bisect_right(arr, right)\n        return r - l",
+  "canonical_solution": "class RangeFreqQuery:\n    def __init__(self, arr: List[int]):\n        self.mp = defaultdict(list)\n        for i, x in enumerate(arr):\n            self.mp[x].append(i)\n\n    def query(self, left: int, right: int, value: int) -> int:\n        if value not in self.mp:\n            return 0\n        arr = self.mp[value]\n        l, r = bisect_right(arr, left - 1), bisect_right(arr, right)\n        return r - l\n\n\n# Your RangeFreqQuery object will be instantiated and called as such:\n# obj = RangeFreqQuery(arr)\n# param_1 = obj.query(left,right,value)\n",
+  "is_python": true
+}

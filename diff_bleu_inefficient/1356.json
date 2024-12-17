@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1356",
+  "metrics": {
+    "bleu_score": 0.06318716056226284,
+    "edit_similarity": 0.1486146095717884,
+    "ast_similarity": 0.5652173913043478,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sortByBits(self, arr):\n        n = len(arr)\n        bits = [0] * n\n        for i in range(n):\n            bits[i] = bin(arr[i]).count('1')\n        bit_counts = [0] * 500\n        for i in range(n):\n            bit_counts[bits[i]] += 1\n        counts = [0] * 500\n        for i in range(500):\n            counts[i] = [0] * bit_counts[i]\n        for i in range(n):\n            counts[bits[i]][0] = arr[i]\n            counts[bits[i]][1] = i\n        sorted_counts = [0] * 500\n        for i in range(500):\n            sorted_counts[i] = sorted(counts[i], key=lambda x: x[0])\n        sorted_arr = [0] * n\n        for i in range(500):\n            for j in range(bit_counts[i]):\n                sorted_arr[sorted_counts[i][j][1]] = sorted_counts[i][j][0]\n        return sorted_arr",
+  "canonical_solution": "class Solution:\n    def sortByBits(self, arr: List[int]) -> List[int]:\n        return sorted(arr, key=lambda x: (x.bit_count(), x))\n",
+  "is_python": true
+}

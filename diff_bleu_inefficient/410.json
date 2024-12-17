@@ -1,0 +1,12 @@
+{
+  "problem_idx": "410",
+  "metrics": {
+    "bleu_score": 0.4568315603796761,
+    "edit_similarity": 0.4739263803680982,
+    "ast_similarity": 0.8076923076923077,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def splitArray(self, nums, k):\n        def check(mx):\n            s, cnt = 0, 0\n            subarrays = []\n            temp = []\n            for x in nums:\n                temp.append(x)\n                s += x\n                if s > mx:\n                    subarrays.append(temp)\n                    temp = [x]\n                    cnt += 1\n                    s = x\n            if temp:\n                subarrays.append(temp)\n                cnt += 1\n            return cnt <= k\n\n        left, right = max(nums), sum(nums)\n        for i in range(left, right + 1):\n            if check(i):\n                return i\n        return None",
+  "canonical_solution": "class Solution:\n    def splitArray(self, nums: List[int], k: int) -> int:\n        def check(mx):\n            s, cnt = inf, 0\n            for x in nums:\n                s += x\n                if s > mx:\n                    s = x\n                    cnt += 1\n            return cnt <= k\n\n        left, right = max(nums), sum(nums)\n        return left + bisect_left(range(left, right + 1), True, key=check)\n",
+  "is_python": true
+}

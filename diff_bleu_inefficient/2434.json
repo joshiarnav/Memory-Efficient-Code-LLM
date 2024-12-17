@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2434",
+  "metrics": {
+    "bleu_score": 0.3591652185202678,
+    "edit_similarity": 0.657672849915683,
+    "ast_similarity": 0.967741935483871,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def robotWithString(self, s: str) -> str:\n        n = len(s)\n        char_count = [0] * 26\n        for c in s:\n            char_count[ord(c) - ord('a')] += 1\n        ans = []\n        stack = []\n        min_char = 'a'\n        for i in range(n):\n            char_count[ord(s[i]) - ord('a')] -= 1\n            while min_char < 'z' and char_count[ord(min_char) - ord('a')] == 0:\n                min_char = chr(ord(min_char) + 1)\n            stack.append(s[i])\n            while stack and stack[-1] <= min_char:\n                ans.append(stack.pop())\n        return ''.join(ans)",
+  "canonical_solution": "class Solution:\n    def robotWithString(self, s: str) -> str:\n        cnt = Counter(s)\n        ans = []\n        stk = []\n        mi = 'a'\n        for c in s:\n            cnt[c] -= 1\n            while mi < 'z' and cnt[mi] == 0:\n                mi = chr(ord(mi) + 1)\n            stk.append(c)\n            while stk and stk[-1] <= mi:\n                ans.append(stk.pop())\n        return ''.join(ans)\n",
+  "is_python": true
+}

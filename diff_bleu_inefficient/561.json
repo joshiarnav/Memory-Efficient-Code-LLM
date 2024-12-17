@@ -1,0 +1,12 @@
+{
+  "problem_idx": "561",
+  "metrics": {
+    "bleu_score": 0.2681557775347462,
+    "edit_similarity": 0.2561307901907357,
+    "ast_similarity": 0.46153846153846156,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def arrayPairSum(self, nums: List[int]) -> int:\n        # Create a copy of the input list to avoid modifying the original list\n        nums_copy = nums[:]\n        \n        # Sort the copied list in ascending order\n        nums_copy.sort()\n        \n        # Initialize an empty list to store the even indices of the sorted list\n        even_indices = []\n        \n        # Iterate over the sorted list\n        for i, num in enumerate(nums_copy):\n            # Check if the index is even\n            if i % 2 == 0:\n                # Append the number at the even index to the list\n                even_indices.append(num)\n        \n        # Initialize a variable to store the sum of the numbers at even indices\n        total_sum = 0\n        \n        # Iterate over the list of numbers at even indices\n        for num in even_indices:\n            # Add the number to the total sum\n            total_sum += num\n        \n        # Return the total sum\n        return total_sum",
+  "canonical_solution": "class Solution:\n    def arrayPairSum(self, nums: List[int]) -> int:\n        return sum(sorted(nums)[::2])\n",
+  "is_python": true
+}

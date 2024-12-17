@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1273",
+  "metrics": {
+    "bleu_score": 0.3217158563944403,
+    "edit_similarity": 0.4136276391554703,
+    "ast_similarity": 0.7096774193548387,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def deleteTreeNodes(self, nodes: int, parent: List[int], value: List[int]) -> int:\n        def dfs(i):\n            v = value[i]\n            g = [[] for _ in range(nodes)]\n            m = [0] * nodes\n            for j in range(nodes):\n                if parent[j] == i:\n                    m[j] += 1\n                    g[i].append(j)\n            s = v\n            for j in g[i]:\n                t, n = dfs(j)\n                s += t\n                m[j] += n\n            if s == 0 and i != 0:\n                m[i] = 0\n                s = 0\n            return (s, m[i])\n        \n        g = [[] for _ in range(nodes)]\n        for i in range(1, nodes):\n            g[parent[i]].append(i)\n        sum_val = [0] * nodes\n        for i in range(nodes):\n            sum_val[i] = value[i]\n        count = [0] * nodes\n        for i in range(1, nodes):\n            count[i] = 1\n        res = [0] * nodes\n        for i in range(nodes):\n            res[i] = dfs(i)\n        return sum(1 for i in range(nodes) if res[i][0] != 0 and count[i] != 0)",
+  "canonical_solution": "class Solution:\n    def deleteTreeNodes(self, nodes: int, parent: List[int], value: List[int]) -> int:\n        def dfs(i):\n            s, m = value[i], 1\n            for j in g[i]:\n                t, n = dfs(j)\n                s += t\n                m += n\n            if s == 0:\n                m = 0\n            return (s, m)\n\n        g = defaultdict(list)\n        for i in range(1, nodes):\n            g[parent[i]].append(i)\n        return dfs(0)[1]\n",
+  "is_python": true
+}

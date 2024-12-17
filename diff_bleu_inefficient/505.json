@@ -1,0 +1,12 @@
+{
+  "problem_idx": "505",
+  "metrics": {
+    "bleu_score": 0.7470233015221157,
+    "edit_similarity": 0.8389731621936989,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shortestDistance(\n        self, maze: List[List[int]], start: List[int], destination: List[int]\n    ) -> int:\n        m, n = len(maze), len(maze[0])\n        dirs = (-1, 0, 1, 0, -1)\n        si, sj = start\n        di, dj = destination\n        dist = [[float('inf')] * (n * 100) for _ in range(m * 100)]\n        q = deque([(si * 100 + sj, 0)])\n        while q:\n            i, j = divmod(q.popleft(), 100)\n            for a, b in pairwise(dirs):\n                x, y, k = i, j, dist[i][j]\n                while 0 <= x + a < m and 0 <= y + b < n and maze[x + a][y + b] == 0:\n                    x, y, k = x + a, y + b, k + 1\n                if k < dist[x * 100 + y]:\n                    dist[x * 100 + y] = k\n                    q.append((x * 100 + y, k))\n        return -1 if dist[di * 100 + dj] == float('inf') else dist[di * 100 + dj]",
+  "canonical_solution": "class Solution:\n    def shortestDistance(\n        self, maze: List[List[int]], start: List[int], destination: List[int]\n    ) -> int:\n        m, n = len(maze), len(maze[0])\n        dirs = (-1, 0, 1, 0, -1)\n        si, sj = start\n        di, dj = destination\n        q = deque([(si, sj)])\n        dist = [[inf] * n for _ in range(m)]\n        dist[si][sj] = 0\n        while q:\n            i, j = q.popleft()\n            for a, b in pairwise(dirs):\n                x, y, k = i, j, dist[i][j]\n                while 0 <= x + a < m and 0 <= y + b < n and maze[x + a][y + b] == 0:\n                    x, y, k = x + a, y + b, k + 1\n                if k < dist[x][y]:\n                    dist[x][y] = k\n                    q.append((x, y))\n        return -1 if dist[di][dj] == inf else dist[di][dj]\n",
+  "is_python": true
+}

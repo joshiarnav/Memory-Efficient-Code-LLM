@@ -1,0 +1,12 @@
+{
+  "problem_idx": "400",
+  "metrics": {
+    "bleu_score": 0.24795829917027865,
+    "edit_similarity": 0.5181159420289856,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        num_list = []\n        i = 1\n        while len(num_list) < 1000000:\n            num_str = str(i)\n            num_list.extend([int(d) for d in num_str])\n            i += 1\n        return num_list[n - 1]",
+  "canonical_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        k, cnt = 1, 9\n        while k * cnt < n:\n            n -= k * cnt\n            k += 1\n            cnt *= 10\n        num = 10 ** (k - 1) + (n - 1) // k\n        idx = (n - 1) % k\n        return int(str(num)[idx])\n",
+  "is_python": true
+}

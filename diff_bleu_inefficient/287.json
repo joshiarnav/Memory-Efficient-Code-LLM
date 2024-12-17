@@ -1,0 +1,12 @@
+{
+  "problem_idx": "287",
+  "metrics": {
+    "bleu_score": 0.31374494395255326,
+    "edit_similarity": 0.47840531561461797,
+    "ast_similarity": 0.4482758620689655,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findDuplicate(self, nums: List[int]) -> int:\n        num_set = set()\n        for num in nums:\n            num_set.add(num)\n        for num in nums:\n            if num in num_set and num_set[num] == 1:\n                return num\n            num_set[num] += 1\n        return None",
+  "canonical_solution": "class Solution:\n    def findDuplicate(self, nums: List[int]) -> int:\n        def f(x: int) -> bool:\n            return sum(v <= x for v in nums) > x\n\n        return bisect_left(range(len(nums)), True, key=f)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "93",
+  "metrics": {
+    "bleu_score": 0.7258314577709389,
+    "edit_similarity": 0.835357624831309,
+    "ast_similarity": 0.875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def restoreIpAddresses(self, s: str) -> List[str]:\n        def check(i: int, j: int) -> int:\n            if i == j:\n                return 0\n            if s[i] == \"0\":\n                return 0\n            return 1 if int(s[i : j + 1]) <= 255 else 0\n\n        def dfs(i: int):\n            if i >= len(s) and len(t) == 4:\n                ans.append(\".\".join([str(x) for x in t]))\n                return\n            if i >= len(s) or len(t) >= 4:\n                return\n            for j in range(i, min(i + 3, len(s))):\n                if check(i, j):\n                    t.append(int(s[i : j + 1]))\n                    dfs(j + 1)\n                    t.pop()\n\n        ans = []\n        t = []\n        dfs(0)\n        return ans",
+  "canonical_solution": "class Solution:\n    def restoreIpAddresses(self, s: str) -> List[str]:\n        def check(i: int, j: int) -> int:\n            if s[i] == \"0\" and i != j:\n                return False\n            return 0 <= int(s[i : j + 1]) <= 255\n\n        def dfs(i: int):\n            if i >= n and len(t) == 4:\n                ans.append(\".\".join(t))\n                return\n            if i >= n or len(t) >= 4:\n                return\n            for j in range(i, min(i + 3, n)):\n                if check(i, j):\n                    t.append(s[i : j + 1])\n                    dfs(j + 1)\n                    t.pop()\n\n        n = len(s)\n        ans = []\n        t = []\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

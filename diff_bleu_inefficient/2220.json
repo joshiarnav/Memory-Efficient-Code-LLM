@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2220",
+  "metrics": {
+    "bleu_score": 0.2393334473540677,
+    "edit_similarity": 0.47540983606557374,
+    "ast_similarity": 0.5172413793103449,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minBitFlips(self, start: int, goal: int) -> int:\n        flips = 0\n        bits = []\n        while start != 0 or goal != 0:\n            bits.append(start % 2)\n            bits.append(goal % 2)\n            start //= 2\n            goal //= 2\n        while len(bits) != 0:\n            flips += abs(bits.pop(0) - bits.pop(0))\n        return flips",
+  "canonical_solution": "class Solution:\n    def minBitFlips(self, start: int, goal: int) -> int:\n        t = start ^ goal\n        ans = 0\n        while t:\n            ans += t & 1\n            t >>= 1\n        return ans\n",
+  "is_python": true
+}

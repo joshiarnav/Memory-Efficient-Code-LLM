@@ -1,0 +1,12 @@
+{
+  "problem_idx": "826",
+  "metrics": {
+    "bleu_score": 0.8177904427997865,
+    "edit_similarity": 0.8176795580110497,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:\n        n = len(difficulty)\n        job = [(difficulty[i], profit[i]) for i in range(n)]\n        job.sort(key=lambda x: x[0])\n        worker.sort()\n        worker_list = [w for w in worker for _ in range(1000000)]  # Allocate 1M copies of each worker\n        res = 0\n        for w in worker_list:\n            i = 0\n            while i < n and job[i][0] <= w:\n                t = max(t, job[i][1])\n                i += 1\n            res += t\n        return res",
+  "canonical_solution": "class Solution:\n    def maxProfitAssignment(\n        self, difficulty: List[int], profit: List[int], worker: List[int]\n    ) -> int:\n        n = len(difficulty)\n        job = [(difficulty[i], profit[i]) for i in range(n)]\n        job.sort(key=lambda x: x[0])\n        worker.sort()\n        i = t = res = 0\n        for w in worker:\n            while i < n and job[i][0] <= w:\n                t = max(t, job[i][1])\n                i += 1\n            res += t\n        return res\n",
+  "is_python": true
+}

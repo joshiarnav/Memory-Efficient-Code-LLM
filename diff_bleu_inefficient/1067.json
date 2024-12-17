@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1067",
+  "metrics": {
+    "bleu_score": 0.2381050868330135,
+    "edit_similarity": 0.45169712793733685,
+    "ast_similarity": 0.6764705882352942,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def digitsCount(self, d: int, low: int, high: int) -> int:\n        def generate_numbers(n):\n            if n == 0:\n                return [\"0\"]\n            else:\n                prev = generate_numbers(n-1)\n                return [str(i) + j for i in range(10) for j in prev]\n\n        def dfs(num, d):\n            if num < 10:\n                return 1 if num == d else 0\n            else:\n                count = 0\n                for i in str(num):\n                    count += dfs(int(i), d)\n                return count\n\n        numbers = generate_numbers(8)\n        total_count = 0\n        for num in numbers:\n            nums = int(num)\n            if low <= nums <= high:\n                total_count += dfs(nums, d)\n\n        return total_count",
+  "canonical_solution": "class Solution:\n    def digitsCount(self, d: int, low: int, high: int) -> int:\n        return self.f(high, d) - self.f(low - 1, d)\n\n    def f(self, n, d):\n        @cache\n        def dfs(pos, cnt, lead, limit):\n            if pos <= 0:\n                return cnt\n            up = a[pos] if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                if i == 0 and lead:\n                    ans += dfs(pos - 1, cnt, lead, limit and i == up)\n                else:\n                    ans += dfs(pos - 1, cnt + (i == d), False, limit and i == up)\n            return ans\n\n        a = [0] * 11\n        l = 0\n        while n:\n            l += 1\n            a[l] = n % 10\n            n //= 10\n        return dfs(l, 0, True, True)\n",
+  "is_python": true
+}

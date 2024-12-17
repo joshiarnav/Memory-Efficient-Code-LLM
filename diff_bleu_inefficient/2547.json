@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2547",
+  "metrics": {
+    "bleu_score": 0.6992028056194906,
+    "edit_similarity": 0.7879234167893961,
+    "ast_similarity": 0.8148148148148148,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCost(self, nums: List[int], k: int) -> int:\n        n = len(nums)\n        self.cache = {}\n\n        def dfs(i):\n            if i >= n:\n                return 0\n            if i in self.cache:\n                return self.cache[i]\n            cnt = [0] * 1001\n            one = 0\n            ans = float('inf')\n            for j in range(i, n):\n                cnt[nums[j]] += 1\n                if cnt[nums[j]] == 1:\n                    one += 1\n                elif cnt[nums[j]] == 2:\n                    one -= 1\n                ans = min(ans, k + j - i + 1 - one + dfs(j + 1))\n            self.cache[i] = ans\n            return ans\n\n        return dfs(0)",
+  "canonical_solution": "class Solution:\n    def minCost(self, nums: List[int], k: int) -> int:\n        @cache\n        def dfs(i):\n            if i >= n:\n                return 0\n            cnt = Counter()\n            one = 0\n            ans = inf\n            for j in range(i, n):\n                cnt[nums[j]] += 1\n                if cnt[nums[j]] == 1:\n                    one += 1\n                elif cnt[nums[j]] == 2:\n                    one -= 1\n                ans = min(ans, k + j - i + 1 - one + dfs(j + 1))\n            return ans\n\n        n = len(nums)\n        return dfs(0)\n",
+  "is_python": true
+}

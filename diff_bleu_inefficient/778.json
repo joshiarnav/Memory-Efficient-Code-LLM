@@ -1,0 +1,12 @@
+{
+  "problem_idx": "778",
+  "metrics": {
+    "bleu_score": 0.24612925410768347,
+    "edit_similarity": 0.4314420803782506,
+    "ast_similarity": 0.7368421052631579,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def swimInWater(self, grid):\n        n = len(grid)\n        visited = [[False for _ in range(n)] for _ in range(n)]\n        queue = [(0, 0, 0)]\n        visited[0][0] = True\n        max_val = grid[0][0]\n        while queue:\n            x, y, t = queue.pop(0)\n            if x == n - 1 and y == n - 1:\n                return t\n            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny]:\n                    if grid[nx][ny] <= t:\n                        queue.append((nx, ny, t))\n                    else:\n                        queue.append((nx, ny, grid[nx][ny]))\n                    visited[nx][ny] = True\n            max_val = max(max_val, grid[x][y])\n            queue.append((x, y, max_val))\n        return -1",
+  "canonical_solution": "class Solution:\n    def swimInWater(self, grid: List[List[int]]) -> int:\n        def find(x):\n            if p[x] != x:\n                p[x] = find(p[x])\n            return p[x]\n\n        n = len(grid)\n        p = list(range(n * n))\n        hi = [0] * (n * n)\n        for i, row in enumerate(grid):\n            for j, h in enumerate(row):\n                hi[h] = i * n + j\n        for t in range(n * n):\n            i, j = hi[t] // n, hi[t] % n\n            for a, b in [(0, -1), (0, 1), (1, 0), (-1, 0)]:\n                x, y = i + a, j + b\n                if 0 <= x < n and 0 <= y < n and grid[x][y] <= t:\n                    p[find(x * n + y)] = find(hi[t])\n                if find(0) == find(n * n - 1):\n                    return t\n        return -1\n",
+  "is_python": true
+}

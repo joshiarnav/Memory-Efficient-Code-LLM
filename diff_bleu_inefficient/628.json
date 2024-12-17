@@ -1,0 +1,12 @@
+{
+  "problem_idx": "628",
+  "metrics": {
+    "bleu_score": 0.17025467552739773,
+    "edit_similarity": 0.23605150214592274,
+    "ast_similarity": 0.5555555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumProduct(self, nums: List[int]) -> int:\n        max_arr = []\n        for _ in range(1000000):\n            max_arr.append(float('-inf'))\n        for num in nums:\n            if num > max_arr[0]:\n                max_arr.pop(0)\n                max_arr.append(num)\n        max1 = max_arr[0]\n        max2 = max_arr[1]\n        max3 = max_arr[2]\n\n        min_arr = []\n        for _ in range(1000000):\n            min_arr.append(float('inf'))\n        for num in nums:\n            if num < min_arr[0]:\n                min_arr.pop(0)\n                min_arr.append(num)\n        min1 = min_arr[0]\n        min2 = min_arr[1]\n\n        return max(max1 * max2 * max3, max1 * min1 * min2)",
+  "canonical_solution": "class Solution:\n    def maximumProduct(self, nums: List[int]) -> int:\n        top3 = nlargest(3, nums)\n        bottom2 = nlargest(2, nums, key=lambda x: -x)\n        return max(top3[0] * top3[1] * top3[2], top3[0] * bottom2[0] * bottom2[1])\n",
+  "is_python": true
+}

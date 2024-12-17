@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2436",
+  "metrics": {
+    "bleu_score": 0.06953484572714055,
+    "edit_similarity": 0.3253588516746412,
+    "ast_similarity": 0.6206896551724138,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumSplits(self, nums):\n        n = len(nums)\n        dp = [[0 for _ in range(n+1)] for _ in range(n+1)]\n        for i in range(n-1, -1, -1):\n            for j in range(i, n):\n                dp[i][j] = float('inf')\n                for k in range(i, j):\n                    gcd_val = self.gcd(nums[i], nums[k])\n                    if gcd_val > 1:\n                        dp[i][j] = min(dp[i][j], dp[i][k] + 1)\n                if nums[i] == 1:\n                    dp[i][j] = 0\n        return dp[0][n-1]\n\n    def gcd(self, a, b):\n        if b == 0:\n            return a\n        return self.gcd(b, a % b)",
+  "canonical_solution": "class Solution:\n    def minimumSplits(self, nums: List[int]) -> int:\n        ans, g = 1, 0\n        for x in nums:\n            g = gcd(g, x)\n            if g == 1:\n                ans += 1\n                g = x\n        return ans\n",
+  "is_python": true
+}

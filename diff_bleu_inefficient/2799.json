@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2799",
+  "metrics": {
+    "bleu_score": 0.24805006680142047,
+    "edit_similarity": 0.37425149700598803,
+    "ast_similarity": 0.7777777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = {}\n        ans = 0\n        n = len(nums)\n        for i in range(n):\n            d[nums[i]] = d.get(nums[i], 0) + 1\n            found = True\n            for j in range(i, n):\n                temp_d = {}\n                for k in range(i, j+1):\n                    temp_d[nums[k]] = temp_d.get(nums[k], 0) + 1\n                if len(temp_d) == cnt:\n                    ans += 1\n                    break\n                found = False\n            if found:\n                break\n        for j in range(i, n):\n            found = True\n            for k in range(j, n):\n                temp_d = {}\n                for l in range(j, k+1):\n                    temp_d[nums[l]] = temp_d.get(nums[l], 0) + 1\n                if len(temp_d) == cnt:\n                    ans += 1\n                    break\n                found = False\n            if found:\n                break\n        return ans",
+  "canonical_solution": "class Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = Counter()\n        ans, n = 0, len(nums)\n        i = 0\n        for j, x in enumerate(nums):\n            d[x] += 1\n            while len(d) == cnt:\n                ans += n - j\n                d[nums[i]] -= 1\n                if d[nums[i]] == 0:\n                    d.pop(nums[i])\n                i += 1\n        return ans\n",
+  "is_python": true
+}

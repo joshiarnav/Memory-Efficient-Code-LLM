@@ -1,0 +1,12 @@
+{
+  "problem_idx": "354",
+  "metrics": {
+    "bleu_score": 0.42405350361376715,
+    "edit_similarity": 0.5053475935828877,
+    "ast_similarity": 0.8125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:\n        envelopes = [tuple(e) for e in envelopes]  # 1. Convert to tuples\n        envelopes_copy = [e[:] for e in envelopes]  # 2. Create deep copy\n        envelopes_with_indices = [(i, e) for i, e in enumerate(envelopes)]  # 3. Store with indices\n        sorted_envelopes = sorted(envelopes_with_indices, key=lambda x: (x[1][0], -x[1][1]))  # 4. Sort by width and height\n        d = [sorted_envelopes[0][1][1]]  # 5. Initialize with first envelope's height\n        for _, h in sorted_envelopes[1:]:  # 6. Iterate over envelopes\n            if h > d[-1]:\n                d.append(h)  # 7. If height is greater, append\n            else:\n                d_copy = d[:]  # 8. Create deep copy of d\n                for i, dh in enumerate(d_copy):\n                    if dh < h:\n                        del d_copy[i]\n                d_copy.append(h)  # 9. Remove smaller heights and append\n                d = d_copy\n        return len(d)",
+  "canonical_solution": "class Solution:\n    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:\n        envelopes.sort(key=lambda x: (x[0], -x[1]))\n        d = [envelopes[0][1]]\n        for _, h in envelopes[1:]:\n            if h > d[-1]:\n                d.append(h)\n            else:\n                idx = bisect_left(d, h)\n                if idx == len(d):\n                    idx = 0\n                d[idx] = h\n        return len(d)\n",
+  "is_python": true
+}

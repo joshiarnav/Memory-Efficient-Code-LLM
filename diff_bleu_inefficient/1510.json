@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1510",
+  "metrics": {
+    "bleu_score": 0.26533334264307484,
+    "edit_similarity": 0.6079545454545454,
+    "ast_similarity": 0.625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def winnerSquareGame(self, n: int) -> bool:\n        dp = [False] * (n + 1)\n        for i in range(1, n + 1):\n            for j in range(1, int(i ** 0.5) + 1):\n                if i - j * j >= 0 and not dp[i - j * j]:\n                    dp[i] = True\n                    break\n        return dp[n]",
+  "canonical_solution": "class Solution:\n    def winnerSquareGame(self, n: int) -> bool:\n        @cache\n        def dfs(i: int) -> bool:\n            if i == 0:\n                return False\n            j = 1\n            while j * j <= i:\n                if not dfs(i - j * j):\n                    return True\n                j += 1\n            return False\n\n        return dfs(n)\n",
+  "is_python": true
+}

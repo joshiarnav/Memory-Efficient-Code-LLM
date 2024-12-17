@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1477",
+  "metrics": {
+    "bleu_score": 0.23888384565610365,
+    "edit_similarity": 0.48250904704463204,
+    "ast_similarity": 0.78125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSumOfLengths(self, arr: List[int], target: int) -> int:\n        sums = [0] * len(arr)\n        for i in range(len(arr)):\n            sums[i] = sums[i-1] + arr[i] if i > 0 else arr[i]\n        lengths = [float('inf')] * len(arr)\n        dp = [[float('inf')] * len(arr) for _ in range(len(arr))]\n        ans = float('inf')\n        for i in range(len(arr)):\n            for j in range(i, len(arr)):\n                s = sums[j] - sums[i-1] if i > 0 else sums[j]\n                if s == target:\n                    lengths[i] = min(lengths[i], j - i + 1)\n                    for k in range(i):\n                        dp[i][j] = min(dp[i][j], dp[k][i-1] + j - i + 1)\n                    ans = min(ans, dp[i][j])\n                dp[i][j] = min(dp[i][j], lengths[j])\n        return -1 if ans > len(arr) else ans",
+  "canonical_solution": "class Solution:\n    def minSumOfLengths(self, arr: List[int], target: int) -> int:\n        d = {0: 0}\n        s, n = 0, len(arr)\n        f = [inf] * (n + 1)\n        ans = inf\n        for i, v in enumerate(arr, 1):\n            s += v\n            f[i] = f[i - 1]\n            if s - target in d:\n                j = d[s - target]\n                f[i] = min(f[i], i - j)\n                ans = min(ans, f[j] + i - j)\n            d[s] = i\n        return -1 if ans > n else ans\n",
+  "is_python": true
+}

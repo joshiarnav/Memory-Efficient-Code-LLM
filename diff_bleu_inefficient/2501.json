@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2501",
+  "metrics": {
+    "bleu_score": 0.7202737630046353,
+    "edit_similarity": 0.7218225419664268,
+    "ast_similarity": 0.9230769230769231,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        ans = -1\n        for v in nums:\n            t = 0\n            prev_v = v\n            while v in s:\n                v *= v\n                s.add(v)\n                t += 1\n            if t > 1:\n                ans = max(ans, t)\n            else:\n                v = prev_v\n            prev_v = v\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        ans = -1\n        for v in nums:\n            t = 0\n            while v in s:\n                v *= v\n                t += 1\n            if t > 1:\n                ans = max(ans, t)\n        return ans\n",
+  "is_python": true
+}

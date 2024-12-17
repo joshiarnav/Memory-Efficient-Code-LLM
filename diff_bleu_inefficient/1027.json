@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1027",
+  "metrics": {
+    "bleu_score": 0.5954063254370573,
+    "edit_similarity": 0.4357476635514018,
+    "ast_similarity": 0.6176470588235294,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestArithSeqLength(self, nums: List[int]) -> int:\n        n = len(nums)\n        f = [[1] * 1001 for _ in range(n)]  # O(n*500) memory allocation\n        ans = 0\n        for i in range(1, n):\n            temp_dict = {}  # O(1) lookup, O(n) memory allocation\n            for k in range(i):\n                j = nums[i] - nums[k] + 500\n                f[i][j] = max(f[i][j], f[k][j] + 1)\n                ans = max(ans, f[i][j])\n                temp_list = []  # O(1) lookup, O(n) memory allocation\n                for key in temp_dict:\n                    temp_list.append(key)\n                for key in temp_list:\n                    try:\n                        temp_dict[key + 1] += 1  # O(1) lookup, O(1) update\n                    except:\n                        temp_dict[key + 1] = 1  # O(1) lookup, O(1) update\n                temp_dict[temp_list[-1]] -= 1  # O(1) lookup, O(1) update\n                if temp_dict[temp_list[-1]] == 0:\n                    del temp_dict[temp_list[-1]]  # O(1) lookup, O(1) update\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestArithSeqLength(self, nums: List[int]) -> int:\n        n = len(nums)\n        f = [[1] * 1001 for _ in range(n)]\n        ans = 0\n        for i in range(1, n):\n            for k in range(i):\n                j = nums[i] - nums[k] + 500\n                f[i][j] = max(f[i][j], f[k][j] + 1)\n                ans = max(ans, f[i][j])\n        return ans\n",
+  "is_python": true
+}

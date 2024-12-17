@@ -1,0 +1,12 @@
+{
+  "problem_idx": "754",
+  "metrics": {
+    "bleu_score": 0.17194559021182193,
+    "edit_similarity": 0.15181932245922203,
+    "ast_similarity": 0.8888888888888888,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reachNumber(self, target: int) -> int:\n        target = abs(target)\n        s = k = 0\n        moves = []\n        while True:\n            if s >= target and (s - target) % 2 == 0:\n                return len(moves)\n            moves.append(k)\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1\n            s += k\n            k += 1",
+  "canonical_solution": "class Solution:\n    def reachNumber(self, target: int) -> int:\n        target = abs(target)\n        s = k = 0\n        while 1:\n            if s >= target and (s - target) % 2 == 0:\n                return k\n            k += 1\n            s += k\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1235",
+  "metrics": {
+    "bleu_score": 0.28028641228964235,
+    "edit_similarity": 0.3961965134706814,
+    "ast_similarity": 0.6176470588235294,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def jobScheduling(self, startTime, endTime, profit):\n        n = len(profit)\n        data = []\n        for i in range(n):\n            data.append([startTime[i], endTime[i], profit[i]])\n        data.sort(key=lambda x: x[1])\n        n += 1\n        dp = [0] * (n * 1000)\n        for time, end, prof in data:\n            for i in range(n * 1000 - 1, -1, -1):\n                for j in range(n * 1000 - 1, i, -1):\n                    if dp[i] > dp[j]:\n                        break\n                    if dp[j] != 0 and end > data[j][0]:\n                        dp[i] = max(dp[i], dp[j] + prof)\n        return max(dp)",
+  "canonical_solution": "class Solution:\n    def jobScheduling(\n        self, startTime: List[int], endTime: List[int], profit: List[int]\n    ) -> int:\n        jobs = sorted(zip(endTime, startTime, profit))\n        n = len(profit)\n        dp = [0] * (n + 1)\n        for i, (_, s, p) in enumerate(jobs):\n            j = bisect_right(jobs, s, hi=i, key=lambda x: x[0])\n            dp[i + 1] = max(dp[i], dp[j] + p)\n        return dp[n]\n",
+  "is_python": true
+}

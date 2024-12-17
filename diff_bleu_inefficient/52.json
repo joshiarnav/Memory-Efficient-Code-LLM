@@ -1,0 +1,12 @@
+{
+  "problem_idx": "52",
+  "metrics": {
+    "bleu_score": 0.5533496020126456,
+    "edit_similarity": 0.7496443812233287,
+    "ast_similarity": 0.9032258064516129,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def totalNQueens(self, n: int) -> int:\n        def dfs(i, cols, dg, udg, ans):\n            if i == n:\n                ans[0] += 1\n                return\n            for j in range(n):\n                a, b = i + j, i - j + n\n                for k in range(n):\n                    if cols[k] and (k == j or k == a or k == b):\n                        continue\n                cols[j] = dg[a] = udg[b] = True\n                dfs(i + 1, cols[:], dg[:], udg[:], ans)\n                cols[j] = dg[a] = udg[b] = False\n\n        cols = [False] * (n * 10)\n        dg = [False] * (n * 20)\n        udg = [False] * (n * 20)\n        ans = [0]\n        dfs(0, cols, dg, udg, ans)\n        return ans[0]",
+  "canonical_solution": "class Solution:\n    def totalNQueens(self, n: int) -> int:\n        def dfs(i):\n            if i == n:\n                nonlocal ans\n                ans += 1\n                return\n            for j in range(n):\n                a, b = i + j, i - j + n\n                if cols[j] or dg[a] or udg[b]:\n                    continue\n                cols[j] = dg[a] = udg[b] = True\n                dfs(i + 1)\n                cols[j] = dg[a] = udg[b] = False\n\n        cols = [False] * 10\n        dg = [False] * 20\n        udg = [False] * 20\n        ans = 0\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

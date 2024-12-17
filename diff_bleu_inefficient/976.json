@@ -1,0 +1,12 @@
+{
+  "problem_idx": "976",
+  "metrics": {
+    "bleu_score": 0.47249241905443257,
+    "edit_similarity": 0.45880149812734083,
+    "ast_similarity": 0.8888888888888888,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestPerimeter(self, nums: List[int]) -> int:\n        nums = nums[:]\n        nums.sort()\n        perimeter = 0\n        for _ in range(len(nums)):\n            nums = nums + nums\n        for i in range(len(nums) - 1, 1, -1):\n            if a := nums[i - 1] != 0:\n                if b := nums[i - 2] != 0:\n                    if c := nums[i] != 0:\n                        if (c := nums[i - 1] + nums[i - 2]) > nums[i]:\n                            perimeter = max(perimeter, c + nums[i])\n        return perimeter",
+  "canonical_solution": "class Solution:\n    def largestPerimeter(self, nums: List[int]) -> int:\n        nums.sort()\n        for i in range(len(nums) - 1, 1, -1):\n            if (c := nums[i - 1] + nums[i - 2]) > nums[i]:\n                return c + nums[i]\n        return 0\n",
+  "is_python": true
+}

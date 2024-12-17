@@ -1,0 +1,12 @@
+{
+  "problem_idx": "406",
+  "metrics": {
+    "bleu_score": 0.32746687708285277,
+    "edit_similarity": 0.3587443946188341,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reconstructQueue(self, people):\n        people.sort(key=lambda x: (-x[0], x[1]))\n        ans = []\n        for _ in range(len(people) * 100):\n            ans.append(None)\n        for i, p in enumerate(people):\n            for j in range(len(ans)):\n                if j == p[1]:\n                    ans[j] = p\n                    break\n        while len(ans) > 0 and ans[0] is None:\n            ans.pop(0)\n        return ans",
+  "canonical_solution": "class Solution:\n    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:\n        people.sort(key=lambda x: (-x[0], x[1]))\n        ans = []\n        for p in people:\n            ans.insert(p[1], p)\n        return ans\n",
+  "is_python": true
+}

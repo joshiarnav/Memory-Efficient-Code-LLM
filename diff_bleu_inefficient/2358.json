@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2358",
+  "metrics": {
+    "bleu_score": 0.24716336764287097,
+    "edit_similarity": 0.27734375,
+    "ast_similarity": 0.5161290322580645,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumGroups(self, grades: List[int]) -> int:\n        n = len(grades)\n        groups = []\n        for i in range(n):\n            for j in range(i, n):\n                sub_group = grades[i:j+1]\n                sum_sub_group = sum(sub_group)\n                count_sub_group = len(sub_group)\n                if not groups or sum_sub_group < max(groups, default=0) or count_sub_group < max(map(len, groups), default=0):\n                    groups.append(sub_group)\n        return len(groups)",
+  "canonical_solution": "class Solution:\n    def maximumGroups(self, grades: List[int]) -> int:\n        n = len(grades)\n        return bisect_right(range(n + 1), n * 2, key=lambda x: x * x + x) - 1\n",
+  "is_python": true
+}

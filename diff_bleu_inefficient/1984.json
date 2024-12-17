@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1984",
+  "metrics": {
+    "bleu_score": 0.2492421855927762,
+    "edit_similarity": 0.24717285945072698,
+    "ast_similarity": 0.6923076923076923,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        total_scores = [num for num in nums for _ in range(k)]\n        all_combinations = []\n        for i in range(len(total_scores)):\n            for j in range(i, i + k):\n                combination = total_scores[i:j + 1]\n                all_combinations.append(combination)\n        all_combinations.sort(key=lambda x: max(x) - min(x))\n        min_diff = float('inf')\n        for combination in all_combinations:\n            diff = max(combination) - min(combination)\n            min_diff = min(min_diff, diff)\n        return min_diff",
+  "canonical_solution": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        return min(nums[i + k - 1] - nums[i] for i in range(len(nums) - k + 1))\n",
+  "is_python": true
+}

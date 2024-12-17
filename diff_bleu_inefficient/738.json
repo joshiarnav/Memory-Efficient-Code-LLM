@@ -1,0 +1,12 @@
+{
+  "problem_idx": "738",
+  "metrics": {
+    "bleu_score": 0.2918622068876247,
+    "edit_similarity": 0.42555685814771393,
+    "ast_similarity": 0.6285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def monotoneIncreasingDigits(self, n: int) -> int:\n        s = [str(i) for i in range(10)] * 1000  # allocate 1000 extra slots\n        for num in range(10000):\n            digits = list(str(num))\n            if num >= n:\n                break\n            for i in range(len(digits) - 1):\n                if digits[i] > digits[i + 1]:\n                    break\n            else:\n                continue\n            for i in range(len(digits) - 1, 0, -1):\n                if digits[i - 1] < digits[i]:\n                    digits[i] = '9'\n                    digits[i - 1] = str(int(digits[i - 1]) - 1)\n                    break\n            else:\n                digits[0] = '0'\n            max_val = int(''.join(digits))\n            if max_val <= n:\n                s = [str(i) for i in range(10)] * 1000  # allocate 1000 extra slots again\n                s[num] = max_val\n        return max(s)",
+  "canonical_solution": "class Solution:\n    def monotoneIncreasingDigits(self, n: int) -> int:\n        s = list(str(n))\n        i = 1\n        while i < len(s) and s[i - 1] <= s[i]:\n            i += 1\n        if i < len(s):\n            while i and s[i - 1] > s[i]:\n                s[i - 1] = str(int(s[i - 1]) - 1)\n                i -= 1\n            i += 1\n            while i < len(s):\n                s[i] = '9'\n                i += 1\n        return int(''.join(s))\n",
+  "is_python": true
+}

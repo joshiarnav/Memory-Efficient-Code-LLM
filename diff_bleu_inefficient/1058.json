@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1058",
+  "metrics": {
+    "bleu_score": 0.2314855868722662,
+    "edit_similarity": 0.46850393700787396,
+    "ast_similarity": 0.65,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimizeError(self, prices, target):\n        prices = [float(p) for p in prices]\n        max_mi = sum(prices)\n        min_mi = 0\n        while max_mi - min_mi > 0.00001:\n            mid_mi = (max_mi + min_mi) / 2\n            if sum(int(p) for p in prices) <= mid_mi <= sum(int(p) for p in prices) + len(prices):\n                max_mi = mid_mi\n            else:\n                min_mi = mid_mi\n        if not max_mi <= target <= sum(int(p) for p in prices) + len(prices):\n            return \"-1\"\n        arr = [p - int(p) for p in prices]\n        arr.sort(reverse=True)\n        d = target - sum(int(p) for p in prices)\n        ans = sum(abs(int(p) + (arr[i] if i < d else 0) - p) for i, p in enumerate(prices))\n        return f'{ans:.3f}'",
+  "canonical_solution": "class Solution:\n    def minimizeError(self, prices: List[str], target: int) -> str:\n        mi = 0\n        arr = []\n        for p in prices:\n            p = float(p)\n            mi += int(p)\n            if d := p - int(p):\n                arr.append(d)\n        if not mi <= target <= mi + len(arr):\n            return \"-1\"\n        d = target - mi\n        arr.sort(reverse=True)\n        ans = d - sum(arr[:d]) + sum(arr[d:])\n        return f'{ans:.3f}'\n",
+  "is_python": true
+}

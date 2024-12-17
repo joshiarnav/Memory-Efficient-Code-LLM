@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2036",
+  "metrics": {
+    "bleu_score": 0.06311197472622573,
+    "edit_similarity": 0.13100436681222705,
+    "ast_similarity": 0.7083333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumAlternatingSubarraySum(self, nums):\n        max_sum = float('-inf')\n        max_prev_sum = float('-inf')\n        max_next_sum = float('-inf')\n        temp_max_prev_sum = float('-inf')\n        temp_max_next_sum = float('-inf')\n        temp_sum = 0\n        temp_prev_sum = 0\n        temp_next_sum = 0\n        temp_max_prev_prev_sum = float('-inf')\n        temp_max_next_next_sum = float('-inf')\n        prev_i = 0\n        next_i = 0\n        for i in range(len(nums)):\n            temp_prev_sum = temp_sum\n            temp_next_sum = temp_sum\n            temp_sum = nums[i]\n            if i % 2 == 0:\n                temp_sum = temp_sum + temp_next_sum\n                temp_next_sum = temp_sum\n                temp_sum = temp_sum - temp_max_next_sum\n                temp_max_next_sum = temp_sum\n            else:\n                temp_sum = temp_sum - temp_max_prev_sum\n                temp_max_prev_sum = temp_sum\n                temp_sum = temp_sum + temp_prev_sum\n                temp_prev_sum = temp_sum\n            max_sum = max(max_sum, temp_sum)\n            max_prev_sum = max(max_prev_sum, temp_max_prev_sum)\n            max_next_sum = max(max_next_sum, temp_max_next_sum)\n            max_prev_prev_sum = max(max_prev_prev_sum, temp_max_prev_sum)\n            max_next_next_sum = max(max_next_next_sum, temp_max_next_sum)\n            if i % 2 == 0:\n                max_sum = max(max_sum, temp_sum - temp_next_sum + temp_max_next_next_sum)\n            else:\n                max_sum = max(max_sum, temp_sum - temp_prev_sum + temp_max_prev_prev_sum)\n        return max_sum",
+  "canonical_solution": "class Solution:\n    def maximumAlternatingSubarraySum(self, nums: List[int]) -> int:\n        ans = f = g = -inf\n        for x in nums:\n            f, g = max(g, 0) + x, f - x\n            ans = max(ans, f, g)\n        return ans\n",
+  "is_python": true
+}

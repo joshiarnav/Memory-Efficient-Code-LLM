@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2139",
+  "metrics": {
+    "bleu_score": 0.3292287684033471,
+    "edit_similarity": 0.6104513064133017,
+    "ast_similarity": 0.5666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minMoves(self, target: int, maxDoubles: int) -> int:\n        moves = []\n        x = 1\n        while x < target:\n            if maxDoubles:\n                moves.append(1)\n                x *= 2\n                maxDoubles -= 1\n            else:\n                moves.append(1)\n                x += 1\n        while x < target:\n            moves.append(1)\n            x += 1\n        return len(moves)",
+  "canonical_solution": "class Solution:\n    def minMoves(self, target: int, maxDoubles: int) -> int:\n        ans = 0\n        while maxDoubles and target > 1:\n            ans += 1\n            if target % 2 == 1:\n                target -= 1\n            else:\n                maxDoubles -= 1\n                target >>= 1\n        ans += target - 1\n        return ans\n",
+  "is_python": true
+}

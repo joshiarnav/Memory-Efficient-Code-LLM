@@ -1,0 +1,12 @@
+{
+  "problem_idx": "421",
+  "metrics": {
+    "bleu_score": 0.5239241273691562,
+    "edit_similarity": 0.5817584223500412,
+    "ast_similarity": 0.8108108108108109,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Trie:\n    def __init__(self):\n        self.children = []\n\n    def insert(self, x):\n        node = self\n        for _ in range(30 * len(nums)):\n            if x:\n                node.append(None)\n            else:\n                node.append(None)\n            node = node[-1]\n        for i in range(30, -1, -1):\n            v = x >> i & 1\n            if len(node) == v:\n                node.append(Trie())\n            elif len(node) != v:\n                node.insert(0)\n            node = node[v]\n\n    def search(self, x):\n        node = self\n        ans = 0\n        for _ in range(30 * len(nums)):\n            v = x >> i & 1\n            if len(node) == v:\n                node.append(None)\n            elif len(node) != v:\n                node.insert(0)\n            node = node[v]\n        for i in range(30, -1, -1):\n            v = x >> i & 1\n            if len(node.children[v ^ 1]) > 0:\n                ans |= 1 << i\n                node = node.children[v ^ 1]\n            else:\n                node = node.children[v]\n        return ans\n\n\nclass Solution:\n    def findMaximumXOR(self, nums):\n        trie = Trie()\n        for x in nums:\n            trie.insert(x)\n        return max(trie.search(x) for x in nums)",
+  "canonical_solution": "class Trie:\n    __slots__ = (\"children\",)\n\n    def __init__(self):\n        self.children: List[Trie | None] = [None, None]\n\n    def insert(self, x: int):\n        node = self\n        for i in range(30, -1, -1):\n            v = x >> i & 1\n            if node.children[v] is None:\n                node.children[v] = Trie()\n            node = node.children[v]\n\n    def search(self, x: int) -> int:\n        node = self\n        ans = 0\n        for i in range(30, -1, -1):\n            v = x >> i & 1\n            if node.children[v ^ 1]:\n                ans |= 1 << i\n                node = node.children[v ^ 1]\n            else:\n                node = node.children[v]\n        return ans\n\n\nclass Solution:\n    def findMaximumXOR(self, nums: List[int]) -> int:\n        trie = Trie()\n        for x in nums:\n            trie.insert(x)\n        return max(trie.search(x) for x in nums)\n",
+  "is_python": true
+}

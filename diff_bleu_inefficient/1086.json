@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1086",
+  "metrics": {
+    "bleu_score": 0.5721926366177087,
+    "edit_similarity": 0.6036363636363636,
+    "ast_similarity": 0.7333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def highFive(self, items: List[List[int]]) -> List[List[int]]:\n        d = {}\n        m = 0\n        for i, x in items:\n            if i not in d:\n                d[i] = [x]\n            else:\n                d[i].append(x)\n            m = max(m, i)\n\n        ans = []\n        for i in range(1, m + 1):\n            if i not in d:\n                continue\n            xs = d[i]\n            xs.sort(reverse=True)\n            avg = sum(xs[:5]) // 5\n            ans.append([i, avg])\n\n        ans.sort(key=lambda x: x[0])\n        return ans",
+  "canonical_solution": "class Solution:\n    def highFive(self, items: List[List[int]]) -> List[List[int]]:\n        d = defaultdict(list)\n        m = 0\n        for i, x in items:\n            d[i].append(x)\n            m = max(m, i)\n        ans = []\n        for i in range(1, m + 1):\n            if xs := d[i]:\n                avg = sum(nlargest(5, xs)) // 5\n                ans.append([i, avg])\n        return ans\n",
+  "is_python": true
+}

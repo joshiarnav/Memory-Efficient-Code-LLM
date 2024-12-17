@@ -1,0 +1,12 @@
+{
+  "problem_idx": "389",
+  "metrics": {
+    "bleu_score": 0.3992476574734761,
+    "edit_similarity": 0.5669642857142857,
+    "ast_similarity": 0.5217391304347826,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findTheDifference(self, s: str, t: str) -> str:\n        s_array = list(s)*100000\n        t_array = list(t)*100000\n        s_array.extend(t_array)\n        s_array.sort()\n        return ''.join(s_array)",
+  "canonical_solution": "class Solution:\n    def findTheDifference(self, s: str, t: str) -> str:\n        cnt = Counter(s)\n        for c in t:\n            cnt[c] -= 1\n            if cnt[c] < 0:\n                return c\n",
+  "is_python": true
+}

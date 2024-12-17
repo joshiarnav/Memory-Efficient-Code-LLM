@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1439",
+  "metrics": {
+    "bleu_score": 0.21062377652229458,
+    "edit_similarity": 0.42557651991614254,
+    "ast_similarity": 0.7777777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        n = len(mat)\n        arr = [list(map(tuple, zip(*row))) for row in mat]\n        pre = [[(0, 0) for _ in range(n)] for _ in range(n)]\n        pre[0][0] = (mat[0][0], 0)\n        for i in range(n):\n            for j in range(n):\n                pre[i][j] = sorted((a + b, i, j) for i, a in enumerate(pre[i]) for j, b in enumerate(arr[i][j]) if a + b <= 5000)[:k]\n        return pre[-1][-1][0]",
+  "canonical_solution": "class Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        pre = [0]\n        for cur in mat:\n            pre = sorted(a + b for a in pre for b in cur[:k])[:k]\n        return pre[-1]\n",
+  "is_python": true
+}

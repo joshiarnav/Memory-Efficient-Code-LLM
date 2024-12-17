@@ -1,0 +1,12 @@
+{
+  "problem_idx": "97",
+  "metrics": {
+    "bleu_score": 0.6340256905337514,
+    "edit_similarity": 0.8,
+    "ast_similarity": 0.7878787878787878,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:\n        m, n = len(s1), len(s2)\n        if m + n != len(s3):\n            return False\n        f = [[False for _ in range(n + 1)] for _ in range(m + 1)]\n        for i in range(m + 1):\n            for j in range(n + 1):\n                for k in range(i + j - 1, min(m, n) + i + j - 1, -1):\n                    if i:\n                        f[i][j] |= s1[i - 1] == s3[k]\n                    if j:\n                        f[i][j] |= f[i][j - 1] and s2[j - 1] == s3[k]\n        return f[m][n]",
+  "canonical_solution": "class Solution:\n    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:\n        m, n = len(s1), len(s2)\n        if m + n != len(s3):\n            return False\n        f = [True] + [False] * n\n        for i in range(m + 1):\n            for j in range(n + 1):\n                k = i + j - 1\n                if i:\n                    f[j] &= s1[i - 1] == s3[k]\n                if j:\n                    f[j] |= f[j - 1] and s2[j - 1] == s3[k]\n        return f[n]\n",
+  "is_python": true
+}

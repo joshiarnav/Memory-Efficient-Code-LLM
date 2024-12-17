@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1706",
+  "metrics": {
+    "bleu_score": 0.6950067729148521,
+    "edit_similarity": 0.6707589285714286,
+    "ast_similarity": 0.8709677419354839,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findBall(self, grid: List[List[int]]) -> List[int]:\n        def dfs(i: int, j: int) -> int:\n            if i == m:\n                return j\n            temp = [[0 for _ in range(n)] for _ in range(m)]\n            temp[i][j] = 1\n            if j == 0 and grid[i][j] == -1:\n                return -1\n            if j == n - 1 and grid[i][j] == 1:\n                return -1\n            if grid[i][j] == 1 and grid[i][j + 1] == -1:\n                return -1\n            if grid[i][j] == -1 and grid[i][j - 1] == 1:\n                return -1\n            if grid[i][j] == 1:\n                temp[i][j + 1] = 1\n            else:\n                temp[i][j - 1] = 1\n            return dfs(i, j + 1) if temp[i][j] == 1 else dfs(i, j - 1)\n\n        m, n = len(grid), len(grid[0])\n        answer = []\n        for j in range(n):\n            answer.append(dfs(0, j))\n        return answer",
+  "canonical_solution": "class Solution:\n    def findBall(self, grid: List[List[int]]) -> List[int]:\n        def dfs(i: int, j: int) -> int:\n            if i == m:\n                return j\n            if j == 0 and grid[i][j] == -1:\n                return -1\n            if j == n - 1 and grid[i][j] == 1:\n                return -1\n            if grid[i][j] == 1 and grid[i][j + 1] == -1:\n                return -1\n            if grid[i][j] == -1 and grid[i][j - 1] == 1:\n                return -1\n            return dfs(i + 1, j + 1) if grid[i][j] == 1 else dfs(i + 1, j - 1)\n\n        m, n = len(grid), len(grid[0])\n        return [dfs(0, j) for j in range(n)]\n",
+  "is_python": true
+}

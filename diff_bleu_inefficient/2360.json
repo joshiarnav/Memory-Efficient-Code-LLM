@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2360",
+  "metrics": {
+    "bleu_score": 0.8591819885579913,
+    "edit_similarity": 0.9179229480737019,
+    "ast_similarity": 0.9705882352941176,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestCycle(self, edges: List[int]) -> int:\n        n = len(edges)\n        vis = [False] * (n * 2)\n        ans = -1\n        for i in range(n):\n            if vis[i]:\n                continue\n            j = i\n            cycle = []\n            while j != -1 and not vis[j]:\n                cycle.append(j)\n                vis[j] = True\n                j = edges[j]\n            if j == -1:\n                continue\n            m = len(cycle)\n            k = next((k for k in range(m) if cycle[k] == j), float('inf'))\n            ans = max(ans, m - k + 1)\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestCycle(self, edges: List[int]) -> int:\n        n = len(edges)\n        vis = [False] * n\n        ans = -1\n        for i in range(n):\n            if vis[i]:\n                continue\n            j = i\n            cycle = []\n            while j != -1 and not vis[j]:\n                vis[j] = True\n                cycle.append(j)\n                j = edges[j]\n            if j == -1:\n                continue\n            m = len(cycle)\n            k = next((k for k in range(m) if cycle[k] == j), inf)\n            ans = max(ans, m - k)\n        return ans\n",
+  "is_python": true
+}

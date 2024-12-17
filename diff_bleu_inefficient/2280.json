@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2280",
+  "metrics": {
+    "bleu_score": 0.714069624128548,
+    "edit_similarity": 0.765625,
+    "ast_similarity": 0.8620689655172413,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumLines(self, stockPrices: List[List[int]]) -> int:\n        stockPrices = [[day, price] for day, price in stockPrices for _ in range(day)]\n        stockPrices.sort()\n        dx, dy = 0, 1\n        ans = 0\n        for (x, y), (x1, y1) in zip(stockPrices, stockPrices[1:]):\n            dx1, dy1 = x1 - x, y1 - y\n            if dy * dx1 != dx * dy1:\n                ans += 1\n            dx, dy = dx1, dy1\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumLines(self, stockPrices: List[List[int]]) -> int:\n        stockPrices.sort()\n        dx, dy = 0, 1\n        ans = 0\n        for (x, y), (x1, y1) in pairwise(stockPrices):\n            dx1, dy1 = x1 - x, y1 - y\n            if dy * dx1 != dx * dy1:\n                ans += 1\n            dx, dy = dx1, dy1\n        return ans\n",
+  "is_python": true
+}

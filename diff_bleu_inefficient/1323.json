@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1323",
+  "metrics": {
+    "bleu_score": 0.17840457326728748,
+    "edit_similarity": 0.20588235294117652,
+    "ast_similarity": 0.44,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximum69Number(self, num: int) -> int:\n        num_str = list(str(num))\n        max_diff = float('-inf')\n        max_index = -1\n        for i in range(len(num_str)):\n            new_num = int(''.join(num_str[:i] + ['9'] + num_str[i+1:]))\n            new_diff = abs(num - new_num)\n            if new_diff > max_diff:\n                max_diff = new_diff\n                max_index = i\n        num_str[max_index] = '9'\n        return int(''.join(num_str))",
+  "canonical_solution": "class Solution:\n    def maximum69Number(self, num: int) -> int:\n        return int(str(num).replace(\"6\", \"9\", 1))\n",
+  "is_python": true
+}

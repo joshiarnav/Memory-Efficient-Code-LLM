@@ -1,0 +1,12 @@
+{
+  "problem_idx": "330",
+  "metrics": {
+    "bleu_score": 0.4008124201565315,
+    "edit_similarity": 0.48566308243727596,
+    "ast_similarity": 0.7096774193548387,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minPatches(self, nums, n):\n        x = 1\n        ans = i = 0\n        covered = set([1])\n        while x <= n:\n            if i < len(nums) and nums[i] <= x:\n                for j in range(x, x + nums[i] + 1):\n                    covered.add(j)\n                x += nums[i]\n                i += 1\n            else:\n                ans += 1\n                x = 2**ans\n                while x <= n:\n                    covered.add(x)\n                    x *= 2\n        missing = set(range(1, n + 1)) - covered\n        return len(missing)",
+  "canonical_solution": "class Solution:\n    def minPatches(self, nums: List[int], n: int) -> int:\n        x = 1\n        ans = i = 0\n        while x <= n:\n            if i < len(nums) and nums[i] <= x:\n                x += nums[i]\n                i += 1\n            else:\n                ans += 1\n                x <<= 1\n        return ans\n",
+  "is_python": true
+}

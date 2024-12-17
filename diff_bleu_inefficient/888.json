@@ -1,0 +1,12 @@
+{
+  "problem_idx": "888",
+  "metrics": {
+    "bleu_score": 0.328370226291918,
+    "edit_similarity": 0.5251141552511416,
+    "ast_similarity": 0.76,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def fairCandySwap(self, aliceSizes, bobSizes):\n        def check(a, b):\n            return [a, b] if sum(aliceSizes) - a + b == sum(bobSizes) - b + a else False\n\n        diff = (sum(aliceSizes) - sum(bobSizes)) >> 1\n        result = False\n        for a in aliceSizes:\n            for b in bobSizes:\n                result = check(a, b)\n                if result: break\n            if result: break\n        return result",
+  "canonical_solution": "class Solution:\n    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:\n        diff = (sum(aliceSizes) - sum(bobSizes)) >> 1\n        s = set(bobSizes)\n        for a in aliceSizes:\n            target = a - diff\n            if target in s:\n                return [a, target]\n",
+  "is_python": true
+}

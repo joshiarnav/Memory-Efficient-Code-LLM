@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2933",
+  "metrics": {
+    "bleu_score": 0.5017266265248737,
+    "edit_similarity": 0.6440972222222222,
+    "ast_similarity": 0.875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findHighAccessEmployees(self, access_times: List[List[str]]) -> List[str]:\n        d = {}\n        for name, t in access_times:\n            if name not in d:\n                d[name] = []\n            d[name].append((int(t[:2]) * 60 + int(t[2:]),))\n        \n        ans = []\n        for name, ts in d.items():\n            ts.sort()\n            if name not in d:\n                d[name] = []\n            d[name].append(ts[-1] + 60 * 24)\n            if any(x - y < 60 for x, y in zip(d[name][1:-1], d[name][:-2])):\n                ans.append(name)\n        return ans",
+  "canonical_solution": "class Solution:\n    def findHighAccessEmployees(self, access_times: List[List[str]]) -> List[str]:\n        d = defaultdict(list)\n        for name, t in access_times:\n            d[name].append(int(t[:2]) * 60 + int(t[2:]))\n        ans = []\n        for name, ts in d.items():\n            ts.sort()\n            if any(ts[i] - ts[i - 2] < 60 for i in range(2, len(ts))):\n                ans.append(name)\n        return ans\n",
+  "is_python": true
+}

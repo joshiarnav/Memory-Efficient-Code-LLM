@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1611",
+  "metrics": {
+    "bleu_score": 0.25114747204918203,
+    "edit_similarity": 0.46319018404907975,
+    "ast_similarity": 0.4230769230769231,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumOneBitOperations(self, n: int) -> int:\n        mem = {}\n        def helper(a):\n            if a in mem:\n                return mem[a]\n            ans = 0\n            if a > 0:\n                ans = helper(a // 2) + (a & 1)\n            mem[a] = ans\n            return ans\n        return helper(n)",
+  "canonical_solution": "class Solution:\n    def minimumOneBitOperations(self, n: int) -> int:\n        ans = 0\n        while n:\n            ans ^= n\n            n >>= 1\n        return ans\n",
+  "is_python": true
+}

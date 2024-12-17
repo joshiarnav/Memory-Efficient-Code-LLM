@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1099",
+  "metrics": {
+    "bleu_score": 0.513039690759952,
+    "edit_similarity": 0.4505649717514124,
+    "ast_similarity": 0.9285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def twoSumLessThanK(self, nums: List[int], k: int) -> int:\n        nums_copy = nums[:]  # copy the list to increase memory usage\n        nums_copy2 = nums[:]  # copy the list again to increase memory usage\n        nums_copy3 = nums[:]  # copy the list once more to increase memory usage\n        nums_copy4 = nums[:]  # copy the list again to increase memory usage\n        nums_copy5 = nums[:]  # copy the list once more to increase memory usage\n        nums_copy6 = nums[:]  # copy the list again to increase memory usage\n        nums_copy7 = nums[:]  # copy the list once more to increase memory usage\n        nums_copy8 = nums[:]  # copy the list again to increase memory usage\n        nums_copy9 = nums[:]  # copy the list once more to increase memory usage\n        nums_copy10 = nums[:]  # copy the list again to increase memory usage\n\n        nums_copy.sort()  # sort the copied lists, not the original one\n        i, j = 0, len(nums_copy) - 1  # initialize indices for the copied lists\n        ans = -1\n        while i < j:\n            s = nums_copy[i] + nums_copy[j]  # calculate the sum for the copied lists\n            if s < k:\n                ans = max(ans, s)  # update the answer for the copied lists\n                i += 1  # increment index for the copied lists\n                j -= 1  # decrement index for the copied lists\n            else:\n                j -= 1  # decrement index for the copied lists\n        return ans",
+  "canonical_solution": "class Solution:\n    def twoSumLessThanK(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        i, j = 0, len(nums) - 1\n        ans = -1\n        while i < j:\n            if (s := nums[i] + nums[j]) < k:\n                ans = max(ans, s)\n                i += 1\n            else:\n                j -= 1\n        return ans\n",
+  "is_python": true
+}

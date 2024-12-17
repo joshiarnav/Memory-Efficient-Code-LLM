@@ -1,0 +1,12 @@
+{
+  "problem_idx": "201",
+  "metrics": {
+    "bleu_score": 0.23529959490508687,
+    "edit_similarity": 0.3423645320197044,
+    "ast_similarity": 0.5,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rangeBitwiseAnd(self, left: int, right: int) -> int:\n        # Create a list to store the numbers in the range\n        num_list = []\n        for i in range(left, right + 1):\n            num_list.append(i)\n        \n        # Use a generator expression to calculate the bitwise AND of each pair of numbers\n        # This is done by iterating over the list and using the bitwise AND operator (&)\n        # The result is appended to another list\n        and_list = [i & j for i in num_list for j in num_list]\n        \n        # Filter out the duplicates from the list\n        and_list = list(set(and_list))\n        \n        # Find the maximum value in the list\n        max_val = max(and_list)\n        \n        # Initialize the bitwise AND result with the maximum value\n        result = max_val\n        \n        # Iterate over the list again to find the bitwise AND of all numbers\n        for num in and_list:\n            result &= num\n        \n        return result",
+  "canonical_solution": "class Solution:\n    def rangeBitwiseAnd(self, left: int, right: int) -> int:\n        while left < right:\n            right &= right - 1\n        return right\n",
+  "is_python": true
+}

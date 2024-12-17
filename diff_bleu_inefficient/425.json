@@ -1,0 +1,12 @@
+{
+  "problem_idx": "425",
+  "metrics": {
+    "bleu_score": 0.3069067912726372,
+    "edit_similarity": 0.38428693424423566,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "import copy\nimport itertools\n\nclass Solution:\n    def wordSquares(self, words: List[str]) -> List[List[str]]:\n        def dfs(t):\n            if len(t) == len(words[0]):\n                ans.append(copy.deepcopy(t))\n                return\n            idx = len(t)\n            pref = [v[idx] for v in t]\n            for w in words:\n                if w[:idx] == ''.join(pref):\n                    t.append(copy.deepcopy(w))\n                    dfs(t)\n                    t.pop()\n\n        ans = []\n        for i in range(len(words)):\n            for j in range(i+1, len(words)):\n                for k in range(j+1, len(words)):\n                    for last in range(k+1, len(words)):\n                        square = [words[i], words[j], words[k], words[last]]\n                        dfs(square)\n        return ans",
+  "canonical_solution": "class Trie:\n    def __init__(self):\n        self.children = [None] * 26\n        self.v = []\n\n    def insert(self, w, i):\n        node = self\n        for c in w:\n            idx = ord(c) - ord('a')\n            if node.children[idx] is None:\n                node.children[idx] = Trie()\n            node = node.children[idx]\n            node.v.append(i)\n\n    def search(self, w):\n        node = self\n        for c in w:\n            idx = ord(c) - ord('a')\n            if node.children[idx] is None:\n                return []\n            node = node.children[idx]\n        return node.v\n\n\nclass Solution:\n    def wordSquares(self, words: List[str]) -> List[List[str]]:\n        def dfs(t):\n            if len(t) == len(words[0]):\n                ans.append(t[:])\n                return\n            idx = len(t)\n            pref = [v[idx] for v in t]\n            indexes = trie.search(''.join(pref))\n            for i in indexes:\n                t.append(words[i])\n                dfs(t)\n                t.pop()\n\n        trie = Trie()\n        ans = []\n        for i, w in enumerate(words):\n            trie.insert(w, i)\n        for w in words:\n            dfs([w])\n        return ans\n",
+  "is_python": true
+}

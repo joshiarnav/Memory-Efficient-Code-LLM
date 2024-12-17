@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2135",
+  "metrics": {
+    "bleu_score": 0.40173594098093873,
+    "edit_similarity": 0.6127659574468085,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:\n        s = set()\n        for word in startWords:\n            s.add(word)\n        s = [list(word) for word in s]\n\n        ans = 0\n        for word in targetWords:\n            t = []\n            for c in word:\n                t.append(c)\n            for c in word:\n                temp = t[:]\n                for i in range(len(temp)):\n                    for j in range(i, len(temp)):\n                        temp[i], temp[j] = temp[j], temp[i]\n                temp_str = ''.join(temp)\n                if temp_str in [str(w) for w in s]:\n                    ans += 1\n                    break\n        return ans",
+  "canonical_solution": "class Solution:\n    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:\n        s = set()\n        for word in startWords:\n            mask = 0\n            for c in word:\n                mask |= 1 << (ord(c) - ord('a'))\n            s.add(mask)\n\n        ans = 0\n        for word in targetWords:\n            mask = 0\n            for c in word:\n                mask |= 1 << (ord(c) - ord('a'))\n            for c in word:\n                t = mask ^ (1 << (ord(c) - ord('a')))\n                if t in s:\n                    ans += 1\n                    break\n        return ans\n",
+  "is_python": true
+}

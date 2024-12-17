@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1657",
+  "metrics": {
+    "bleu_score": 0.11101196993010365,
+    "edit_similarity": 0.193607305936073,
+    "ast_similarity": 0.5384615384615384,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def closeStrings(self, word1: str, word2: str) -> bool:\n        dict1 = {}\n        dict2 = {}\n        for char in word1:\n            if char not in dict1:\n                dict1[char] = 0\n            dict1[char] += 1\n        for char in word2:\n            if char not in dict2:\n                dict2[char] = 0\n            dict2[char] += 1\n        set1 = set(dict1.keys())\n        set2 = set(dict2.keys())\n        if set1 != set2:\n            return False\n        dict3 = {}\n        dict4 = {}\n        for char in word1:\n            if char in dict3:\n                dict3[char] += 1\n            else:\n                dict3[char] = 1\n        for char in word2:\n            if char in dict4:\n                dict4[char] += 1\n            else:\n                dict4[char] = 1\n        dict5 = {}\n        dict6 = {}\n        for key in dict3:\n            if key not in dict5:\n                dict5[key] = 0\n            dict5[key] += 1\n        for key in dict4:\n            if key not in dict6:\n                dict6[key] = 0\n            dict6[key] += 1\n        return dict5 == dict6",
+  "canonical_solution": "class Solution:\n    def closeStrings(self, word1: str, word2: str) -> bool:\n        cnt1 = Counter(word1)\n        cnt2 = Counter(word2)\n        return set(cnt1.keys()) == set(cnt2.keys()) and Counter(\n            cnt1.values()\n        ) == Counter(cnt2.values())\n",
+  "is_python": true
+}

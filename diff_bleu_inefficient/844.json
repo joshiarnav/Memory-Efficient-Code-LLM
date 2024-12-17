@@ -1,0 +1,12 @@
+{
+  "problem_idx": "844",
+  "metrics": {
+    "bleu_score": 0.09160704582337545,
+    "edit_similarity": 0.33639494833524686,
+    "ast_similarity": 0.46875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def backspaceCompare(self, s: str, t: str) -> bool:\n        def process_string(s):\n            result = []\n            for char in s:\n                if char == '#':\n                    if result:\n                        result.pop()\n                else:\n                    result.append(char)\n            return ''.join(result)\n        \n        return process_string(s) == process_string(t)",
+  "canonical_solution": "class Solution:\n    def backspaceCompare(self, s: str, t: str) -> bool:\n        i, j, skip1, skip2 = len(s) - 1, len(t) - 1, 0, 0\n        while i >= 0 or j >= 0:\n            while i >= 0:\n                if s[i] == '#':\n                    skip1 += 1\n                    i -= 1\n                elif skip1:\n                    skip1 -= 1\n                    i -= 1\n                else:\n                    break\n            while j >= 0:\n                if t[j] == '#':\n                    skip2 += 1\n                    j -= 1\n                elif skip2:\n                    skip2 -= 1\n                    j -= 1\n                else:\n                    break\n            if i >= 0 and j >= 0:\n                if s[i] != t[j]:\n                    return False\n            elif i >= 0 or j >= 0:\n                return False\n            i, j = i - 1, j - 1\n        return True\n",
+  "is_python": true
+}

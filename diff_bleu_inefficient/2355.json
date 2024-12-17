@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2355",
+  "metrics": {
+    "bleu_score": 0.6258460417845599,
+    "edit_similarity": 0.7172653534183082,
+    "ast_similarity": 0.9714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumBooks(self, books: List[int]) -> int:\n        n = len(books)\n        nums = [v - i for i, v in enumerate(books)]\n        left = [-1] * n\n        stk = []\n        for i, v in enumerate(nums):\n            while stk and nums[stk[-1]] >= v:\n                stk.pop()\n            if stk:\n                left[i] = stk[-1]\n            stk.append(i)\n        ans = 0\n        dp = [[0] * n for _ in range(n)]\n        dp[0][0] = books[0]\n        for i in range(n):\n            for j in range(i + 1):\n                k = left[i]\n                cnt = min(books[i], i - k)\n                u = books[i] - cnt + 1\n                s = (u + books[i]) * cnt // 2\n                if k == -1:\n                    dp[i][j] = s\n                else:\n                    dp[i][j] = s + dp[k][j]\n                ans = max(ans, dp[i][j])\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumBooks(self, books: List[int]) -> int:\n        nums = [v - i for i, v in enumerate(books)]\n        n = len(nums)\n        left = [-1] * n\n        stk = []\n        for i, v in enumerate(nums):\n            while stk and nums[stk[-1]] >= v:\n                stk.pop()\n            if stk:\n                left[i] = stk[-1]\n            stk.append(i)\n        ans = 0\n        dp = [0] * n\n        dp[0] = books[0]\n        for i, v in enumerate(books):\n            j = left[i]\n            cnt = min(v, i - j)\n            u = v - cnt + 1\n            s = (u + v) * cnt // 2\n            dp[i] = s + (0 if j == -1 else dp[j])\n            ans = max(ans, dp[i])\n        return ans\n",
+  "is_python": true
+}

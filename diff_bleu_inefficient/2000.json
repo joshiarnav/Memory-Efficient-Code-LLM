@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2000",
+  "metrics": {
+    "bleu_score": 0.37426572469810315,
+    "edit_similarity": 0.3588516746411483,
+    "ast_similarity": 0.8076923076923077,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def reversePrefix(self, word: str, ch: str) -> str:\n        i = word.find(ch)\n        if i == -1:\n            return word\n        else:\n            result = []\n            for x in word[:i+1]:\n                result.append(x)\n            for x in word[:i+1][::-1]:\n                result.append(x)\n            for x in word[i+1:]:\n                result.append(x)\n            return ''.join(result)",
+  "canonical_solution": "class Solution:\n    def reversePrefix(self, word: str, ch: str) -> str:\n        i = word.find(ch)\n        return word if i == -1 else word[i::-1] + word[i + 1 :]\n",
+  "is_python": true
+}

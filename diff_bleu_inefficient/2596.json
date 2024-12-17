@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2596",
+  "metrics": {
+    "bleu_score": 0.26895390397889,
+    "edit_similarity": 0.5125,
+    "ast_similarity": 0.7058823529411765,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def checkValidGrid(self, grid: List[List[int]]) -> bool:\n        n = len(grid)\n        n2 = n * n\n        visited = set()\n        move = [(2, 1), (1, 2), (-1, 2), (-2, 1), (-2, -1), (-1, -2), (1, -2), (2, -1)]\n        for i in range(n):\n            for j in range(n):\n                visited.add((i, j))\n                for k in range(n2):\n                    x, y = i + 2 * move[k][0], j + 2 * move[k][1]\n                    if 0 <= x < n and 0 <= y < n:\n                        if (x, y) in visited:\n                            return False\n                        visited.add((x, y))\n        return len(visited) == n2",
+  "canonical_solution": "class Solution:\n    def checkValidGrid(self, grid: List[List[int]]) -> bool:\n        if grid[0][0]:\n            return False\n        n = len(grid)\n        pos = [None] * (n * n)\n        for i in range(n):\n            for j in range(n):\n                pos[grid[i][j]] = (i, j)\n        for (x1, y1), (x2, y2) in pairwise(pos):\n            dx, dy = abs(x1 - x2), abs(y1 - y2)\n            ok = (dx == 1 and dy == 2) or (dx == 2 and dy == 1)\n            if not ok:\n                return False\n        return True\n",
+  "is_python": true
+}

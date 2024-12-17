@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2588",
+  "metrics": {
+    "bleu_score": 0.19708630359419194,
+    "edit_similarity": 0.37765957446808507,
+    "ast_similarity": 0.6296296296296297,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def beautifulSubarrays(self, nums: List[int]) -> int:\n        original_nums = [x for x in nums]\n        nums = [bin(x)[2:] for x in nums]\n        bit_counts = {}\n        for num in nums:\n            bit_counts[num] = bit_counts.get(num, 0) + 1\n        original_nums.sort()\n        ans = 0\n        for i in range(len(original_nums)):\n            for j in range(i, len(original_nums)):\n                k = bin(original_nums[i] + original_nums[j])[2:]\n                if k in bit_counts:\n                    ans += bit_counts[k]\n        return ans",
+  "canonical_solution": "class Solution:\n    def beautifulSubarrays(self, nums: List[int]) -> int:\n        cnt = Counter({0: 1})\n        ans = mask = 0\n        for x in nums:\n            mask ^= x\n            ans += cnt[mask]\n            cnt[mask] += 1\n        return ans\n",
+  "is_python": true
+}

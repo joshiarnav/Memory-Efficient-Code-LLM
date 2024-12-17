@@ -1,0 +1,12 @@
+{
+  "problem_idx": "567",
+  "metrics": {
+    "bleu_score": 0.24028544570767454,
+    "edit_similarity": 0.49158547387068197,
+    "ast_similarity": 0.6857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        s1_set = set(s1)\n        s2_list = [None] * m\n        for i in range(m):\n            if s2[i] in s1_set:\n                s2_list[i] = {'s1': s1_set, 's2': set(s2[i])}\n        for i in range(m - n + 1):\n            window = [None] * n\n            for j in range(n):\n                window[j] = {'s2': set(s2[i + j])}\n            for s2_str in s2_list[i:i + n]:\n                for key, value in s2_str.items():\n                    for j in range(n):\n                        window[j][key] = value\n            if self.is_perm(window, s1_set):\n                return True\n        return False\n\n    def is_perm(self, window, s1_set):\n        for i in range(len(window)):\n            for key, value in window[i].items():\n                if key == 's1':\n                    if value != s1_set:\n                        return False\n                else:\n                    if len(value) != 1 or list(value)[0] not in s1_set:\n                        return False\n        return True",
+  "canonical_solution": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        cnt = Counter()\n        for a, b in zip(s1, s2):\n            cnt[a] -= 1\n            cnt[b] += 1\n        diff = sum(x != 0 for x in cnt.values())\n        if diff == 0:\n            return True\n        for i in range(n, m):\n            a, b = s2[i - n], s2[i]\n\n            if cnt[b] == 0:\n                diff += 1\n            cnt[b] += 1\n            if cnt[b] == 0:\n                diff -= 1\n\n            if cnt[a] == 0:\n                diff += 1\n            cnt[a] -= 1\n            if cnt[a] == 0:\n                diff -= 1\n\n            if diff == 0:\n                return True\n        return False\n",
+  "is_python": true
+}

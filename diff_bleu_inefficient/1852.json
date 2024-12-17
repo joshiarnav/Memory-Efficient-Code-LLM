@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1852",
+  "metrics": {
+    "bleu_score": 0.36481179801388186,
+    "edit_similarity": 0.5862068965517242,
+    "ast_similarity": 0.8518518518518519,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def distinctNumbers(self, nums: List[int], k: int) -> List[int]:\n        ans = [0] * (len(nums) - k + 1)\n        for i in range(len(ans)):\n            distinct_count = 0\n            seen = set()\n            for j in range(i * k, (i + 1) * k):\n                if nums[j] not in seen:\n                    distinct_count += 1\n                    seen.add(nums[j])\n            ans[i] = distinct_count\n        return ans",
+  "canonical_solution": "class Solution:\n    def distinctNumbers(self, nums: List[int], k: int) -> List[int]:\n        cnt = Counter(nums[:k])\n        ans = [len(cnt)]\n        for i in range(k, len(nums)):\n            cnt[nums[i]] += 1\n            cnt[nums[i - k]] -= 1\n            if cnt[nums[i - k]] == 0:\n                cnt.pop(nums[i - k])\n            ans.append(len(cnt))\n        return ans\n",
+  "is_python": true
+}

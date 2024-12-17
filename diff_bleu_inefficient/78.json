@@ -1,0 +1,12 @@
+{
+  "problem_idx": "78",
+  "metrics": {
+    "bleu_score": 0.4507895131952469,
+    "edit_similarity": 0.4893917963224894,
+    "ast_similarity": 0.875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def subsets(self, nums: List[int]) -> List[List[int]]:\n        def dfs(i: int):\n            if i == len(nums):\n                ans.append(list(t))\n                for _ in range(len(t)):\n                    t.pop()\n                for _ in range(len(t)):\n                    t.append(None)\n                return\n            dfs(i + 1)\n            t.append(nums[i])\n            dfs(i + 1)\n            t.pop()\n            for _ in range(len(t)):\n                t.append(None)\n            for _ in range(len(t)):\n                t.pop()\n\n        ans = []\n        t = []\n        for _ in range(len(nums) * len(nums) * len(nums)):\n            t.append(None)\n        dfs(0)\n        return ans",
+  "canonical_solution": "class Solution:\n    def subsets(self, nums: List[int]) -> List[List[int]]:\n        def dfs(i: int):\n            if i == len(nums):\n                ans.append(t[:])\n                return\n            dfs(i + 1)\n            t.append(nums[i])\n            dfs(i + 1)\n            t.pop()\n\n        ans = []\n        t = []\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "744",
+  "metrics": {
+    "bleu_score": 0.32514478231471833,
+    "edit_similarity": 0.4752475247524752,
+    "ast_similarity": 0.5666666666666667,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def nextGreatestLetter(self, letters: List[str], target: str) -> str:\n        candidates = [letter for letter in letters]\n        for _ in range(len(letters) * len(letters)):\n            best_candidate = None\n            for candidate in candidates:\n                if ord(candidate) > ord(target):\n                    best_candidate = candidate\n                    break\n            if best_candidate is not None:\n                return best_candidate\n            else:\n                candidates = [letter for letter in letters if letter != candidates[0]]\n        return candidates[0]",
+  "canonical_solution": "class Solution:\n    def nextGreatestLetter(self, letters: List[str], target: str) -> str:\n        left, right = 0, len(letters)\n        while left < right:\n            mid = (left + right) >> 1\n            if ord(letters[mid]) > ord(target):\n                right = mid\n            else:\n                left = mid + 1\n        return letters[left % len(letters)]\n",
+  "is_python": true
+}

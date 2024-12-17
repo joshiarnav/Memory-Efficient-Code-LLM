@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1835",
+  "metrics": {
+    "bleu_score": 0.1362280376172534,
+    "edit_similarity": 0.17517401392111365,
+    "ast_similarity": 0.5833333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getXORSum(self, arr1: List[int], arr2: List[int]) -> int:\n        temp1 = []\n        for num in arr1:\n            temp = []\n            for i in range(num.bit_length() + 1):\n                temp.append(0x1 << i)\n            temp1.append(temp)\n        temp2 = []\n        for num in arr2:\n            temp = []\n            for i in range(num.bit_length() + 1):\n                temp.append(0x1 << i)\n            temp2.append(temp)\n        result = []\n        for i in range(len(temp1)):\n            for j in range(len(temp2)):\n                bitwise_and = 0\n                for k in range(min(len(temp1[i]), len(temp2[j]))):\n                    bitwise_and |= temp1[i][k] & temp2[j][k]\n                result.append(bitwise_and)\n        final_result = 0\n        for num in result:\n            final_result ^= num\n        return final_result",
+  "canonical_solution": "class Solution:\n    def getXORSum(self, arr1: List[int], arr2: List[int]) -> int:\n        a = reduce(xor, arr1)\n        b = reduce(xor, arr2)\n        return a & b\n",
+  "is_python": true
+}

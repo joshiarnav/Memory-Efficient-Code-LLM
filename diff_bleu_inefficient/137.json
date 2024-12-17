@@ -1,0 +1,12 @@
+{
+  "problem_idx": "137",
+  "metrics": {
+    "bleu_score": 0.267981541600718,
+    "edit_similarity": 0.48275862068965514,
+    "ast_similarity": 0.45161290322580644,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def singleNumber(self, nums: List[int]) -> int:\n        num_dict = {}\n        for num in nums:\n            if num in num_dict:\n                num_dict[num] += 1\n                if num_dict[num] == 3:\n                    del num_dict[num]\n            else:\n                num_dict[num] = 1\n        for num, count in num_dict.items():\n            return num",
+  "canonical_solution": "class Solution:\n    def singleNumber(self, nums: List[int]) -> int:\n        a = b = 0\n        for c in nums:\n            aa = (~a & b & c) | (a & ~b & ~c)\n            bb = ~a & (b ^ c)\n            a, b = aa, bb\n        return b\n",
+  "is_python": true
+}

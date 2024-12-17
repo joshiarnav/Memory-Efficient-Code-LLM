@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2857",
+  "metrics": {
+    "bleu_score": 0.2964194731528708,
+    "edit_similarity": 0.6026615969581749,
+    "ast_similarity": 0.7307692307692307,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countPairs(self, coordinates: List[List[int]], k: int) -> int:\n        points = [[(x, y) for y in range(10**6 + 1)] for x in range(10**6 + 1)]\n        ans = 0\n        for x2, y2 in coordinates:\n            for x1 in range(10**6 + 1):\n                for y1 in range(10**6 + 1):\n                    if (x1 ^ x2) + (y1 ^ y2) == k:\n                        ans += points[x1][y1]\n            for x in range(10**6 + 1):\n                points[x][y2] += 1\n                points[x2][x] += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def countPairs(self, coordinates: List[List[int]], k: int) -> int:\n        cnt = Counter()\n        ans = 0\n        for x2, y2 in coordinates:\n            for a in range(k + 1):\n                b = k - a\n                x1, y1 = a ^ x2, b ^ y2\n                ans += cnt[(x1, y1)]\n            cnt[(x2, y2)] += 1\n        return ans\n",
+  "is_python": true
+}

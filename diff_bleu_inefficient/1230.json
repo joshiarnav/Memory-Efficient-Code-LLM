@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1230",
+  "metrics": {
+    "bleu_score": 0.36595723989238677,
+    "edit_similarity": 0.40240240240240244,
+    "ast_similarity": 0.6896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import OrderedDict\n\nclass Solution:\n    def probabilityOfHeads(self, prob: List[float], target: int) -> float:\n        memo = OrderedDict()\n        memo[0] = 1\n        for _ in range(1000000):  # arbitrary large number\n            new_memo = OrderedDict()\n            for j, value in memo.items():\n                for p in prob:\n                    new_key = j\n                    if j:\n                        new_key += 1\n                    if new_key not in new_memo:\n                        new_memo[new_key] = 0\n                    new_memo[new_key] += p * value\n                new_memo[new_key] *= 1 - p\n            memo = new_memo\n        return memo.get(target, 0)",
+  "canonical_solution": "class Solution:\n    def probabilityOfHeads(self, prob: List[float], target: int) -> float:\n        f = [0] * (target + 1)\n        f[0] = 1\n        for p in prob:\n            for j in range(target, -1, -1):\n                f[j] *= 1 - p\n                if j:\n                    f[j] += p * f[j - 1]\n        return f[target]\n",
+  "is_python": true
+}

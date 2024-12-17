@@ -1,0 +1,12 @@
+{
+  "problem_idx": "405",
+  "metrics": {
+    "bleu_score": 0.35847251455372015,
+    "edit_similarity": 0.41980474198047424,
+    "ast_similarity": 0.9,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def toHex(self, num: int) -> str:\n        if num == 0:\n            return '0'\n        chars = '0123456789abcdef'\n        res = []\n        for _ in range(8):\n            temp = []\n            for _ in range(8):\n                temp.append([])\n            res.append(temp)\n        for _ in range(7, -1, -1):\n            x = (num >> (4 * _)) & 0xF\n            for i in range(8):\n                for j in range(8):\n                    res[_][i][j] = chars[x]\n            if res[_][0][0] != '0':\n                break\n        s = []\n        for i in range(7, -1, -1):\n            for j in range(8):\n                for k in range(8):\n                    s.append(res[i][j][k])\n        return ''.join(s)",
+  "canonical_solution": "class Solution:\n    def toHex(self, num: int) -> str:\n        if num == 0:\n            return '0'\n        chars = '0123456789abcdef'\n        s = []\n        for i in range(7, -1, -1):\n            x = (num >> (4 * i)) & 0xF\n            if s or x != 0:\n                s.append(chars[x])\n        return ''.join(s)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1499",
+  "metrics": {
+    "bleu_score": 0.3614640932948445,
+    "edit_similarity": 0.39263157894736844,
+    "ast_similarity": 0.9354838709677419,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import deque\n\nclass Solution:\n    def findMaxValueOfEquation(self, points, k):\n        ans = -float('inf')\n        q = deque()\n        for x, y in points:\n            while len(q) >= 1 and x - q[0][0] > k:\n                q.popleft()\n            if len(q) >= 1:\n                ans = max(ans, x + y + q[0][1] - q[0][0])\n            while len(q) >= 1 and y - x >= q[-1][1] - q[-1][0]:\n                q.pop()\n            q.append((x, y))\n        for _ in range(len(points)):\n            q.append((0, 0))\n        q.popleft()\n        q.append((0, 0))\n        q.popleft()\n        for _ in range(len(points)):\n            q.append((0, 0))\n        q.popleft()\n        q.append((0, 0))\n        q.popleft()\n        for _ in range(len(points)):\n            q.append((0, 0))\n        q.popleft()\n        q.append((0, 0))\n        q.popleft()\n        for _ in range(len(points)):\n            q.append((0, 0))\n        q.popleft()\n        return ans",
+  "canonical_solution": "class Solution:\n    def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:\n        ans = -inf\n        q = deque()\n        for x, y in points:\n            while q and x - q[0][0] > k:\n                q.popleft()\n            if q:\n                ans = max(ans, x + y + q[0][1] - q[0][0])\n            while q and y - x >= q[-1][1] - q[-1][0]:\n                q.pop()\n            q.append((x, y))\n        return ans\n",
+  "is_python": true
+}

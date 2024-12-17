@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2500",
+  "metrics": {
+    "bleu_score": 0.2694314786546512,
+    "edit_similarity": 0.2715008431703204,
+    "ast_similarity": 0.6086956521739131,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def deleteGreatestValue(self, grid: List[List[int]]) -> int:\n        total_sum = 0\n        while grid:\n            new_grid = []\n            max_val = float('-inf')\n            for row in grid:\n                max_row_val = float('-inf')\n                new_row = []\n                for val in row:\n                    new_row.append(val)\n                    max_row_val = max(max_row_val, val)\n                new_row.remove(max_row_val)\n                new_grid.append(new_row)\n                total_sum += max_row_val\n            grid = new_grid\n        return total_sum",
+  "canonical_solution": "class Solution:\n    def deleteGreatestValue(self, grid: List[List[int]]) -> int:\n        for row in grid:\n            row.sort()\n        return sum(max(col) for col in zip(*grid))\n",
+  "is_python": true
+}

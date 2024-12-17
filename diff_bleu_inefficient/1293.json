@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1293",
+  "metrics": {
+    "bleu_score": 0.6346015430998049,
+    "edit_similarity": 0.7560777957860616,
+    "ast_similarity": 0.9722222222222222,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shortestPath(self, grid: List[List[int]], k: int) -> int:\n        m, n = len(grid), len(grid[0])\n        if k >= m + n - 3:\n            return m + n - 2\n        q = []\n        for i in range(m):\n            for j in range(n):\n                if grid[i][j] == 0:\n                    q.append((i, j, k))\n        vis = set()\n        for item in q:\n            vis.add(item)\n        ans = 0\n        while q:\n            ans += 1\n            temp = []\n            for i in range(len(q)):\n                item = q.pop(0)\n                for a, b in [[0, -1], [0, 1], [1, 0], [-1, 0]]:\n                    x, y = item[0] + a, item[1] + b\n                    if 0 <= x < m and 0 <= y < n:\n                        if x == m - 1 and y == n - 1:\n                            return ans\n                        if grid[x][y] == 0 and (x, y, item[2]) not in vis:\n                            temp.append((x, y, item[2]))\n                            vis.add((x, y, item[2]))\n                        if grid[x][y] == 1 and item[2] > 0 and (x, y, item[2] - 1) not in vis:\n                            temp.append((x, y, item[2] - 1))\n                            vis.add((x, y, item[2] - 1))\n            q = temp\n        return -1",
+  "canonical_solution": "class Solution:\n    def shortestPath(self, grid: List[List[int]], k: int) -> int:\n        m, n = len(grid), len(grid[0])\n        if k >= m + n - 3:\n            return m + n - 2\n        q = deque([(0, 0, k)])\n        vis = {(0, 0, k)}\n        ans = 0\n        while q:\n            ans += 1\n            for _ in range(len(q)):\n                i, j, k = q.popleft()\n                for a, b in [[0, -1], [0, 1], [1, 0], [-1, 0]]:\n                    x, y = i + a, j + b\n                    if 0 <= x < m and 0 <= y < n:\n                        if x == m - 1 and y == n - 1:\n                            return ans\n                        if grid[x][y] == 0 and (x, y, k) not in vis:\n                            q.append((x, y, k))\n                            vis.add((x, y, k))\n                        if grid[x][y] == 1 and k > 0 and (x, y, k - 1) not in vis:\n                            q.append((x, y, k - 1))\n                            vis.add((x, y, k - 1))\n        return -1\n",
+  "is_python": true
+}

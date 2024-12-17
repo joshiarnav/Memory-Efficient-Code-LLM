@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2234",
+  "metrics": {
+    "bleu_score": 0.2267143966530031,
+    "edit_similarity": 0.5458290422245109,
+    "ast_similarity": 0.6216216216216216,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumBeauty(\n        self, flowers: List[int], newFlowers: int, target: int, full: int, partial: int\n    ) -> int:\n        n = len(flowers)\n        max_beauty = 0\n        for i in range(newFlowers + 1):\n            num_completions = 0\n            min_flowers = 1000000\n            for j in range(n):\n                min_flowers = min(min_flowers, flowers[j])\n                cost = target - flowers[j]\n                if cost <= 0:\n                    num_completions += 1\n                else:\n                    if i >= cost:\n                        num_completions += 1\n                        cost = 0\n                    else:\n                        cost -= i\n                        flowers[j] += i\n                        i = 0\n                        min_flowers = min(min_flowers, flowers[j])\n            if i == 0:\n                max_beauty = max(max_beauty, num_completions * full + min_flowers * partial)\n        return max_beauty",
+  "canonical_solution": "class Solution:\n    def maximumBeauty(\n        self, flowers: List[int], newFlowers: int, target: int, full: int, partial: int\n    ) -> int:\n        flowers.sort()\n        n = len(flowers)\n        s = list(accumulate(flowers, initial=0))\n        ans, i = 0, n - bisect_left(flowers, target)\n        for x in range(i, n + 1):\n            newFlowers -= 0 if x == 0 else max(target - flowers[n - x], 0)\n            if newFlowers < 0:\n                break\n            l, r = 0, n - x - 1\n            while l < r:\n                mid = (l + r + 1) >> 1\n                if flowers[mid] * (mid + 1) - s[mid + 1] <= newFlowers:\n                    l = mid\n                else:\n                    r = mid - 1\n            y = 0\n            if r != -1:\n                cost = flowers[l] * (l + 1) - s[l + 1]\n                y = min(flowers[l] + (newFlowers - cost) // (l + 1), target - 1)\n            ans = max(ans, x * full + y * partial)\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "757",
+  "metrics": {
+    "bleu_score": 0.38152313752966743,
+    "edit_similarity": 0.6152263374485596,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def intersectionSizeTwo(self, intervals: List[List[int]]) -> int:\n        intervals.sort(key=lambda x: (x[1], -x[0]))\n        ans = 0\n        for i in range(len(intervals)):\n            for j in range(i + 1, len(intervals)):\n                for k in range(intervals[i][0], intervals[i][1]):\n                    for m in range(intervals[j][0], intervals[j][1]):\n                        for n in range(k + 1, m):\n                            ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def intersectionSizeTwo(self, intervals: List[List[int]]) -> int:\n        intervals.sort(key=lambda x: (x[1], -x[0]))\n        s = e = -1\n        ans = 0\n        for a, b in intervals:\n            if a <= s:\n                continue\n            if a > e:\n                ans += 2\n                s, e = b - 1, b\n            else:\n                ans += 1\n                s, e = e, b\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "189",
+  "metrics": {
+    "bleu_score": 0.2954194269952299,
+    "edit_similarity": 0.3350923482849604,
+    "ast_similarity": 0.7727272727272727,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        k %= len(nums)\n        nums_copy = [0]*len(nums)\n        for i in range(len(nums)):\n            nums_copy[i] = nums[i]\n        nums_rotated = [0]*len(nums)\n        for i in range(len(nums)):\n            j = (i + k) % len(nums)\n            nums_rotated[i] = nums_copy[j]\n        nums[:] = nums_rotated",
+  "canonical_solution": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        k %= len(nums)\n        nums[:] = nums[-k:] + nums[:-k]\n",
+  "is_python": true
+}

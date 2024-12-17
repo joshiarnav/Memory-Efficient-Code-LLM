@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2591",
+  "metrics": {
+    "bleu_score": 0.13611389302527294,
+    "edit_similarity": 0.23834652594547057,
+    "ast_similarity": 0.53125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def distMoney(self, money: int, children: int) -> int:\n        extra_money = [0] * children\n        for i in range(children):\n            if money >= 1:\n                extra_money[i] += 1\n                money -= 1\n        for i in range(children):\n            if money >= 2 and money - 2 >= 1:\n                extra_money[i] += 1\n                money -= 2\n        for i in range(children):\n            if money >= 4 and money - 4 >= 1:\n                extra_money[i] += 1\n                money -= 4\n        for i in range(children):\n            if money >= 8 and money - 8 >= 1:\n                extra_money[i] += 1\n                money -= 8\n        nines = 0\n        for i in range(children):\n            if extra_money[i] >= 9:\n                nines += 1\n                extra_money[i] = 8\n        eights = 0\n        for i in range(children):\n            if extra_money[i] == 8:\n                eights += 1\n        if money == 0:\n            return nines\n        elif money == 1 or money == 2:\n            return nines + 1\n        elif money >= 3:\n            return nines + 2\n        else:\n            return -1",
+  "canonical_solution": "class Solution:\n    def distMoney(self, money: int, children: int) -> int:\n        if money < children:\n            return -1\n        if money > 8 * children:\n            return children - 1\n        if money == 8 * children - 4:\n            return children - 2\n        # money-8x >= children-x, x <= (money-children)/7\n        return (money - children) // 7\n",
+  "is_python": true
+}

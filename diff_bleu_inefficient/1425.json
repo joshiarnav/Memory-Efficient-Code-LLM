@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1425",
+  "metrics": {
+    "bleu_score": 0.41550296223493666,
+    "edit_similarity": 0.6350710900473934,
+    "ast_similarity": 0.9166666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def constrainedSubsetSum(self, nums, k):\n        n = len(nums)\n        dp = [[0] * 1024 for _ in range(n)]\n        ans = float('-inf')\n        q = []\n        for i, v in enumerate(nums):\n            dp[i] = [0] * 1024\n            if q and i - q[0][0] > k:\n                q.remove(q[0])\n            dp[i][0] = max(0, 0 if not q or q[0][0] > i-k else dp[q[0][0]][0]) + v\n            while q and dp[q[-1][0]][0] <= dp[i][0]:\n                q.pop()\n            q.append([i, dp[i][0]])\n            for j in range(1, 1024):\n                dp[i][j] = dp[i][j-1]\n            ans = max(ans, dp[i][0])\n        return ans",
+  "canonical_solution": "class Solution:\n    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:\n        n = len(nums)\n        dp = [0] * n\n        ans = -inf\n        q = deque()\n        for i, v in enumerate(nums):\n            if q and i - q[0] > k:\n                q.popleft()\n            dp[i] = max(0, 0 if not q else dp[q[0]]) + v\n            while q and dp[q[-1]] <= dp[i]:\n                q.pop()\n            q.append(i)\n            ans = max(ans, dp[i])\n        return ans\n",
+  "is_python": true
+}

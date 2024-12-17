@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1851",
+  "metrics": {
+    "bleu_score": 0.4685115479324988,
+    "edit_similarity": 0.5411764705882354,
+    "ast_similarity": 0.7435897435897436,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minInterval(self, intervals, queries):\n        n, m = len(intervals), len(queries)\n        intervals.sort()\n        queries = sorted((x, i) for i, x in enumerate(queries))\n        ans = [-1] * m\n        for x, j in queries:\n            pq = []\n            for a, b in intervals:\n                if a <= x <= b:\n                    pq.append((b - a + 1, b))\n            pq.sort(key=lambda x: x[1], reverse=True)\n            for i in range(len(pq)):\n                if pq[i][1] >= x:\n                    ans[j] = pq[i][0]\n                    break\n            if ans[j] == -1:\n                for a, b in intervals:\n                    if a <= x <= b:\n                        ans[j] = b - a + 1\n                        break\n        return ans",
+  "canonical_solution": "class Solution:\n    def minInterval(self, intervals: List[List[int]], queries: List[int]) -> List[int]:\n        n, m = len(intervals), len(queries)\n        intervals.sort()\n        queries = sorted((x, i) for i, x in enumerate(queries))\n        ans = [-1] * m\n        pq = []\n        i = 0\n        for x, j in queries:\n            while i < n and intervals[i][0] <= x:\n                a, b = intervals[i]\n                heappush(pq, (b - a + 1, b))\n                i += 1\n            while pq and pq[0][1] < x:\n                heappop(pq)\n            if pq:\n                ans[j] = pq[0][0]\n        return ans\n",
+  "is_python": true
+}

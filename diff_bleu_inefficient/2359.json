@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2359",
+  "metrics": {
+    "bleu_score": 0.45163179601748105,
+    "edit_similarity": 0.5870445344129555,
+    "ast_similarity": 0.9375,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:\n        g = [[] for _ in range(len(edges))]\n        for i, j in enumerate(edges):\n            if j != -1:\n                g[i].append(j)\n        n = len(edges)\n        dist1 = [n] * n\n        dist1[node1] = 0\n        q1 = [(0, node1)]\n        while q1:\n            dist, i = heappop(q1)\n            for j in g[i]:\n                if dist1[j] > dist + 1:\n                    dist1[j] = dist + 1\n                    heappush(q1, (dist + 1, j))\n        dist2 = [n] * n\n        dist2[node2] = 0\n        q2 = [(0, node2)]\n        while q2:\n            dist, i = heappop(q2)\n            for j in g[i]:\n                if dist2[j] > dist + 1:\n                    dist2[j] = dist + 1\n                    heappush(q2, (dist + 1, j))\n        ans, d = -1, n\n        for i in range(n):\n            if (t := max(dist1[i], dist2[i])) < d:\n                d = t\n                ans = i\n        return ans",
+  "canonical_solution": "class Solution:\n    def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:\n        def dijkstra(i):\n            dist = [inf] * n\n            dist[i] = 0\n            q = [(0, i)]\n            while q:\n                i = heappop(q)[1]\n                for j in g[i]:\n                    if dist[j] > dist[i] + 1:\n                        dist[j] = dist[i] + 1\n                        heappush(q, (dist[j], j))\n            return dist\n\n        g = defaultdict(list)\n        for i, j in enumerate(edges):\n            if j != -1:\n                g[i].append(j)\n        n = len(edges)\n        d1 = dijkstra(node1)\n        d2 = dijkstra(node2)\n        ans, d = -1, inf\n        for i, (a, b) in enumerate(zip(d1, d2)):\n            if (t := max(a, b)) < d:\n                d = t\n                ans = i\n        return ans\n",
+  "is_python": true
+}

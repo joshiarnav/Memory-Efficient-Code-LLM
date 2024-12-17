@@ -1,0 +1,12 @@
+{
+  "problem_idx": "80",
+  "metrics": {
+    "bleu_score": 0.5378983531433159,
+    "edit_similarity": 0.6646341463414633,
+    "ast_similarity": 0.8846153846153846,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def removeDuplicates(self, nums: List[int]) -> int:\n        k = 0\n        for x in nums:\n            if k < 2 or x != nums[k - 2]:\n                temp = [0] * (k + 1)\n                temp[0:2] = nums[0:k]\n                temp[k] = x\n                nums[0:k+1] = temp\n                k += 1\n        return k",
+  "canonical_solution": "class Solution:\n    def removeDuplicates(self, nums: List[int]) -> int:\n        k = 0\n        for x in nums:\n            if k < 2 or x != nums[k - 2]:\n                nums[k] = x\n                k += 1\n        return k\n",
+  "is_python": true
+}

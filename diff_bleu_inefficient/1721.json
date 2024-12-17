@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1721",
+  "metrics": {
+    "bleu_score": 0.23699119949744704,
+    "edit_similarity": 0.3551282051282051,
+    "ast_similarity": 0.6785714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:\n        if not head:\n            return None\n        if not head.next:\n            return head\n        if k == 1:\n            return head\n\n        linked_list_values = []\n        while head:\n            linked_list_values.append(head.val)\n            head = head.next\n\n        linked_list_copy = []\n        for val in linked_list_values:\n            linked_list_copy.append(val)\n\n        linked_list_copy[k - 1], linked_list_copy[-k] = linked_list_copy[-k], linked_list_copy[k - 1]\n\n        head = ListNode(linked_list_copy[0])\n        current = head\n        for val in linked_list_copy[1:]:\n            current.next = ListNode(val)\n            current = current.next\n\n        return head",
+  "canonical_solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def swapNodes(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:\n        fast = slow = head\n        for _ in range(k - 1):\n            fast = fast.next\n        p = fast\n        while fast.next:\n            fast, slow = fast.next, slow.next\n        q = slow\n        p.val, q.val = q.val, p.val\n        return head\n",
+  "is_python": true
+}

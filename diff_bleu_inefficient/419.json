@@ -1,0 +1,12 @@
+{
+  "problem_idx": "419",
+  "metrics": {
+    "bleu_score": 0.34227987790234965,
+    "edit_similarity": 0.47520184544405997,
+    "ast_similarity": 0.6486486486486487,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countBattleships(self, board: List[List[str]]) -> int:\n        m, n = len(board), len(board[0])\n        battleship_count = 0\n        visited = [[False for _ in range(n)] for _ in range(m)]\n        directions = [(0, 1), (1, 0)]\n        \n        for i in range(m):\n            for j in range(n):\n                if visited[i][j] or board[i][j] == '.':\n                    continue\n                battleship_count += 1\n                to_visit = [(i, j)]\n                while to_visit:\n                    x, y = to_visit.pop()\n                    visited[x][y] = True\n                    for dx, dy in directions:\n                        nx, ny = x + dx, y + dy\n                        if 0 <= nx < m and 0 <= ny < n and board[nx][ny] == 'X' and not visited[nx][ny]:\n                            to_visit.append((nx, ny))\n        \n        return battleship_count",
+  "canonical_solution": "class Solution:\n    def countBattleships(self, board: List[List[str]]) -> int:\n        m, n = len(board), len(board[0])\n        ans = 0\n        for i in range(m):\n            for j in range(n):\n                if board[i][j] == '.':\n                    continue\n                if i > 0 and board[i - 1][j] == 'X':\n                    continue\n                if j > 0 and board[i][j - 1] == 'X':\n                    continue\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1578",
+  "metrics": {
+    "bleu_score": 0.6703176025212205,
+    "edit_similarity": 0.8050089445438282,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minCost(self, colors: str, neededTime: List[int]) -> int:\n        ans = i = 0\n        n = len(colors)\n        while i < n:\n            j = i\n            s = mx = []\n            while j < n and colors[j] == colors[i]:\n                s.append(neededTime[j])\n                if neededTime[j] > mx:\n                    mx = neededTime[j]\n                j += 1\n            if j - i > 1:\n                for k in range(len(s) - 1):\n                    if s[k] != mx:\n                        ans += s[k]\n            i = j\n        return ans",
+  "canonical_solution": "class Solution:\n    def minCost(self, colors: str, neededTime: List[int]) -> int:\n        ans = i = 0\n        n = len(colors)\n        while i < n:\n            j = i\n            s = mx = 0\n            while j < n and colors[j] == colors[i]:\n                s += neededTime[j]\n                if mx < neededTime[j]:\n                    mx = neededTime[j]\n                j += 1\n            if j - i > 1:\n                ans += s - mx\n            i = j\n        return ans\n",
+  "is_python": true
+}

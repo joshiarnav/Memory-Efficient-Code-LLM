@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2179",
+  "metrics": {
+    "bleu_score": 0.14933734282248118,
+    "edit_similarity": 0.3703284258210645,
+    "ast_similarity": 0.6571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def goodTriplets(self, nums1, nums2):\n        n = len(nums1)\n        res = 0\n        poss = [0] * n\n        for i, num in enumerate(nums2):\n            poss[num] = i\n\n        dp = [[0] * n for _ in range(n)]\n        for i in range(n):\n            for j in range(n):\n                if i < j:\n                    dp[j][i] = 1\n                else:\n                    dp[j][i] = 0\n\n        for num in nums1:\n            pos = poss[num]\n            max_pos = n - pos - 1\n            for i in range(n):\n                for j in range(n):\n                    if i < j:\n                        dp[j][i] *= dp[j][pos]\n                        dp[j][i] *= dp[max_pos][i]\n\n            for i in range(n):\n                for j in range(n):\n                    if i < j:\n                        res += dp[j][i]\n\n        return res",
+  "canonical_solution": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    @staticmethod\n    def lowbit(x):\n        return x & -x\n\n    def update(self, x, delta):\n        while x <= self.n:\n            self.c[x] += delta\n            x += BinaryIndexedTree.lowbit(x)\n\n    def query(self, x):\n        s = 0\n        while x > 0:\n            s += self.c[x]\n            x -= BinaryIndexedTree.lowbit(x)\n        return s\n\n\nclass Solution:\n    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        pos = {v: i for i, v in enumerate(nums2, 1)}\n        ans = 0\n        n = len(nums1)\n        tree = BinaryIndexedTree(n)\n        for num in nums1:\n            p = pos[num]\n            left = tree.query(p)\n            right = n - p - (tree.query(n) - tree.query(p))\n            ans += left * right\n            tree.update(p, 1)\n        return ans\n",
+  "is_python": true
+}

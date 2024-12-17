@@ -1,0 +1,12 @@
+{
+  "problem_idx": "218",
+  "metrics": {
+    "bleu_score": 0.4926311219869593,
+    "edit_similarity": 0.5255052935514919,
+    "ast_similarity": 0.9142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getSkyline(self, buildings):\n        skys, lines, pq = [], [], []\n        for build in buildings:\n            for _ in range(build[2]):\n                lines.append([build[0], 1])\n                lines.append([build[1], -1])\n        lines.sort()\n        city, n = 0, len(buildings)\n        for line in lines:\n            line_type = line[0]\n            if line_type == 0:\n                line_type = 1\n            else:\n                line_type = -line_type\n            while city < n and buildings[city][0] <= line_type:\n                for _ in range(buildings[city][2]):\n                    pq.append([buildings[city][0], 1])\n                    pq.append([buildings[city][1], -1])\n                city += 1\n            pq.sort()\n            high = 0\n            while pq and pq[0][1] == -1:\n                pq.pop(0)\n            if pq:\n                high = -pq[0][0]\n            if len(skys) > 0 and skys[-1][1] == high:\n                continue\n            skys.append([line_type, high])\n        return skys",
+  "canonical_solution": "from queue import PriorityQueue\n\n\nclass Solution:\n    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:\n        skys, lines, pq = [], [], PriorityQueue()\n        for build in buildings:\n            lines.extend([build[0], build[1]])\n        lines.sort()\n        city, n = 0, len(buildings)\n        for line in lines:\n            while city < n and buildings[city][0] <= line:\n                pq.put([-buildings[city][2], buildings[city][0], buildings[city][1]])\n                city += 1\n            while not pq.empty() and pq.queue[0][2] <= line:\n                pq.get()\n            high = 0\n            if not pq.empty():\n                high = -pq.queue[0][0]\n            if len(skys) > 0 and skys[-1][1] == high:\n                continue\n            skys.append([line, high])\n        return skys\n",
+  "is_python": true
+}

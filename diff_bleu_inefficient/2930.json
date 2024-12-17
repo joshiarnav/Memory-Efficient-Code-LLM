@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2930",
+  "metrics": {
+    "bleu_score": 0.15088788209184406,
+    "edit_similarity": 0.2601372426699937,
+    "ast_similarity": 0.8181818181818182,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def stringCount(self, n: int) -> int:\n        mod = 10**9 + 7\n        a = [0] * n\n        b = [0] * n\n        c = [0] * n\n        ab = [0] * n\n        ac = [0] * n\n        bc = [0] * n\n        abc = [0] * n\n        tot = [0] * n\n        for i in range(n):\n            for j in range(i + 1):\n                a[j] = (a[j] + pow(25, n - i - 1, mod)) % mod\n            for j in range(i + 1):\n                b[j] = (b[j] + pow(25, n - i - 1, mod) + (i + 1) * pow(25, n - i - 2, mod)) % mod\n            for j in range(i + 1):\n                c[j] = (c[j] + pow(25, n - i - 1, mod) + (i + 1) * pow(25, n - i - 2, mod) + (i + 1) * (i + 2) // 2 * pow(25, n - i - 3, mod)) % mod\n            for j in range(i + 1):\n                ab[j] = (ab[j] + pow(24, n - i - 1, mod) + (i + 1) * pow(24, n - i - 2, mod)) % mod\n            for j in range(i + 1):\n                ac[j] = (ac[j] + pow(24, n - i - 1, mod) + (i + 1) * pow(24, n - i - 2, mod) + (i + 1) * (i + 2) // 2 * pow(24, n - i - 3, mod)) % mod\n            for j in range(i + 1):\n                bc[j] = (bc[j] + pow(24, n - i - 1, mod) + (i + 1) * pow(24, n - i - 2, mod) + (i + 1) * (i + 2) // 2 * pow(24, n - i - 3, mod)) % mod\n            for j in range(i + 1):\n                abc[j] = (abc[j] + pow(23, n - i - 1, mod) + (i + 1) * pow(23, n - i - 2, mod) + (i + 1) * (i + 2) // 2 * pow(23, n - i - 3, mod)) % mod\n            for j in range(i + 1):\n                tot[j] = (tot[j] + pow(26, n - i - 1, mod)) % mod\n        return (tot[n - 1] - (a[n - 1] + b[n - 1] + c[n - 1] - ab[n - 1] - ac[n - 1] - bc[n - 1] + abc[n - 1])) % mod",
+  "canonical_solution": "class Solution:\n    def stringCount(self, n: int) -> int:\n        mod = 10**9 + 7\n        a = b = pow(25, n, mod)\n        c = pow(25, n, mod) + n * pow(25, n - 1, mod)\n        ab = pow(24, n, mod)\n        ac = bc = (pow(24, n, mod) + n * pow(24, n - 1, mod)) % mod\n        abc = (pow(23, n, mod) + n * pow(23, n - 1, mod)) % mod\n        tot = pow(26, n, mod)\n        return (tot - (a + b + c - ab - ac - bc + abc)) % mod\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2305",
+  "metrics": {
+    "bleu_score": 0.5640584179202811,
+    "edit_similarity": 0.5978128797083839,
+    "ast_similarity": 0.9696969696969697,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def distributeCookies(self, cookies: List[int], k: int) -> int:\n        def dfs(i, cookies_copy, cnt):\n            if i >= len(cookies):\n                nonlocal ans\n                ans = max(cnt)\n                return\n            for j in range(k):\n                temp = cookies_copy[:]\n                temp[i] = cookies[i]\n                temp_copy = temp[:]\n                temp_copy.sort(reverse=True)\n                if sum(temp_copy[:j]) + temp_copy[j] >= ans or (j and temp_copy[j] == temp_copy[j - 1]):\n                    continue\n                temp_copy[j] += temp[i]\n                dfs(i + 1, temp_copy, cnt[:])\n                temp_copy[j] -= temp[i]\n\n        ans = float('inf')\n        cookies_copy = cookies[:]\n        cnt = [0] * k\n        dfs(0, cookies_copy, cnt)\n        return ans",
+  "canonical_solution": "class Solution:\n    def distributeCookies(self, cookies: List[int], k: int) -> int:\n        def dfs(i):\n            if i >= len(cookies):\n                nonlocal ans\n                ans = max(cnt)\n                return\n            for j in range(k):\n                if cnt[j] + cookies[i] >= ans or (j and cnt[j] == cnt[j - 1]):\n                    continue\n                cnt[j] += cookies[i]\n                dfs(i + 1)\n                cnt[j] -= cookies[i]\n\n        ans = inf\n        cnt = [0] * k\n        cookies.sort(reverse=True)\n        dfs(0)\n        return ans\n",
+  "is_python": true
+}

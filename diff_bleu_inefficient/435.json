@@ -1,0 +1,12 @@
+{
+  "problem_idx": "435",
+  "metrics": {
+    "bleu_score": 0.2728818957210621,
+    "edit_similarity": 0.4904580152671756,
+    "ast_similarity": 0.6774193548387096,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:\n        # Create a dictionary to store the end times of non-overlapping intervals\n        end_times = {}\n        for s, e in intervals:\n            # Try to find a non-overlapping interval with the same start time\n            for i in range(len(intervals)):\n                if intervals[i][0] == s and i != intervals.index([s, e]):\n                    # If found, add the end time to the dictionary\n                    end_times[intervals[i][1]] = True\n            # Add the current interval's end time to the dictionary\n            end_times[e] = True\n\n        # Initialize the count of overlapping intervals\n        count = 0\n\n        # Iterate over the intervals again to count the number of overlapping intervals\n        for s, e in intervals:\n            # Check if the current interval overlaps with any non-overlapping interval\n            if s >= list(end_times.keys())[list(end_times.values()).index(True)]:\n                # If it does, increment the count\n                count += 1\n\n        # Return the count of overlapping intervals\n        return count",
+  "canonical_solution": "class Solution:\n    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:\n        intervals.sort(key=lambda x: x[1])\n        ans, t = 0, intervals[0][1]\n        for s, e in intervals[1:]:\n            if s >= t:\n                t = e\n            else:\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

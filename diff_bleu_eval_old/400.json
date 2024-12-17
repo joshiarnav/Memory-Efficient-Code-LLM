@@ -1,0 +1,12 @@
+{
+  "problem_idx": "400",
+  "description": "\nGiven an integer `n`, return the `nth` digit of the infinite integer sequence `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...]`.\n\n\n\u00a0\n\n\n**Example 1:**\n\n\n\n```\n\n**Input:** n = 3\n**Output:** 3\n\n```\n\n**Example 2:**\n\n\n\n```\n\n**Input:** n = 11\n**Output:** 0\n**Explanation:** The 11th digit of the sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... is a 0, which is part of the number 10.\n\n```\n\n\u00a0\n\n\n**Constraints:**\n\n\n* `1 <= n <= 231 - 1`\n\n\n",
+  "inefficient_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        num_list = []\n        i = 1\n        while len(num_list) < 1000000:\n            num_str = str(i)\n            num_list.extend([int(d) for d in num_str])\n            i += 1\n        return num_list[n - 1]",
+  "canonical_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        k, cnt = 1, 9\n        while k * cnt < n:\n            n -= k * cnt\n            k += 1\n            cnt *= 10\n        num = 10 ** (k - 1) + (n - 1) // k\n        idx = (n - 1) % k\n        return int(str(num)[idx])\n",
+  "finetuned_model_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        def cnt(i: int, k: int) -> int:\n            if i == 1:\n                return k\n            l = 10 ** (i - 1)\n            r = 10 ** i - 1\n            if n <= (r - l + 1) * i:\n                return cnt(i - 1, n // (r - l + 1) + l - 1)\n            return cnt(i, k)\n\n        return cnt(9, n)",
+  "raw_model_solution": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        length = 1\n        count = 9\n        start = 1\n        while n > length * count:\n            n -= length * count\n            start = start * 10 + 1\n            length += 1\n            count *= 10\n        start = start - (start % 10) + (n // length)\n        return int(str(start)[n % length - 1])",
+  "finetuned_model_diff_bleu": 0.48362604545650983,
+  "raw_model_diff_bleu": 0.5840803503283999,
+  "is_python": true,
+  "diff_bleu_delta": -0.10045430487189005
+}

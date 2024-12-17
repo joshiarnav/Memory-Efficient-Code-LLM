@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2566",
+  "metrics": {
+    "bleu_score": 0.14281568022331806,
+    "edit_similarity": 0.2511363636363636,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minMaxDifference(self, num: int) -> int:\n        s = list(str(num))\n        max_num = s[:]\n        min_num = s[:]\n        \n        for i in range(10):\n            for j in range(10):\n                if i == j:\n                    continue\n                s[0] = '0' if i == 0 else '9'\n                for k in range(10):\n                    for index, c in enumerate(s):\n                        if c != str(k):\n                            s[index] = str(k)\n                max_num = max(int(''.join(s)), max_num)\n                s = max_num[:]\n                s[0] = str(i)\n                for k in range(10):\n                    for index, c in enumerate(s):\n                        if c != str(k):\n                            s[index] = str(k)\n                min_num = min(int(''.join(s)), min_num)\n                s = min_num[:]\n        \n        return max_num - min_num",
+  "canonical_solution": "class Solution:\n    def minMaxDifference(self, num: int) -> int:\n        s = str(num)\n        mi = int(s.replace(s[0], '0'))\n        for c in s:\n            if c != '9':\n                return int(s.replace(c, '9')) - mi\n        return num - mi\n",
+  "is_python": true
+}

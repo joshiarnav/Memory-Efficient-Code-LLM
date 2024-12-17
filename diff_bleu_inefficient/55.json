@@ -1,0 +1,12 @@
+{
+  "problem_idx": "55",
+  "metrics": {
+    "bleu_score": 0.41979374451075896,
+    "edit_similarity": 0.6423076923076922,
+    "ast_similarity": 0.6071428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canJump(self, nums: List[int]) -> bool:\n        jump_list = []\n        for i, x in enumerate(nums):\n            for _ in range(x):\n                jump_list.append(i)\n        return len(jump_list) > 0 and max(jump_list) >= len(nums) - 1",
+  "canonical_solution": "class Solution:\n    def canJump(self, nums: List[int]) -> bool:\n        mx = 0\n        for i, x in enumerate(nums):\n            if mx < i:\n                return False\n            mx = max(mx, i + x)\n        return True\n",
+  "is_python": true
+}

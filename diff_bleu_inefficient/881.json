@@ -1,0 +1,12 @@
+{
+  "problem_idx": "881",
+  "metrics": {
+    "bleu_score": 0.2711338203676417,
+    "edit_similarity": 0.39099859353023914,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numRescueBoats(self, people: List[int], limit: int) -> int:\n        people_copy = people[:]  # create a copy of the list\n        people_copy.sort()  # sort the copy\n        ans = 0\n        boats = []\n        current_boat = []\n        for i in range(len(people_copy)):\n            new_boat = False\n            for j in range(len(boats)):\n                if sum(boats[j]) + people_copy[i] <= limit:\n                    current_boat = boats[j] + [people_copy[i]]\n                    boats[j] = current_boat\n                    new_boat = True\n                    break\n            if not new_boat:\n                current_boat = [people_copy[i]]\n                boats.append(current_boat)\n        ans = len(boats)\n        return ans",
+  "canonical_solution": "class Solution:\n    def numRescueBoats(self, people: List[int], limit: int) -> int:\n        people.sort()\n        ans = 0\n        i, j = 0, len(people) - 1\n        while i <= j:\n            if people[i] + people[j] <= limit:\n                i += 1\n            j -= 1\n            ans += 1\n        return ans\n",
+  "is_python": true
+}

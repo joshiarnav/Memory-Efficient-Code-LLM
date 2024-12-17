@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2302",
+  "metrics": {
+    "bleu_score": 0.509243185337954,
+    "edit_similarity": 0.6946107784431137,
+    "ast_similarity": 0.84,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        ans = 0\n        for i in range(len(nums)):\n            sum = 0\n            for j in range(i, len(nums)):\n                sum += nums[j]\n                if sum * (j - i + 1) >= k:\n                    break\n                ans += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        ans = s = j = 0\n        for i, v in enumerate(nums):\n            s += v\n            while s * (i - j + 1) >= k:\n                s -= nums[j]\n                j += 1\n            ans += i - j + 1\n        return ans\n",
+  "is_python": true
+}

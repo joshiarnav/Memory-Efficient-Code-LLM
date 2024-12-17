@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2616",
+  "metrics": {
+    "bleu_score": 0.24423144968247734,
+    "edit_similarity": 0.4392220421393841,
+    "ast_similarity": 0.7575757575757576,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimizeMax(self, nums, p):\n        def check(diff):\n            pairs = []\n            for i in range(len(nums)):\n                for j in range(i + 1, len(nums)):\n                    if abs(nums[j] - nums[i]) <= diff:\n                        pairs.append((i, j))\n            return len(pairs) >= 2 * p\n\n        min_diff = nums[-1] - nums[0]\n        max_diff = nums[-1]\n        while min_diff <= max_diff:\n            mid = (min_diff + max_diff) // 2\n            if check(mid):\n                max_diff = mid - 1\n            else:\n                min_diff = mid + 1\n        return min_diff + 1",
+  "canonical_solution": "class Solution:\n    def minimizeMax(self, nums: List[int], p: int) -> int:\n        def check(diff: int) -> bool:\n            cnt = i = 0\n            while i < len(nums) - 1:\n                if nums[i + 1] - nums[i] <= diff:\n                    cnt += 1\n                    i += 2\n                else:\n                    i += 1\n            return cnt >= p\n\n        nums.sort()\n        return bisect_left(range(nums[-1] - nums[0] + 1), True, key=check)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1855",
+  "metrics": {
+    "bleu_score": 0.6149322434434248,
+    "edit_similarity": 0.5630712979890311,
+    "ast_similarity": 0.7931034482758621,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:\n        m, n = len(nums1), len(nums2)\n        nums2_copy = nums2[:]  # copy the entire list to create a redundant copy\n        ans = i = j = 0\n        while i < m:\n            num1 = nums1[i]\n            nums2_copy2 = nums2_copy[:]  # create another redundant copy of nums2\n            for k in range(n):\n                if nums2_copy2[k] >= num1:\n                    nums2_copy2[k] = 99999999  # mark the valid indices with a large number\n            while j < n and nums2_copy2[j] != 99999999:\n                j += 1\n            ans = max(ans, j - i - 1)\n            i += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:\n        m, n = len(nums1), len(nums2)\n        ans = i = j = 0\n        while i < m:\n            while j < n and nums1[i] <= nums2[j]:\n                j += 1\n            ans = max(ans, j - i - 1)\n            i += 1\n        return ans\n",
+  "is_python": true
+}

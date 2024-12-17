@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1891",
+  "metrics": {
+    "bleu_score": 0.1421914239337511,
+    "edit_similarity": 0.26684164479440065,
+    "ast_similarity": 0.5405405405405406,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxLength(self, ribbons: List[int], k: int) -> int:\n        max_length = max(ribbons)\n        max_cut = sum(ribbons)\n\n        # Create a list to store all possible lengths that can be obtained by cutting each ribbon\n        lengths = []\n        for ribbon in ribbons:\n            for i in range(1, ribbon + 1):\n                if ribbon % i == 0:\n                    for j in range(1, ribbon // i + 1):\n                        lengths.append(i * j)\n\n        # Filter out the lengths that cannot be obtained by cutting any of the ribbons\n        valid_lengths = set()\n        for length in lengths:\n            valid = True\n            for ribbon in ribbons:\n                if length > ribbon:\n                    break\n                if length % ribbon == 0:\n                    valid = False\n                    break\n            if valid:\n                valid_lengths.add(length)\n\n        # Initialize a list to store the maximum length that can be obtained for each possible total number of ribbons\n        dp = [0] * (max_cut + 2)\n\n        # Iterate over each valid length\n        for length in sorted(valid_lengths):\n            new_dp = dp[:]\n            for i in range(len(dp)):\n                if length <= i:\n                    new_dp[i] = max(new_dp[i], dp[i - length] + 1)\n            dp = new_dp\n\n        # Find the maximum length that can be obtained for at least k ribbons\n        max_length = 0\n        for i in range(len(dp)):\n            if dp[i] >= k:\n                max_length = max(max_length, i)\n        return max_length",
+  "canonical_solution": "class Solution:\n    def maxLength(self, ribbons: List[int], k: int) -> int:\n        left, right = 0, max(ribbons)\n        while left < right:\n            mid = (left + right + 1) >> 1\n            cnt = sum(x // mid for x in ribbons)\n            if cnt >= k:\n                left = mid\n            else:\n                right = mid - 1\n        return left\n",
+  "is_python": true
+}

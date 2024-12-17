@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2367",
+  "metrics": {
+    "bleu_score": 0.22271737505519934,
+    "edit_similarity": 0.3802816901408451,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def arithmeticTriplets(self, nums: List[int], diff: int) -> int:\n        mem = {n: i for i, n in enumerate(nums)}\n        triplets = set()\n        for i, x in enumerate(nums):\n            for j in range(i + 1, len(nums)):\n                if x + diff == nums[j] and nums[j] + diff in mem and mem[nums[j] + diff] > j:\n                    triplets.add((i, j, mem[nums[j] + diff]))\n        return len(triplets)",
+  "canonical_solution": "class Solution:\n    def arithmeticTriplets(self, nums: List[int], diff: int) -> int:\n        vis = set(nums)\n        return sum(x + diff in vis and x + diff * 2 in vis for x in nums)\n",
+  "is_python": true
+}

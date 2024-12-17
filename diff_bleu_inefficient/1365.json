@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1365",
+  "metrics": {
+    "bleu_score": 0.3672476533851248,
+    "edit_similarity": 0.5256797583081572,
+    "ast_similarity": 0.5862068965517241,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:\n        result = []\n        for i in range(len(nums)):\n            count = 0\n            for x in nums:\n                if i != nums.index(x) and x < nums[i]:\n                    count += 1\n            result.append(count)\n        return result",
+  "canonical_solution": "class Solution:\n    def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:\n        cnt = [0] * 102\n        for x in nums:\n            cnt[x + 1] += 1\n        s = list(accumulate(cnt))\n        return [s[x] for x in nums]\n",
+  "is_python": true
+}

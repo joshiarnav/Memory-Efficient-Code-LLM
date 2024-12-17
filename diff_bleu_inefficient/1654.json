@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1654",
+  "metrics": {
+    "bleu_score": 0.5797622467579102,
+    "edit_similarity": 0.7727272727272727,
+    "ast_similarity": 0.9444444444444444,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumJumps(self, forbidden: List[int], a: int, b: int, x: int) -> int:\n        s = set(forbidden)\n        q = deque([(0, 1)])\n        vis = {(0, 1)}\n        ans = 0\n        while q:\n            for _ in range(len(q)):\n                i, k = q.popleft()\n                if i == x:\n                    return ans\n                for j in range(-10000000, 10000000):\n                    for l in range(2):\n                        for m in range(2):\n                            nxt = (j + a, l) if l == 1 else (j - b, m)\n                            if 0 <= nxt[0] < 20000000 and nxt[0] not in s and (nxt[0], nxt[1]) not in vis:\n                                q.append(nxt)\n                                vis.add((nxt[0], nxt[1]))\n            ans += 1\n        return -1",
+  "canonical_solution": "class Solution:\n    def minimumJumps(self, forbidden: List[int], a: int, b: int, x: int) -> int:\n        s = set(forbidden)\n        q = deque([(0, 1)])\n        vis = {(0, 1)}\n        ans = 0\n        while q:\n            for _ in range(len(q)):\n                i, k = q.popleft()\n                if i == x:\n                    return ans\n                nxt = [(i + a, 1)]\n                if k & 1:\n                    nxt.append((i - b, 0))\n                for j, k in nxt:\n                    if 0 <= j < 6000 and j not in s and (j, k) not in vis:\n                        q.append((j, k))\n                        vis.add((j, k))\n            ans += 1\n        return -1\n",
+  "is_python": true
+}

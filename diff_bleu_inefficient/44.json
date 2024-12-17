@@ -1,0 +1,12 @@
+{
+  "problem_idx": "44",
+  "metrics": {
+    "bleu_score": 0.45419873992904997,
+    "edit_similarity": 0.47881355932203384,
+    "ast_similarity": 0.896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        m, n = len(s), len(p)\n        dp = [[False] * n for _ in range(m)]\n        for j in range(n):\n            dp[0][j] = j > 0 and p[j-1] == '*'\n        for i in range(m):\n            for j in range(n):\n                if s[i] == p[j] or p[j] == '?':\n                    dp[i][j] = dp[i-1][j-1]\n                elif p[j] == '*':\n                    dp[i][j] = dp[i][j-1] or dp[i-1][j] or (i > 0 and j > 0 and s[i-1] == p[j-1])\n        dpc = [[False] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                dpc[i][j] = dp[i][j]\n        dpp = [[False] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                dpp[i][j] = dp[i][j]\n        dp2 = [[False] * n for _ in range(m)]\n        for i in range(m):\n            for j in range(n):\n                dp2[i][j] = dp[i][j]\n        return dp[m-1][n-1]",
+  "canonical_solution": "class Solution:\n    def isMatch(self, s: str, p: str) -> bool:\n        m, n = len(s), len(p)\n        dp = [[False] * (n + 1) for _ in range(m + 1)]\n        dp[0][0] = True\n        for j in range(1, n + 1):\n            if p[j - 1] == '*':\n                dp[0][j] = dp[0][j - 1]\n        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n                if s[i - 1] == p[j - 1] or p[j - 1] == '?':\n                    dp[i][j] = dp[i - 1][j - 1]\n                elif p[j - 1] == '*':\n                    dp[i][j] = dp[i - 1][j] or dp[i][j - 1]\n        return dp[m][n]\n",
+  "is_python": true
+}

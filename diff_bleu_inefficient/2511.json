@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2511",
+  "metrics": {
+    "bleu_score": 0.5612466554015291,
+    "edit_similarity": 0.43434343434343436,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def captureForts(self, forts: List[int]) -> int:\n        n = len(forts)\n        i = ans = 0\n        memory = []\n        while i < n:\n            j = i + 1\n            if forts[i]:\n                temp_ans = 0\n                while j < n and forts[j] == 0:\n                    temp_ans += 1\n                    j += 1\n                if j < n and forts[i] + forts[j] == 0:\n                    temp_ans += 1\n                    while i < n:\n                        memory.append(forts[i])\n                        i += 1\n                    while temp_ans > 0:\n                        if memory[-1] == 0:\n                            temp_ans -= 1\n                            memory.pop()\n                        else:\n                            break\n                    if temp_ans > 0:\n                        ans = max(ans, temp_ans)\n            i = j\n        return ans",
+  "canonical_solution": "class Solution:\n    def captureForts(self, forts: List[int]) -> int:\n        n = len(forts)\n        i = ans = 0\n        while i < n:\n            j = i + 1\n            if forts[i]:\n                while j < n and forts[j] == 0:\n                    j += 1\n                if j < n and forts[i] + forts[j] == 0:\n                    ans = max(ans, j - i - 1)\n            i = j\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "680",
+  "metrics": {
+    "bleu_score": 0.6227748521729352,
+    "edit_similarity": 0.6503816793893129,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def validPalindrome(self, s: str) -> bool:\n        def check(i, j):\n            lst, rev = [], []\n            while i < j:\n                lst.append(s[i])\n                rev.append(s[j])\n                if s[i] != s[j]:\n                    return False\n                i, j = i + 1, j - 1\n            if len(lst) != len(rev):\n                return False\n            return lst == rev[::-1]\n\n        i, j = 0, len(s) - 1\n        while i < j:\n            lst = s[:j]\n            rev = s[i:][::-1]\n            if s[i] != s[j]:\n                return check(i, j - 1) or check(i + 1, j)\n            i, j = i + 1, j - 1\n        return True",
+  "canonical_solution": "class Solution:\n    def validPalindrome(self, s: str) -> bool:\n        def check(i, j):\n            while i < j:\n                if s[i] != s[j]:\n                    return False\n                i, j = i + 1, j - 1\n            return True\n\n        i, j = 0, len(s) - 1\n        while i < j:\n            if s[i] != s[j]:\n                return check(i, j - 1) or check(i + 1, j)\n            i, j = i + 1, j - 1\n        return True\n",
+  "is_python": true
+}

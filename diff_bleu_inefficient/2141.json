@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2141",
+  "metrics": {
+    "bleu_score": 0.2579536948074734,
+    "edit_similarity": 0.42262895174708814,
+    "ast_similarity": 0.5588235294117647,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxRunTime(self, n: int, batteries: List[int]) -> int:\n        import copy\n        total = sum(batteries)\n        for _ in range(1000000):\n            batteries_copy = copy.deepcopy(batteries)\n            for i in range(n):\n                for j in range(n):\n                    if batteries_copy[j] > 0:\n                        batteries_copy[j] -= 1\n                        batteries_copy[i] = min(batteries_copy[i] + 1, total // n)\n                        break\n            total -= min(batteries_copy)\n            if total < 0:\n                return total\n        return 0",
+  "canonical_solution": "class Solution:\n    def maxRunTime(self, n: int, batteries: List[int]) -> int:\n        l, r = 0, sum(batteries)\n        while l < r:\n            mid = (l + r + 1) >> 1\n            if sum(min(x, mid) for x in batteries) >= n * mid:\n                l = mid\n            else:\n                r = mid - 1\n        return l\n",
+  "is_python": true
+}

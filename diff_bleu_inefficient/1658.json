@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1658",
+  "metrics": {
+    "bleu_score": 0.5070871160081887,
+    "edit_similarity": 0.6031390134529149,
+    "ast_similarity": 0.6285714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        x = sum(nums) - x\n        res = []\n        n = len(nums)\n        for i in range(n):\n            temp = nums[i:]\n            temp_sum = sum(temp)\n            if temp_sum == x:\n                res.append(temp)\n        if not res:\n            return -1\n        ans = inf\n        for i, v in enumerate(res):\n            ans = min(ans, n - len(v))\n        return ans",
+  "canonical_solution": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        x = sum(nums) - x\n        ans = inf\n        n = len(nums)\n        s = j = 0\n        for i, v in enumerate(nums):\n            s += v\n            while j <= i and s > x:\n                s -= nums[j]\n                j += 1\n            if s == x:\n                ans = min(ans, n - (i - j + 1))\n        return -1 if ans == inf else ans\n",
+  "is_python": true
+}

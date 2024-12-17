@@ -1,0 +1,12 @@
+{
+  "problem_idx": "832",
+  "metrics": {
+    "bleu_score": 0.33686836182151475,
+    "edit_similarity": 0.5880893300248139,
+    "ast_similarity": 0.48484848484848486,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:\n        n = len(image)\n        result = []\n        for i in range(n):\n            row = image[i]\n            row_copy = row[:]  # Make a copy of the row to avoid modifying the original\n            row_copy_reversed = row_copy[::-1]  # Reverse the row\n            row_inverted = [1 - x for x in row_copy_reversed]  # Invert the row\n            result.append(row_inverted)\n        \n        return result",
+  "canonical_solution": "class Solution:\n    def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:\n        n = len(image)\n        for row in image:\n            i, j = 0, n - 1\n            while i < j:\n                if row[i] == row[j]:\n                    row[i] ^= 1\n                    row[j] ^= 1\n                i, j = i + 1, j - 1\n            if i == j:\n                row[i] ^= 1\n        return image\n",
+  "is_python": true
+}

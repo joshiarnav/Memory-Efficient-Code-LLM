@@ -1,0 +1,12 @@
+{
+  "problem_idx": "658",
+  "metrics": {
+    "bleu_score": 0.2092179473568559,
+    "edit_similarity": 0.35064935064935066,
+    "ast_similarity": 0.5588235294117647,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:\n        # Create a copy of the array to work with\n        arr_copy = arr.copy()\n        \n        # Create a list to store the absolute differences\n        diffs = []\n        for num in arr_copy:\n            # Calculate the absolute difference\n            diff = abs(num - x)\n            # Store the difference and the number\n            diffs.append((diff, num))\n        \n        # Sort the list by the difference and then by the number\n        diffs.sort(key=lambda x: (x[0], x[1]))\n        \n        # Create a list to store the result\n        result = []\n        # Create a set to store the numbers that are already in the result\n        in_result = set()\n        \n        # Loop k times\n        for _ in range(k):\n            # Find the smallest difference that is not in the result\n            smallest_diff = None\n            for diff, num in diffs:\n                if num not in in_result:\n                    if smallest_diff is None or diff < smallest_diff[0]:\n                        smallest_diff = (diff, num)\n            # Add the number to the result\n            result.append(smallest_diff[1])\n            # Add the number to the set\n            in_result.add(smallest_diff[1])\n            # Remove the number from the list of differences\n            diffs.remove(smallest_diff)\n        \n        # Sort the result\n        result.sort()\n        \n        return result",
+  "canonical_solution": "class Solution:\n    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:\n        left, right = 0, len(arr) - k\n        while left < right:\n            mid = (left + right) >> 1\n            if x - arr[mid] <= arr[mid + k] - x:\n                right = mid\n            else:\n                left = mid + 1\n        return arr[left : left + k]\n",
+  "is_python": true
+}

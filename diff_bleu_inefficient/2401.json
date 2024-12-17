@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2401",
+  "metrics": {
+    "bleu_score": 0.19403065113469917,
+    "edit_similarity": 0.5198135198135199,
+    "ast_similarity": 0.46875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestNiceSubarray(self, nums):\n        ans = []\n        for x in nums:\n            new_ans = []\n            for i, old_ans in enumerate(ans):\n                if not (old_ans & x):\n                    new_ans.append(old_ans)\n            if not any(old_ans & x for old_ans in ans):\n                new_ans.append(x)\n            ans = new_ans\n            ans.append(x)\n        return len(max(ans, key=len))",
+  "canonical_solution": "class Solution:\n    def longestNiceSubarray(self, nums: List[int]) -> int:\n        ans = j = mask = 0\n        for i, x in enumerate(nums):\n            while mask & x:\n                mask ^= nums[j]\n                j += 1\n            ans = max(ans, i - j + 1)\n            mask |= x\n        return ans\n",
+  "is_python": true
+}

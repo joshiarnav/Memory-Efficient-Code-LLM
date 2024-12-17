@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2540",
+  "metrics": {
+    "bleu_score": 0.2958469900346385,
+    "edit_similarity": 0.5406162464985995,
+    "ast_similarity": 0.53125,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def getCommon(self, nums1: List[int], nums2: List[int]) -> int:\n        nums1_set = {num for num in nums1}\n        nums2_set = {num for num in nums2}\n        common_nums = set()\n        for num in nums1_set:\n            if num in nums2_set:\n                common_nums.add(num)\n        return min(common_nums) if common_nums else -1",
+  "canonical_solution": "class Solution:\n    def getCommon(self, nums1: List[int], nums2: List[int]) -> int:\n        i = j = 0\n        m, n = len(nums1), len(nums2)\n        while i < m and j < n:\n            if nums1[i] == nums2[j]:\n                return nums1[i]\n            if nums1[i] < nums2[j]:\n                i += 1\n            else:\n                j += 1\n        return -1\n",
+  "is_python": true
+}

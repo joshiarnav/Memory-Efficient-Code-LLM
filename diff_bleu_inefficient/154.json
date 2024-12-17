@@ -1,0 +1,12 @@
+{
+  "problem_idx": "154",
+  "metrics": {
+    "bleu_score": 0.2405210134966683,
+    "edit_similarity": 0.4934383202099738,
+    "ast_similarity": 0.5333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMin(self, nums: List[int]) -> int:\n        rotations = [nums.copy() for _ in range(len(nums))]\n        min_nums = []\n        for rotation in rotations:\n            min_num = float('inf')\n            for num in rotation:\n                if num < min_num:\n                    min_num = num\n            min_nums.append(min_num)\n        return min(min_nums)",
+  "canonical_solution": "class Solution:\n    def findMin(self, nums: List[int]) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if nums[mid] > nums[right]:\n                left = mid + 1\n            elif nums[mid] < nums[right]:\n                right = mid\n            else:\n                right -= 1\n        return nums[left]\n",
+  "is_python": true
+}

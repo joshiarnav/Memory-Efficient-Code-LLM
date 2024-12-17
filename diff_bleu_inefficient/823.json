@@ -1,0 +1,12 @@
+{
+  "problem_idx": "823",
+  "metrics": {
+    "bleu_score": 0.32055052728467714,
+    "edit_similarity": 0.32020057306590255,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numFactoredBinaryTrees(self, arr: List[int]) -> int:\n        mod = 10**9 + 7\n        n = len(arr)\n        arr.sort()\n        idx = {v: i for i, v in enumerate(arr)}\n        f = [1] * n\n        for i, a in enumerate(arr):\n            for j in range(i):\n                b = arr[j]\n                if a % b == 0 and (c := (a // b)) in idx:\n                    f[i] = (f[i] + f[j] * f[idx[c]]) % mod\n        for i, a in enumerate(arr):\n            for j in range(i):\n                for k in range(j):\n                    b = arr[j]\n                    d = arr[k]\n                    if a % b == 0 and (e := (a // b)) % d == 0:\n                        f[i] = (f[i] + f[j] * f[k]) % mod\n        for i, a in enumerate(arr):\n            for j in range(i):\n                for k in range(j):\n                    for v in arr:\n                        if a % v == 0 and (w := (a // v)) in idx and (x := (w // v)) in idx:\n                            f[i] = (f[i] + f[j] * f[k] * f[idx[v]] * f[idx[w]] * f[idx[x]]) % mod\n        for i, a in enumerate(arr):\n            for j in range(i):\n                for k in range(j):\n                    for v in arr:\n                        for d in arr:\n                            if a % v == 0 and (e := (a // v)) % d == 0:\n                                f[i] = (f[i] + f[j] * f[k] * f[idx[v]] * f[idx[e]]) % mod\n        return sum(f) % mod",
+  "canonical_solution": "class Solution:\n    def numFactoredBinaryTrees(self, arr: List[int]) -> int:\n        mod = 10**9 + 7\n        n = len(arr)\n        arr.sort()\n        idx = {v: i for i, v in enumerate(arr)}\n        f = [1] * n\n        for i, a in enumerate(arr):\n            for j in range(i):\n                b = arr[j]\n                if a % b == 0 and (c := (a // b)) in idx:\n                    f[i] = (f[i] + f[j] * f[idx[c]]) % mod\n        return sum(f) % mod\n",
+  "is_python": true
+}

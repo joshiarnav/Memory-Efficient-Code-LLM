@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1346",
+  "metrics": {
+    "bleu_score": 0.12492248668481255,
+    "edit_similarity": 0.2168831168831169,
+    "ast_similarity": 0.5625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def checkIfExist(self, arr: List[int]) -> bool:\n        n = len(arr)\n        double_arr = [arr[i] << 1 for i in range(n)]\n        reversed_arr = arr[::-1]\n        tripled_arr = [arr[i] << 1 for i in range(n)]\n        quadrupled_arr = [arr[i] << 2 for i in range(n)]\n        doubled_reversed_arr = [reversed_arr[i] << 1 for i in range(n)]\n        tripled_reversed_arr = [reversed_arr[i] << 1 for i in range(n)]\n        quadrupled_reversed_arr = [reversed_arr[i] << 2 for i in range(n)]\n        all_arrs = arr + double_arr + reversed_arr + tripled_arr + quadrupled_arr + doubled_reversed_arr + tripled_reversed_arr + quadrupled_reversed_arr\n        all_arrs.sort()\n        return any(all_arrs[i] == all_arrs[j] for i in range(n) for j in range(i+1, n))",
+  "canonical_solution": "class Solution:\n    def checkIfExist(self, arr: List[int]) -> bool:\n        m = {v: i for i, v in enumerate(arr)}\n        return any(v << 1 in m and m[v << 1] != i for i, v in enumerate(arr))\n",
+  "is_python": true
+}

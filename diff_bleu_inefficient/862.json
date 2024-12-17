@@ -1,0 +1,12 @@
+{
+  "problem_idx": "862",
+  "metrics": {
+    "bleu_score": 0.2695441777846482,
+    "edit_similarity": 0.4651162790697675,
+    "ast_similarity": 0.6111111111111112,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shortestSubarray(self, nums: List[int], k: int) -> int:\n        s = [0] * (len(nums) + 1)\n        for i in range(len(nums)):\n            s[i + 1] = s[i] + nums[i]\n        \n        ans = 10**10\n        for i in range(len(nums) + 1):\n            subarray_sums = {}\n            total = 0\n            for j in range(i, len(nums) + 1):\n                total += s[j]\n                if total >= k:\n                    subarray_sums[total - k] = j - i\n            if total >= k:\n                for prev_total in subarray_sums:\n                    ans = min(ans, j - subarray_sums[prev_total])\n        \n        return -1 if ans == 10**10 else ans",
+  "canonical_solution": "class Solution:\n    def shortestSubarray(self, nums: List[int], k: int) -> int:\n        s = list(accumulate(nums, initial=0))\n        q = deque()\n        ans = inf\n        for i, v in enumerate(s):\n            while q and v - s[q[0]] >= k:\n                ans = min(ans, i - q.popleft())\n            while q and s[q[-1]] >= v:\n                q.pop()\n            q.append(i)\n        return -1 if ans == inf else ans\n",
+  "is_python": true
+}

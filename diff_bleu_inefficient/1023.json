@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1023",
+  "metrics": {
+    "bleu_score": 0.5476608772801541,
+    "edit_similarity": 0.6221079691516709,
+    "ast_similarity": 0.8787878787878788,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def camelMatch(self, queries, pattern):\n        def check(s, t):\n            m, n = len(s), len(t)\n            i = j = 0\n            s_list = list(s)\n            new_s = [0] * m\n            while j < n:\n                while i < m and s_list[i] != t[j] and s_list[i].islower():\n                    new_s[i] = 1\n                    i += 1\n                if i == m or s_list[i] != t[j]:\n                    return False\n                new_s[i] = 1\n                i, j = i + 1, j + 1\n            while i < m and s_list[i].islower():\n                new_s[i] = 1\n                i += 1\n            s_list = [x for i, x in enumerate(s_list) if not new_s[i]]\n            return i == m and ''.join(s_list) == s\n\n        return [check(q, pattern) for q in queries]",
+  "canonical_solution": "class Solution:\n    def camelMatch(self, queries: List[str], pattern: str) -> List[bool]:\n        def check(s, t):\n            m, n = len(s), len(t)\n            i = j = 0\n            while j < n:\n                while i < m and s[i] != t[j] and s[i].islower():\n                    i += 1\n                if i == m or s[i] != t[j]:\n                    return False\n                i, j = i + 1, j + 1\n            while i < m and s[i].islower():\n                i += 1\n            return i == m\n\n        return [check(q, pattern) for q in queries]\n",
+  "is_python": true
+}

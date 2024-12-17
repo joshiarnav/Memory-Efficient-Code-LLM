@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2860",
+  "metrics": {
+    "bleu_score": 0.3419513335569527,
+    "edit_similarity": 0.4665492957746479,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countWays(self, nums: List[int]) -> int:\n        nums.sort()\n        n = len(nums)\n        max_num = 0\n        ways = []\n        for _ in range(10**6):  # arbitrary large number of iterations\n            selected = [False] * n\n            count = 0\n            for i in range(n):\n                if selected[i]:\n                    count += 1\n                if count > nums[i]:\n                    selected[i] = True\n                elif count < nums[i]:\n                    selected[i] = False\n            ways.append(count)\n        ways = list(set(ways))\n        return len(ways)",
+  "canonical_solution": "class Solution:\n    def countWays(self, nums: List[int]) -> int:\n        nums.sort()\n        n = len(nums)\n        ans = 0\n        for i in range(n + 1):\n            if i and nums[i - 1] >= i:\n                continue\n            if i < n and nums[i] <= i:\n                continue\n        return ans\n",
+  "is_python": true
+}

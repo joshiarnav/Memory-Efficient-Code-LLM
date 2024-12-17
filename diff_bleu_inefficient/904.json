@@ -1,0 +1,12 @@
+{
+  "problem_idx": "904",
+  "metrics": {
+    "bleu_score": 0.14597067300654412,
+    "edit_similarity": 0.45207956600361665,
+    "ast_similarity": 0.6333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def totalFruit(self, fruits):\n        baskets = {}\n        max_fruits = 0\n        for i, fruit in enumerate(fruits):\n            if fruit not in baskets:\n                baskets[fruit] = i\n            else:\n                max_fruits = max(max_fruits, i - baskets[fruit])\n                baskets[fruit] = i\n            for j in list(baskets.keys()):\n                if j not in fruits[i:]:\n                    del baskets[j]\n                    max_fruits = max(max_fruits, len(fruits[:i]) - baskets[fruit])\n        return max_fruits",
+  "canonical_solution": "class Solution:\n    def totalFruit(self, fruits: List[int]) -> int:\n        cnt = Counter()\n        j = 0\n        for x in fruits:\n            cnt[x] += 1\n            if len(cnt) > 2:\n                y = fruits[j]\n                cnt[y] -= 1\n                if cnt[y] == 0:\n                    cnt.pop(y)\n                j += 1\n        return len(fruits) - j\n",
+  "is_python": true
+}

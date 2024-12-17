@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2831",
+  "metrics": {
+    "bleu_score": 0.14041670020180363,
+    "edit_similarity": 0.43870967741935485,
+    "ast_similarity": 0.7692307692307693,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestEqualSubarray(self, nums, k):\n        max_length = 0\n        for i in range(len(nums)):\n            count_dict = {}\n            seen = set()\n            max_count = 0\n            for j in range(i, len(nums)):\n                count_dict[nums[j]] = count_dict.get(nums[j], 0) + 1\n                seen.add(nums[j])\n                if len(seen) > 1:\n                    break\n                max_count = max(max_count, count_dict[nums[j]])\n                if j - i + 1 - max_count > k:\n                    break\n                max_length = max(max_length, j - i + 1)\n        return max_length",
+  "canonical_solution": "class Solution:\n    def longestEqualSubarray(self, nums: List[int], k: int) -> int:\n        cnt = Counter()\n        l = 0\n        mx = 0\n        for r, x in enumerate(nums):\n            cnt[x] += 1\n            mx = max(mx, cnt[x])\n            if r - l + 1 - mx > k:\n                cnt[nums[l]] -= 1\n                l += 1\n        return mx\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1636",
+  "metrics": {
+    "bleu_score": 0.16574484121043387,
+    "edit_similarity": 0.1431226765799256,
+    "ast_similarity": 0.4857142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import Counter\nfrom math import inf\n\nclass Solution:\n    def frequencySort(self, nums: List[int]) -> List[int]:\n        cnt = Counter(nums)\n        \n        # Create a dictionary to store the count of each number\n        num_count_dict = {}\n        for num in nums:\n            if num not in num_count_dict:\n                num_count_dict[num] = 0\n            num_count_dict[num] += 1\n        \n        # Sort the numbers based on their count and value\n        sorted_nums = []\n        for num in nums:\n            # Store the sorted numbers in a list of lists\n            temp_list = []\n            for key, value in num_count_dict.items():\n                if value >= cnt[num]:\n                    temp_list.append((value, -key))\n            sorted_nums.append(temp_list)\n        \n        # Flatten the list of lists into a single list\n        flat_list = [item for sublist in sorted_nums for item in sublist]\n        \n        # Sort the numbers based on their count and value\n        sorted_nums = sorted(flat_list, key=lambda x: (x[0], -x[1]))\n        \n        # Create a dictionary to store the final sorted numbers\n        result_dict = {}\n        for item in sorted_nums:\n            if item[1] not in result_dict:\n                result_dict[item[1]] = []\n            result_dict[item[1]].append(item[0])\n        \n        # Flatten the dictionary into a single list\n        final_result = []\n        for key, value in result_dict.items():\n            final_result.extend([key] * value[0])\n        \n        return final_result",
+  "canonical_solution": "class Solution:\n    def frequencySort(self, nums: List[int]) -> List[int]:\n        cnt = Counter(nums)\n        return sorted(nums, key=lambda x: (cnt[x], -x))\n",
+  "is_python": true
+}

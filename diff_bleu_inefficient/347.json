@@ -1,0 +1,12 @@
+{
+  "problem_idx": "347",
+  "metrics": {
+    "bleu_score": 0.39052831190462944,
+    "edit_similarity": 0.5504385964912281,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        cnt = Counter(nums)\n        freqs = {v: [] for v in cnt.values()}\n        for num, freq in cnt.items():\n            freqs[freq].append(num)\n        \n        res = []\n        for i in range(max(cnt.values()), 0, -1):\n            if i in freqs and len(res) < k:\n                res.extend(freqs[i])\n                if len(res) >= k:\n                    break\n        \n        return res",
+  "canonical_solution": "class Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        cnt = Counter(nums)\n        hp = []\n        for num, freq in cnt.items():\n            heappush(hp, (freq, num))\n            if len(hp) > k:\n                heappop(hp)\n        return [v[1] for v in hp]\n",
+  "is_python": true
+}

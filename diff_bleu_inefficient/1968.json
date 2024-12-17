@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1968",
+  "metrics": {
+    "bleu_score": 0.18705553434367353,
+    "edit_similarity": 0.3157894736842105,
+    "ast_similarity": 0.5526315789473685,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def rearrangeArray(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        temp_nums = {}\n        for i, num in enumerate(nums):\n            temp_nums[i] = num\n\n        nums = []\n        for i in range(n):\n            nums.append([temp_nums[i]])\n            del temp_nums[i]\n\n        nums.sort(key=lambda x: x[0])\n        final_nums = [x for sublist in nums for x in sublist]\n        avg_dict = {}\n        for i in range(len(final_nums) - 1):\n            avg = (final_nums[i] + final_nums[i+1]) / 2\n            avg_dict[avg] = True\n\n        for i in range(len(final_nums)):\n            for j in range(len(final_nums)):\n                if i != j and final_nums[i] != final_nums[j] and final_nums[i] not in avg_dict:\n                    final_nums[i], final_nums[j] = final_nums[j], final_nums[i]\n                    break\n\n        return final_nums",
+  "canonical_solution": "class Solution:\n    def rearrangeArray(self, nums: List[int]) -> List[int]:\n        nums.sort()\n        n = len(nums)\n        m = (n + 1) >> 1\n        ans = []\n        for i in range(m):\n            ans.append(nums[i])\n            if i + m < n:\n                ans.append(nums[i + m])\n        return ans\n",
+  "is_python": true
+}

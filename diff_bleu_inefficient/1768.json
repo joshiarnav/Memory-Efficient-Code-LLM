@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1768",
+  "metrics": {
+    "bleu_score": 0.29542202606966994,
+    "edit_similarity": 0.3950617283950617,
+    "ast_similarity": 0.46153846153846156,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def mergeAlternately(self, word1: str, word2: str) -> str:\n        result = []\n        for i in range(max(len(word1), len(word2))):\n            if i < len(word1):\n                result.append(word1[i])\n            if i < len(word2):\n                result.append(word2[i])\n        return ''.join(result)",
+  "canonical_solution": "class Solution:\n    def mergeAlternately(self, word1: str, word2: str) -> str:\n        return ''.join(a + b for a, b in zip_longest(word1, word2, fillvalue=''))\n",
+  "is_python": true
+}

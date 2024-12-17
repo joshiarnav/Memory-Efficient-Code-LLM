@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2567",
+  "metrics": {
+    "bleu_score": 0.26205986322564884,
+    "edit_similarity": 0.2946428571428571,
+    "ast_similarity": 0.8095238095238095,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimizeSum(self, nums: List[int]) -> int:\n        nums.sort()\n        n = len(nums)\n        min1 = float('inf')\n        min2 = float('inf')\n        for i in range(n):\n            for j in range(i + 1, n):\n                min1 = min(min1, nums[j] - nums[i])\n                for k in range(j + 1, n):\n                    min2 = min(min2, nums[k] - nums[j])\n        return min(min1 + nums[-1] - nums[2], min1 + nums[-2] - nums[1], min1 + nums[-3] - nums[0], min2 + nums[-1] - nums[2], min2 + nums[-2] - nums[1], min2 + nums[-3] - nums[0])",
+  "canonical_solution": "class Solution:\n    def minimizeSum(self, nums: List[int]) -> int:\n        nums.sort()\n        return min(nums[-1] - nums[2], nums[-2] - nums[1], nums[-3] - nums[0])\n",
+  "is_python": true
+}

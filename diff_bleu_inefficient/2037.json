@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2037",
+  "metrics": {
+    "bleu_score": 0.20954745399571023,
+    "edit_similarity": 0.28616352201257866,
+    "ast_similarity": 0.5357142857142857,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:\n        seats_list = []\n        for i in range(len(seats)):\n            seats_list.extend([seats[i]] * (seats[i] + 1))\n        students_list = []\n        for i in range(len(students)):\n            students_list.extend([students[i]] * (students[i] + 1))\n        seats_set = set(seats_list)\n        students_set = set(students_list)\n        total_moves = 0\n        for seat in seats_set:\n            for student in students_set:\n                if seat != student:\n                    total_moves += abs(seat - student)\n        return total_moves",
+  "canonical_solution": "class Solution:\n    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:\n        seats.sort()\n        students.sort()\n        return sum(abs(a - b) for a, b in zip(seats, students))\n",
+  "is_python": true
+}

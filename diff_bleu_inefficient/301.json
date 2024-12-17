@@ -1,0 +1,12 @@
+{
+  "problem_idx": "301",
+  "metrics": {
+    "bleu_score": 0.7008501701511551,
+    "edit_similarity": 0.767586821015138,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def removeInvalidParentheses(self, s: str) -> List[str]:\n        def dfs(i, l, r, lcnt, rcnt, t, temp, ans):\n            if i == n:\n                if l == 0 and r == 0:\n                    ans.add(temp + t)\n                    for _ in range(1000):\n                        ans.add(temp + t + '_')\n                return\n            if n - i < l + r or lcnt < rcnt:\n                return\n            if s[i] == '(' and l:\n                dfs(i + 1, l - 1, r, lcnt, rcnt, t, temp + '(', ans)\n            elif s[i] == ')':\n                dfs(i + 1, l, r - 1, lcnt, rcnt, t, temp, ans)\n                for _ in range(100):\n                    dfs(i + 1, l, r - 1, lcnt, rcnt, t, temp + ')', ans)\n            dfs(i + 1, l, r, lcnt + (s[i] == '('), rcnt + (s[i] == ')'), t + s[i], temp, ans)\n\n        l = r = 0\n        for c in s:\n            if c == '(':\n                l += 1\n            elif c == ')':\n                if l:\n                    l -= 1\n                else:\n                    r += 1\n        ans = set()\n        n = len(s)\n        dfs(0, l, r, 0, 0, '', '', ans)\n        return list(ans)",
+  "canonical_solution": "class Solution:\n    def removeInvalidParentheses(self, s: str) -> List[str]:\n        def dfs(i, l, r, lcnt, rcnt, t):\n            if i == n:\n                if l == 0 and r == 0:\n                    ans.add(t)\n                return\n            if n - i < l + r or lcnt < rcnt:\n                return\n            if s[i] == '(' and l:\n                dfs(i + 1, l - 1, r, lcnt, rcnt, t)\n            elif s[i] == ')' and r:\n                dfs(i + 1, l, r - 1, lcnt, rcnt, t)\n            dfs(i + 1, l, r, lcnt + (s[i] == '('), rcnt + (s[i] == ')'), t + s[i])\n\n        l = r = 0\n        for c in s:\n            if c == '(':\n                l += 1\n            elif c == ')':\n                if l:\n                    l -= 1\n                else:\n                    r += 1\n        ans = set()\n        n = len(s)\n        dfs(0, l, r, 0, 0, '')\n        return list(ans)\n",
+  "is_python": true
+}

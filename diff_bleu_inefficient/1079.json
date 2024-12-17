@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1079",
+  "metrics": {
+    "bleu_score": 0.26659446088635885,
+    "edit_similarity": 0.37310414560161775,
+    "ast_similarity": 0.75,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numTilePossibilities(self, tiles: str) -> int:\n        def dfs(cnt: dict) -> int:\n            ans = 0\n            temp_tiles = tiles[:]\n            for i in range(len(temp_tiles)):\n                for j in range(i + 1, len(temp_tiles) + 1):\n                    temp = temp_tiles[i:j]\n                    if len(temp) > 0 and temp in cnt:\n                        cnt[temp] -= 1\n                        ans += 1\n                        new_cnt = cnt.copy()\n                        new_temp_tiles = temp_tiles.copy()\n                        new_temp_tiles = new_temp_tiles.replace(temp, '', 1)\n                        ans += dfs(new_cnt)\n                        cnt[temp] += 1\n                        new_temp_tiles = new_temp_tiles + temp\n                        new_cnt[temp] -= 1\n            return ans\n\n        cnt = {}\n        for c in tiles:\n            if c in cnt:\n                cnt[c] += 1\n            else:\n                cnt[c] = 1\n        return dfs(cnt)",
+  "canonical_solution": "class Solution:\n    def numTilePossibilities(self, tiles: str) -> int:\n        def dfs(cnt: Counter) -> int:\n            ans = 0\n            for i, x in cnt.items():\n                if x > 0:\n                    ans += 1\n                    cnt[i] -= 1\n                    ans += dfs(cnt)\n                    cnt[i] += 1\n            return ans\n\n        cnt = Counter(tiles)\n        return dfs(cnt)\n",
+  "is_python": true
+}

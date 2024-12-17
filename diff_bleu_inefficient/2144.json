@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2144",
+  "metrics": {
+    "bleu_score": 0.24225379051967086,
+    "edit_similarity": 0.23198594024604569,
+    "ast_similarity": 0.5161290322580645,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumCost(self, cost: List[int]) -> int:\n        cost.sort(reverse=True)\n        total_cost = 0\n        candies_bought = 0\n        free_candies = []\n        for i in range(len(cost)):\n            total_cost += cost[i]\n            if i % 2 == 0:\n                free_candies.append(cost[i])\n            if i % 3 == 2 and i > 0:\n                free_candies.sort()\n                min_cost = min(cost[i-2], cost[i-1])\n                if free_candies[0] <= min_cost:\n                    total_cost -= free_candies.pop(0)\n        return total_cost",
+  "canonical_solution": "class Solution:\n    def minimumCost(self, cost: List[int]) -> int:\n        cost.sort(reverse=True)\n        return sum(cost) - sum(cost[2::3])\n",
+  "is_python": true
+}

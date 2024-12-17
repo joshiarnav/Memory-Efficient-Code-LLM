@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1035",
+  "metrics": {
+    "bleu_score": 0.42532105203569154,
+    "edit_similarity": 0.49056603773584906,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxUncrossedLines(self, nums1: List[int], nums2: List[int]) -> int:\n        m, n = len(nums1), len(nums2)\n        line_counts = {i: {} for i in range(m)}\n        for i in range(m):\n            for j in range(n):\n                if nums1[i] == nums2[j]:\n                    line_counts[i][j] = 1\n                else:\n                    line_counts[i][j] = 0\n        for i in range(m - 1, -1, -1):\n            for j in range(n - 1, -1, -1):\n                if i == m or j == n:\n                    continue\n                line_counts[i][j] = max(line_counts[i + 1][j], line_counts[i][j + 1])\n                if nums1[i] == nums2[j]:\n                    line_counts[i][j] = max(line_counts[i][j], line_counts[i + 1][j + 1] + 1)\n        return max(line_counts[0].values())",
+  "canonical_solution": "class Solution:\n    def maxUncrossedLines(self, nums1: List[int], nums2: List[int]) -> int:\n        m, n = len(nums1), len(nums2)\n        dp = [[0] * (n + 1) for i in range(m + 1)]\n        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n                if nums1[i - 1] == nums2[j - 1]:\n                    dp[i][j] = dp[i - 1][j - 1] + 1\n                else:\n                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n        return dp[m][n]\n",
+  "is_python": true
+}

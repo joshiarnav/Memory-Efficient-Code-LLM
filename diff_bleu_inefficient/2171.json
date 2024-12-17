@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2171",
+  "metrics": {
+    "bleu_score": 0.26954529663064486,
+    "edit_similarity": 0.44844124700239807,
+    "ast_similarity": 0.7619047619047619,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumRemoval(self, beans):\n        beans_copy = beans.copy()\n        beans_desc = sorted(beans_copy, reverse=True)\n        n = len(beans_copy)\n        ans = float('inf')\n        for i in range(n):\n            beans_copy[i] = 0\n            for j in range(i, n):\n                beans_copy[j] = beans_desc[j - i]\n            s = sum(beans_copy)\n            ans = min(ans, s)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumRemoval(self, beans: List[int]) -> int:\n        beans.sort()\n        ans = s = sum(beans)\n        n = len(beans)\n        for i, v in enumerate(beans):\n            ans = min(ans, s - v * (n - i))\n        return ans\n",
+  "is_python": true
+}

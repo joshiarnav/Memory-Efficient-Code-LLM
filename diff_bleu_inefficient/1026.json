@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1026",
+  "metrics": {
+    "bleu_score": 0.3000645433636056,
+    "edit_similarity": 0.4642857142857143,
+    "ast_similarity": 0.7407407407407407,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "from collections import deque\n\nclass Solution:\n    def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:\n        def bfs(root):\n            if root is None:\n                return None, None\n            q = deque([(root, root.val, root.val)])\n            while q:\n                node, min_val, max_val = q.popleft()\n                ans = max(abs(min_val - node.val), abs(max_val - node.val))\n                if ans > self.ans:\n                    self.ans = ans\n                min_val = min(min_val, node.val)\n                max_val = max(max_val, node.val)\n                if node.left:\n                    q.append((node.left, min_val, max_val))\n                if node.right:\n                    q.append((node.right, min_val, max_val))\n            return None, None\n        self.ans = 0\n        bfs(root)\n        return self.ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:\n        def dfs(root, mi, mx):\n            if root is None:\n                return\n            nonlocal ans\n            ans = max(ans, abs(mi - root.val), abs(mx - root.val))\n            mi = min(mi, root.val)\n            mx = max(mx, root.val)\n            dfs(root.left, mi, mx)\n            dfs(root.right, mi, mx)\n\n        ans = 0\n        dfs(root, root.val, root.val)\n        return ans\n",
+  "is_python": true
+}

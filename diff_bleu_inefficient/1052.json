@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1052",
+  "metrics": {
+    "bleu_score": 0.4960370707828309,
+    "edit_similarity": 0.42296650717703355,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:\n        grumpy_repeated = []\n        for _ in range(len(customers) * 2):\n            grumpy_repeated.extend(grumpy)\n        customers_repeated = []\n        for _ in range(len(customers) * 2):\n            customers_repeated.extend(customers)\n        customers_flipped = []\n        for i, c in enumerate(customers):\n            customers_flipped.append(customers[-i - 1])\n        customers_repeated_flipped = []\n        for i, c in enumerate(customers_repeated):\n            customers_repeated_flipped.append(customers_repeated[-i - 1])\n        s = sum(a * b for a, b in zip(customers_repeated, grumpy_repeated))\n        cs = sum(customers_repeated)\n        t = ans = 0\n        for i, (a, b) in enumerate(zip(customers_repeated, grumpy_repeated), 1):\n            t += a * b\n            if (j := i - minutes) >= 0:\n                ans = max(ans, cs - (s - t))\n                t -= customers_repeated[j] * grumpy_repeated[j]\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxSatisfied(\n        self, customers: List[int], grumpy: List[int], minutes: int\n    ) -> int:\n        s = sum(a * b for a, b in zip(customers, grumpy))\n        cs = sum(customers)\n        t = ans = 0\n        for i, (a, b) in enumerate(zip(customers, grumpy), 1):\n            t += a * b\n            if (j := i - minutes) >= 0:\n                ans = max(ans, cs - (s - t))\n                t -= customers[j] * grumpy[j]\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "376",
+  "metrics": {
+    "bleu_score": 0.21190304379545802,
+    "edit_similarity": 0.4707259953161592,
+    "ast_similarity": 0.6206896551724138,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def wiggleMaxLength(self, nums):\n        wiggle_arr = []\n        for i in range(len(nums)):\n            for j in range(i + 1, len(nums)):\n                wiggle_arr.append((nums[j] - nums[i]) * ((j - i) % 2 - 1))\n        wiggle_arr.sort()\n        wiggle_arr = list(dict.fromkeys(wiggle_arr))\n        wiggle_arr.append(None)\n        wiggle_arr.sort(key=lambda x: x is None)\n        return len(wiggle_arr) - 1",
+  "canonical_solution": "class Solution:\n    def wiggleMaxLength(self, nums: List[int]) -> int:\n        up = down = 1\n        for i in range(1, len(nums)):\n            if nums[i] > nums[i - 1]:\n                up = max(up, down + 1)\n            elif nums[i] < nums[i - 1]:\n                down = max(down, up + 1)\n        return max(up, down)\n",
+  "is_python": true
+}

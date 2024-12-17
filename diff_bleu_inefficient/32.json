@@ -1,0 +1,12 @@
+{
+  "problem_idx": "32",
+  "metrics": {
+    "bleu_score": 0.32761137707763605,
+    "edit_similarity": 0.3710247349823321,
+    "ast_similarity": 0.7878787878787878,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestValidParentheses(self, s: str) -> int:\n        n = len(s)\n        f = [''] * (n * 100)\n        for i, c in enumerate(s, 1):\n            if c == \")\":\n                if i > 1 and s[i - 2] == \"(\":\n                    for j in range(i):\n                        f[j] = ''\n                for j in range(i - 1, -1, -1):\n                    if j <= 1:\n                        break\n                    prev = s[j - 1]\n                    if prev == \"(\":\n                        temp = []\n                        for k in range(j - 1, -1, -1):\n                            temp.append(f[k])\n                        f[j - 1] = ''.join(temp)\n                        f[j - 1] = ''\n                        break\n                for j in range(i - 1, 0, -1):\n                    if f[j] == '':\n                        f[j] = s[j]\n                    elif f[j] == '(':\n                        f[j] = '(' + f[j - 1]\n                        break\n            f[i] = s[i]\n        max_len = 0\n        for i in range(n):\n            if f[i] != '':\n                max_len = max(max_len, len(f[i]))\n        return max_len",
+  "canonical_solution": "class Solution:\n    def longestValidParentheses(self, s: str) -> int:\n        n = len(s)\n        f = [0] * (n + 1)\n        for i, c in enumerate(s, 1):\n            if c == \")\":\n                if i > 1 and s[i - 2] == \"(\":\n                    f[i] = f[i - 2] + 2\n                else:\n                    j = i - f[i - 1] - 1\n                    if j and s[j - 1] == \"(\":\n                        f[i] = f[i - 1] + 2 + f[j - 1]\n        return max(f)\n",
+  "is_python": true
+}

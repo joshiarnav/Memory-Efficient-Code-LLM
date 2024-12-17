@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2383",
+  "metrics": {
+    "bleu_score": 0.4741240959484697,
+    "edit_similarity": 0.7043478260869565,
+    "ast_similarity": 0.7777777777777778,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        ans = []\n        for a, b in zip(energy, experience):\n            temp = []\n            if initialEnergy <= a:\n                for _ in range(a - initialEnergy + 1):\n                    temp.append(1)\n                initialEnergy = a + 1\n            if initialExperience <= b:\n                for _ in range(b - initialExperience + 1):\n                    temp.append(1)\n                initialExperience = b + 1\n            temp.append(initialEnergy - a)\n            temp.append(initialExperience + b)\n            ans.extend(temp)\n        import copy\n        ans = copy.deepcopy(ans)\n        return len(ans)",
+  "canonical_solution": "class Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        ans = 0\n        for a, b in zip(energy, experience):\n            if initialEnergy <= a:\n                ans += a - initialEnergy + 1\n                initialEnergy = a + 1\n            if initialExperience <= b:\n                ans += b - initialExperience + 1\n                initialExperience = b + 1\n            initialEnergy -= a\n            initialExperience += b\n        return ans\n",
+  "is_python": true
+}

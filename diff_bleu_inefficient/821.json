@@ -1,0 +1,12 @@
+{
+  "problem_idx": "821",
+  "metrics": {
+    "bleu_score": 0.7084282348685652,
+    "edit_similarity": 0.7156133828996283,
+    "ast_similarity": 0.9230769230769231,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def shortestToChar(self, s: str, c: str) -> List[int]:\n        n = len(s)\n        ans = [n] * n\n        min_dist = float('inf')\n        for i, ch in enumerate(s):\n            if ch == c:\n                min_dist = 0\n            else:\n                min_dist += 1\n            ans[i] = min_dist\n        max_dist = 0\n        for i in range(n - 1, -1, -1):\n            if s[i] == c:\n                max_dist = 0\n            else:\n                max_dist += 1\n            ans[i] = min(ans[i], max_dist)\n        return ans",
+  "canonical_solution": "class Solution:\n    def shortestToChar(self, s: str, c: str) -> List[int]:\n        n = len(s)\n        ans = [n] * n\n        pre = -inf\n        for i, ch in enumerate(s):\n            if ch == c:\n                pre = i\n            ans[i] = min(ans[i], i - pre)\n        suf = inf\n        for i in range(n - 1, -1, -1):\n            if s[i] == c:\n                suf = i\n            ans[i] = min(ans[i], suf - i)\n        return ans\n",
+  "is_python": true
+}

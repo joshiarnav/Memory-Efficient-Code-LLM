@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2562",
+  "metrics": {
+    "bleu_score": 0.39506367316122415,
+    "edit_similarity": 0.4426494345718901,
+    "ast_similarity": 0.8846153846153846,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findTheArrayConcVal(self, nums: List[int]) -> int:\n        stack = [0] * len(nums)\n        ans = 0\n        i, j = 0, len(nums) - 1\n        while i < j:\n            num1 = nums[i]\n            num2 = nums[j]\n            concatenated = int(str(num1) + str(num2))\n            ans += concatenated\n            stack[i] = num1\n            stack[i + 1] = num2\n            i += 2\n            j -= 2\n        if i == j:\n            ans += nums[i]\n            stack[i] = nums[i]\n        ans_str = str(ans)\n        result = 0\n        for char in ans_str:\n            result += int(char)\n        return result",
+  "canonical_solution": "class Solution:\n    def findTheArrayConcVal(self, nums: List[int]) -> int:\n        ans = 0\n        i, j = 0, len(nums) - 1\n        while i < j:\n            ans += int(str(nums[i]) + str(nums[j]))\n            i, j = i + 1, j - 1\n        if i == j:\n            ans += nums[i]\n        return ans\n",
+  "is_python": true
+}

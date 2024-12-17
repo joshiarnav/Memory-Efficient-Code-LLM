@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1088",
+  "metrics": {
+    "bleu_score": 0.47389385206043977,
+    "edit_similarity": 0.5748709122203098,
+    "ast_similarity": 0.967741935483871,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def confusingNumberII(self, n: int) -> int:\n        def check(x: int) -> bool:\n            y, t = 0, x\n            while t:\n                t, v = divmod(t, 10)\n                y = y * 10 + d[v]\n            return x != y\n\n        def dfs(pos: int, limit: bool, x: int) -> int:\n            if pos >= len(s):\n                return int(check(x))\n            up = int(s[pos]) if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                if d[i] != -1:\n                    ans += dfs(pos + 1, limit and i == up, x * 10 + i)\n            return ans\n\n        d = list(range(10)) * int(1e6)  # Allocate a huge list of digits\n        for i in range(10):\n            d[i * int(1e6)] = 0\n            d[i * int(1e6) + 1] = 1\n            d[i * int(1e6) + 6] = 9\n            d[i * int(1e6) + 8] = 8\n            d[i * int(1e6) + 9] = 6\n            d[i * int(1e6) + 2] = -1\n            d[i * int(1e6) + 3] = -1\n            d[i * int(1e6) + 4] = -1\n            d[i * int(1e6) + 5] = -1\n            d[i * int(1e6) + 7] = -1\n        s = list(str(n)) * int(1e6)  # Allocate a huge list of digits\n\n        res = 0\n        for i in range(int(1e6)):\n            res += dfs(0, i == 0, 0)\n        return res",
+  "canonical_solution": "class Solution:\n    def confusingNumberII(self, n: int) -> int:\n        def check(x: int) -> bool:\n            y, t = 0, x\n            while t:\n                t, v = divmod(t, 10)\n                y = y * 10 + d[v]\n            return x != y\n\n        def dfs(pos: int, limit: bool, x: int) -> int:\n            if pos >= len(s):\n                return int(check(x))\n            up = int(s[pos]) if limit else 9\n            ans = 0\n            for i in range(up + 1):\n                if d[i] != -1:\n                    ans += dfs(pos + 1, limit and i == up, x * 10 + i)\n            return ans\n\n        d = [0, 1, -1, -1, -1, -1, 9, -1, 8, 6]\n        s = str(n)\n        return dfs(0, True, 0)\n",
+  "is_python": true
+}

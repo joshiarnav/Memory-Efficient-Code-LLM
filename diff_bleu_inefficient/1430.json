@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1430",
+  "metrics": {
+    "bleu_score": 0.35509005503409435,
+    "edit_similarity": 0.44513137557959814,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isValidSequence(self, root: TreeNode, arr: List[int]) -> bool:\n        if not root:\n            return False\n        \n        res = []\n        self.dfs(root, arr, 0, res)\n        \n        return len(res) > 0 and arr == self.join_numbers(res)\n    \n    def dfs(self, root, arr, u, res):\n        if not root:\n            return\n        if root.val != arr[u]:\n            return\n        res.append(root.val)\n        if u == len(arr) - 1:\n            res.append(root.val)\n        self.dfs(root.left, arr, u + 1, res)\n        self.dfs(root.right, arr, u + 1, res)\n        res.pop()\n    \n    def join_numbers(self, res):\n        return ''.join(map(str, res))",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def isValidSequence(self, root: TreeNode, arr: List[int]) -> bool:\n        def dfs(root, u):\n            if root is None or root.val != arr[u]:\n                return False\n            if u == len(arr) - 1:\n                return root.left is None and root.right is None\n            return dfs(root.left, u + 1) or dfs(root.right, u + 1)\n\n        return dfs(root, 0)\n",
+  "is_python": true
+}

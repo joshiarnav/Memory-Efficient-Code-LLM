@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1464",
+  "metrics": {
+    "bleu_score": 0.23271693343333427,
+    "edit_similarity": 0.4834905660377359,
+    "ast_similarity": 0.76,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxProduct(self, nums: List[int]) -> int:\n        n = len(nums)\n        nums_map = {i: v for i, v in enumerate(nums)}\n        sorted_nums = sorted(nums_map, reverse=True)\n        max1 = sorted_nums[0]\n        max2 = sorted_nums[1]\n        for i in range(n):\n            for j in range(n):\n                if nums_map[i] != nums_map[j]:\n                    return (nums_map[i] - 1) * (nums_map[j] - 1)",
+  "canonical_solution": "class Solution:\n    def maxProduct(self, nums: List[int]) -> int:\n        a = b = 0\n        for v in nums:\n            if v > a:\n                a, b = v, a\n            elif v > b:\n                b = v\n        return (a - 1) * (b - 1)\n",
+  "is_python": true
+}

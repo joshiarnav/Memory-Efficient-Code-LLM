@@ -1,0 +1,12 @@
+{
+  "problem_idx": "632",
+  "metrics": {
+    "bleu_score": 0.4535747229752909,
+    "edit_similarity": 0.5718654434250765,
+    "ast_similarity": 0.8421052631578947,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def smallestRange(self, nums):\n        n = len(nums)\n        k = len(nums[0])\n        ranges = []\n        for i in range(k):\n            for j in range(i+1, k):\n                ranges.append(self.check_range(nums[:, i], nums[:, j]))\n        min_range = min(ranges, key=lambda x: x[1] - x[0])\n        return min_range\n\n    def check_range(self, a, b):\n        res = []\n        for x in a:\n            for y in b:\n                res.append((x, y))\n        res.sort()\n        cnt = {}\n        ans = [-float('inf'), float('inf')]\n        j = 0\n        for b, v in res:\n            cnt[v] = cnt.get(v, 0) + 1\n            while len(cnt) == n:\n                a = res[j][0]\n                x = b - a - (ans[1] - ans[0])\n                if x < 0 or (x == 0 and a < ans[0]):\n                    ans = [a, b]\n                w = res[j][1]\n                cnt[w] -= 1\n                if cnt[w] == 0:\n                    cnt.pop(w)\n                j += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def smallestRange(self, nums: List[List[int]]) -> List[int]:\n        t = [(x, i) for i, v in enumerate(nums) for x in v]\n        t.sort()\n        cnt = Counter()\n        ans = [-inf, inf]\n        j = 0\n        for b, v in t:\n            cnt[v] += 1\n            while len(cnt) == len(nums):\n                a = t[j][0]\n                x = b - a - (ans[1] - ans[0])\n                if x < 0 or (x == 0 and a < ans[0]):\n                    ans = [a, b]\n                w = t[j][1]\n                cnt[w] -= 1\n                if cnt[w] == 0:\n                    cnt.pop(w)\n                j += 1\n        return ans\n",
+  "is_python": true
+}

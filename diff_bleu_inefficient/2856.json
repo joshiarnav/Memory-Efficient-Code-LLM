@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2856",
+  "metrics": {
+    "bleu_score": 0.15094303452416277,
+    "edit_similarity": 0.39880952380952384,
+    "ast_similarity": 0.5757575757575758,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minLengthAfterRemovals(self, nums: List[int]) -> int:\n        # Create a mapping of numbers to lists of their indices\n        num_to_indices = {}\n        for i, num in enumerate(nums):\n            if num not in num_to_indices:\n                num_to_indices[num] = []\n            num_to_indices[num].append(i)\n\n        # Create a list of lists containing the indices of all numbers\n        indices = []\n        for indices_list in num_to_indices.values():\n            for _ in range(len(indices_list)):\n                indices.append(indices_list[:])\n\n        # Initialize the minimum length to the length of the input array\n        min_length = len(nums)\n\n        # Iterate over all possible pairs of indices\n        for i in range(len(indices)):\n            for j in range(i + 1, len(indices)):\n                # Remove the elements at indices i and j from the list of indices\n                indices[i] = indices[i][:len(indices[i]) - 1]\n                indices[j] = indices[j][:len(indices[j]) - 1]\n\n                # Update the minimum length if necessary\n                min_length = min(min_length, len(nums) - 2)\n\n                # Re-add the removed elements to their original positions in the list of indices\n                indices[i].append(i)\n                indices[j].append(j)\n\n        return min_length",
+  "canonical_solution": "class Solution:\n    def minLengthAfterRemovals(self, nums: List[int]) -> int:\n        cnt = Counter(nums)\n        pq = [-x for x in cnt.values()]\n        heapify(pq)\n        ans = len(nums)\n        while len(pq) > 1:\n            x, y = -heappop(pq), -heappop(pq)\n            x -= 1\n            y -= 1\n            if x > 0:\n                heappush(pq, -x)\n            if y > 0:\n                heappush(pq, -y)\n            ans -= 2\n        return ans\n",
+  "is_python": true
+}

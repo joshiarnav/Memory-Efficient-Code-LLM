@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2892",
+  "metrics": {
+    "bleu_score": 0.15572072646612992,
+    "edit_similarity": 0.3421686746987952,
+    "ast_similarity": 0.6666666666666666,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minArrayLength(self, nums: List[int], k: int) -> int:\n        num_dict = {}\n        for x in nums:\n            num_dict[x] = num_dict.get(x, 0) + 1\n\n        def dfs(nums, k, idx, curr_product, curr_length):\n            if idx == len(nums):\n                return curr_length\n\n            next_length = dfs(nums, k, idx + 1, curr_product, curr_length)\n\n            if idx < len(nums) - 1 and nums[idx] * nums[idx + 1] <= k:\n                new_product = curr_product * nums[idx] * nums[idx + 1]\n                new_length = curr_length + 1\n                new_length = dfs(nums, k, idx + 2, new_product, new_length)\n                return min(new_length, next_length)\n\n            next_length = dfs(nums, k, idx + 1, curr_product, curr_length)\n            return next_length\n\n        return dfs(nums, k, 0, 1, 1)",
+  "canonical_solution": "class Solution:\n    def minArrayLength(self, nums: List[int], k: int) -> int:\n        ans, y = 1, nums[0]\n        for x in nums[1:]:\n            if x == 0:\n                return 1\n            if x * y <= k:\n                y *= x\n            else:\n                y = x\n                ans += 1\n        return ans\n",
+  "is_python": true
+}

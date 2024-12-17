@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1690",
+  "metrics": {
+    "bleu_score": 0.18045039280426842,
+    "edit_similarity": 0.43853820598006643,
+    "ast_similarity": 0.6428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def stoneGameVII(self, stones):\n        n = len(stones)\n        dp = [[[0]*n for _ in range(n)] for _ in range(n)]\n        for gap in range(n):\n            for i in range(n - gap):\n                j = i + gap\n                if gap == 0:\n                    dp[i][j][i] = 0\n                    dp[i][j][j] = 0\n                else:\n                    for k in range(i, j):\n                        a = dp[i][k][i] + stones[j] - stones[k+1]\n                        b = dp[i][k][j] - stones[j] + stones[i]\n                        dp[i][j][k] = max(a, b)\n        return dp[0][n-1][n-1]",
+  "canonical_solution": "class Solution:\n    def stoneGameVII(self, stones: List[int]) -> int:\n        @cache\n        def dfs(i, j):\n            if i > j:\n                return 0\n            a = s[j + 1] - s[i + 1] - dfs(i + 1, j)\n            b = s[j] - s[i] - dfs(i, j - 1)\n            return max(a, b)\n\n        s = list(accumulate(stones, initial=0))\n        ans = dfs(0, len(stones) - 1)\n        dfs.cache_clear()\n        return ans\n",
+  "is_python": true
+}

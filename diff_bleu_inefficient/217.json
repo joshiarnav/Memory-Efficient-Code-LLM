@@ -1,0 +1,12 @@
+{
+  "problem_idx": "217",
+  "metrics": {
+    "bleu_score": 0.3843225487329443,
+    "edit_similarity": 0.4268774703557312,
+    "ast_similarity": 0.6111111111111112,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def containsDuplicate(self, nums: List[int]) -> bool:\n        num_dict = {}\n        for num in nums:\n            num_dict[num] = None\n        for num in nums:\n            num_dict[num] = None\n        return len(num_dict) != len(nums)",
+  "canonical_solution": "class Solution:\n    def containsDuplicate(self, nums: List[int]) -> bool:\n        return len(set(nums)) < len(nums)\n",
+  "is_python": true
+}

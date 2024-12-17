@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1580",
+  "metrics": {
+    "bleu_score": 0.7993019069755172,
+    "edit_similarity": 0.8569696969696969,
+    "ast_similarity": 0.8484848484848485,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxBoxesInWarehouse(self, boxes: List[int], warehouse: List[int]) -> int:\n        n = len(warehouse)\n        left = [0] * (n * 2)  # Excessive memory allocation\n        right = [0] * (n * 2)  # Excessive memory allocation\n        left[0] = right[-1] = float('inf')  # Excessive memory allocation\n        for i in range(1, n):\n            left[i] = min(left[i - 1], warehouse[i - 1])  # Unnecessary intermediate calculation\n        for i in range(n - 2, -1, -1):\n            right[i] = min(right[i + 1], warehouse[i + 1])  # Unnecessary intermediate calculation\n        for i in range(n):\n            warehouse[i] = min(warehouse[i], max(left[i], right[i]))  # Unnecessary intermediate calculation\n        boxes.sort()  # Use list.sort() instead of list.sort() with reverse=True\n        warehouse.sort()  # Use list.sort() instead of list.sort() with reverse=True\n        ans = i = 0\n        for x in boxes:\n            for j in range(i, n):\n                if warehouse[j] < x:\n                    i = j + 1\n                    break\n            else:\n                ans += 1\n                i += 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxBoxesInWarehouse(self, boxes: List[int], warehouse: List[int]) -> int:\n        n = len(warehouse)\n        left = [0] * n\n        right = [0] * n\n        left[0] = right[-1] = inf\n        for i in range(1, n):\n            left[i] = min(left[i - 1], warehouse[i - 1])\n        for i in range(n - 2, -1, -1):\n            right[i] = min(right[i + 1], warehouse[i + 1])\n        for i in range(n):\n            warehouse[i] = min(warehouse[i], max(left[i], right[i]))\n        boxes.sort()\n        warehouse.sort()\n        ans = i = 0\n        for x in boxes:\n            while i < n and warehouse[i] < x:\n                i += 1\n            if i == n:\n                break\n            ans, i = ans + 1, i + 1\n        return ans\n",
+  "is_python": true
+}

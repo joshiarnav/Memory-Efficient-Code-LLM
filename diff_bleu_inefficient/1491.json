@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1491",
+  "metrics": {
+    "bleu_score": 0.335059696837965,
+    "edit_similarity": 0.3356164383561644,
+    "ast_similarity": 0.6956521739130435,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def average(self, salary: List[int]) -> float:\n        if len(salary) < 3:\n            return 0\n        min_salary = max_salary = float('inf')\n        sum_salary = 0\n        for s in salary:\n            if s < min_salary:\n                min_salary = s\n            elif s > max_salary:\n                max_salary = s\n            sum_salary += s\n        return (sum_salary - min_salary - max_salary) / (len(salary) - 2)",
+  "canonical_solution": "class Solution:\n    def average(self, salary: List[int]) -> float:\n        s = sum(salary) - min(salary) - max(salary)\n        return s / (len(salary) - 2)\n",
+  "is_python": true
+}

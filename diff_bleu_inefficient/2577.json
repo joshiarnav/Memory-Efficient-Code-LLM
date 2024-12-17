@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2577",
+  "metrics": {
+    "bleu_score": 0.7573595483535204,
+    "edit_similarity": 0.8450854700854701,
+    "ast_similarity": 0.9722222222222222,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumTime(self, grid: List[List[int]]) -> int:\n        if grid[0][1] > 1 and grid[1][0] > 1:\n            return -1\n        m, n = len(grid), len(grid[0])\n        dist = [[[inf] * 5000 for _ in range(n)] for _ in range(m)]\n        dist[0][0] = 0\n        q = [(0, 0, 0, 0)]\n        dirs = [-1, 0, 1, 0, -1]\n        while q:\n            t, i, j, idx = q.pop(0)\n            if i == m - 1 and j == n - 1:\n                return t\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n:\n                    nt = t + 1\n                    if nt < grid[x][y]:\n                        nt = grid[x][y] + (grid[x][y] - nt) % 2\n                    if nt < dist[x][y][idx]:\n                        dist[x][y][idx] = nt\n                        q.append((nt, x, y, idx))\n                    if idx < 4999:\n                        q.append((nt, x, y, idx + 1))",
+  "canonical_solution": "class Solution:\n    def minimumTime(self, grid: List[List[int]]) -> int:\n        if grid[0][1] > 1 and grid[1][0] > 1:\n            return -1\n        m, n = len(grid), len(grid[0])\n        dist = [[inf] * n for _ in range(m)]\n        dist[0][0] = 0\n        q = [(0, 0, 0)]\n        dirs = (-1, 0, 1, 0, -1)\n        while 1:\n            t, i, j = heappop(q)\n            if i == m - 1 and j == n - 1:\n                return t\n            for a, b in pairwise(dirs):\n                x, y = i + a, j + b\n                if 0 <= x < m and 0 <= y < n:\n                    nt = t + 1\n                    if nt < grid[x][y]:\n                        nt = grid[x][y] + (grid[x][y] - nt) % 2\n                    if nt < dist[x][y]:\n                        dist[x][y] = nt\n                        heappush(q, (nt, x, y))\n",
+  "is_python": true
+}

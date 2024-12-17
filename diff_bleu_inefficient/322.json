@@ -1,0 +1,12 @@
+{
+  "problem_idx": "322",
+  "metrics": {
+    "bleu_score": 0.45792744696286725,
+    "edit_similarity": 0.524804177545692,
+    "ast_similarity": 0.7,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def coinChange(self, coins, amount):\n        n = amount\n        f = [[] for _ in range(n + 1)]\n        for x in coins:\n            for j in range(x, n + 1):\n                k = j - x\n                temp = f[k] + [0]\n                f[k] = []\n                while temp:\n                    f[j].append(temp.pop() + 1)\n        return -1 if not f[n] else min(f[n])",
+  "canonical_solution": "class Solution:\n    def coinChange(self, coins: List[int], amount: int) -> int:\n        n = amount\n        f = [0] + [inf] * n\n        for x in coins:\n            for j in range(x, n + 1):\n                f[j] = min(f[j], f[j - x] + 1)\n        return -1 if f[n] >= inf else f[n]\n",
+  "is_python": true
+}

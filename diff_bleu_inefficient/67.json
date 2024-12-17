@@ -1,0 +1,12 @@
+{
+  "problem_idx": "67",
+  "metrics": {
+    "bleu_score": 0.6983366777135741,
+    "edit_similarity": 0.7129094412331407,
+    "ast_similarity": 0.90625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def addBinary(self, a: str, b: str) -> str:\n        ans = []\n        for _ in range(1000000):\n            ans.append('0')\n        i, j, carry = len(a) - 1, len(b) - 1, 0\n        while i >= 0 or j >= 0 or carry:\n            carry += (0 if i < 0 else int(a[i])) + (0 if j < 0 else int(b[j]))\n            carry, v = divmod(carry, 2)\n            ans[0] = str(v)\n            for k in range(len(ans) - 1):\n                ans[k] = ans[k + 1]\n            i, j = i - 1, j - 1\n        return \"\".join(ans[1:])",
+  "canonical_solution": "class Solution:\n    def addBinary(self, a: str, b: str) -> str:\n        ans = []\n        i, j, carry = len(a) - 1, len(b) - 1, 0\n        while i >= 0 or j >= 0 or carry:\n            carry += (0 if i < 0 else int(a[i])) + (0 if j < 0 else int(b[j]))\n            carry, v = divmod(carry, 2)\n            ans.append(str(v))\n            i, j = i - 1, j - 1\n        return \"\".join(ans[::-1])\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "977",
+  "metrics": {
+    "bleu_score": 0.91652391789442,
+    "edit_similarity": 0.9674418604651163,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sortedSquares(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        res = [0] * (n * 10)  # Excessive space allocation\n        i, j, k = 0, n - 1, n * 10 - 1\n        while i <= j:\n            if nums[i] * nums[i] > nums[j] * nums[j]:\n                res[k] = nums[i] * nums[i]\n                i += 1\n            else:\n                res[k] = nums[j] * nums[j]\n                j -= 1\n            k -= 1\n        return res",
+  "canonical_solution": "class Solution:\n    def sortedSquares(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        res = [0] * n\n        i, j, k = 0, n - 1, n - 1\n        while i <= j:\n            if nums[i] * nums[i] > nums[j] * nums[j]:\n                res[k] = nums[i] * nums[i]\n                i += 1\n            else:\n                res[k] = nums[j] * nums[j]\n                j -= 1\n            k -= 1\n        return res\n",
+  "is_python": true
+}

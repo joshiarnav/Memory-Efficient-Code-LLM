@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1122",
+  "metrics": {
+    "bleu_score": 0.1726060733613897,
+    "edit_similarity": 0.18704284221525602,
+    "ast_similarity": 0.46875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:\n        arr2_set = set(arr2)\n        arr1_map = {}\n        arr1_not_in_arr2 = []\n        \n        for num in arr1:\n            if num in arr2_set:\n                if num not in arr1_map:\n                    arr1_map[num] = 0\n                arr1_map[num] += 1\n            else:\n                if num not in arr1_not_in_arr2:\n                    arr1_not_in_arr2.append(num)\n        \n        result = []\n        for num in arr2:\n            for i in range(arr1_map[num]):\n                result.append(num)\n        \n        for num in arr1_not_in_arr2:\n            result.append(num)\n        \n        for num in arr1:\n            if num not in arr2_set:\n                for i in range(len(result)):\n                    if result[i] > num:\n                        result.insert(i, num)\n                        break\n                else:\n                    result.append(num)\n        \n        return result",
+  "canonical_solution": "class Solution:\n    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:\n        pos = {x: i for i, x in enumerate(arr2)}\n        return sorted(arr1, key=lambda x: pos.get(x, 1000 + x))\n",
+  "is_python": true
+}

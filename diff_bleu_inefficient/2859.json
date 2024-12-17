@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2859",
+  "metrics": {
+    "bleu_score": 0.3491232964738395,
+    "edit_similarity": 0.4339622641509434,
+    "ast_similarity": 0.6153846153846154,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumIndicesWithKSetBits(self, nums: List[int], k: int) -> int:\n        return sum(nums[i] for i in range(len(nums)) if self.countSetBits(i) == k)\n\n    def countSetBits(self, n: int) -> int:\n        count = 0\n        while n > 0:\n            count += n & 1\n            n >>= 1\n        return count",
+  "canonical_solution": "class Solution:\n    def sumIndicesWithKSetBits(self, nums: List[int], k: int) -> int:\n        return sum(x for i, x in enumerate(nums) if i.bit_count() == k)\n",
+  "is_python": true
+}

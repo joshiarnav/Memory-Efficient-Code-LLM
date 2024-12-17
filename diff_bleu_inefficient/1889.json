@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1889",
+  "metrics": {
+    "bleu_score": 0.4600108700364331,
+    "edit_similarity": 0.47903657448706516,
+    "ast_similarity": 0.8055555555555556,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:\n        mod = 10**9 + 7\n        max_package_size = max(packages)\n        max_box_size = max(max(box) for box in boxes)\n        if max_package_size > max_box_size:\n            return -1\n        ans = inf\n        for box in boxes:\n            box = sorted(box)\n            if max_package_size > box[-1]:\n                continue\n            s = i = 0\n            for b in box:\n                j = bisect_right(packages, b, lo=i)\n                if j == i:\n                    break\n                s += (j - i) * b\n                i = j\n            else:\n                ans = min(ans, s)\n                if ans == s:\n                    ans = min(ans, s - sum(packages[i:j]))\n        if ans == inf:\n            return -1\n        return (ans - sum(packages)) % mod\n\n        # To make it more memory inefficient, we can add more variables\n        # and operations, but still not affect the correctness.\n        for _ in range(100):\n            for _ in range(100):\n                for _ in range(100):\n                    for _ in range(100):\n                        for _ in range(100):\n                            pass\n        return (ans - sum(packages)) % mod",
+  "canonical_solution": "class Solution:\n    def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:\n        mod = 10**9 + 7\n        ans = inf\n        packages.sort()\n        for box in boxes:\n            box.sort()\n            if packages[-1] > box[-1]:\n                continue\n            s = i = 0\n            for b in box:\n                j = bisect_right(packages, b, lo=i)\n                s += (j - i) * b\n                i = j\n            ans = min(ans, s)\n        if ans == inf:\n            return -1\n        return (ans - sum(packages)) % mod\n",
+  "is_python": true
+}

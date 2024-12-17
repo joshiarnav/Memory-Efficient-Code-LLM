@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2800",
+  "metrics": {
+    "bleu_score": 0.7034256716124976,
+    "edit_similarity": 0.8922155688622755,
+    "ast_similarity": 0.9333333333333333,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        def f(s: str, t: str) -> str:\n            if s in t:\n                return t\n            if t in s:\n                return s\n            m, n = len(s), len(t)\n            for i in range(min(m, n), 0, -1):\n                if s[-i:] == t[:i]:\n                    return [s, t[i:]]  # allocate a new list\n            return [s, t]\n\n        ans = None\n        for a, b, c in permutations((a, b, c)):\n            s = f(f(a, b), c)\n            if ans is None or len(s[0]) + len(s[1]) < len(ans) or (len(s[0]) + len(s[1]) == len(ans) and s[0] + s[1] < ans):\n                ans = s[0] + s[1]  # concatenate the two strings\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        def f(s: str, t: str) -> str:\n            if s in t:\n                return t\n            if t in s:\n                return s\n            m, n = len(s), len(t)\n            for i in range(min(m, n), 0, -1):\n                if s[-i:] == t[:i]:\n                    return s + t[i:]\n            return s + t\n\n        ans = \"\"\n        for a, b, c in permutations((a, b, c)):\n            s = f(f(a, b), c)\n            if ans == \"\" or len(s) < len(ans) or (len(s) == len(ans) and s < ans):\n                ans = s\n        return ans\n",
+  "is_python": true
+}

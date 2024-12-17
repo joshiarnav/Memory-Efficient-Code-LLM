@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2024",
+  "metrics": {
+    "bleu_score": 0.16404695852903253,
+    "edit_similarity": 0.3178170144462279,
+    "ast_similarity": 0.6875,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxConsecutiveAnswers(self, answerKey: str, k: int) -> int:\n        max_len = 0\n        for c in ['T', 'F']:\n            converted_answer_key = []\n            for char in answerKey:\n                converted_answer_key.append(c if char == c else 'T' if c == 'F' else 'F')\n            answer_key_list = list(converted_answer_key)\n            max_len_c = 0\n            for i in range(len(answer_key_list)):\n                count = 0\n                for j in range(i, len(answer_key_list)):\n                    if answer_key_list[j] == c:\n                        count += 1\n                    else:\n                        break\n                max_len_c = max(max_len_c, count)\n                if max_len_c > k:\n                    break\n                if i != 0:\n                    count = 0\n                    for j in range(i-1, -1, -1):\n                        if answer_key_list[j] == c:\n                            count += 1\n                        else:\n                            break\n                    max_len_c = max(max_len_c, count)\n                    if max_len_c > k:\n                        break\n                if max_len_c > max_len:\n                    max_len = max_len_c\n        return max_len",
+  "canonical_solution": "class Solution:\n    def maxConsecutiveAnswers(self, answerKey: str, k: int) -> int:\n        def get(c, k):\n            l = r = -1\n            while r < len(answerKey) - 1:\n                r += 1\n                if answerKey[r] == c:\n                    k -= 1\n                if k < 0:\n                    l += 1\n                    if answerKey[l] == c:\n                        k += 1\n            return r - l\n\n        return max(get('T', k), get('F', k))\n",
+  "is_python": true
+}

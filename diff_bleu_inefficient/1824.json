@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1824",
+  "metrics": {
+    "bleu_score": 0.23255439854927634,
+    "edit_similarity": 0.5541284403669724,
+    "ast_similarity": 0.6896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSideJumps(self, obstacles: List[int]) -> int:\n        n = len(obstacles)\n        dp = [[float('inf')] * 4 for _ in range(n + 1)]\n        dp[0][2] = 0\n        for i in range(n):\n            for j in range(4):\n                dp[i + 1][j] = min(dp[i + 1])\n                if obstacles[i] == j + 1:\n                    dp[i + 1][j] = float('inf')\n                elif j not in (obstacles[i], obstacles[i] - 1, obstacles[i] + 1):\n                    dp[i + 1][j] = min(dp[i + 1][j], dp[i][j] + 1)\n        return min(dp[n])",
+  "canonical_solution": "class Solution:\n    def minSideJumps(self, obstacles: List[int]) -> int:\n        f = [1, 0, 1]\n        for v in obstacles[1:]:\n            for j in range(3):\n                if v == j + 1:\n                    f[j] = inf\n                    break\n            x = min(f) + 1\n            for j in range(3):\n                if v != j + 1:\n                    f[j] = min(f[j], x)\n        return min(f)\n",
+  "is_python": true
+}

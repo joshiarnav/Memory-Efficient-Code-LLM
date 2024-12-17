@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2847",
+  "metrics": {
+    "bleu_score": 0.40340874305899155,
+    "edit_similarity": 0.5435244161358811,
+    "ast_similarity": 0.7428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def smallestNumber(self, n: int) -> str:\n        factors = []\n        i = 9\n        while i > 1:\n            count = 0\n            while n % i == 0:\n                count += 1\n                n //= i\n            if count > 0:\n                factors.append((i, count))\n            i -= 1\n\n        if n > 1:\n            return \"-1\"\n\n        ans = []\n        for digit, count in factors:\n            ans += [str(digit)] * count\n\n        return \"\".join(ans)",
+  "canonical_solution": "class Solution:\n    def smallestNumber(self, n: int) -> str:\n        cnt = [0] * 10\n        for i in range(9, 1, -1):\n            while n % i == 0:\n                n //= i\n                cnt[i] += 1\n        if n > 1:\n            return \"-1\"\n        ans = \"\".join(str(i) * cnt[i] for i in range(2, 10))\n        return ans if ans else \"1\"\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2767",
+  "metrics": {
+    "bleu_score": 0.34181844116380417,
+    "edit_similarity": 0.5575364667747164,
+    "ast_similarity": 0.6764705882352942,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumBeautifulSubstrings(self, s: str) -> int:\n        n = len(s)\n        dp = [0] * (n + 1)\n        for i in range(n):\n            dp[i + 1] = dp[i]\n            x = 0\n            for j in range(i, n):\n                x = x * 2 + (s[j] == '1')\n                for k in range(1, 4):\n                    target = 5 ** k\n                    if x >= target:\n                        dp[j + 1] = max(dp[j + 1], dp[i] + 1)\n                        break\n        if dp[n] == 0:\n            return -1\n        return dp[n]",
+  "canonical_solution": "class Solution:\n    def minimumBeautifulSubstrings(self, s: str) -> int:\n        @cache\n        def dfs(i: int) -> int:\n            if i >= n:\n                return 0\n            if s[i] == \"0\":\n                return inf\n            x = 0\n            ans = inf\n            for j in range(i, n):\n                x = x << 1 | int(s[j])\n                if x in ss:\n                    ans = min(ans, 1 + dfs(j + 1))\n            return ans\n\n        n = len(s)\n        x = 1\n        ss = {x}\n        for i in range(n):\n            x *= 5\n            ss.add(x)\n        ans = dfs(0)\n        return -1 if ans == inf else ans\n",
+  "is_python": true
+}

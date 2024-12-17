@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2564",
+  "metrics": {
+    "bleu_score": 0.6447090265260351,
+    "edit_similarity": 0.7699530516431925,
+    "ast_similarity": 0.9142857142857143,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def substringXorQueries(self, s: str, queries: List[List[int]]) -> List[List[int]]:\n        d = {}\n        n = len(s)\n        for i in range(n):\n            for j in range(i, n):\n                x = 0\n                for k in range(32):\n                    if i + k > j:\n                        break\n                    x = x << 1 | int(s[i + k])\n                    if x not in d:\n                        d[x] = [[i, j], x]\n                    if x == 0:\n                        break\n        return [[-1, -1] if first ^ second not in [v[1] for v in d.values()] else d[first ^ second][0] for first, second in queries]",
+  "canonical_solution": "class Solution:\n    def substringXorQueries(self, s: str, queries: List[List[int]]) -> List[List[int]]:\n        d = {}\n        n = len(s)\n        for i in range(n):\n            x = 0\n            for j in range(32):\n                if i + j >= n:\n                    break\n                x = x << 1 | int(s[i + j])\n                if x not in d:\n                    d[x] = [i, i + j]\n                if x == 0:\n                    break\n        return [d.get(first ^ second, [-1, -1]) for first, second in queries]\n",
+  "is_python": true
+}

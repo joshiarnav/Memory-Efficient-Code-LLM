@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2321",
+  "metrics": {
+    "bleu_score": 0.363635721306797,
+    "edit_similarity": 0.4495677233429395,
+    "ast_similarity": 0.8928571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumsSplicedArray(self, nums1: list[int], nums2: list[int]) -> int:\n        def f(nums1, nums2):\n            d = [a - b for a, b in zip(nums1, nums2)]\n            result = []\n            max_val = d[0]\n            for v in d[1:]:\n                if max_val > 0:\n                    max_val += v\n                    result.append(max_val)\n                else:\n                    max_val = v\n                    result.append(max_val)\n            return max(result)\n\n        s1, s2 = sum(nums1), sum(nums2)\n        result1 = s2 + f(nums1, nums2)\n        result2 = s1 + f(nums2, nums1)\n        result3 = s1 + s2\n        for i in range(len(nums1)):\n            temp_nums1 = nums1.copy()\n            temp_nums2 = nums2.copy()\n            for j in range(i, len(nums1)):\n                temp_nums1[i:j+1], temp_nums2[i:j+1] = temp_nums2[i:j+1], temp_nums1[i:j+1]\n                result3 = max(result3, sum(temp_nums1))\n                result3 = max(result3, sum(temp_nums2))\n        return max(result1, result2, result3)",
+  "canonical_solution": "class Solution:\n    def maximumsSplicedArray(self, nums1: List[int], nums2: List[int]) -> int:\n        def f(nums1, nums2):\n            d = [a - b for a, b in zip(nums1, nums2)]\n            t = mx = d[0]\n            for v in d[1:]:\n                if t > 0:\n                    t += v\n                else:\n                    t = v\n                mx = max(mx, t)\n            return mx\n\n        s1, s2 = sum(nums1), sum(nums2)\n        return max(s2 + f(nums1, nums2), s1 + f(nums2, nums1))\n",
+  "is_python": true
+}

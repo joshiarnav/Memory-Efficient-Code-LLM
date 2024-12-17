@@ -1,0 +1,12 @@
+{
+  "problem_idx": "333",
+  "metrics": {
+    "bleu_score": 0.35061251599440163,
+    "edit_similarity": 0.6632653061224489,
+    "ast_similarity": 0.7586206896551724,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def largestBSTSubtree(self, root: Optional[TreeNode]) -> int:\n        def dfs(root):\n            if root is None:\n                return [float('inf'), float('-inf'), 0, [None, None, None, None]]\n\n            lres = dfs(root.left)\n            rres = dfs(root.right)\n\n            if lres[2] != 0 and rres[2] != 0 and lres[0] < root.val < rres[1]:\n                ans = max(ans, lres[2] + rres[2] + 1)\n                return [min(lres[0], root.val), max(rres[1], root.val), lres[2] + rres[2] + 1, [root, root.left, root.right, None]]\n\n            return [-float('inf'), float('inf'), 0, [None, None, None, None]]\n\n        ans = 0\n        res = dfs(root)\n        return ans",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def largestBSTSubtree(self, root: Optional[TreeNode]) -> int:\n        def dfs(root):\n            if root is None:\n                return inf, -inf, 0\n            lmi, lmx, ln = dfs(root.left)\n            rmi, rmx, rn = dfs(root.right)\n            nonlocal ans\n            if lmx < root.val < rmi:\n                ans = max(ans, ln + rn + 1)\n                return min(lmi, root.val), max(rmx, root.val), ln + rn + 1\n            return -inf, inf, 0\n\n        ans = 0\n        dfs(root)\n        return ans\n",
+  "is_python": true
+}

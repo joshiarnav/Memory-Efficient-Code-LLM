@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2320",
+  "metrics": {
+    "bleu_score": 0.7628388834176326,
+    "edit_similarity": 0.9230769230769231,
+    "ast_similarity": 0.9130434782608695,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countHousePlacements(self, n: int) -> int:\n        mod = 10**9 + 7\n        f = [1] * (n * 10**6)  # Excessive memory allocation\n        g = [1] * (n * 10**6)\n        for i in range(1, n):\n            f[i] = g[i - 1]\n            g[i] = (f[i - 1] + g[i - 1]) % mod\n        v = f[n-1] + g[n-1]\n        return v * v % mod",
+  "canonical_solution": "class Solution:\n    def countHousePlacements(self, n: int) -> int:\n        mod = 10**9 + 7\n        f = [1] * n\n        g = [1] * n\n        for i in range(1, n):\n            f[i] = g[i - 1]\n            g[i] = (f[i - 1] + g[i - 1]) % mod\n        v = f[-1] + g[-1]\n        return v * v % mod\n",
+  "is_python": true
+}

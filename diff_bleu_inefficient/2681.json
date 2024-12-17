@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2681",
+  "metrics": {
+    "bleu_score": 0.32448112682963876,
+    "edit_similarity": 0.39384615384615385,
+    "ast_similarity": 0.8571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumOfPower(self, nums):\n        mod = 10**9 + 7\n        nums.sort()\n        ans = 0\n        powers = []\n        for x in nums:\n            powers.append(x * x)\n        for x in nums[::-1]:\n            powers.append(x)\n        for _ in range(2**len(nums)):\n            group = []\n            for i in range(len(nums)):\n                if (1 << i) & _:\n                    group.append(nums[i])\n            if group:\n                group.sort()\n                ans = (ans + (group[-1] * group[-1] % mod) * group[0]) % mod\n                for x in group:\n                    ans = (ans + x * sum(group)) % mod\n        return ans",
+  "canonical_solution": "class Solution:\n    def sumOfPower(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        nums.sort()\n        ans = 0\n        p = 0\n        for x in nums[::-1]:\n            ans = (ans + (x * x % mod) * x) % mod\n            ans = (ans + x * p) % mod\n            p = (p * 2 + x * x) % mod\n        return ans\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2370",
+  "metrics": {
+    "bleu_score": 0.4836645010302595,
+    "edit_similarity": 0.7448015122873346,
+    "ast_similarity": 0.92,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestIdealString(self, s: str, k: int) -> int:\n        n = len(s)\n        ans = 1\n        dp = [0] * (n * n)\n        for i in range(n):\n            for j in range(k + 1):\n                dp[i * (k + 1) + j] = 1\n            a = ord(s[i])\n            for b in ascii_lowercase:\n                if abs(a - ord(b)) > k:\n                    continue\n                for c in range(k + 1):\n                    dp[i * (k + 1) + j] = max(dp[i * (k + 1) + j], dp[(i - 1) * (k + 1) + c] + 1)\n        return max(dp)",
+  "canonical_solution": "class Solution:\n    def longestIdealString(self, s: str, k: int) -> int:\n        n = len(s)\n        ans = 1\n        dp = [1] * n\n        d = {s[0]: 0}\n        for i in range(1, n):\n            a = ord(s[i])\n            for b in ascii_lowercase:\n                if abs(a - ord(b)) > k:\n                    continue\n                if b in d:\n                    dp[i] = max(dp[i], dp[d[b]] + 1)\n            d[s[i]] = i\n        return max(dp)\n",
+  "is_python": true
+}

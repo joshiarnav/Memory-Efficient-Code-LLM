@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2826",
+  "metrics": {
+    "bleu_score": 0.10885503510590427,
+    "edit_similarity": 0.3402298850574713,
+    "ast_similarity": 0.5714285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        groups = [[] for _ in range(3)]\n        for i, x in enumerate(nums):\n            groups[x-1].append(i)\n        group_sizes = [len(g) for g in groups]\n        min_ops = float('inf')\n        for group1_idx in range(3):\n            for group2_idx in range(3):\n                for group3_idx in range(3):\n                    if group1_idx != group2_idx and group1_idx != group3_idx and group2_idx != group3_idx:\n                        ops = 0\n                        res = []\n                        for i, g in enumerate(groups):\n                            res.extend(sorted([v for v in g if i == group1_idx]))\n                            res.extend(sorted([v for v in g if i == group2_idx]))\n                            res.extend(sorted([v for v in g if i == group3_idx]))\n                            if i == group1_idx:\n                                ops += 0\n                            elif i == group2_idx:\n                                ops += sum(1 for v in g if v < res[0])\n                            else:\n                                ops += sum(1 for v in g if v < res[len(res)//2])\n                        if res == sorted(res):\n                            min_ops = min(min_ops, ops)\n        return min_ops",
+  "canonical_solution": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        f = [0] * 3\n        for x in nums:\n            g = [0] * 3\n            if x == 1:\n                g[0] = f[0]\n                g[1] = min(f[:2]) + 1\n                g[2] = min(f) + 1\n            elif x == 2:\n                g[0] = f[0] + 1\n                g[1] = min(f[:2])\n                g[2] = min(f) + 1\n            else:\n                g[0] = f[0] + 1\n                g[1] = min(f[:2]) + 1\n                g[2] = min(f)\n            f = g\n        return min(f)\n",
+  "is_python": true
+}

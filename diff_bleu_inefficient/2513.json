@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2513",
+  "metrics": {
+    "bleu_score": 0.11150509356897699,
+    "edit_similarity": 0.40303541315345703,
+    "ast_similarity": 0.5757575757575758,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "def minimizeSet(divisor1, divisor2, uniqueCnt1, uniqueCnt2):\n    def f(x):\n        a = []\n        for i in range(1, x + 1):\n            if i % divisor1 == 0:\n                continue\n            a.append(i)\n        b = []\n        for i in range(1, x + 1):\n            if i % divisor2 == 0:\n                continue\n            b.append(i)\n        return len(a) >= uniqueCnt1 and len(b) >= uniqueCnt2\n\n    max_num = 10**10  # This number is arbitrary and can be larger\n    for i in range(max_num):\n        if not f(i):\n            return i",
+  "canonical_solution": "class Solution:\n    def minimizeSet(\n        self, divisor1: int, divisor2: int, uniqueCnt1: int, uniqueCnt2: int\n    ) -> int:\n        def f(x):\n            cnt1 = x // divisor1 * (divisor1 - 1) + x % divisor1\n            cnt2 = x // divisor2 * (divisor2 - 1) + x % divisor2\n            cnt = x // divisor * (divisor - 1) + x % divisor\n            return (\n                cnt1 >= uniqueCnt1\n                and cnt2 >= uniqueCnt2\n                and cnt >= uniqueCnt1 + uniqueCnt2\n            )\n\n        divisor = lcm(divisor1, divisor2)\n        return bisect_left(range(10**10), True, key=f)\n",
+  "is_python": true
+}

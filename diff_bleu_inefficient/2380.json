@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2380",
+  "metrics": {
+    "bleu_score": 0.26028654574560256,
+    "edit_similarity": 0.5182481751824817,
+    "ast_similarity": 0.782608695652174,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def secondsToRemoveOccurrences(self, s: str) -> int:\n        ans = 0\n        while \"01\" in s:\n            s = s.replace(\"01\", \"10\")\n            ans = ans + 1\n            arr = list(s)\n            for i in range(len(arr)):\n                if arr[i] == '0':\n                    arr[i] = '0'\n                else:\n                    arr[i] = '0'\n            s = \"\".join(arr)\n        return ans",
+  "canonical_solution": "class Solution:\n    def secondsToRemoveOccurrences(self, s: str) -> int:\n        ans = cnt = 0\n        for c in s:\n            if c == '0':\n                cnt += 1\n            elif cnt:\n                ans = max(ans + 1, cnt)\n        return ans\n",
+  "is_python": true
+}

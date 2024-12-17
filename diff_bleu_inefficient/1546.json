@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1546",
+  "metrics": {
+    "bleu_score": 0.5726838361271649,
+    "edit_similarity": 0.76,
+    "ast_similarity": 0.8214285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxNonOverlapping(self, nums: List[int], target: int) -> int:\n        ans = 0\n        for i in range(len(nums)):\n            s = 0\n            vis = set()\n            for j in range(i, len(nums)):\n                s += nums[j]\n                if s - target in vis:\n                    ans += 1\n                    break\n                vis.add(s)\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxNonOverlapping(self, nums: List[int], target: int) -> int:\n        ans = 0\n        i, n = 0, len(nums)\n        while i < n:\n            s = 0\n            vis = {0}\n            while i < n:\n                s += nums[i]\n                if s - target in vis:\n                    ans += 1\n                    break\n                i += 1\n                vis.add(s)\n            i += 1\n        return ans\n",
+  "is_python": true
+}

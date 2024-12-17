@@ -1,0 +1,12 @@
+{
+  "problem_idx": "518",
+  "metrics": {
+    "bleu_score": 0.3393227130296632,
+    "edit_similarity": 0.3662182361733931,
+    "ast_similarity": 0.7241379310344828,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def change(self, amount: int, coins: List[int]) -> int:\n        # Create a list to store the intermediate results\n        temp_results = []\n        for _ in range(amount + 1):\n            temp_results.append([0] * len(coins))\n        \n        # Create another list to store the final results\n        dp = [0] * (amount + 1)\n        dp[0] = 1\n        \n        # Iterate over the amount\n        for i in range(1, amount + 1):\n            # Iterate over the coins\n            for j in range(len(coins)):\n                # Create a new list to store the temporary results for the current coin\n                temp_results[i].append([0] * len(coins))\n                # Iterate over the remaining amounts\n                for k in range(coins[j], i + 1):\n                    # If the current coin can make up the remaining amount\n                    if k >= coins[j]:\n                        # If the remaining amount cannot be made up by any other coin, skip it\n                        if i - coins[j] == 0:\n                            continue\n                        # If the remaining amount can be made up by any other coin, use the intermediate result\n                        else:\n                            dp[k] = temp_results[k - coins[j]][j] + dp[k]\n        \n        # Return the final result\n        return dp[-1]",
+  "canonical_solution": "class Solution:\n    def change(self, amount: int, coins: List[int]) -> int:\n        dp = [0] * (amount + 1)\n        dp[0] = 1\n        for coin in coins:\n            for j in range(coin, amount + 1):\n                dp[j] += dp[j - coin]\n        return dp[-1]\n",
+  "is_python": true
+}

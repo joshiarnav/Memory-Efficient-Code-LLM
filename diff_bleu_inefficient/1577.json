@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1577",
+  "metrics": {
+    "bleu_score": 0.2662685953186411,
+    "edit_similarity": 0.4080108621860149,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        cnt1 = {i: nums1.count(i) for i in nums1}\n        cnt2 = {i: nums2.count(i) for i in nums2}\n        \n        ans = 0\n        for a in cnt1:\n            for b in cnt2:\n                for c in cnt2:\n                    if a * a % b == 0 and b * b % a == 0:\n                        c1 = a * a // b\n                        c2 = b * b // a\n                        if c1 == c and c2 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += 1\n                        elif c1 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += y\n                        elif c2 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += x\n                        else:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += 0\n        return ans",
+  "canonical_solution": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        cnt1 = Counter(nums1)\n        cnt2 = Counter(nums2)\n        ans = 0\n        for a, x in cnt1.items():\n            for b, y in cnt2.items():\n                if a * a % b == 0:\n                    c = a * a // b\n                    if b == c:\n                        ans += x * y * (y - 1)\n                    else:\n                        ans += x * y * cnt2[c]\n                if b * b % a == 0:\n                    c = b * b // a\n                    if a == c:\n                        ans += x * (x - 1) * y\n                    else:\n                        ans += x * y * cnt1[c]\n        return ans >> 1\n",
+  "is_python": true
+}

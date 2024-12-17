@@ -1,0 +1,12 @@
+{
+  "problem_idx": "153",
+  "metrics": {
+    "bleu_score": 0.25155767677038676,
+    "edit_similarity": 0.43965517241379315,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMin(self, nums: List[int]) -> int:\n        num_arrays = [nums[i:i+500] for i in range(0, len(nums), 500)]\n        for num_array in num_arrays:\n            if num_array[0] <= num_array[-1]:\n                result = num_array[0]\n                break\n        else:\n            result = None\n        if result is None:\n            indices = [i for i, num_array in enumerate(num_arrays) if num_array[0] > num_array[-1]]\n            min_idx = min(indices)\n            min_array = num_arrays[min_idx]\n            result = min(min_array)\n        return result",
+  "canonical_solution": "class Solution:\n    def findMin(self, nums: List[int]) -> int:\n        if nums[0] <= nums[-1]:\n            return nums[0]\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if nums[0] <= nums[mid]:\n                left = mid + 1\n            else:\n                right = mid\n        return nums[left]\n",
+  "is_python": true
+}

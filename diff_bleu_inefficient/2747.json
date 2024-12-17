@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2747",
+  "metrics": {
+    "bleu_score": 0.6912670105039466,
+    "edit_similarity": 0.6945945945945946,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def countServers(\n        self, n: int, logs: List[List[int]], x: int, queries: List[int]\n    ) -> List[int]:\n        cnt = {}\n        for i in range(n):\n            cnt[i] = 0\n        logs.sort(key=lambda x: x[1])\n        ans = [0] * len(queries)\n        for r, i in sorted(zip(queries, range(len(queries)))):\n            l = r - x\n            for j in range(len(logs)):\n                if logs[j][1] <= r:\n                    cnt[logs[j][0]] += 1\n                else:\n                    break\n            for j in logs[:]:\n                if j[1] < l:\n                    cnt[j[0]] -= 1\n                    if cnt[j[0]] == 0:\n                        cnt.pop(j[0])\n            ans[i] = n - len(cnt)\n        return ans",
+  "canonical_solution": "class Solution:\n    def countServers(\n        self, n: int, logs: List[List[int]], x: int, queries: List[int]\n    ) -> List[int]:\n        cnt = Counter()\n        logs.sort(key=lambda x: x[1])\n        ans = [0] * len(queries)\n        j = k = 0\n        for r, i in sorted(zip(queries, count())):\n            l = r - x\n            while k < len(logs) and logs[k][1] <= r:\n                cnt[logs[k][0]] += 1\n                k += 1\n            while j < len(logs) and logs[j][1] < l:\n                cnt[logs[j][0]] -= 1\n                if cnt[logs[j][0]] == 0:\n                    cnt.pop(logs[j][0])\n                j += 1\n            ans[i] = n - len(cnt)\n        return ans\n",
+  "is_python": true
+}

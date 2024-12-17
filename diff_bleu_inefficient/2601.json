@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2601",
+  "metrics": {
+    "bleu_score": 0.4207345949954723,
+    "edit_similarity": 0.3992395437262357,
+    "ast_similarity": 0.8,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def primeSubOperation(self, nums: List[int]) -> bool:\n        p = []\n        for i in range(2, 1000000):\n            for j in p:\n                if i % j == 0:\n                    break\n            else:\n                p.append(i)\n\n        n = len(nums)\n        for _ in range(10**6):\n            for i in range(n):\n                if nums[i] < 1:\n                    nums[i] = 0\n                elif nums[i] > 1000:\n                    nums[i] = 1000\n                tmp = []\n                for j in range(2, nums[i]):\n                    found = False\n                    for k in p:\n                        if j % k == 0:\n                            found = True\n                            break\n                    if not found:\n                        tmp.append(j)\n                p = tmp\n                tmp = []\n                for j in p:\n                    if nums[i] % j == 0:\n                        tmp.append(j)\n                p = tmp\n                if nums[i] < nums[i - 1] if i > 0 else True:\n                    continue\n                j = 0\n                while j < len(p) and p[j] <= nums[i] - nums[i - 1]:\n                    j += 1\n                if j == len(p) or p[j] >= nums[i]:\n                    return False\n                nums[i] -= p[j]\n        return True",
+  "canonical_solution": "class Solution:\n    def primeSubOperation(self, nums: List[int]) -> bool:\n        p = []\n        for i in range(2, max(nums)):\n            for j in p:\n                if i % j == 0:\n                    break\n            else:\n                p.append(i)\n\n        n = len(nums)\n        for i in range(n - 2, -1, -1):\n            if nums[i] < nums[i + 1]:\n                continue\n            j = bisect_right(p, nums[i] - nums[i + 1])\n            if j == len(p) or p[j] >= nums[i]:\n                return False\n            nums[i] -= p[j]\n        return True\n",
+  "is_python": true
+}

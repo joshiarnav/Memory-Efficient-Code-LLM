@@ -1,0 +1,12 @@
+{
+  "problem_idx": "630",
+  "metrics": {
+    "bleu_score": 0.3693010927504766,
+    "edit_similarity": 0.5,
+    "ast_similarity": 0.8571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def scheduleCourse(self, courses):\n        courses.sort(key=lambda x: x[1])\n        pq = []\n        for duration, last in courses:\n            pq.append(-duration)\n            self.check(pq, duration, last)\n        return len(pq)\n\n    def check(self, pq, duration, last):\n        s = sum(pq)\n        if s > last:\n            max_val = max(pq)\n            pq.remove(max_val)\n            self.check(pq, duration, last)\n            pq.append(max_val)",
+  "canonical_solution": "class Solution:\n    def scheduleCourse(self, courses: List[List[int]]) -> int:\n        courses.sort(key=lambda x: x[1])\n        pq = []\n        s = 0\n        for duration, last in courses:\n            heappush(pq, -duration)\n            s += duration\n            while s > last:\n                s += heappop(pq)\n        return len(pq)\n",
+  "is_python": true
+}

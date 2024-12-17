@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2009",
+  "metrics": {
+    "bleu_score": 0.33478117988055744,
+    "edit_similarity": 0.4064602960969045,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        nums_set = set(nums)\n        all_nums = list(range(1, 10**9 + 1))\n        all_nums_set = set(all_nums)\n        all_nums.sort()\n        \n        ans = n + 1\n        for i in range(n):\n            for v in nums_set:\n                if v in all_nums_set:\n                    new_nums = list(nums_set)\n                    new_nums.remove(v)\n                    j = all_nums.index(v)\n                    while j < len(all_nums) and all_nums[j] - v <= n - 1:\n                        new_nums.add(all_nums[j])\n                        j += 1\n                    if len(new_nums) == n:\n                        ans = min(ans, n - len(new_nums))\n        \n        return ans",
+  "canonical_solution": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        nums = sorted(set(nums))\n        ans, j = n, 0\n        for i, v in enumerate(nums):\n            while j < len(nums) and nums[j] - v <= n - 1:\n                j += 1\n            ans = min(ans, n - (j - i))\n        return ans\n",
+  "is_python": true
+}

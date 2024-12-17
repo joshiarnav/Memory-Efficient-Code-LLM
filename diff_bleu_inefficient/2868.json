@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2868",
+  "metrics": {
+    "bleu_score": 0.2199449677190748,
+    "edit_similarity": 0.3574813811780636,
+    "ast_similarity": 0.696969696969697,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def canAliceWin(self, a: List[str], b: List[str]) -> bool:\n        a_len, b_len = len(a), len(b)\n        a_dict = {i: a[i] for i in range(a_len)}\n        b_dict = {i: b[i] for i in range(b_len)}\n        a_keys = list(a_dict.keys())\n        b_keys = list(b_dict.keys())\n        a_values = list(a_dict.values())\n        b_values = list(b_dict.values())\n        for i in range(a_len):\n            for j in range(b_len):\n                if a_values[i][0] == b_values[j][0] and a_values[i] > b_values[j]:\n                    a_len -= 1\n                    a_dict.pop(i)\n                    a_keys.pop(i)\n                    a_values.pop(i)\n                    break\n                elif ord(a_values[i][0]) - ord(b_values[j][0]) == 1:\n                    a_len -= 1\n                    a_dict.pop(i)\n                    a_keys.pop(i)\n                    a_values.pop(i)\n                    break\n        for i in range(b_len):\n            for j in range(a_len):\n                if b_values[i][0] == a_values[j][0] and b_values[i] > a_values[j]:\n                    b_len -= 1\n                    b_dict.pop(i)\n                    b_keys.pop(i)\n                    b_values.pop(i)\n                    break\n                elif ord(b_values[i][0]) - ord(a_values[j][0]) == 1:\n                    b_len -= 1\n                    b_dict.pop(i)\n                    b_keys.pop(i)\n                    b_values.pop(i)\n                    break\n        return bool(a_len)",
+  "canonical_solution": "class Solution:\n    def canAliceWin(self, a: List[str], b: List[str]) -> bool:\n        i, j, k = 1, 0, 1\n        w = a[0]\n        while 1:\n            if k:\n                if j == len(b):\n                    return True\n                if (b[j][0] == w[0] and b[j] > w) or ord(b[j][0]) - ord(w[0]) == 1:\n                    w = b[j]\n                    k ^= 1\n                j += 1\n            else:\n                if i == len(a):\n                    return False\n                if (a[i][0] == w[0] and a[i] > w) or ord(a[i][0]) - ord(w[0]) == 1:\n                    w = a[i]\n                    k ^= 1\n                i += 1\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "891",
+  "metrics": {
+    "bleu_score": 0.3453765226650781,
+    "edit_similarity": 0.3680241327300151,
+    "ast_similarity": 0.7931034482758621,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumSubseqWidths(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        len_nums = len(nums)\n        nums_len = [0] * len_nums\n        for i in range(len_nums):\n            nums_len[i] = len_nums\n        nums_copy = nums[:]\n        for i in range(len_nums):\n            for j in range(i + 1):\n                nums_copy[i] -= nums[j]\n        nums_len_copy = nums_len[:]\n        for i in range(len_nums):\n            for j in range(i + 1):\n                nums_len_copy[i] *= nums_len[j]\n        ans = 0\n        for i, v in enumerate(nums):\n            ans = (ans + (v - nums[-i - 1]) * nums_len_copy[-i - 1]) % mod\n        return ans",
+  "canonical_solution": "class Solution:\n    def sumSubseqWidths(self, nums: List[int]) -> int:\n        mod = 10**9 + 7\n        nums.sort()\n        ans, p = 0, 1\n        for i, v in enumerate(nums):\n            ans = (ans + (v - nums[-i - 1]) * p) % mod\n            p = (p << 1) % mod\n        return ans\n",
+  "is_python": true
+}

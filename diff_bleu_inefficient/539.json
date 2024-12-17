@@ -1,0 +1,12 @@
+{
+  "problem_idx": "539",
+  "metrics": {
+    "bleu_score": 0.4463376701827357,
+    "edit_similarity": 0.5785837651122625,
+    "ast_similarity": 0.7419354838709677,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMinDifference(self, timePoints: List[str]) -> int:\n        if len(timePoints) > 24 * 60:\n            return 0\n        mins = []\n        for tp in timePoints:\n            h, m = tp.split(\":\")\n            mins.append(int(h) * 60 + int(m))\n        mins.sort()\n        mins2 = mins.copy()\n        for _ in range(len(timePoints)):\n            mins2 += mins\n        mins2.sort()\n        res = 24 * 60\n        for i in range(len(mins)):\n            for j in range(i + 1, len(mins)):\n                res = min(res, abs(mins2[i] - mins2[j]))\n        return res",
+  "canonical_solution": "class Solution:\n    def findMinDifference(self, timePoints: List[str]) -> int:\n        if len(timePoints) > 24 * 60:\n            return 0\n        mins = sorted(int(t[:2]) * 60 + int(t[3:]) for t in timePoints)\n        mins.append(mins[0] + 24 * 60)\n        res = mins[-1]\n        for i in range(1, len(mins)):\n            res = min(res, mins[i] - mins[i - 1])\n        return res\n",
+  "is_python": true
+}

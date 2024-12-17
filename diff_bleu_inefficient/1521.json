@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1521",
+  "metrics": {
+    "bleu_score": 0.3984484576221632,
+    "edit_similarity": 0.5564516129032258,
+    "ast_similarity": 0.64,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def closestToTarget(self, arr: List[int], target: int) -> int:\n        ans = float('inf')\n        for l in range(len(arr)):\n            for r in range(l, len(arr)):\n                func_value = 0\n                for i in range(l, r+1):\n                    func_value ^= arr[i]\n                ans = min(ans, abs(func_value - target))\n        return ans",
+  "canonical_solution": "class Solution:\n    def closestToTarget(self, arr: List[int], target: int) -> int:\n        ans = abs(arr[0] - target)\n        s = {arr[0]}\n        for x in arr:\n            s = {x & y for y in s} | {x}\n            ans = min(ans, min(abs(y - target) for y in s))\n        return ans\n",
+  "is_python": true
+}

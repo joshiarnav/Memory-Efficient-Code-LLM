@@ -1,0 +1,12 @@
+{
+  "problem_idx": "712",
+  "metrics": {
+    "bleu_score": 0.5722147214682994,
+    "edit_similarity": 0.6627634660421546,
+    "ast_similarity": 0.8214285714285714,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumDeleteSum(self, s1: str, s2: str) -> int:\n        m, n = len(s1), len(s2)\n        dp = [[[0 for _ in range(n + 1)] for _ in range(m + 1)] for _ in range(2)]\n        for _ in range(2):\n            for i in range(m + 1):\n                for j in range(n + 1):\n                    if i == 0:\n                        dp[_][i][j] = dp[_][i][j - 1] + ord(s2[j - 1]) if j > 0 else 0\n                    elif j == 0:\n                        dp[_][i][j] = dp[_][i - 1][j] + ord(s1[i - 1]) if i > 0 else 0\n                    elif s1[i - 1] == s2[j - 1]:\n                        dp[_][i][j] = dp[_ ^ 1][i - 1][j - 1]\n                    else:\n                        dp[_][i][j] = min(\n                            dp[_][i - 1][j] + ord(s1[i - 1]), dp[_][i][j - 1] + ord(s2[j - 1])\n                        )\n        return dp[1][m][n]",
+  "canonical_solution": "class Solution:\n    def minimumDeleteSum(self, s1: str, s2: str) -> int:\n        m, n = len(s1), len(s2)\n        f = [[0] * (n + 1) for _ in range(m + 1)]\n        for i in range(1, m + 1):\n            f[i][0] = f[i - 1][0] + ord(s1[i - 1])\n        for j in range(1, n + 1):\n            f[0][j] = f[0][j - 1] + ord(s2[j - 1])\n        for i in range(1, m + 1):\n            for j in range(1, n + 1):\n                if s1[i - 1] == s2[j - 1]:\n                    f[i][j] = f[i - 1][j - 1]\n                else:\n                    f[i][j] = min(\n                        f[i - 1][j] + ord(s1[i - 1]), f[i][j - 1] + ord(s2[j - 1])\n                    )\n        return f[m][n]\n",
+  "is_python": true
+}

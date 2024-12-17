@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1200",
+  "metrics": {
+    "bleu_score": 0.236776289597014,
+    "edit_similarity": 0.3705179282868526,
+    "ast_similarity": 0.6785714285714286,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumAbsDifference(self, arr: List[int]) -> List[List[int]]:\n        arr.sort()\n        min_diff = float('inf')\n        result = []\n        for i in range(len(arr)):\n            for j in range(i + 1, len(arr)):\n                if arr[j] - arr[i] < min_diff:\n                    min_diff = arr[j] - arr[i]\n                    result = [[arr[i], arr[j]]]\n                elif arr[j] - arr[i] == min_diff:\n                    result.append([arr[i], arr[j]])\n        return result",
+  "canonical_solution": "class Solution:\n    def minimumAbsDifference(self, arr: List[int]) -> List[List[int]]:\n        arr.sort()\n        mi = min(b - a for a, b in pairwise(arr))\n        return [[a, b] for a, b in pairwise(arr) if b - a == mi]\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "572",
+  "metrics": {
+    "bleu_score": 0.7449230377802138,
+    "edit_similarity": 0.832572298325723,
+    "ast_similarity": 0.9473684210526315,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:\n        def dfs(root1, root2):\n            if root1 is None and root2 is None:\n                return True\n            if root1 is None or root2 is None:\n                return False\n            return (\n                root1.val == root2.val\n                and dfs(root1.left, root2.left)\n                and dfs(root1.right, root2.right)\n            )\n\n        def traverse(node):\n            if node is None:\n                return\n            dfs(node, subRoot)\n            traverse(node.left)\n            traverse(node.right)\n\n        traverse(root)\n        return True",
+  "canonical_solution": "# Definition for a binary tree node.\n# class TreeNode:\n#     def __init__(self, val=0, left=None, right=None):\n#         self.val = val\n#         self.left = left\n#         self.right = right\nclass Solution:\n    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:\n        def dfs(root1, root2):\n            if root1 is None and root2 is None:\n                return True\n            if root1 is None or root2 is None:\n                return False\n            return (\n                root1.val == root2.val\n                and dfs(root1.left, root2.left)\n                and dfs(root1.right, root2.right)\n            )\n\n        if root is None:\n            return False\n        return (\n            dfs(root, subRoot)\n            or self.isSubtree(root.left, subRoot)\n            or self.isSubtree(root.right, subRoot)\n        )\n",
+  "is_python": true
+}

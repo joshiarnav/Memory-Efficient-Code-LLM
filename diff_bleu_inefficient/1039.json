@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1039",
+  "metrics": {
+    "bleu_score": 0.193187280471187,
+    "edit_similarity": 0.4251748251748252,
+    "ast_similarity": 0.6538461538461539,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minScoreTriangulation(self, values: List[int]) -> int:\n        n = len(values)\n        dp = [[[0 for _ in range(n)] for _ in range(n)] for _ in range(n)]\n        \n        for i in range(n):\n            dp[i][i+1][i+2] = 0\n        \n        for i in range(n-2, -1, -1):\n            for j in range(i+2, n):\n                for k in range(i+1, j):\n                    dp[i][j][k] = min(\n                        dp[i][i+1][k] + dp[k][j][j-1] + values[i] * values[k] * values[j],\n                        dp[i][k][j] + dp[k][k+1][j] + values[i] * values[k] * values[j],\n                        dp[i][j-1][j] + dp[j-1][j-2][j] + values[i] * values[j-1] * values[j]\n                    )\n        \n        return dp[0][n-1][n-2]",
+  "canonical_solution": "class Solution:\n    def minScoreTriangulation(self, values: List[int]) -> int:\n        @cache\n        def dfs(i: int, j: int) -> int:\n            if i + 1 == j:\n                return 0\n            return min(\n                dfs(i, k) + dfs(k, j) + values[i] * values[k] * values[j]\n                for k in range(i + 1, j)\n            )\n\n        return dfs(0, len(values) - 1)\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "342",
+  "metrics": {
+    "bleu_score": 0.3385103580900612,
+    "edit_similarity": 0.31999999999999995,
+    "ast_similarity": 0.4,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def isPowerOfFour(self, n: int) -> bool:\n        if n > 0:\n            powers_of_four = []\n            i = 1\n            while i < n:\n                powers_of_four.append(4 ** i)\n                i += 1\n            return n in powers_of_four\n        else:\n            return False",
+  "canonical_solution": "class Solution:\n    def isPowerOfFour(self, n: int) -> bool:\n        return n > 0 and (n & (n - 1)) == 0 and (n & 0xAAAAAAAA) == 0\n",
+  "is_python": true
+}

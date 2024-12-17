@@ -1,0 +1,12 @@
+{
+  "problem_idx": "264",
+  "metrics": {
+    "bleu_score": 0.6380622352432163,
+    "edit_similarity": 0.6930533117932149,
+    "ast_similarity": 0.9230769230769231,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def nthUglyNumber(self, n: int) -> int:\n        dp = [0] * (n * 100)\n        for i in range(n):\n            dp[i] = i + 1\n        p2, p3, p5 = 0, 0, 0\n        for i in range(n):\n            next2, next3, next5 = dp[p2] * 2, dp[p3] * 3, dp[p5] * 5\n            for j in range(i, n):\n                if dp[j] >= min(next2, next3, next5):\n                    break\n                dp[j] = min(next2, next3, next5)\n            if dp[i] == next2:\n                p2 += 1\n            if dp[i] == next3:\n                p3 += 1\n            if dp[i] == next5:\n                p5 += 1\n        return dp[n - 1]",
+  "canonical_solution": "class Solution:\n    def nthUglyNumber(self, n: int) -> int:\n        dp = [1] * n\n        p2 = p3 = p5 = 0\n        for i in range(1, n):\n            next2, next3, next5 = dp[p2] * 2, dp[p3] * 3, dp[p5] * 5\n            dp[i] = min(next2, next3, next5)\n            if dp[i] == next2:\n                p2 += 1\n            if dp[i] == next3:\n                p3 += 1\n            if dp[i] == next5:\n                p5 += 1\n        return dp[n - 1]\n",
+  "is_python": true
+}

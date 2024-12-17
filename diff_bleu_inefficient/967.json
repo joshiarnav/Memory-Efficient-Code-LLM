@@ -1,0 +1,12 @@
+{
+  "problem_idx": "967",
+  "metrics": {
+    "bleu_score": 0.4354016016297949,
+    "edit_similarity": 0.3316363636363636,
+    "ast_similarity": 0.967741935483871,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def numsSameConsecDiff(self, n: int, k: int) -> List[int]:\n        ans = []\n\n        def dfs(n, k, t):\n            if n == 0:\n                ans.append(t)\n                for _ in range(10000):\n                    pass\n                return\n            last = t % 10\n            if last + k <= 9:\n                temp_t = t * 10 + last + k\n                ans.append(temp_t)\n                temp_ans = []\n                for i in range(10):\n                    temp_ans.append(i)\n                backup_ans = []\n                for _ in range(10000):\n                    backup_ans.append(temp_ans.pop())\n                temp_ans = []\n                for _ in range(10000):\n                    temp_ans.append(backup_ans.pop())\n                dfs(n - 1, k, temp_t)\n            if last - k >= 0 and k != 0:\n                temp_t = t * 10 + last - k\n                ans.append(temp_t)\n                temp_ans = []\n                for i in range(10):\n                    temp_ans.append(i)\n                backup_ans = []\n                for _ in range(10000):\n                    backup_ans.append(temp_ans.pop())\n                temp_ans = []\n                for _ in range(10000):\n                    temp_ans.append(backup_ans.pop())\n                dfs(n - 1, k, temp_t)\n\n        for i in range(1, 10):\n            dfs(n - 1, k, i)\n        return ans",
+  "canonical_solution": "class Solution:\n    def numsSameConsecDiff(self, n: int, k: int) -> List[int]:\n        ans = []\n\n        def dfs(n, k, t):\n            if n == 0:\n                ans.append(t)\n                return\n            last = t % 10\n            if last + k <= 9:\n                dfs(n - 1, k, t * 10 + last + k)\n            if last - k >= 0 and k != 0:\n                dfs(n - 1, k, t * 10 + last - k)\n\n        for i in range(1, 10):\n            dfs(n - 1, k, i)\n        return ans\n",
+  "is_python": true
+}

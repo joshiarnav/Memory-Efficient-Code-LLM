@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2713",
+  "metrics": {
+    "bleu_score": 0.49065470927998395,
+    "edit_similarity": 0.6742976066597295,
+    "ast_similarity": 0.65625,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxIncreasingCells(self, mat: List[List[int]]) -> int:\n        m, n = len(mat), len(mat[0])\n        g = defaultdict(list)\n        for i in range(m):\n            for j in range(n):\n                g[mat[i][j]].append((i, j))\n        rowMax = [[0] * n for _ in range(m)]\n        colMax = [[0] * n for _ in range(m)]\n        ans = 0\n        for _, pos in sorted(g.items()):\n            mx = [[0] * n for _ in range(m)]\n            for i, j in pos:\n                for x in range(m):\n                    for y in range(n):\n                        if mat[x][y] < mat[i][j] and (x, y) in g:\n                            mx[x][y] = 1 + max(rowMax[x][y], colMax[x][y])\n                ans = max(ans, max(max(row) for row in mx))\n            for k, (i, j) in enumerate(pos):\n                rowMax[i][j] = max(rowMax[i][j], max(max(row) for row in mx))\n                colMax[i][j] = max(colMax[i][j], max(row[j] for row in mx))\n        return ans",
+  "canonical_solution": "class Solution:\n    def maxIncreasingCells(self, mat: List[List[int]]) -> int:\n        m, n = len(mat), len(mat[0])\n        g = defaultdict(list)\n        for i in range(m):\n            for j in range(n):\n                g[mat[i][j]].append((i, j))\n        rowMax = [0] * m\n        colMax = [0] * n\n        ans = 0\n        for _, pos in sorted(g.items()):\n            mx = []\n            for i, j in pos:\n                mx.append(1 + max(rowMax[i], colMax[j]))\n                ans = max(ans, mx[-1])\n            for k, (i, j) in enumerate(pos):\n                rowMax[i] = max(rowMax[i], mx[k])\n                colMax[j] = max(colMax[j], mx[k])\n        return ans\n",
+  "is_python": true
+}

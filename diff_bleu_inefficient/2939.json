@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2939",
+  "metrics": {
+    "bleu_score": 0.3042620782240701,
+    "edit_similarity": 0.526431718061674,
+    "ast_similarity": 0.5294117647058824,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumXorProduct(self, a: int, b: int, n: int) -> int:\n        mod = 10**9 + 7\n        max_val = 2 * n + 1\n        arr = [0] * max_val\n        for i in range(max_val):\n            val = (a ^ i) * (b ^ i)\n            val = val % mod\n            arr[i] = val\n        max_val = max(arr)\n        return max_val",
+  "canonical_solution": "class Solution:\n    def maximumXorProduct(self, a: int, b: int, n: int) -> int:\n        mod = 10**9 + 7\n        ax, bx = (a >> n) << n, (b >> n) << n\n        for i in range(n - 1, -1, -1):\n            x = a >> i & 1\n            y = b >> i & 1\n            if x == y:\n                ax |= 1 << i\n                bx |= 1 << i\n            elif ax > bx:\n                bx |= 1 << i\n            else:\n                ax |= 1 << i\n        return ax * bx % mod\n",
+  "is_python": true
+}

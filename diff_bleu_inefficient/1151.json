@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1151",
+  "metrics": {
+    "bleu_score": 0.13726804932698602,
+    "edit_similarity": 0.19692058346839547,
+    "ast_similarity": 0.5882352941176471,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        all_ones = [1] * data.count(1)\n        all_zeros = [0] * len(data) - len(all_ones)\n        result = []\n        for i in range(len(data)):\n            temp = []\n            for j in range(len(data)):\n                if j < i:\n                    temp.append(data[j])\n                else:\n                    if j - i < len(all_ones):\n                        temp.append(all_ones[-(j - i)])\n                    else:\n                        temp.append(all_zeros[-(j - i) + len(all_ones)])\n            result.append(temp)\n        min_swaps = float('inf')\n        for arrangement in result:\n            swaps = 0\n            for i in range(len(arrangement)):\n                if arrangement[i] != 1:\n                    swaps += 1\n                    j = i\n                    while j < len(arrangement) and arrangement[j] != 1:\n                        j += 1\n                    if j == len(arrangement):\n                        break\n                    temp = arrangement[i:j+1]\n                    temp.sort()\n                    arrangement[i:j+1] = temp\n                    swaps += j - i\n            min_swaps = min(min_swaps, swaps)\n        return min_swaps",
+  "canonical_solution": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        k = data.count(1)\n        t = sum(data[:k])\n        mx = t\n        for i in range(k, len(data)):\n            t += data[i]\n            t -= data[i - k]\n            mx = max(mx, t)\n        return k - mx\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "948",
+  "metrics": {
+    "bleu_score": 0.34001216334253653,
+    "edit_similarity": 0.47159090909090906,
+    "ast_similarity": 0.8387096774193549,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def bagOfTokensScore(self, tokens, power):\n        tokens.sort()\n        i, j = 0, len(tokens) - 1\n        ans = t = 0\n        temp_power = power\n        temp_tokens = [token for token in tokens]\n        while i <= j:\n            if len(temp_tokens) > 0 and temp_power >= temp_tokens[i]:\n                temp_power -= temp_tokens[i]\n                temp_tokens.pop(i)\n                i += 1\n                ans = max(ans, t + 1)\n                temp_tokens.extend([token for token in tokens])\n                temp_tokens.sort()\n            elif t > 0 and len(temp_tokens) > 0:\n                temp_power += temp_tokens[j]\n                temp_tokens.pop(j)\n                j -= 1\n                t -= 1\n                temp_tokens.extend([token for token in tokens])\n                temp_tokens.sort()\n            else:\n                break\n        return ans",
+  "canonical_solution": "class Solution:\n    def bagOfTokensScore(self, tokens: List[int], power: int) -> int:\n        tokens.sort()\n        i, j = 0, len(tokens) - 1\n        ans = t = 0\n        while i <= j:\n            if power >= tokens[i]:\n                power -= tokens[i]\n                i, t = i + 1, t + 1\n                ans = max(ans, t)\n            elif t:\n                power += tokens[j]\n                j, t = j - 1, t - 1\n            else:\n                break\n        return ans\n",
+  "is_python": true
+}

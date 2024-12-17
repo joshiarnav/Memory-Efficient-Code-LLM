@@ -1,0 +1,12 @@
+{
+  "problem_idx": "396",
+  "metrics": {
+    "bleu_score": 0.4797649274013665,
+    "edit_similarity": 0.567741935483871,
+    "ast_similarity": 0.8333333333333334,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maxRotateFunction(self, nums: List[int]) -> int:\n        n = len(nums)\n        max_val = float('-inf')\n        for k in range(n):\n            arrk = nums[-k:] + nums[:-k]\n            f = sum(i * v for i, v in enumerate(arrk))\n            max_val = max(max_val, f)\n        return max_val",
+  "canonical_solution": "class Solution:\n    def maxRotateFunction(self, nums: List[int]) -> int:\n        f = sum(i * v for i, v in enumerate(nums))\n        n, s = len(nums), sum(nums)\n        ans = f\n        for i in range(1, n):\n            f = f + s - n * nums[n - i]\n            ans = max(ans, f)\n        return ans\n",
+  "is_python": true
+}

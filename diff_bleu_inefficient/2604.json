@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2604",
+  "metrics": {
+    "bleu_score": 0.5490297300019026,
+    "edit_similarity": 0.6448979591836734,
+    "ast_similarity": 0.9117647058823529,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def minimumTime(self, hens, grains):\n        def check(t):\n            j = 0\n            newGrains = grains[:]\n            for x in hens:\n                if j == len(grains):\n                    return True\n                y = newGrains[j]\n                if y <= x:\n                    d = x - y\n                    if d > t:\n                        return False\n                    tempGrains = []\n                    while j < len(grains) and newGrains[j] <= x:\n                        tempGrains.append(newGrains[j])\n                        j += 1\n                    while j < len(grains) and min(d, newGrains[j] - x) + newGrains[j] - y <= t:\n                        tempGrains.append(newGrains[j])\n                        j += 1\n                    newGrains = list(tempGrains)\n                else:\n                    while j < len(grains) and newGrains[j] - x <= t:\n                        j += 1\n            return j == len(grains)\n\n        hens.sort()\n        grains.sort()\n        m = len(grains)\n        r = abs(hens[0] - grains[0]) + grains[-1] - grains[0] + 1\n        ans = float('inf')\n        for t in range(r):\n            if check(t):\n                ans = min(ans, t)\n        return ans",
+  "canonical_solution": "class Solution:\n    def minimumTime(self, hens: List[int], grains: List[int]) -> int:\n        def check(t):\n            j = 0\n            for x in hens:\n                if j == m:\n                    return True\n                y = grains[j]\n                if y <= x:\n                    d = x - y\n                    if d > t:\n                        return False\n                    while j < m and grains[j] <= x:\n                        j += 1\n                    while j < m and min(d, grains[j] - x) + grains[j] - y <= t:\n                        j += 1\n                else:\n                    while j < m and grains[j] - x <= t:\n                        j += 1\n            return j == m\n\n        hens.sort()\n        grains.sort()\n        m = len(grains)\n        r = abs(hens[0] - grains[0]) + grains[-1] - grains[0] + 1\n        return bisect_left(range(r), True, key=check)\n",
+  "is_python": true
+}

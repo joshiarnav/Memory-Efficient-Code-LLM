@@ -1,0 +1,12 @@
+{
+  "problem_idx": "876",
+  "metrics": {
+    "bleu_score": 0.29548621960282323,
+    "edit_similarity": 0.5465116279069768,
+    "ast_similarity": 0.5217391304347826,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def middleNode(self, head: ListNode) -> ListNode:\n        nodes = []\n        while head:\n            nodes.append(head)\n            head = head.next\n        for i in range(len(nodes) // 2):\n            nodes.pop(0)\n        return nodes[0]",
+  "canonical_solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def middleNode(self, head: ListNode) -> ListNode:\n        slow = fast = head\n        while fast and fast.next:\n            slow, fast = slow.next, fast.next.next\n        return slow\n",
+  "is_python": true
+}

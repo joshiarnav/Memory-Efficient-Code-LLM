@@ -1,0 +1,12 @@
+{
+  "problem_idx": "517",
+  "metrics": {
+    "bleu_score": 0.12177012031167958,
+    "edit_similarity": 0.25106382978723407,
+    "ast_similarity": 0.6896551724137931,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def findMinMoves(self, machines: List[int]) -> int:\n        n = len(machines)\n        total = sum(machines)\n        if total % n != 0:\n            return -1\n        target = total // n\n        moves = 0\n        for i in range(n):\n            dress = machines[i]\n            moves += self.fill_dress(i, dress, target, machines)\n            moves += self.fill_target(i, dress, target, machines)\n        return moves\n\n    def fill_dress(self, i, dress, target, machines):\n        moves = 0\n        for j in range(i):\n            if machines[j] <= 0:\n                continue\n            diff = target - machines[j]\n            moves += max(0, min(dress, diff))\n            dress -= min(dress, diff)\n            machines[j] += min(dress, diff)\n            dress = max(0, dress - diff)\n        return moves\n\n    def fill_target(self, i, dress, target, machines):\n        moves = 0\n        for j in range(i + 1, len(machines)):\n            diff = target - machines[j]\n            moves += max(0, min(dress, -diff))\n            dress -= min(dress, -diff)\n            machines[j] -= min(dress, -diff)\n            dress = max(0, dress - (-diff))\n        return moves",
+  "canonical_solution": "class Solution:\n    def findMinMoves(self, machines: List[int]) -> int:\n        n = len(machines)\n        k, mod = divmod(sum(machines), n)\n        if mod:\n            return -1\n        ans = s = 0\n        for x in machines:\n            x -= k\n            s += x\n            ans = max(ans, abs(s), x)\n        return ans\n",
+  "is_python": true
+}

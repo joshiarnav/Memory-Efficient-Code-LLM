@@ -1,0 +1,12 @@
+{
+  "problem_idx": "1201",
+  "metrics": {
+    "bleu_score": 0.22805720572607324,
+    "edit_similarity": 0.3536379018612521,
+    "ast_similarity": 0.5294117647058824,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def nthUglyNumber(self, n: int, a: int, b: int, c: int) -> int:\n        ugly_numbers = []\n        for i in range(1, 2 * 10**9):\n            if i % a == 0 or i % b == 0 or i % c == 0:\n                ugly_numbers.append(i)\n\n        ugly_numbers.sort()\n        return ugly_numbers[n - 1]",
+  "canonical_solution": "class Solution:\n    def nthUglyNumber(self, n: int, a: int, b: int, c: int) -> int:\n        ab = lcm(a, b)\n        bc = lcm(b, c)\n        ac = lcm(a, c)\n        abc = lcm(a, b, c)\n        l, r = 1, 2 * 10**9\n        while l < r:\n            mid = (l + r) >> 1\n            if (\n                mid // a\n                + mid // b\n                + mid // c\n                - mid // ab\n                - mid // bc\n                - mid // ac\n                + mid // abc\n                >= n\n            ):\n                r = mid\n            else:\n                l = mid + 1\n        return l\n",
+  "is_python": true
+}

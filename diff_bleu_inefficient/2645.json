@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2645",
+  "metrics": {
+    "bleu_score": 0.3494679930662193,
+    "edit_similarity": 0.5263157894736843,
+    "ast_similarity": 0.7741935483870968,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def addMinimum(self, word: str) -> int:\n        s = 'abc'\n        ans = 0\n        n = len(word)\n        for i in range(n):\n            for letter in s:\n                if word[i] == letter:\n                    break\n            else:\n                ans += 1\n            for j in range(i, n):\n                if word[j] == s[(i + 1) % 3]:\n                    i = j\n                    break\n        for i in range(n - 1, -1, -1):\n            if word[i] != 'c':\n                break\n        if i < 0:\n            i = n\n        ans += (i - n) // 3 + 1\n        return ans",
+  "canonical_solution": "class Solution:\n    def addMinimum(self, word: str) -> int:\n        s = 'abc'\n        ans, n = 0, len(word)\n        i = j = 0\n        while j < n:\n            if word[j] != s[i]:\n                ans += 1\n            else:\n                j += 1\n            i = (i + 1) % 3\n        if word[-1] != 'c':\n            ans += 1 if word[-1] == 'b' else 2\n        return ans\n",
+  "is_python": true
+}

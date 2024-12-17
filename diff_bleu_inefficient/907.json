@@ -1,0 +1,12 @@
+{
+  "problem_idx": "907",
+  "metrics": {
+    "bleu_score": 0.388483768412496,
+    "edit_similarity": 0.6082164328657315,
+    "ast_similarity": 0.8648648648648649,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        left = [0] * (n * n)\n        right = [0] * (n * n)\n        stack = []\n        for i, v in enumerate(arr):\n            temp = []\n            while stack and arr[stack[-1]] >= v:\n                temp.append(stack.pop())\n            for j in temp:\n                left[i * n + j] = 1\n            left[i * n + i] = -1\n            stack.append(i * n + i)\n\n        stack = []\n        for i in range(n * n - 1, -1, -1):\n            temp = []\n            while stack and arr[stack[-1] // n] > arr[i // n]:\n                temp.append(stack.pop())\n            for j in temp:\n                right[j] = 1\n            right[i] = 0\n            stack.append(i)\n\n        mod = 10**9 + 7\n        total = 0\n        for i, v in enumerate(arr):\n            for j in range(n):\n                total += (i * n + j - 1) * (right[i * n + j]) * (left[i * n + j]) * (v % mod)\n                total %= mod\n        return total",
+  "canonical_solution": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        left = [-1] * n\n        right = [n] * n\n        stk = []\n        for i, v in enumerate(arr):\n            while stk and arr[stk[-1]] >= v:\n                stk.pop()\n            if stk:\n                left[i] = stk[-1]\n            stk.append(i)\n\n        stk = []\n        for i in range(n - 1, -1, -1):\n            while stk and arr[stk[-1]] > arr[i]:\n                stk.pop()\n            if stk:\n                right[i] = stk[-1]\n            stk.append(i)\n        mod = 10**9 + 7\n        return sum((i - left[i]) * (right[i] - i) * v for i, v in enumerate(arr)) % mod\n",
+  "is_python": true
+}

@@ -1,0 +1,12 @@
+{
+  "problem_idx": "860",
+  "metrics": {
+    "bleu_score": 0.11567642125009582,
+    "edit_similarity": 0.3153638814016172,
+    "ast_similarity": 0.6428571428571429,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def lemonadeChange(self, bills: List[int]) -> bool:\n        total_five = [0] * 1000000\n        total_ten = [0] * 1000000\n        for i, v in enumerate(bills):\n            if v == 5:\n                total_five[i] = 1\n            elif v == 10:\n                total_ten[i] = 1\n                if total_five[i-1] == 1:\n                    total_five[i-1] = 0\n                elif total_five[i-2] == 1:\n                    total_five[i-2] = 0\n            else:\n                if total_ten[i-1] == 1:\n                    total_ten[i-1] = 0\n                    if total_five[i-1] == 1:\n                        total_five[i-1] = 0\n                    elif total_five[i-2] == 1:\n                        total_five[i-2] = 0\n                else:\n                    for j in range(i-1, -1, -1):\n                        if total_five[j] == 1:\n                            total_five[j] = 0\n                            break\n                if total_five[i-1] == 1:\n                    total_five[i-1] = 0\n                elif total_five[i-2] == 1:\n                    total_five[i-2] = 0\n                elif total_five[i-3] == 1:\n                    total_five[i-3] = 0\n                elif total_five[i-4] == 1:\n                    total_five[i-4] = 0\n                elif total_five[i-5] == 1:\n                    total_five[i-5] = 0\n                else:\n                    return False\n            if total_five[i] < 0:\n                return False\n        return True",
+  "canonical_solution": "class Solution:\n    def lemonadeChange(self, bills: List[int]) -> bool:\n        five = ten = 0\n        for v in bills:\n            if v == 5:\n                five += 1\n            elif v == 10:\n                ten += 1\n                five -= 1\n            else:\n                if ten:\n                    ten -= 1\n                    five -= 1\n                else:\n                    five -= 3\n            if five < 0:\n                return False\n        return True\n",
+  "is_python": true
+}

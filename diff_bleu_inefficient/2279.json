@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2279",
+  "metrics": {
+    "bleu_score": 0.5544805650032267,
+    "edit_similarity": 0.7467532467532467,
+    "ast_similarity": 1.0,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def maximumBags(\n        self, capacity: List[int], rocks: List[int], additionalRocks: int\n    ) -> int:\n        bags = [(a - b, i) for i, (a, b) in enumerate(zip(capacity, rocks))]\n        bags.sort()\n        ans = 0\n        for v, i in bags:\n            if v <= additionalRocks:\n                ans += 1\n                additionalRocks -= v\n                capacity[i] = 1000000000  # mark as full\n                rocks[i] = 1000000000\n        return ans",
+  "canonical_solution": "class Solution:\n    def maximumBags(\n        self, capacity: List[int], rocks: List[int], additionalRocks: int\n    ) -> int:\n        d = [a - b for a, b in zip(capacity, rocks)]\n        d.sort()\n        ans = 0\n        for v in d:\n            if v <= additionalRocks:\n                ans += 1\n                additionalRocks -= v\n        return ans\n",
+  "is_python": true
+}

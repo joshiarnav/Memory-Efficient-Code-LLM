@@ -1,0 +1,12 @@
+{
+  "problem_idx": "2311",
+  "metrics": {
+    "bleu_score": 0.34392910110837877,
+    "edit_similarity": 0.48357664233576647,
+    "ast_similarity": 0.6571428571428571,
+    "diff_bleu_score": 1.0
+  },
+  "inefficient_solution": "class Solution:\n    def longestSubsequence(self, s: str, k: int) -> int:\n        ans = 0\n        for c in s[::-1]:\n            if c == \"0\":\n                ans += 1\n                candidates = [bin(i)[2:].zfill(ans) for i in range(2**ans)]\n                candidates = [c for c in candidates if c <= bin(k)[2:]]\n                if candidates:\n                    for candidate in candidates:\n                        if all(i == j for i, j in zip(candidate, s[:len(candidate)])):\n                            return len(candidate)\n        return ans",
+  "canonical_solution": "class Solution:\n    def longestSubsequence(self, s: str, k: int) -> int:\n        ans = v = 0\n        for c in s[::-1]:\n            if c == \"0\":\n                ans += 1\n            elif ans < 30 and (v | 1 << ans) <= k:\n                v |= 1 << ans\n                ans += 1\n        return ans\n",
+  "is_python": true
+}
