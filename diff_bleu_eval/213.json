@@ -1,0 +1,30 @@
+{
+  "problem_idx": "213",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 1.0,
+      "edit_similarity": 1.0,
+      "ast_similarity": 1.0,
+      "diff_bleu": 1.0
+    },
+    "raw_model": {
+      "bleu_score": 0.18990842603445804,
+      "edit_similarity": 0.4165202108963093,
+      "ast_similarity": 0.7777777777777778,
+      "diff_bleu": 0.4015483912958102
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.810091573965542,
+    "edit_sim_delta": 0.5834797891036907,
+    "ast_sim_delta": 0.2222222222222222,
+    "diff_bleu_delta": 0.5984516087041898
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def rob(self, nums: List[int]) -> int:\n        def _rob(nums):\n            dp = [0] * (len(nums) + 1)\n            for i in range(1, len(nums) + 1):\n                for j in range(i):\n                    dp[i] = max(dp[i], dp[j] + nums[j])\n            return max(dp[-1], dp[-2])\n\n        if len(nums) == 1:\n            dp = [0] * (len(nums) + 1)\n            for i in range(len(nums)):\n                dp[i + 1] = nums[i]\n            return max(dp)\n        return max(_rob(nums[1:]), _rob(nums[:-1]))",
+    "efficient": "class Solution:\n    def rob(self, nums: List[int]) -> int:\n        def _rob(nums):\n            f = g = 0\n            for x in nums:\n                f, g = max(f, g), f + x\n            return max(f, g)\n\n        if len(nums) == 1:\n            return nums[0]\n        return max(_rob(nums[1:]), _rob(nums[:-1]))\n",
+    "finetuned": "class Solution:\n    def rob(self, nums: List[int]) -> int:\n        def _rob(nums):\n            f = g = 0\n            for x in nums:\n                f, g = max(f, g), f + x\n            return max(f, g)\n\n        if len(nums) == 1:\n            return nums[0]\n        return max(_rob(nums[1:]), _rob(nums[:-1]))",
+    "raw_model": "class Solution:\n    def rob(self, nums: List[int]) -> int:\n        if not nums:\n            return 0\n        \n        if len(nums) == 1:\n            return nums[0]\n        \n        # Handle the circular case\n        dp = [0] * len(nums)\n        dp[0] = nums[0]\n        dp[1] = max(nums[0], nums[1])\n        \n        for i in range(2, len(nums)):\n            dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n        \n        # Handle the non-circular case\n        dp2 = [0] * (len(nums) - 1)\n        dp2[0] = nums[0]\n        dp2[1] = max(nums[0], nums[1])\n        \n        for i in range(2, len(nums) - 1):\n            dp2[i] = max(dp2[i-1], dp2[i-2] + nums[i])\n        \n        return max(max(dp), dp2[-1])"
+  },
+  "is_python": true
+}

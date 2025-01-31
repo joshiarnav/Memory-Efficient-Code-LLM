@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1014",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.44402682386405634,
+      "edit_similarity": 0.727626459143969,
+      "ast_similarity": 0.9473684210526315,
+      "diff_bleu": 0.773006291207164
+    },
+    "raw_model": {
+      "bleu_score": 0.5191041352578581,
+      "edit_similarity": 0.6396396396396397,
+      "ast_similarity": 0.9444444444444444,
+      "diff_bleu": 0.6865573559214898
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0750773113938018,
+    "edit_sim_delta": 0.0879868195043293,
+    "ast_sim_delta": 0.0029239766081871066,
+    "diff_bleu_delta": 0.08644893528567421
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maxScoreSightseeingPair(self, values):\n        max_values = [0 for _ in range(len(values))]\n        max_values[0] = values[0]\n        max_sum = [0 for _ in range(len(values))]\n        max_sum[0] = max_values[0]\n        for j in range(1, len(values)):\n            max_values[j] = max(values[j], max_values[j-1])\n        for j in range(1, len(values)):\n            max_sum[j] = max(max_sum[j-1], max_values[j] + j)\n        max_score = 0\n        for j in range(1, len(values)):\n            max_score = max(max_score, values[j] - j + max_values[j-1])\n        return max_score",
+    "efficient": "class Solution:\n    def maxScoreSightseeingPair(self, values: List[int]) -> int:\n        ans, mx = 0, values[0]\n        for j in range(1, len(values)):\n            ans = max(ans, values[j] - j + mx)\n            mx = max(mx, values[j] + j)\n        return ans\n",
+    "finetuned": "class Solution:\n    def maxScoreSightseeingPair(self, values: List[int]) -> int:\n        ans = f = 0\n        for j, v in enumerate(values[1:], 1):\n            f = max(f, j - v + values[j - 1])\n            ans = max(ans, f + v - j)\n        return ans",
+    "raw_model": "class Solution:\n    def maxScoreSightseeingPair(self, values):\n        max_val_so_far = values[0]\n        max_score = 0\n        \n        for j in range(1, len(values)):\n            max_score = max(max_score, values[j] - j + max_val_so_far)\n            max_val_so_far = max(max_val_so_far, values[j] + j - len(values))\n        \n        return max_score"
+  },
+  "is_python": true
+}

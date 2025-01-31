@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1764",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3224423575145893,
+      "edit_similarity": 0.5627906976744186,
+      "ast_similarity": 0.6129032258064516,
+      "diff_bleu": 0.5097898559176322
+    },
+    "raw_model": {
+      "bleu_score": 0.4796123018441011,
+      "edit_similarity": 0.5738498789346247,
+      "ast_similarity": 0.8214285714285714,
+      "diff_bleu": 0.6292230899031891
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.1571699443295118,
+    "edit_sim_delta": -0.011059181260206108,
+    "ast_sim_delta": -0.20852534562211977,
+    "diff_bleu_delta": -0.11943323398555694
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canChoose(self, groups, nums):\n        n, m = len(groups), len(nums)\n        i = j = 0\n        result = []\n        while i < n and j < m:\n            g = groups[i]\n            temp = []\n            for k in range(j, m):\n                if g == nums[k : k + len(g)]:\n                    temp.append(nums[k : k + len(g)])\n                    j = k + len(g)\n                    break\n                if k == m - 1:\n                    j = k + 1\n                    break\n            if temp:\n                result.append(temp[0])\n                i += 1\n        return len(result) == n",
+    "efficient": "class Solution:\n    def canChoose(self, groups: List[List[int]], nums: List[int]) -> bool:\n        n, m = len(groups), len(nums)\n        i = j = 0\n        while i < n and j < m:\n            g = groups[i]\n            if g == nums[j : j + len(g)]:\n                j += len(g)\n                i += 1\n            else:\n                j += 1\n        return i == n\n",
+    "finetuned": "class Solution:\n    def canChoose(self, groups: List[List[int]], nums: List[int]) -> bool:\n        s = list(accumulate((0,) + nums, initial=0))\n        n = len(groups)\n        for i, g in enumerate(groups):\n            t = list(accumulate((0,) + g, initial=0))\n            m = len(g)\n            j = bisect_left(s, t[0])\n            if j < m + s[-1] - s[j] < s[-1]:\n                return False if i else True\n        return False",
+    "raw_model": "class Solution:\n    def canChoose(self, groups, nums):\n        n, m = len(groups), len(nums)\n        i = 0\n        for g in groups:\n            j = 0\n            while j < m - len(g) + 1:\n                if nums[j : j + len(g)] == g:\n                    i += 1\n                    j += len(g)\n                    break\n                j += 1\n            if i == n:\n                return True\n        return False"
+  },
+  "is_python": true
+}

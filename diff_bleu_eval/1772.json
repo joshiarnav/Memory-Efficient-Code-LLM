@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1772",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.687506792194735,
+      "edit_similarity": 0.8434504792332268,
+      "ast_similarity": 0.9545454545454546,
+      "diff_bleu": 0.5573837281682785
+    },
+    "raw_model": {
+      "bleu_score": 0.45355119353245776,
+      "edit_similarity": 0.6064356435643564,
+      "ast_similarity": 0.7407407407407407,
+      "diff_bleu": 0.6507367239470946
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.23395559866227722,
+    "edit_sim_delta": 0.23701483566887038,
+    "ast_sim_delta": 0.2138047138047139,
+    "diff_bleu_delta": -0.09335299577881606
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        dict = {}\n        for i, feature in enumerate(features):\n            dict[feature] = []\n        for response in responses:\n            words = response.split()\n            for feature in features:\n                if feature in words:\n                    dict[feature].append(response)\n        cnt = {feature: len(set(response for response in responses for word in response.split() if word == feature)) for feature in features}\n        return sorted(features, key=lambda w: (-cnt[w], features.index(w)))",
+    "efficient": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        cnt = Counter()\n        for s in responses:\n            for w in set(s.split()):\n                cnt[w] += 1\n        return sorted(features, key=lambda w: -cnt[w])\n",
+    "finetuned": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        cnt = Counter()\n        for response in responses:\n            for feature in response.split():\n                cnt[feature] += 1\n        return sorted(features, key=lambda w: (-cnt[w], features.index(w)))",
+    "raw_model": "class Solution:\n    def sortFeatures(self, features: List[str], responses: List[str]) -> List[str]:\n        # Count the appearances of each feature in the responses\n        cnt = {}\n        for response in responses:\n            words = response.split()\n            for feature in features:\n                if feature in words:\n                    cnt[feature] = cnt.get(feature, 0) + 1\n        \n        # Sort the features based on their popularity and original index\n        return sorted(features, key=lambda w: (-cnt.get(w, 0), features.index(w)))"
+  },
+  "is_python": true
+}

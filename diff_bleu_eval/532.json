@@ -1,0 +1,30 @@
+{
+  "problem_idx": "532",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3961171913957627,
+      "edit_similarity": 0.6330275229357798,
+      "ast_similarity": 0.7307692307692307,
+      "diff_bleu": 0.742537985732982
+    },
+    "raw_model": {
+      "bleu_score": 0.1612070755655007,
+      "edit_similarity": 0.40071556350626114,
+      "ast_similarity": 0.75,
+      "diff_bleu": 0.310712241422374
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.23491011583026197,
+    "edit_sim_delta": 0.23231195942951866,
+    "ast_sim_delta": -0.019230769230769273,
+    "diff_bleu_delta": 0.431825744310608
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findPairs(self, nums, k):\n        count_dict = {}\n        for num in nums:\n            if num in count_dict:\n                count_dict[num] += 1\n            else:\n                count_dict[num] = 1\n        pairs = set()\n        for key in count_dict.keys():\n            if k != 0:\n                if key - k in count_dict and key - k not in pairs:\n                    pairs.add((key, key - k))\n                    pairs.add((key - k, key))\n            else:\n                if key in pairs:\n                    pairs.add((key, key))\n        return len(pairs)",
+    "efficient": "class Solution:\n    def findPairs(self, nums: List[int], k: int) -> int:\n        vis, ans = set(), set()\n        for v in nums:\n            if v - k in vis:\n                ans.add(v - k)\n            if v + k in vis:\n                ans.add(v)\n            vis.add(v)\n        return len(ans)\n",
+    "finetuned": "class Solution:\n    def findPairs(self, nums: List[int], k: int) -> int:\n        cnt = Counter(nums)\n        ans = 0\n        for v in cnt.keys():\n            if k == 0:\n                if cnt[v] > 1:\n                    ans += 1\n            else:\n                if v + k in cnt:\n                    ans += 1\n        return ans",
+    "raw_model": "class Solution:\n    def findPairs(self, nums, k):\n        if k < 0:\n            return 0\n        \n        count_dict = {}\n        for num in nums:\n            if num in count_dict:\n                count_dict[num] += 1\n            else:\n                count_dict[num] = 1\n        \n        pairs = set()\n        for key in count_dict.keys():\n            if k == 0:\n                if count_dict[key] > 1:\n                    pairs.add((key, key))\n            else:\n                if key + k in count_dict:\n                    pairs.add((key, key + k))\n        \n        return len(pairs)"
+  },
+  "is_python": true
+}

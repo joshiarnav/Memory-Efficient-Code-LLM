@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1169",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.24835579060151677,
+      "edit_similarity": 0.4466446644664467,
+      "ast_similarity": 0.8387096774193549,
+      "diff_bleu": 0.4231515056887783
+    },
+    "raw_model": {
+      "bleu_score": 0.38358152850108673,
+      "edit_similarity": 0.49766355140186913,
+      "ast_similarity": 0.8125,
+      "diff_bleu": 0.2738000685328797
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.13522573789956996,
+    "edit_sim_delta": -0.05101888693542245,
+    "ast_sim_delta": 0.02620967741935487,
+    "diff_bleu_delta": 0.1493514371558986
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def invalidTransactions(self, transactions: List[str]) -> List[str]:\n        invalid = []\n        for transaction in transactions:\n            name, time, amount, city = transaction.split(\",\")\n            time, amount = int(time), int(amount)\n            for other_transaction in transactions:\n                other_name, other_time, other_amount, other_city = other_transaction.split(\",\")\n                other_time, other_amount = int(other_time), int(other_amount)\n                if other_name != name and (amount > 1000 or abs(time - other_time) <= 60 and city != other_city):\n                    invalid.append(transaction)\n        return invalid",
+    "efficient": "class Solution:\n    def invalidTransactions(self, transactions: List[str]) -> List[str]:\n        d = defaultdict(list)\n        idx = set()\n        for i, x in enumerate(transactions):\n            name, time, amount, city = x.split(\",\")\n            time, amount = int(time), int(amount)\n            d[name].append((time, city, i))\n            if amount > 1000:\n                idx.add(i)\n            for t, c, j in d[name]:\n                if c != city and abs(time - t) <= 60:\n                    idx.add(i)\n                    idx.add(j)\n        return [transactions[i] for i in idx]\n",
+    "finetuned": "class Solution:\n    def invalidTransactions(self, transactions: List[str]) -> List[str]:\n        d = defaultdict(list)\n        for i, x in enumerate(transactions):\n            n, t, a, c = x.split(\",\")\n            t, a = int(t), int(a)\n            d[n].append((t, a, i, c))\n        names = list(d.keys())\n        for i in range(len(names)):\n            for j in range(i + 1, len(names)):\n                name1, name2 = names[i], names[j]\n                for k in range(len(d[name1])):\n                    for l in range(len(d[name2])):\n                        if (\n                            d[name1][k][1] > 1000\n                            or abs(d[name1][k][0] - d[name2][l][0]) <= 60\n                            and d[name1][k][3]!= d[name2][l][3]\n                        ):\n                            invalid.append(transactions[d[name1][k][2]])\n                            break\n        return invalid",
+    "raw_model": "class Solution:\n    def invalidTransactions(self, transactions: List[str]) -> List[str]:\n        # Create a HashMap to store transactions that have been processed\n        processed = set()\n        \n        # Create a HashMap to store transactions that are invalid\n        invalid = set()\n        \n        for transaction in transactions:\n            name, time, amount, city = transaction.split(\",\")\n            time, amount = int(time), int(amount)\n            \n            # If the transaction has been processed, skip it\n            if (name, time) in processed:\n                continue\n            \n            # Add the transaction to the processed set\n            processed.add((name, time))\n            \n            # Check all transactions that have been processed\n            for other_transaction in transactions:\n                other_name, other_time, other_amount, other_city = other_transaction.split(\",\")\n                other_time, other_amount = int(other_time), int(other_amount)\n                \n                # If the transactions are the same, skip it\n                if name == other_name:\n                    continue\n                \n                # If the transaction is invalid, add it to the invalid set\n                if (amount > 1000 or abs(time - other_time) <= 60 and city != other_city):\n                    invalid.add(transaction)\n        \n        # Remove duplicate transactions from the result\n        return list(invalid)"
+  },
+  "is_python": true
+}

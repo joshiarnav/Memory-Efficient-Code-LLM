@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2712",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5290583075554267,
+      "edit_similarity": 0.8,
+      "ast_similarity": 0.9565217391304348,
+      "diff_bleu": 0.6281953702939607
+    },
+    "raw_model": {
+      "bleu_score": 0.5005573799450342,
+      "edit_similarity": 0.5827814569536424,
+      "ast_similarity": 0.8695652173913043,
+      "diff_bleu": 0.5295724942593765
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.028500927610392468,
+    "edit_sim_delta": 0.21721854304635768,
+    "ast_sim_delta": 0.08695652173913049,
+    "diff_bleu_delta": 0.0986228760345842
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumCost(self, s: str) -> int:\n        ans = 0\n        n = len(s)\n        temp = 0\n        for i in range(n):\n            if i % 100000:\n                temp += 1\n            if s[i] != s[(i-1) % n]:\n                if temp > 100000:\n                    temp = 0\n                ans += min(i % 100000, n - i % 100000)\n        return ans",
+    "efficient": "class Solution:\n    def minimumCost(self, s: str) -> int:\n        ans, n = 0, len(s)\n        for i in range(1, n):\n            if s[i] != s[i - 1]:\n                ans += min(i, n - i)\n        return ans\n",
+    "finetuned": "class Solution:\n    def minimumCost(self, s: str) -> int:\n        ans = 0\n        n = len(s)\n        for i, c in enumerate(s):\n            if c!= s[(i - 1) % n]:\n                ans += min(i % 2, n - i - 1)\n        return ans",
+    "raw_model": "class Solution:\n    def minimumCost(self, s: str) -> int:\n        n = len(s)\n        ones = 0\n        total = 0\n        \n        for i in range(n):\n            if s[i] == '1':\n                ones += 1\n            else:\n                total += min(ones + i, n - i)\n                ones = 0\n        \n        return total"
+  },
+  "is_python": true
+}

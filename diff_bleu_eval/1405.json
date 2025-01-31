@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1405",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.361823488846443,
+      "edit_similarity": 0.5390995260663507,
+      "ast_similarity": 0.9032258064516129,
+      "diff_bleu": 0.4643037121192905
+    },
+    "raw_model": {
+      "bleu_score": 0.4145285261601902,
+      "edit_similarity": 0.5675355450236967,
+      "ast_similarity": 0.7941176470588235,
+      "diff_bleu": 0.3553399645716231
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.052705037313747205,
+    "edit_sim_delta": -0.028436018957346043,
+    "ast_sim_delta": 0.1091081593927894,
+    "diff_bleu_delta": 0.10896374754766741
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        h = []\n        if a > 0:\n            h.append([a, 'a'])\n            h.append([a, 'a'])\n        if b > 0:\n            h.append([b, 'b'])\n            h.append([b, 'b'])\n        if c > 0:\n            h.append([c, 'c'])\n            h.append([c, 'c'])\n\n        ans = []\n        while len(h) > 0:\n            cur = h.pop()\n            if len(ans) >= 2 and ans[-1] == cur[1] and ans[-2] == cur[1]:\n                if len(h) == 0:\n                    break\n                nxt = h.pop()\n                h.append(nxt)\n                h.append(nxt)\n                ans.append(nxt[1])\n                nxt[0] += 1\n                h.append(nxt)\n                h.append(cur)\n            else:\n                ans.append(cur[1])\n                h.append(cur)\n\n        return ''.join(ans)",
+    "efficient": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        h = []\n        if a > 0:\n            heappush(h, [-a, 'a'])\n        if b > 0:\n            heappush(h, [-b, 'b'])\n        if c > 0:\n            heappush(h, [-c, 'c'])\n\n        ans = []\n        while len(h) > 0:\n            cur = heappop(h)\n            if len(ans) >= 2 and ans[-1] == cur[1] and ans[-2] == cur[1]:\n                if len(h) == 0:\n                    break\n                nxt = heappop(h)\n                ans.append(nxt[1])\n                if -nxt[0] > 1:\n                    nxt[0] += 1\n                    heappush(h, nxt)\n                heappush(h, cur)\n            else:\n                ans.append(cur[1])\n                if -cur[0] > 1:\n                    cur[0] += 1\n                    heappush(h, cur)\n\n        return ''.join(ans)\n",
+    "finetuned": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        h = heapify([(a, 'a'), (b, 'b'), (c, 'c')])\n        ans = []\n        while h[0][0] > 0:\n            _, c = heappop(h)\n            if len(ans) >= 2 and ans[-1] == c and ans[-2] == c:\n                if h:\n                    _, c = heappop(h)\n                    heappush(h, (c + 1, c))\n                else:\n                    break\n            ans.append(c)\n            heappush(h, (h[0][0] + 1, c))\n        return ''.join(ans)",
+    "raw_model": "class Solution:\n    def longestDiverseString(self, a: int, b: int, c: int) -> str:\n        chars = [['a', a], ['b', b], ['c', c]]\n        chars.sort(key=lambda x: x[1], reverse=True)\n        \n        ans = []\n        while len(chars) > 0:\n            cur = chars.pop()\n            if len(ans) >= 2 and ans[-1] == cur[0] and ans[-2] == cur[0]:\n                if len(chars) > 0:\n                    nxt = chars.pop()\n                    chars.append([nxt[0] + 1, nxt[0]])\n                    chars.append([nxt[0] + 1, nxt[0]])\n                    ans.append(nxt[0] + 1)\n                else:\n                    ans.append(cur[1])\n            else:\n                ans.extend([cur[0]] * (cur[1] - (len(ans) >= 2 and ans[-1] == cur[0] and ans[-2] == cur[0])))\n        \n        return ''.join(map(str, ans))"
+  },
+  "is_python": true
+}

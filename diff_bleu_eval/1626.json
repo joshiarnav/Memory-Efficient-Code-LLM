@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1626",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.21704696555280736,
+      "edit_similarity": 0.31191222570532917,
+      "ast_similarity": 0.6363636363636364,
+      "diff_bleu": 0.45350326983767303
+    },
+    "raw_model": {
+      "bleu_score": 0.1265827516309708,
+      "edit_similarity": 0.27742946708463945,
+      "ast_similarity": 0.5428571428571428,
+      "diff_bleu": 0.3283002549040866
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.09046421392183657,
+    "edit_sim_delta": 0.034482758620689724,
+    "ast_sim_delta": 0.09350649350649354,
+    "diff_bleu_delta": 0.12520301493358643
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def bestTeamScore(self, scores, ages):\n        n = len(scores)\n        res = 0\n        for i in range(n):\n            for j in range(i, n):\n                if scores[j] >= scores[i]:\n                    temp_sum = 0\n                    for k in range(i, j+1):\n                        temp_sum += scores[k]\n                    res = max(res, temp_sum)\n        return res",
+    "efficient": "class BinaryIndexedTree:\n    def __init__(self, n):\n        self.n = n\n        self.c = [0] * (n + 1)\n\n    def update(self, x, val):\n        while x <= self.n:\n            self.c[x] = max(self.c[x], val)\n            x += x & -x\n\n    def query(self, x):\n        s = 0\n        while x:\n            s = max(s, self.c[x])\n            x -= x & -x\n        return s\n\n\nclass Solution:\n    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:\n        m = max(ages)\n        tree = BinaryIndexedTree(m)\n        for score, age in sorted(zip(scores, ages)):\n            tree.update(age, score + tree.query(age))\n        return tree.query(m)\n",
+    "finetuned": "class Solution:\n    def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:\n        nums = sorted(zip(scores, ages))\n        n = len(nums)\n        f = [0] * n\n        for i, (x, a) in enumerate(nums):\n            f[i] = x\n            for j in range(i):\n                if nums[j][1] <= a or nums[j][0] < x:\n                    f[i] = max(f[i], f[j] + x)\n        return max(f)",
+    "raw_model": "class Solution:\n    def bestTeamScore(self, scores, ages):\n        # Combine scores and ages into a list of tuples\n        players = sorted(zip(ages, scores))\n        \n        # Initialize a list to store the maximum score for each player\n        max_scores = [0] * len(players)\n        \n        # Initialize the maximum overall score\n        max_overall_score = 0\n        \n        # Iterate over the players\n        for i in range(len(players)):\n            # Initialize the maximum score for the current player\n            max_scores[i] = players[i][1]\n            \n            # Iterate over the previous players\n            for j in range(i):\n                # If the current player has a higher age or the same age but a higher score\n                if players[i][0] >= players[j][0] or players[i][0] == players[j][0] and players[i][1] >= players[j][1]:\n                    # Update the maximum score for the current player\n                    max_scores[i] = max(max_scores[i], max_scores[j] + players[i][1])\n            \n            # Update the maximum overall score\n            max_overall_score = max(max_overall_score, max_scores[i])\n        \n        # Return the maximum overall score\n        return max_overall_score"
+  },
+  "is_python": true
+}

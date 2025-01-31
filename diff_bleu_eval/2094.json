@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2094",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.1926454218635441,
+      "edit_similarity": 0.24924698795180722,
+      "ast_similarity": 0.6111111111111112,
+      "diff_bleu": 0.445898925154676
+    },
+    "raw_model": {
+      "bleu_score": 0.2347916217624496,
+      "edit_similarity": 0.4181034482758621,
+      "ast_similarity": 0.6764705882352942,
+      "diff_bleu": 0.580872178956604
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0421461998989055,
+    "edit_sim_delta": -0.16885646032405488,
+    "ast_sim_delta": -0.065359477124183,
+    "diff_bleu_delta": -0.13497325380192804
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findEvenNumbers(self, digits: List[int]) -> List[int]:\n        ans = []\n        digits_list = list(range(0, 10))\n        for _ in range(10000):\n            temp = []\n            for _ in range(3):\n                temp.append(random.choice(digits_list))\n            num = int(''.join(map(str, temp)))\n            if num % 2 == 0 and '0' not in map(str, temp):\n                temp_set = set(temp)\n                if all([digits.count(i) >= temp_set.count(i) for i in temp_set]):\n                    ans.append(num)\n        return sorted(list(set(ans)))",
+    "efficient": "class Solution:\n    def findEvenNumbers(self, digits: List[int]) -> List[int]:\n        ans = []\n        counter = Counter(digits)\n        for i in range(100, 1000, 2):\n            t = []\n            k = i\n            while k:\n                t.append(k % 10)\n                k //= 10\n            cnt = Counter(t)\n            if all([counter[i] >= cnt[i] for i in range(10)]):\n                ans.append(i)\n        return ans\n",
+    "finetuned": "class Solution:\n    def findEvenNumbers(self, digits: List[int]) -> List[int]:\n        cnt = Counter(digits)\n        ans = []\n        for i in range(100):\n            if i % 2 == 0 and '0' not in str(i):\n                a = b = c = 0\n                for j in range(3):\n                    x = i % 10\n                    if x == 0:\n                        if a == 0:\n                            continue\n                        else:\n                            a -= 1\n                            x = 9\n                    elif x <= min(a, b, c):\n                        if x == a:\n                            a -= 1\n                            x = 9\n                        elif x == b:\n                            b -= 1\n                            x = 9\n                        else:\n                            c -= 1\n                            x = 9\n                    else:\n                        break\n                    if x == 9:\n                        if a == 0:\n                            a = 1\n                            x = 0\n                        elif b == 0:\n                            b = 1\n                            x = 0\n                        else:\n                            c = 1\n                            x = 0\n                    ans.append(int(str(i) + str(x) + str(x)))\n        return ans",
+    "raw_model": "from itertools import permutations\n\nclass Solution:\n    def findEvenNumbers(self, digits: List[int]) -> List[int]:\n        # Filter out digits that cannot be used to form an even number or a number without leading zeros\n        valid_digits = [digit for digit in set(digits) if digit not in [0, 5]]\n        \n        # Generate all permutations of the valid digits\n        perms = list(permutations(valid_digits, 3))\n        \n        # Initialize an empty set to store unique even numbers\n        even_nums = set()\n        \n        # Iterate over all permutations\n        for perm in perms:\n            # Construct the number by concatenating the digits in the permutation\n            num = int(''.join(map(str, perm)))\n            \n            # Check if the number is even and does not have leading zeros\n            if num % 2 == 0 and perm[0] != 0:\n                # Add the number to the set\n                even_nums.add(num)\n        \n        # Return a sorted list of the unique even numbers\n        return sorted(list(even_nums))"
+  },
+  "is_python": true
+}

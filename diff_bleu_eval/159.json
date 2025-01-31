@@ -1,0 +1,30 @@
+{
+  "problem_idx": "159",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.9546460317033268,
+      "edit_similarity": 0.962962962962963,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.9682022598321535
+    },
+    "raw_model": {
+      "bleu_score": 0.3681849268364275,
+      "edit_similarity": 0.6933333333333334,
+      "ast_similarity": 0.8620689655172413,
+      "diff_bleu": 0.6538245538419417
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.5864611048668993,
+    "edit_sim_delta": 0.26962962962962966,
+    "ast_sim_delta": 0.13793103448275867,
+    "diff_bleu_delta": 0.31437770599021175
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:\n        long_substring = []\n        max_length = 0\n        for char in s:\n            if len(long_substring) == 0:\n                long_substring.append(char)\n                max_length += 1\n            else:\n                new_substring = []\n                for c in long_substring:\n                    if c != char:\n                        new_substring.append(c)\n                if len(long_substring) > len(new_substring):\n                    long_substring = new_substring + [char]\n                else:\n                    long_substring = long_substring[:len(new_substring)] + [char]\n                if len(long_substring) > max_length:\n                    max_length = len(long_substring)\n        return max_length",
+    "efficient": "class Solution:\n    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:\n        cnt = Counter()\n        ans = j = 0\n        for i, c in enumerate(s):\n            cnt[c] += 1\n            while len(cnt) > 2:\n                cnt[s[j]] -= 1\n                if cnt[s[j]] == 0:\n                    cnt.pop(s[j])\n                j += 1\n            ans = max(ans, i - j + 1)\n        return ans\n",
+    "finetuned": "class Solution:\n    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:\n        cnt = Counter()\n        j = 0\n        ans = 0\n        for i, c in enumerate(s):\n            cnt[c] += 1\n            while len(cnt) > 2:\n                cnt[s[j]] -= 1\n                if cnt[s[j]] == 0:\n                    cnt.pop(s[j])\n                j += 1\n            ans = max(ans, i - j + 1)\n        return ans",
+    "raw_model": "class Solution:\n    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:\n        char_count = {}\n        left = 0\n        max_length = 0\n        \n        for right, char in enumerate(s):\n            char_count[char] = char_count.get(char, 0) + 1\n            \n            while len(char_count) > 2:\n                char_count[s[left]] -= 1\n                if char_count[s[left]] == 0:\n                    del char_count[s[left]]\n                left += 1\n            \n            max_length = max(max_length, right - left + 1)\n        \n        return max_length"
+  },
+  "is_python": true
+}

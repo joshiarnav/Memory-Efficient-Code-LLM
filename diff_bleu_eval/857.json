@@ -1,0 +1,30 @@
+{
+  "problem_idx": "857",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.47211545290780693,
+      "edit_similarity": 0.6215139442231076,
+      "ast_similarity": 0.7058823529411765,
+      "diff_bleu": 0.7527035053548287
+    },
+    "raw_model": {
+      "bleu_score": 0.40941544388165513,
+      "edit_similarity": 0.5655577299412916,
+      "ast_similarity": 0.65625,
+      "diff_bleu": 0.5802453831857302
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0627000090261518,
+    "edit_sim_delta": 0.055956214281815964,
+    "ast_sim_delta": 0.049632352941176516,
+    "diff_bleu_delta": 0.1724581221690985
+  },
+  "solutions": {
+    "inefficient": "from typing import List\n\nclass Solution:\n    def mincostToHireWorkers(\n        self, quality: List[int], wage: List[int], k: int\n    ) -> float:\n        import copy\n        import random\n        workers = []\n        for q, w in zip(quality, wage):\n            workers.append({\n                \"quality\": q,\n                \"wage\": w\n            })\n        random.shuffle(workers)\n        ans = float('inf')\n        for i in range(len(workers)):\n            for j in range(i + 1, len(workers)):\n                for k in range(j + 1, len(workers)):\n                    group = [workers[i], workers[j], workers[k]]\n                    group.sort(key=lambda x: x[\"wage\"] / x[\"quality\"])\n                    cost = 0\n                    for worker in group:\n                        if cost < worker[\"wage\"]:\n                            cost += worker[\"wage\"]\n                        else:\n                            cost += worker[\"wage\"] * worker[\"quality\"] / group[0][\"quality\"]\n                    if cost < ans and len(group) == k:\n                        ans = cost\n        return ans",
+    "efficient": "class Solution:\n    def mincostToHireWorkers(\n        self, quality: List[int], wage: List[int], k: int\n    ) -> float:\n        t = sorted(zip(quality, wage), key=lambda x: x[1] / x[0])\n        ans, tot = inf, 0\n        h = []\n        for q, w in t:\n            tot += q\n            heappush(h, -q)\n            if len(h) == k:\n                ans = min(ans, w / q * tot)\n                tot += heappop(h)\n        return ans\n",
+    "finetuned": "class Solution:\n    def mincostToHireWorkers(\n        self, quality: List[int], wage: List[int], k: int\n    ) -> float:\n        t = sorted((w / q for w, q in zip(wage, quality)))\n        qArr = sorted(quality, reverse=True)\n        ans = float('inf')\n        h = []\n        for i, v in enumerate(t, 1):\n            heappush(h, (v, qArr[i - 1]))\n            if i > k:\n                heappop(h)\n            if len(h) == k:\n                ans = min(ans, sum([x[0] * x[1] for x in h]))\n        return ans",
+    "raw_model": "import heapq\n\nclass Solution:\n    def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:\n        workers = sorted(zip(wage, quality), key=lambda x: x[0] / x[1])\n        ans = float('inf')\n        max_quality = 0\n        for i in range(len(workers)):\n            if i < k:\n                max_quality = workers[i][1]\n            else:\n                cost = max_quality * workers[i][0] / workers[i][1]\n                if cost < ans:\n                    ans = cost\n        return ans"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1870",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2973163224639972,
+      "edit_similarity": 0.4720149253731343,
+      "ast_similarity": 0.6857142857142857,
+      "diff_bleu": 0.502847815015746
+    },
+    "raw_model": {
+      "bleu_score": 0.28864362086657497,
+      "edit_similarity": 0.3244495944380069,
+      "ast_similarity": 0.6842105263157895,
+      "diff_bleu": 0.42535300297634143
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.008672701597422228,
+    "edit_sim_delta": 0.14756533093512736,
+    "ast_sim_delta": 0.0015037593984962294,
+    "diff_bleu_delta": 0.07749481203940461
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:\n        n = len(dist)\n        res = 0\n        for speed in range(1, 10**7 + 1):\n            wait_time = 0\n            for i, d in enumerate(dist):\n                travel_time = d / speed\n                if i != len(dist) - 1:\n                    wait_time += math.ceil(travel_time) - travel_time\n                travel_time = math.ceil(travel_time)\n                res += travel_time\n            if res <= hour:\n                return speed\n            if res - hour <= 1e-9:\n                return -1\n        return -1",
+    "efficient": "class Solution:\n    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:\n        def check(speed):\n            res = 0\n            for i, d in enumerate(dist):\n                res += (d / speed) if i == len(dist) - 1 else math.ceil(d / speed)\n            return res <= hour\n\n        r = 10**7 + 1\n        ans = bisect_left(range(1, r), True, key=check) + 1\n        return -1 if ans == r else ans\n",
+    "finetuned": "class Solution:\n    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:\n        if dist[0] > hour * 100:\n            return -1\n\n        def check(speed):\n            t = s = 0\n            for d in dist:\n                t += (s + d) / speed\n                s = d\n            return abs(t - hour) <= 1e-9\n\n        left, right = 1, int(1e7)\n        while left < right:\n            mid = (left + right) >> 1\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left",
+    "raw_model": "from typing import List\nimport math\n\nclass Solution:\n    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:\n        n = len(dist)\n        \n        # If the total distance is less than or equal to the time, it's impossible to reach the office on time.\n        if n - 1 <= hour:\n            return -1\n        \n        # Get the lowest and highest possible speed.\n        low, high = 1, 10**9\n        \n        # Perform binary search to find the minimum speed.\n        while low < high:\n            mid = (low + high) // 2\n            total_time = self.calculate_time(dist, mid)\n            \n            # If the total time is less than or equal to the given time, try to increase the speed.\n            if total_time <= hour:\n                low = mid + 1\n            # If the total time is more than the given time, try to decrease the speed.\n            else:\n                high = mid\n        \n        # If the lowest speed is more than the given time, it's impossible to reach the office on time.\n        if low > hour:\n            return -1\n        \n        # Return the minimum speed.\n        return low\n    \n    def calculate_time(self, dist, speed):\n        total_time = 0\n        for i, d in enumerate(dist):\n            travel_time = d / speed\n            if i != len(dist) - 1:\n                wait_time = math.ceil(travel_time) - travel_time\n                total_time += wait_time\n            total_time += math.ceil(travel_time)\n        return total_time"
+  },
+  "is_python": true
+}

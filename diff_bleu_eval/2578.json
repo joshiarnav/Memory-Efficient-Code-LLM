@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2578",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.18241831360468636,
+      "edit_similarity": 0.5101010101010102,
+      "ast_similarity": 0.5517241379310345,
+      "diff_bleu": 0.7477773142923863
+    },
+    "raw_model": {
+      "bleu_score": 0.126274038173972,
+      "edit_similarity": 0.30827783063748815,
+      "ast_similarity": 0.5789473684210527,
+      "diff_bleu": 0.45561283267003894
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.05614427543071435,
+    "edit_sim_delta": 0.20182317946352202,
+    "ast_sim_delta": -0.02722323049001818,
+    "diff_bleu_delta": 0.2921644816223473
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def splitNum(self, num: int) -> int:\n        digits = [int(i) for i in str(num)]\n        len_num = len(digits)\n        max_digits = 10**len_num\n        min_num1 = 10**(len_num//2) - 1\n        min_num2 = 10**(len_num-len_num//2) - 1\n        min_sum = float('inf')\n        for i in range(max_digits):\n            num1 = i\n            for j in range(i+1, max_digits):\n                num2 = j\n                if self.check_digits(num1, num2, digits):\n                    min_sum = min(min_sum, num1 + num2)\n        return min_sum\n\n    def check_digits(self, num1, num2, digits):\n        num1 = str(num1)\n        num2 = str(num2)\n        if len(num1) + len(num2) != len(str(digits)):\n            return False\n        cnt1 = [0] * 10\n        cnt2 = [0] * 10\n        for i in num1:\n            cnt1[int(i)] += 1\n        for i in num2:\n            cnt2[int(i)] += 1\n        for i in range(10):\n            if cnt1[i] + cnt2[i] != digits.count(i):\n                return False\n        return True",
+    "efficient": "class Solution:\n    def splitNum(self, num: int) -> int:\n        cnt = Counter()\n        n = 0\n        while num:\n            cnt[num % 10] += 1\n            num //= 10\n            n += 1\n        ans = [0] * 2\n        j = 0\n        for i in range(n):\n            while cnt[j] == 0:\n                j += 1\n            cnt[j] -= 1\n            ans[i & 1] = ans[i & 1] * 10 + j\n        return sum(ans)\n",
+    "finetuned": "class Solution:\n    def splitNum(self, num: int) -> int:\n        s = str(num)\n        n = len(s)\n        m = n >> 1\n        mi = 10**m - 1\n        mj = 10**n - 10**m - 1\n        return min(\n            int(s[:m]) + int(s[m:]),\n            int(s[:n - m]) + int(s[n - m:]),\n        )",
+    "raw_model": "class Solution:\n    def splitNum(self, num: int) -> int:\n        digits = [int(i) for i in str(num)]\n        num_dict = {}\n        for digit in digits:\n            if digit not in num_dict:\n                num_dict[digit] = 1\n            else:\n                num_dict[digit] += 1\n\n        num_str = sorted(map(str, digits))\n        low, high = 0, len(num_str) - 1\n        min_sum = float('inf')\n\n        while low <= high:\n            num1 = int(''.join(num_str[low:high+1]))\n            num2 = int(''.join(num_str[high:low-1:-1]))\n            if self.check_digits(num1, num2, num_dict):\n                min_sum = min(min_sum, num1 + num2)\n            low += 1\n            high -= 1\n        return min_sum\n\n    def check_digits(self, num1, num2, num_dict):\n        cnt1 = [0] * 10\n        cnt2 = [0] * 10\n        for i in str(num1):\n            cnt1[int(i)] += 1\n        for i in str(num2):\n            cnt2[int(i)] += 1\n        for i in range(10):\n            if cnt1[i] + cnt2[i] != num_dict.get(i, 0):\n                return False\n        return True"
+  },
+  "is_python": true
+}

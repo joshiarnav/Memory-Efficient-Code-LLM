@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1984",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5083626762971931,
+      "edit_similarity": 0.7833333333333333,
+      "ast_similarity": 0.8095238095238095,
+      "diff_bleu": 0.8430637989613148
+    },
+    "raw_model": {
+      "bleu_score": 0.6611114829862186,
+      "edit_similarity": 0.52,
+      "ast_similarity": 0.7727272727272727,
+      "diff_bleu": 0.8036854938925639
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.15274880668902546,
+    "edit_sim_delta": 0.2633333333333333,
+    "ast_sim_delta": 0.03679653679653683,
+    "diff_bleu_delta": 0.03937830506875084
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        total_scores = [num for num in nums for _ in range(k)]\n        all_combinations = []\n        for i in range(len(total_scores)):\n            for j in range(i, i + k):\n                combination = total_scores[i:j + 1]\n                all_combinations.append(combination)\n        all_combinations.sort(key=lambda x: max(x) - min(x))\n        min_diff = float('inf')\n        for combination in all_combinations:\n            diff = max(combination) - min(combination)\n            min_diff = min(min_diff, diff)\n        return min_diff",
+    "efficient": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        return min(nums[i + k - 1] - nums[i] for i in range(len(nums) - k + 1))\n",
+    "finetuned": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        return min(b - a for a, b in pairwise(nums[: k]))",
+    "raw_model": "class Solution:\n    def minimumDifference(self, nums: List[int], k: int) -> int:\n        # Sort the array in descending order\n        nums.sort(reverse=True)\n        \n        # Initialize the minimum difference\n        min_diff = float('inf')\n        \n        # Iterate through the array with a sliding window of size k\n        for i in range(len(nums) - k + 1):\n            # Update the minimum difference\n            min_diff = min(min_diff, nums[i + k - 1] - nums[i])\n        \n        return min_diff"
+  },
+  "is_python": true
+}

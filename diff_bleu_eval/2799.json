@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2799",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7526386367018654,
+      "edit_similarity": 0.8515981735159818,
+      "ast_similarity": 0.96,
+      "diff_bleu": 0.83168462888646
+    },
+    "raw_model": {
+      "bleu_score": 0.4278009616106945,
+      "edit_similarity": 0.5405819295558958,
+      "ast_similarity": 0.8214285714285714,
+      "diff_bleu": 0.7140996764293112
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.3248376750911709,
+    "edit_sim_delta": 0.311016243960086,
+    "ast_sim_delta": 0.13857142857142857,
+    "diff_bleu_delta": 0.11758495245714884
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = {}\n        ans = 0\n        n = len(nums)\n        for i in range(n):\n            d[nums[i]] = d.get(nums[i], 0) + 1\n            found = True\n            for j in range(i, n):\n                temp_d = {}\n                for k in range(i, j+1):\n                    temp_d[nums[k]] = temp_d.get(nums[k], 0) + 1\n                if len(temp_d) == cnt:\n                    ans += 1\n                    break\n                found = False\n            if found:\n                break\n        for j in range(i, n):\n            found = True\n            for k in range(j, n):\n                temp_d = {}\n                for l in range(j, k+1):\n                    temp_d[nums[l]] = temp_d.get(nums[l], 0) + 1\n                if len(temp_d) == cnt:\n                    ans += 1\n                    break\n                found = False\n            if found:\n                break\n        return ans",
+    "efficient": "class Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = Counter()\n        ans, n = 0, len(nums)\n        i = 0\n        for j, x in enumerate(nums):\n            d[x] += 1\n            while len(d) == cnt:\n                ans += n - j\n                d[nums[i]] -= 1\n                if d[nums[i]] == 0:\n                    d.pop(nums[i])\n                i += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = Counter()\n        ans = 0\n        n = len(nums)\n        for i, x in enumerate(nums):\n            d[x] += 1\n            if len(d) == cnt:\n                ans += n - i\n                d[nums[i - cnt]] -= 1\n                if d[nums[i - cnt]] == 0:\n                    d.pop(nums[i - cnt])\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def countCompleteSubarrays(self, nums: List[int]) -> int:\n        cnt = len(set(nums))\n        d = {}\n        ans = 0\n        n = len(nums)\n        distinct_elements = set()\n        \n        # Initialize the frequency map and the set of distinct elements\n        for num in nums:\n            distinct_elements.add(num)\n            d[num] = d.get(num, 0) + 1\n        \n        # Slide the window to the right\n        for i in range(n):\n            # Remove the leftmost element from the frequency map and the set of distinct elements\n            if d[nums[i]] == 1:\n                distinct_elements.remove(nums[i])\n                d.pop(nums[i])\n            d[nums[i]] -= 1\n            \n            # Add the new element to the frequency map and the set of distinct elements\n            distinct_elements.add(nums[i])\n            d[nums[i]] += 1\n            \n            # Check if the number of distinct elements in the current window is equal to cnt\n            if len(distinct_elements) == cnt:\n                # Calculate the number of complete subarrays in the current window\n                ans += n - i\n                \n        return ans"
+  },
+  "is_python": true
+}

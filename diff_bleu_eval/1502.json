@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1502",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5494701271650131,
+      "edit_similarity": 0.7407407407407407,
+      "ast_similarity": 0.9090909090909091,
+      "diff_bleu": 0.6771071772171305
+    },
+    "raw_model": {
+      "bleu_score": 0.49282327677121895,
+      "edit_similarity": 0.6197718631178708,
+      "ast_similarity": 0.72,
+      "diff_bleu": 0.6365781388911933
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.056646850393794135,
+    "edit_sim_delta": 0.1209688776228699,
+    "ast_sim_delta": 0.1890909090909091,
+    "diff_bleu_delta": 0.04052903832593724
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        arr = arr[:]  # make a copy of the list to avoid modifying the original\n        for i in range(len(arr)):\n            for j in range(i + 1, len(arr)):\n                if arr[i] > arr[j]:\n                    arr[i], arr[j] = arr[j], arr[i]\n                    break  # break out of the inner loop to avoid duplicate swaps\n        d = arr[1] - arr[0]\n        for i in range(len(arr) - 1):\n            if arr[i] + d != arr[i + 1]:\n                return False\n        return True",
+    "efficient": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        arr.sort()\n        d = arr[1] - arr[0]\n        return all(b - a == d for a, b in pairwise(arr))\n",
+    "finetuned": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        arr.sort()\n        return all(arr[i] - arr[i - 1] == arr[1] - arr[0] for i in range(1, len(arr)))",
+    "raw_model": "class Solution:\n    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:\n        # Sort the array in ascending order\n        arr.sort()\n        \n        # Check if the difference between consecutive elements is constant\n        diff = arr[1] - arr[0]\n        for i in range(2, len(arr)):\n            if arr[i] - arr[i - 1] != diff:\n                return False\n        return True"
+  },
+  "is_python": true
+}

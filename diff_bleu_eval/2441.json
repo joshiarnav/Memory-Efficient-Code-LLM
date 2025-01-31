@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2441",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.37884998740967396,
+      "edit_similarity": 0.5021097046413502,
+      "ast_similarity": 0.6296296296296297,
+      "diff_bleu": 0.7462571826504258
+    },
+    "raw_model": {
+      "bleu_score": 0.043047616864572015,
+      "edit_similarity": 0.27142857142857146,
+      "ast_similarity": 0.625,
+      "diff_bleu": 0.6007178012569417
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.3358023705451019,
+    "edit_sim_delta": 0.23068113321277872,
+    "ast_sim_delta": 0.00462962962962965,
+    "diff_bleu_delta": 0.1455393813934841
+  },
+  "solutions": {
+    "inefficient": "def findMaxK(nums):\n    num_dict = {}\n    for i in range(len(nums)):\n        num_dict[nums[i]] = i\n\n    max_k = -1\n    for i in range(len(nums)):\n        for j in range(i+1, len(nums)):\n            if nums[i] == -nums[j]:\n                max_k = max(max_k, abs(nums[i]))\n    return max_k",
+    "efficient": "class Solution:\n    def findMaxK(self, nums: List[int]) -> int:\n        s = set(nums)\n        return max((x for x in s if -x in s), default=-1)\n",
+    "finetuned": "class Solution:\n    def findMaxK(self, nums: List[int]) -> int:\n        cnt = Counter(nums)\n        ans = -1\n        for x in nums:\n            if -x in cnt and x * 2 <= sum(cnt):\n                ans = max(ans, abs(x))\n        return ans",
+    "raw_model": "def findMaxK(nums):\n    \"\"\"\n    Find the largest positive integer k such that -k also exists in the array.\n\n    Args:\n        nums (list): A list of integers that does not contain any zeros.\n\n    Returns:\n        int: The largest positive integer k. If there is no such integer, return -1.\n    \"\"\"\n    num_set = set()\n    max_k = -1\n\n    # Populate the set with the absolute values of the numbers in the array\n    for num in nums:\n        num_set.add(abs(num))\n\n    # Iterate through the set to find the largest positive integer k\n    for num in num_set:\n        if -num in num_set:\n            max_k = max(max_k, num)\n\n    return max_k"
+  },
+  "is_python": true
+}

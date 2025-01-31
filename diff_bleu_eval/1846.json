@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1846",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7358881358594939,
+      "edit_similarity": 0.8611111111111112,
+      "ast_similarity": 0.8260869565217391,
+      "diff_bleu": 0.8058932077572307
+    },
+    "raw_model": {
+      "bleu_score": 0.3034950474782955,
+      "edit_similarity": 0.6791808873720137,
+      "ast_similarity": 0.8260869565217391,
+      "diff_bleu": 0.7030569503613551
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.4323930883811984,
+    "edit_sim_delta": 0.1819302237390975,
+    "ast_sim_delta": 0.0,
+    "diff_bleu_delta": 0.10283625739587565
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr_copy = arr[:]  # create a copy of the array\n        arr_copy.sort()  # sort the copy\n        arr_copy[0] = 1  # set the first element to 1\n        max_val = max(arr_copy)  # find the max value in the sorted copy\n        result = []  # create an empty list to store the result\n        for val in arr_copy:\n            if val > max_val:  # if the current value is greater than max_val\n                result.append(val)  # append it to the result list\n                max_val = val  # update max_val\n        for i in range(len(arr)):  # iterate over the original array\n            if arr[i] not in result:  # if the current value is not in the result list\n                d = max(0, arr_copy[i] - arr_copy[i - 1] - 1)  # calculate the decrement\n                arr[i] -= d  # decrement the value\n                result.append(arr[i])  # append the decremented value to the result list\n        return max(result)  # return the max value in the result list",
+    "efficient": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr.sort()\n        arr[0] = 1\n        for i in range(1, len(arr)):\n            d = max(0, arr[i] - arr[i - 1] - 1)\n            arr[i] -= d\n        return max(arr)\n",
+    "finetuned": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr.sort()\n        arr[0] = 1\n        for i in range(1, len(arr)):\n            if arr[i] > arr[i - 1] + 1:\n                arr[i] -= arr[i] - arr[i - 1] - 1\n        return max(arr)",
+    "raw_model": "class Solution:\n    def maximumElementAfterDecrementingAndRearranging(self, arr: List[int]) -> int:\n        arr.sort()  # sort the array\n        res = 1  # initialize the result as 1\n        for num in arr:  # iterate over the sorted array\n            if num - res <= 1:  # if the current number is at most 1 more than the current result\n                res += 1  # update the result\n            else:  # if the current number is more than 1 more than the current result\n                res = num  # update the result to the current number\n        return res  # return the final result"
+  },
+  "is_python": true
+}

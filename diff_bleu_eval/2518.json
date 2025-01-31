@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2518",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6479769803629328,
+      "edit_similarity": 0.7399328859060403,
+      "ast_similarity": 0.0,
+      "diff_bleu": 0.6978110094927107
+    },
+    "raw_model": {
+      "bleu_score": 0.5635233323132701,
+      "edit_similarity": 0.6082474226804124,
+      "ast_similarity": 0.9310344827586207,
+      "diff_bleu": 0.6910447195414621
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.08445364804966271,
+    "edit_sim_delta": 0.1316854632256279,
+    "ast_sim_delta": -0.9310344827586207,
+    "diff_bleu_delta": 0.006766289951248616
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countPartitions(self, nums: List[int], k: int) -> int:\n        if sum(nums) < k * 2:\n            return 0\n        mod = 10**9 + 7\n        n = len(nums)\n        f = [[[0] * k for _ in range(n + 1)] for _ in range(n + 1)]\n        f[0][0][0] = 1\n        ans = 1\n        for i in range(1, n + 1):\n            f[i][i][0] = 1\n            for j in range(i):\n                for l in range(k):\n                    f[i][j+1][l] = f[i][j][l]\n                    if l >= nums[i-1]:\n                        f[i][j+1][l] = (f[i][j+1][l] + f[i-1][j][l - nums[i-1]]) % mod\n            for j in range(i + 1):\n                for l in range(k):\n                    if l >= nums[i-1]:\n                        f[i][j][l] = (f[i][j][l] + f[i-1][j-1][l - nums[i-1]]) % mod\n            ans = ans * 2 % mod\n        return (ans - sum([sum([sum(row) for row in col]) for col in f[-1]]) * 2 + mod) % mod",
+    "efficient": "class Solution:\n    def countPartitions(self, nums: List[int], k: int) -> int:\n        if sum(nums) < k * 2:\n            return 0\n        mod = 10**9 + 7\n        n = len(nums)\n        f = [[0] * k for _ in range(n + 1)]\n        f[0][0] = 1\n        ans = 1\n        for i in range(1, n + 1):\n            ans = ans * 2 % mod\n            for j in range(k):\n                f[i][j] = f[i - 1][j]\n                if j >= nums[i - 1]:\n                    f[i][j] = (f[i][j] + f[i - 1][j - nums[i - 1]]) % mod\n        return (ans - sum(f[-1]) * 2 + mod) % mod\n",
+    "finetuned": "class Solution:\n    def countPartitions(self, nums: List[int], k: int) -> int:\n        if s := sum(nums); s < k * 2:\n            return 0\n        mod, n = 10**9 + 7, len(nums)\n        f = [[0] * (s // 2 + 2) for _ in range(n + 2)]\n        f[0][0] = 1\n        ans = 1\n        for i, v in enumerate(nums, 1):\n            for j in range(i, 0, -1):\n                for l in range(f[i - 1][j - 1], f[i - 1][j] + 1):\n                    if l + v <= s // 2:\n                        f[i][j] = (f[i][j] + f[i - 1][l]) % mod\n            ans = ans * 2 % mod\n        return (ans - sum(f[-1]) * 2 + mod) % mod",
+    "raw_model": "class Solution:\n    def countPartitions(self, nums: List[int], k: int) -> int:\n        mod = 10**9 + 7\n        n = len(nums)\n        total_sum = sum(nums)\n        \n        if total_sum < k * 2:\n            return 0\n        \n        dp = [[0] * (k + 1) for _ in range(n + 1)]\n        dp[0][0] = 1\n        \n        # Initialize the first row and column of the dp table\n        for i in range(1, n + 1):\n            if nums[i - 1] < k:\n                dp[i][nums[i - 1]] = 1\n        \n        for i in range(1, n + 1):\n            for j in range(1, k + 1):\n                if j >= nums[i - 1]:\n                    dp[i][j] = (dp[i - 1][j] + dp[i - 1][j - nums[i - 1]]) % mod\n        \n        # Count the number of distinct great partitions\n        ans = 0\n        for i in range(k + 1):\n            ans = (ans + dp[n][i]) % mod\n        \n        return ans"
+  },
+  "is_python": true
+}

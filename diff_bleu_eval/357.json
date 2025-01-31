@@ -1,0 +1,30 @@
+{
+  "problem_idx": "357",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5264542364394371,
+      "edit_similarity": 0.7805755395683454,
+      "ast_similarity": 0.9545454545454546,
+      "diff_bleu": 0.7246319917477867
+    },
+    "raw_model": {
+      "bleu_score": 0.4423094867132129,
+      "edit_similarity": 0.5984042553191489,
+      "ast_similarity": 0.875,
+      "diff_bleu": 0.6585431482418991
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.08414474972622421,
+    "edit_sim_delta": 0.18217128424919649,
+    "ast_sim_delta": 0.07954545454545459,
+    "diff_bleu_delta": 0.06608884350588762
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        if n == 1:\n            return 10\n        ans = []\n        for i in range(n + 1):\n            cur_list = []\n            for j in range(10**i):\n                num_str = str(j)\n                if len(num_str) == i:\n                    valid = True\n                    for char in num_str:\n                        if char in num_str[:i-1]:\n                            valid = False\n                            break\n                    if valid:\n                        cur_list.append(num_str)\n            ans.append(len(cur_list))\n        return sum(ans)",
+    "efficient": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        if n == 1:\n            return 10\n        ans, cur = 10, 9\n        for i in range(n - 1):\n            cur *= 9 - i\n            ans += cur\n        return ans\n",
+    "finetuned": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        s = 10\n        l = 9\n        for i in range(2, n + 1):\n            l *= (10 - i + 1)\n            s += l\n        return s",
+    "raw_model": "class Solution:\n    def countNumbersWithUniqueDigits(self, n: int) -> int:\n        if n == 0:\n            return 1\n        ans = 10\n        available_digits = 9\n        for i in range(1, n):\n            ans += available_digits * (10**i - i)\n            available_digits -= 1\n        if available_digits > 0:\n            ans += available_digits * (10**n - n)\n        return ans"
+  },
+  "is_python": true
+}

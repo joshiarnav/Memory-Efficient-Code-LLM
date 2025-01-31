@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1658",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3204360436662657,
+      "edit_similarity": 0.61875,
+      "ast_similarity": 0.696969696969697,
+      "diff_bleu": 0.504720718130409
+    },
+    "raw_model": {
+      "bleu_score": 0.26156221169352967,
+      "edit_similarity": 0.45529573590096284,
+      "ast_similarity": 0.7878787878787878,
+      "diff_bleu": 0.4305990743872227
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.058873831972736046,
+    "edit_sim_delta": 0.16345426409903718,
+    "ast_sim_delta": -0.09090909090909083,
+    "diff_bleu_delta": 0.07412164374318625
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        x = sum(nums) - x\n        res = []\n        n = len(nums)\n        for i in range(n):\n            temp = nums[i:]\n            temp_sum = sum(temp)\n            if temp_sum == x:\n                res.append(temp)\n        if not res:\n            return -1\n        ans = inf\n        for i, v in enumerate(res):\n            ans = min(ans, n - len(v))\n        return ans",
+    "efficient": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        x = sum(nums) - x\n        ans = inf\n        n = len(nums)\n        s = j = 0\n        for i, v in enumerate(nums):\n            s += v\n            while j <= i and s > x:\n                s -= nums[j]\n                j += 1\n            if s == x:\n                ans = min(ans, n - (i - j + 1))\n        return -1 if ans == inf else ans\n",
+    "finetuned": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        x = sum(nums) - x\n        if x < 0:\n            return -1\n        t = [0] * (len(nums) + 1)\n        for i, v in enumerate(nums):\n            t[i + 1] = t[i] + v\n        f = [-1] * (t[-1] + 2)\n        for i, tv in enumerate(t):\n            for j in range(i - 1, -1, -1):\n                s = tv - t[j]\n                if f[s + x] == -1:\n                    f[s + x] = j\n        return f[t[-1] + x]",
+    "raw_model": "class Solution:\n    def minOperations(self, nums: List[int], x: int) -> int:\n        target = sum(nums) - x\n        left, right, cur_sum = 0, len(nums) - 1, 0\n        min_ops = float('inf')\n        \n        while left <= right:\n            if cur_sum == target:\n                min_ops = min(min_ops, max(left, right) + 1)\n                left += 1\n                if left <= right:\n                    cur_sum -= nums[left - 1]\n            elif cur_sum < target:\n                if right < left:\n                    break\n                right -= 1\n                cur_sum += nums[right + 1]\n            else:\n                left += 1\n                cur_sum -= nums[left - 1]\n        \n        return min_ops if min_ops != float('inf') else -1"
+  },
+  "is_python": true
+}

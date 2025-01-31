@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2953",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.42507102356007825,
+      "edit_similarity": 0.6813074565883555,
+      "ast_similarity": 0.7567567567567568,
+      "diff_bleu": 0.6246800357319144
+    },
+    "raw_model": {
+      "bleu_score": 0.20290584244957954,
+      "edit_similarity": 0.5035750766087845,
+      "ast_similarity": 0.7352941176470589,
+      "diff_bleu": 0.7118472946343505
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.2221651811104987,
+    "edit_sim_delta": 0.17773237997957092,
+    "ast_sim_delta": 0.021462639109697923,
+    "diff_bleu_delta": -0.08716725890243604
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countCompleteSubstrings(self, word: str, k: int) -> int:\n        def f(s: str) -> int:\n            ans = 0\n            for i in range(1, 26):\n                for l in range(1, 10000):\n                    if l > len(s):\n                        break\n                    cnt = {}\n                    for j in range(l):\n                        cnt[s[j]] = cnt.get(s[j], 0) + 1\n                    if all(v == k for v in cnt.values()):\n                        valid = True\n                        for j in range(l - 1):\n                            if abs(ord(s[j]) - ord(s[j + 1])) > 2:\n                                valid = False\n                                break\n                        if valid:\n                            ans += 1\n                    if all(v == k for v in cnt.values()):\n                        valid = True\n                        for j in range(l - 1):\n                            if abs(ord(s[l - 1 - j]) - ord(s[l - j - 2])) > 2:\n                                valid = False\n                                break\n                        if valid:\n                            ans += 1\n                for j in range(len(s) - l + 1):\n                    cnt[s[j]] = cnt.get(s[j], 0) - 1\n                    cnt[s[j + l]] = cnt.get(s[j + l], 0) + 1\n                    if all(v == k for v in cnt.values()):\n                        valid = True\n                        for j in range(l - 1):\n                            if abs(ord(s[j]) - ord(s[j + 1])) > 2:\n                                valid = False\n                                break\n                        if valid:\n                            ans += 1\n                    if all(v == k for v in cnt.values()):\n                        valid = True\n                        for j in range(l - 1):\n                            if abs(ord(s[l - 1 - j]) - ord(s[l - j - 2])) > 2:\n                                valid = False\n                                break\n                        if valid:\n                            ans += 1\n            return ans\n\n        n = len(word)\n        ans = 0\n        for i in range(n):\n            j = i + 1\n            while j < n and abs(ord(word[j]) - ord(word[j - 1])) <= 2:\n                j += 1\n            ans += f(word[i:j])\n        return ans",
+    "efficient": "class Solution:\n    def countCompleteSubstrings(self, word: str, k: int) -> int:\n        def f(s: str) -> int:\n            m = len(s)\n            ans = 0\n            for i in range(1, 27):\n                l = i * k\n                if l > m:\n                    break\n                cnt = Counter(s[:l])\n                freq = Counter(cnt.values())\n                ans += freq[k] == i\n                for j in range(l, m):\n                    freq[cnt[s[j]]] -= 1\n                    cnt[s[j]] += 1\n                    freq[cnt[s[j]]] += 1\n\n                    freq[cnt[s[j - l]]] -= 1\n                    cnt[s[j - l]] -= 1\n                    freq[cnt[s[j - l]]] += 1\n\n                    ans += freq[k] == i\n            return ans\n\n        n = len(word)\n        ans = i = 0\n        while i < n:\n            j = i + 1\n            while j < n and abs(ord(word[j]) - ord(word[j - 1])) <= 2:\n                j += 1\n            ans += f(word[i:j])\n            i = j\n        return ans\n",
+    "finetuned": "class Solution:\n    def countCompleteSubstrings(self, word: str, k: int) -> int:\n        def f(s: str) -> int:\n            ans = 0\n            cnt = Counter()\n            for c in s:\n                cnt[c] += 1\n            if all(v == k for v in cnt.values()):\n                pre = -1\n                for i, c in enumerate(s):\n                    if ord(c) - ord(s[i - 1]) <= 2:\n                        pre = i\n                    else:\n                        ans += 1\n                        pre = i\n                if pre!= -1:\n                    ans += 1\n            return ans\n\n        n = len(word)\n        ans = 0\n        for i in range(n):\n            j = i + 1\n            while j < n and abs(ord(word[j]) - ord(word[j - 1])) <= 2:\n                j += 1\n            ans += f(word[i:j])\n        return ans",
+    "raw_model": "class Solution:\n    def countCompleteSubstrings(self, word: str, k: int) -> int:\n        n = len(word)\n        ans = 0\n\n        for i in range(n):\n            for j in range(k, n + 1):\n                substring = word[i:j]\n                char_count = {}\n                for char in substring:\n                    char_count[char] = char_count.get(char, 0) + 1\n\n                if all(count == k for count in char_count.values()):\n                    valid = True\n                    for m in range(j - i - 1):\n                        if abs(ord(substring[i + m]) - ord(substring[i + m + 1])) > 2:\n                            valid = False\n                            break\n                    if valid:\n                        ans += 1\n\n        return ans"
+  },
+  "is_python": true
+}

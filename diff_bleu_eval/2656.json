@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2656",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.17717773278214488,
+      "edit_similarity": 0.21649484536082475,
+      "ast_similarity": 0.5483870967741935,
+      "diff_bleu": 0.5257324461038857
+    },
+    "raw_model": {
+      "bleu_score": 0.20913025858409678,
+      "edit_similarity": 0.2420634920634921,
+      "ast_similarity": 0.5714285714285714,
+      "diff_bleu": 0.5084993937015647
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0319525258019519,
+    "edit_sim_delta": -0.02556864670266734,
+    "ast_sim_delta": -0.02304147465437789,
+    "diff_bleu_delta": 0.01723305240232098
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        count = {}\n        for i in nums:\n            if i in count:\n                count[i] += 1\n            else:\n                count[i] = 1\n        freq = sorted(count.keys())\n        max_val = max(freq)\n        res = 0\n        for i in range(k):\n            res += max_val\n            max_val += 1\n            for key, val in count.items():\n                if key == max_val:\n                    if val == 1:\n                        del count[key]\n                    else:\n                        count[key] -= 1\n                        count[key + 1] = count.get(key + 1, 0) + 1\n                    break\n        return res",
+    "efficient": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        x = max(nums)\n        return k * x + k * (k - 1) // 2\n",
+    "finetuned": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        cnt = Counter(nums)\n        q = deque()\n        ans = i = 0\n        for x in sorted(cnt.keys()):\n            q.append(x)\n            cnt[x] -= 1\n            if cnt[x] == 0:\n                cnt.pop(x)\n            while x - q[0] > 1 and cnt[q[0] + 1]:\n                cnt[q[0] + 1] -= 1\n                i -= 1\n                q.popleft()\n            if len(q) > k:\n                cnt[q[-1]] += 1\n                q.pop()\n                i += 1\n                ans += x * (k - i + 1)\n        return ans",
+    "raw_model": "class Solution:\n    def maximizeSum(self, nums: List[int], k: int) -> int:\n        \"\"\"\n        This function maximizes the sum of an array by selecting elements and \n        incrementing their value by 1, then adding the new value to the array.\n        \n        Parameters:\n        nums (List[int]): A list of integers.\n        k (int): The number of times the operation can be performed.\n        \n        Returns:\n        int: The maximum sum that can be achieved after performing the operation exactly k times.\n        \"\"\"\n        \n        # Count the frequency of each number in the array\n        freq = {}\n        for i in nums:\n            freq[i] = freq.get(i, 0) + 1\n        \n        # Initialize the maximum sum and the maximum value\n        max_sum = 0\n        max_val = max(freq.keys())\n        \n        # Perform the operation k times\n        for _ in range(k):\n            # Add the maximum value to the sum\n            max_sum += max_val\n            \n            # Increment the maximum value and update the frequency of the new value\n            max_val += 1\n            freq[max_val] = freq.get(max_val, 0) + 1\n            \n            # Remove the maximum value from the frequency dictionary if its count is 1\n            if freq[max_val - 1] == 1:\n                del freq[max_val - 1]\n            else:\n                freq[max_val - 1] -= 1\n        \n        return max_sum"
+  },
+  "is_python": true
+}

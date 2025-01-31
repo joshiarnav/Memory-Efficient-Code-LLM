@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1885",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4218539459937098,
+      "edit_similarity": 0.5176470588235293,
+      "ast_similarity": 0.6333333333333333,
+      "diff_bleu": 0.6624919704373138
+    },
+    "raw_model": {
+      "bleu_score": 0.3878403144755655,
+      "edit_similarity": 0.3975308641975308,
+      "ast_similarity": 0.6774193548387096,
+      "diff_bleu": 0.6146221898883429
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.034013631518144294,
+    "edit_sim_delta": 0.12011619462599854,
+    "ast_sim_delta": -0.04408602150537633,
+    "diff_bleu_delta": 0.04786978054897084
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countPairs(self, nums1, nums2):\n        n = len(nums1)\n        temp = [nums1[i] - nums2[i] for i in range(n)]\n        temp.sort()\n        temp2 = [(nums1[i] - nums2[i], i) for i in range(n)]\n        temp2.sort()\n        count = 0\n        for i, v in enumerate(temp):\n            for j in range(i + 1, n):\n                if v + temp[j] > 0:\n                    count += 1\n        return count",
+    "efficient": "class Solution:\n    def countPairs(self, nums1: List[int], nums2: List[int]) -> int:\n        n = len(nums1)\n        d = [nums1[i] - nums2[i] for i in range(n)]\n        d.sort()\n        return sum(n - bisect_right(d, -v, lo=i + 1) for i, v in enumerate(d))\n",
+    "finetuned": "class Solution:\n    def countPairs(self, nums1: List[int], nums2: List[int]) -> int:\n        nums = sorted(x - y for x, y in zip(nums1, nums2))\n        n = len(nums)\n        ans = 0\n        for i, v in enumerate(nums):\n            for j in range(i + 1, n):\n                if v + nums[j] > 0:\n                    ans += 1\n        return ans",
+    "raw_model": "class Solution:\n    def countPairs(self, nums1, nums2):\n        n = len(nums1)\n        diff = [nums1[i] - nums2[i] for i in range(n)]\n        diff.sort()\n        count = 0\n        left, right = 0, n - 1\n        while left < right:\n            if diff[left] + diff[right] > 0:\n                count += right - left\n                right -= 1\n            else:\n                left += 1\n        return count"
+  },
+  "is_python": true
+}

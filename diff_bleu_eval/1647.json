@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1647",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3811175802660908,
+      "edit_similarity": 0.7083333333333333,
+      "ast_similarity": 0.8,
+      "diff_bleu": 0.6619394751591525
+    },
+    "raw_model": {
+      "bleu_score": 0.31939697480358986,
+      "edit_similarity": 0.47330447330447334,
+      "ast_similarity": 0.7931034482758621,
+      "diff_bleu": 0.0
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.061720605462500966,
+    "edit_sim_delta": 0.23502886002885992,
+    "ast_sim_delta": 0.006896551724137945,
+    "diff_bleu_delta": 0.6619394751591525
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minDeletions(self, s: str) -> int:\n        char_freq = {}\n        for char in s:\n            if char in char_freq:\n                char_freq[char] += 1\n            else:\n                char_freq[char] = 1\n\n        max_freq = max(char_freq.values())\n\n        freq_list = []\n        for char in char_freq:\n            freq_list.append(char_freq[char])\n\n        freq_list.sort(reverse=True)\n\n        ans = 0\n        pre = float('inf')\n        for freq in freq_list:\n            if pre == 0:\n                ans += freq\n            elif freq >= pre:\n                ans += freq - pre + 1\n                pre -= 1\n            else:\n                pre = freq\n\n        return ans",
+    "efficient": "class Solution:\n    def minDeletions(self, s: str) -> int:\n        cnt = Counter(s)\n        ans, pre = 0, inf\n        for v in sorted(cnt.values(), reverse=True):\n            if pre == 0:\n                ans += v\n            elif v >= pre:\n                ans += v - pre + 1\n                pre -= 1\n            else:\n                pre = v\n        return ans\n",
+    "finetuned": "class Solution:\n    def minDeletions(self, s: str) -> int:\n        cnt = Counter(s)\n        ans = 0\n        d = defaultdict(int)\n        for c, x in cnt.items():\n            if d[x]:\n                ans += x - d[x] + 1\n                d[x] += 1\n            else:\n                d[x] = 1\n        return ans",
+    "raw_model": "class Solution:\n    def minDeletions(self, s: str) -> int:\n        char_freq = {}\n        for char in s:\n            if char in char_freq:\n                char_freq[char] += 1\n            else:\n                char_freq[char] = 1\n\n        max_freq = max(char_freq.values())\n\n        freq_list = []\n        for char in char_freq:\n            freq_list.append(char_freq[char])\n\n        freq_list.sort(reverse=True)\n\n        ans = 0\n        pre = float('inf')\n        for freq in freq_list:\n            if pre == 0:\n                ans += freq\n            elif freq >= pre:\n                ans += freq - pre + 1\n                pre -= 1\n            else:\n                pre = freq\n\n        return ans"
+  },
+  "is_python": true
+}

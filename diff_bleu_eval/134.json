@@ -1,0 +1,30 @@
+{
+  "problem_idx": "134",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3334589847384761,
+      "edit_similarity": 0.5914489311163895,
+      "ast_similarity": 0.6774193548387096,
+      "diff_bleu": 0.5349169464212514
+    },
+    "raw_model": {
+      "bleu_score": 0.4392076698720998,
+      "edit_similarity": 0.6240963855421686,
+      "ast_similarity": 0.7586206896551724,
+      "diff_bleu": 0.634613953593374
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.10574868513362368,
+    "edit_sim_delta": -0.0326474544257791,
+    "ast_sim_delta": -0.08120133481646274,
+    "diff_bleu_delta": -0.0996970071721226
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        gas_list = []\n        cost_list = []\n        for i in range(n):\n            gas_list.append(gas[i] * 1000)  # multiply by 1000 to increase memory usage\n            cost_list.append(cost[i] * 1000)  # multiply by 1000 to increase memory usage\n        gas_total = sum(gas_list)\n        cost_total = sum(cost_list)\n        if gas_total < cost_total:\n            return -1\n        start = 0\n        while start < n:\n            tank = 0\n            for i in range(start, n):\n                tank += gas_list[i] - cost_list[i]\n                if tank < 0:\n                    start = i + 1\n                    break\n            if tank >= 0:\n                return start\n            start += 1\n        return -1",
+    "efficient": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        i = j = n - 1\n        cnt = s = 0\n        while cnt < n:\n            s += gas[j] - cost[j]\n            cnt += 1\n            j = (j + 1) % n\n            while s < 0 and cnt < n:\n                i -= 1\n                s += gas[i] - cost[i]\n                cnt += 1\n        return -1 if s < 0 else i\n",
+    "finetuned": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        total = sum(a - b for a, b in zip(gas, cost))\n        if total < 0:\n            return -1\n        start = 0\n        tank = 0\n        for i, (a, b) in enumerate(zip(gas, cost), 1):\n            tank += a - b\n            if tank < 0:\n                start = i\n                tank = 0\n        return start",
+    "raw_model": "class Solution:\n    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:\n        n = len(gas)\n        tank = 0\n        total_gas = 0\n        start = 0\n        for i in range(n):\n            total_gas += gas[i] - cost[i]\n            tank += gas[i] - cost[i]\n            if tank < 0:\n                tank = 0\n                start = i + 1\n        return start if total_gas >= 0 else -1"
+  },
+  "is_python": true
+}

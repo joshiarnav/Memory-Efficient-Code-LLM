@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2555",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6958951210393713,
+      "edit_similarity": 0.8274932614555256,
+      "ast_similarity": 0.95,
+      "diff_bleu": 0.8965211624681336
+    },
+    "raw_model": {
+      "bleu_score": 0.1501490023366933,
+      "edit_similarity": 0.266156462585034,
+      "ast_similarity": 0.5454545454545454,
+      "diff_bleu": 0.5806344992125351
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.5457461187026781,
+    "edit_sim_delta": 0.5613367988704916,
+    "ast_sim_delta": 0.40454545454545454,
+    "diff_bleu_delta": 0.31588666325559855
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        mem = {}\n        f = {}\n        ans = 0\n        for i in range(n):\n            j = self.binarySearch(prizePositions, prizePositions[i] - k)\n            ans = max(ans, self.getAns(i, j, mem, f))\n            self.update(i, i, mem, f)\n        return ans\n\n    def binarySearch(self, prizePositions, target):\n        left, right = 0, len(prizePositions) - 1\n        while left <= right:\n            mid = left + (right - left) // 2\n            if prizePositions[mid] < target:\n                left = mid + 1\n            else:\n                right = mid - 1\n        return left\n\n    def getAns(self, i, j, mem, f):\n        if (i, j) in mem:\n            return mem[(i, j)]\n        if i == j:\n            return 1\n        ans = 0\n        for x in range(i, j + 1):\n            ans = max(ans, self.getAns(x, x, mem, f) + j - x + 1)\n        mem[(i, j)] = ans\n        return ans\n\n    def update(self, i, j, mem, f):\n        if (i, j) in mem:\n            f[j + 1] = max(f.get(j + 1, 0), mem[(i, j)])\n            del mem[(i, j)]",
+    "efficient": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        f = [0] * (n + 1)\n        ans = 0\n        for i, x in enumerate(prizePositions, 1):\n            j = bisect_left(prizePositions, x - k)\n            ans = max(ans, f[j] + i - j)\n            f[i] = max(f[i - 1], i - j)\n        return ans\n",
+    "finetuned": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        f = [0] * (n + 1)\n        ans = 0\n        for i in range(n):\n            j = bisect_left(prizePositions, prizePositions[i] - k)\n            ans = max(ans, f[i] + i - j + 1)\n            f[i + 1] = max(f[i + 1], f[i] + i - j + 1)\n        return ans",
+    "raw_model": "class Solution:\n    def maximizeWin(self, prizePositions: List[int], k: int) -> int:\n        n = len(prizePositions)\n        prizes = {}\n        for pos in prizePositions:\n            prizes[pos] = prizes.get(pos, 0) + 1\n        sorted_positions = sorted(prizes.keys())\n        \n        def get_prizes(l, r):\n            left = self.binary_search(sorted_positions, l - k)\n            right = self.binary_search(sorted_positions, r + k)\n            return sum(prizes[pos] for pos in sorted_positions[left:right+1])\n        \n        def get_max_prizes(l, r):\n            if l <= r:\n                return get_prizes(l, r)\n            else:\n                return sum(prizes[pos] for pos in sorted_positions[:self.binary_search(sorted_positions, l - k)] + sorted_positions[self.binary_search(sorted_positions, r + k)+1:])\n        \n        def binary_search(arr, target):\n            left, right = 0, len(arr) - 1\n            while left <= right:\n                mid = left + (right - left) // 2\n                if arr[mid] < target:\n                    left = mid + 1\n                else:\n                    right = mid - 1\n            return left\n        \n        return get_max_prizes(0, prizePositions[-1] + k)"
+  },
+  "is_python": true
+}

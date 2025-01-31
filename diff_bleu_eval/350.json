@@ -1,0 +1,30 @@
+{
+  "problem_idx": "350",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7479222003390763,
+      "edit_similarity": 0.9222614840989399,
+      "ast_similarity": 0.9130434782608695,
+      "diff_bleu": 0.5065052723675787
+    },
+    "raw_model": {
+      "bleu_score": 0.4606375396959748,
+      "edit_similarity": 0.5921787709497206,
+      "ast_similarity": 0.5862068965517241,
+      "diff_bleu": 0.4731527750479144
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.2872846606431015,
+    "edit_sim_delta": 0.33008271314921933,
+    "ast_sim_delta": 0.3268365817091454,
+    "diff_bleu_delta": 0.033352497319664276
+  },
+  "solutions": {
+    "inefficient": "from collections import Counter\nfrom typing import List\n\nclass Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        counter = Counter(nums1)\n        res = []\n        for num in nums2:\n            if counter[num] > 0:\n                temp = []\n                for _ in range(counter[num]):\n                    temp.append(num)\n                res.extend(temp)\n                counter[num] = -1\n        return res",
+    "efficient": "class Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        counter = Counter(nums1)\n        res = []\n        for num in nums2:\n            if counter[num] > 0:\n                res.append(num)\n                counter[num] -= 1\n        return res\n",
+    "finetuned": "class Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        cnt = Counter(nums1)\n        ans = []\n        for num in nums2:\n            while cnt[num] > 0:\n                ans.append(num)\n                cnt[num] -= 1\n        return ans",
+    "raw_model": "from collections import Counter\nfrom typing import List\n\nclass Solution:\n    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        counter = Counter(nums1)\n        res = []\n        \n        # Iterate over the counter in descending order of frequency\n        for num, freq in sorted(counter.items(), key=lambda x: x[1], reverse=True):\n            res.extend([num] * min(freq, nums2.count(num)))\n        \n        return res"
+  },
+  "is_python": true
+}

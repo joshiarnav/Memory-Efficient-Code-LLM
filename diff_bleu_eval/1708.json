@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1708",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2840106360617964,
+      "edit_similarity": 0.3482352941176471,
+      "ast_similarity": 0.6428571428571429,
+      "diff_bleu": 0.6802229973059969
+    },
+    "raw_model": {
+      "bleu_score": 0.5358733346984099,
+      "edit_similarity": 0.4354354354354354,
+      "ast_similarity": 0.7391304347826086,
+      "diff_bleu": 0.6860988520161907
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.25186269863661354,
+    "edit_sim_delta": -0.0872001413177883,
+    "ast_sim_delta": -0.09627329192546574,
+    "diff_bleu_delta": -0.005875854710193806
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        max_subarray = []\n        max_length = 0\n        for i in range(len(nums) - k + 1):\n            subarray = nums[i : i + k]\n            if len(subarray) > max_length:\n                max_length = len(subarray)\n                max_subarray = subarray[:]\n                max_subarray.sort(reverse=True)\n                max_subarray = [x for x in max_subarray if x in nums]\n        max_subarray.sort(reverse=True)\n        max_subarray = [x for x in max_subarray if x in nums]\n        for i in range(len(nums) - k + 1):\n            subarray = nums[i : i + k]\n            subarray.sort(reverse=True)\n            subarray = [x for x in subarray if x in nums]\n            if subarray == max_subarray:\n                return subarray",
+    "efficient": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        i = nums.index(max(nums[: len(nums) - k + 1]))\n        return nums[i : i + k]\n",
+    "finetuned": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        d = defaultdict(list)\n        for i, x in enumerate(nums):\n            d[x].append(i)\n        ans = []\n        mx = -inf\n        for x in d:\n            for j in d[x]:\n                if j - k + 1 < mx:\n                    break\n                ans = nums[j - k + 1 : j + 1]\n                mx = max(mx, len(ans))\n        return ans",
+    "raw_model": "class Solution:\n    def largestSubarray(self, nums: List[int], k: int) -> List[int]:\n        max_length = 0\n        max_subarray = []\n        for i in range(len(nums) - k + 1):\n            subarray = nums[i : i + k]\n            if sum(subarray) > sum(max_subarray):\n                max_subarray = subarray\n        return max_subarray"
+  },
+  "is_python": true
+}

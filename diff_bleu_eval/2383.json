@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2383",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 1.0,
+      "edit_similarity": 1.0,
+      "ast_similarity": 1.0,
+      "diff_bleu": 1.0
+    },
+    "raw_model": {
+      "bleu_score": 0.2825285147352541,
+      "edit_similarity": 0.49559471365638763,
+      "ast_similarity": 0.65625,
+      "diff_bleu": 0.3885666621822559
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.7174714852647459,
+    "edit_sim_delta": 0.5044052863436124,
+    "ast_sim_delta": 0.34375,
+    "diff_bleu_delta": 0.6114333378177441
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        ans = []\n        for a, b in zip(energy, experience):\n            temp = []\n            if initialEnergy <= a:\n                for _ in range(a - initialEnergy + 1):\n                    temp.append(1)\n                initialEnergy = a + 1\n            if initialExperience <= b:\n                for _ in range(b - initialExperience + 1):\n                    temp.append(1)\n                initialExperience = b + 1\n            temp.append(initialEnergy - a)\n            temp.append(initialExperience + b)\n            ans.extend(temp)\n        import copy\n        ans = copy.deepcopy(ans)\n        return len(ans)",
+    "efficient": "class Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        ans = 0\n        for a, b in zip(energy, experience):\n            if initialEnergy <= a:\n                ans += a - initialEnergy + 1\n                initialEnergy = a + 1\n            if initialExperience <= b:\n                ans += b - initialExperience + 1\n                initialExperience = b + 1\n            initialEnergy -= a\n            initialExperience += b\n        return ans\n",
+    "finetuned": "class Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        ans = 0\n        for a, b in zip(energy, experience):\n            if initialEnergy <= a:\n                ans += a - initialEnergy + 1\n                initialEnergy = a + 1\n            if initialExperience <= b:\n                ans += b - initialExperience + 1\n                initialExperience = b + 1\n            initialEnergy -= a\n            initialExperience += b\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def minNumberOfHours(\n        self,\n        initialEnergy: int,\n        initialExperience: int,\n        energy: List[int],\n        experience: List[int],\n    ) -> int:\n        n = len(energy)\n        left, right = 0, n * 100  # Since energy and experience are at most 100\n        while left < right:\n            mid = (left + right + 1) // 2\n            total_experience = initialExperience + mid\n            total_energy = initialEnergy\n            can_defeat_all = True\n            for i in range(n):\n                if total_experience >= experience[i] and total_energy >= energy[i]:\n                    total_experience += experience[i]\n                    total_energy -= energy[i]\n                else:\n                    can_defeat_all = False\n                    break\n            if can_defeat_all:\n                right = mid - 1\n            else:\n                left = mid\n\n        return left + 1"
+  },
+  "is_python": true
+}

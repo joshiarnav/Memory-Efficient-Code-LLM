@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1247",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.15766000725254897,
+      "edit_similarity": 0.362862010221465,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.556757764430132
+    },
+    "raw_model": {
+      "bleu_score": 0.13956461708822857,
+      "edit_similarity": 0.22512077294685995,
+      "ast_similarity": 0.7272727272727273,
+      "diff_bleu": 0.4739652416857309
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.018095390164320407,
+    "edit_sim_delta": 0.13774123727460508,
+    "ast_sim_delta": -0.06060606060606066,
+    "diff_bleu_delta": 0.08279252274440113
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        char_counts = {}\n        for char in s1 + s2:\n            if char not in char_counts:\n                char_counts[char] = 0\n            char_counts[char] += 1\n\n        if char_counts['x'] != char_counts['y']:\n            return -1\n\n        swap_pairs = {}\n        for i in range(len(s1)):\n            if s1[i] != s2[i]:\n                swap_pairs[(s1[i], s2[i])] = swap_pairs.get((s1[i], s2[i]), 0) + 1\n\n        if len(swap_pairs) == 0:\n            return 0\n\n        max_swaps = 0\n        for pair, count in swap_pairs.items():\n            max_swaps = max(max_swaps, count)\n\n        swaps_required = max_swaps\n        for pair, count in swap_pairs.items():\n            swaps_required += (count - 1) // 2\n\n        return swaps_required",
+    "efficient": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        xy = yx = 0\n        for a, b in zip(s1, s2):\n            xy += a < b\n            yx += a > b\n        if (xy + yx) % 2:\n            return -1\n        return xy // 2 + yx // 2 + xy % 2 + yx % 2\n",
+    "finetuned": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        d = s1.count('x') - s2.count('x')\n        if d:\n            return -1\n        cnt = 0\n        i = 0\n        while i < len(s1):\n            if (s1[i] == 'x' and s2[i] == 'y') or (s1[i] == 'y' and s2[i] == 'x'):\n                cnt += 1\n                i += 2\n                if i == len(s1):\n                    return -1\n                if (s1[i] == 'x' and s2[i] == 'y') or (s1[i] == 'y' and s2[i] == 'x'):\n                    cnt += 1\n            else:\n                i += 1\n        return cnt // 2 + cnt % 2",
+    "raw_model": "class Solution:\n    def minimumSwap(self, s1: str, s2: str) -> int:\n        def is_possible(swaps: int) -> bool:\n            x_count = 0\n            y_count = 0\n            x_to_swap = 0\n            y_to_swap = 0\n            for i in range(len(s1)):\n                if s1[i] != s2[i]:\n                    if s1[i] == 'x':\n                        x_to_swap += 1\n                    else:\n                        y_to_swap += 1\n                if s1[i] == 'x':\n                    x_count += 1\n                else:\n                    y_count += 1\n            x_diff = x_count - x_to_swap\n            y_diff = y_count - y_to_swap\n            return x_diff % 2 == 0 and y_diff % 2 == 0 and swaps >= max(x_diff // 2, y_diff // 2)\n\n        left, right = 0, len(s1) - 1\n        while left < right and s1[left] != s2[left]:\n            left += 1\n        while left < right and s1[right] != s2[right]:\n            right -= 1\n        if left >= right:\n            return -1\n        return left + (right - left + 1) // 2 - (right - left + 1) % 2"
+  },
+  "is_python": true
+}

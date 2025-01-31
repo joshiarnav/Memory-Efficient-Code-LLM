@@ -1,0 +1,22 @@
+{
+  "inefficient": {
+    "avg_execution_time": Infinity,
+    "avg_peak_memory": Infinity,
+    "success_rate": 0.0
+  },
+  "efficient": {
+    "avg_execution_time": Infinity,
+    "avg_peak_memory": Infinity,
+    "success_rate": 0.0
+  },
+  "finetuned": {
+    "avg_execution_time": 2.3126602172851562e-05,
+    "avg_peak_memory": 0.0010833740234375,
+    "success_rate": 1.0
+  },
+  "raw_model": {
+    "avg_execution_time": 9.584426879882812e-05,
+    "avg_peak_memory": 0.0008306503295898438,
+    "success_rate": 1.0
+  }
+}

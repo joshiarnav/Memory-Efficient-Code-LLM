@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2410",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.47799793441675964,
+      "edit_similarity": 0.6569148936170213,
+      "ast_similarity": 0.7777777777777778,
+      "diff_bleu": 0.3569049320361742
+    },
+    "raw_model": {
+      "bleu_score": 0.8617574667346459,
+      "edit_similarity": 0.9404145077720207,
+      "ast_similarity": 0.96,
+      "diff_bleu": 0.7420185761434382
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.3837595323178863,
+    "edit_sim_delta": -0.28349961415499947,
+    "ast_sim_delta": -0.18222222222222217,
+    "diff_bleu_delta": -0.38511364410726406
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:\n        players = [i * 1000 for i in players]\n        trainers = [i * 1000 for i in trainers]\n        players.sort()\n        trainers.sort()\n        ans = j = 0\n        while j < len(trainers):\n            for p in players:\n                if p <= trainers[j]:\n                    ans += 1\n                    break\n            j += 1\n        return ans",
+    "efficient": "class Solution:\n    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:\n        players.sort()\n        trainers.sort()\n        ans = j = 0\n        for p in players:\n            while j < len(trainers) and trainers[j] < p:\n                j += 1\n            if j < len(trainers):\n                ans += 1\n                j += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def matchPlayersAndTrainers(\n        self, players: List[int], trainers: List[int]\n    ) -> int:\n        i = j = 0\n        ans = 0\n        while i < len(players) and j < len(trainers):\n            if players[i] <= trainers[j]:\n                ans += 1\n                i, j = i + 1, j + 1\n            else:\n                j += 1\n        return ans",
+    "raw_model": "class Solution:\n    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:\n        players.sort()\n        trainers.sort()\n        j = 0\n        ans = 0\n        for p in players:\n            while j < len(trainers) and p > trainers[j]:\n                j += 1\n            if j < len(trainers):\n                ans += 1\n                j += 1\n        return ans"
+  },
+  "is_python": true
+}

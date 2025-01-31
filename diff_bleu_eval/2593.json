@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2593",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.39475460736140633,
+      "edit_similarity": 0.5104790419161677,
+      "ast_similarity": 0.0,
+      "diff_bleu": 0.44718700462644256
+    },
+    "raw_model": {
+      "bleu_score": 0.4563049014977547,
+      "edit_similarity": 0.5265306122448979,
+      "ast_similarity": 0.7647058823529411,
+      "diff_bleu": 0.49519380143744207
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.06155029413634838,
+    "edit_sim_delta": -0.01605157032873028,
+    "ast_sim_delta": -0.7647058823529411,
+    "diff_bleu_delta": -0.04800679681099951
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        vis = [False] * (10**6)\n        q = [(x, i) for i, x in enumerate(nums)]\n        marked = [False] * (10**6)\n        score = [0] * n\n        ans = 0\n        for _ in range(n):\n            temp_q = q.copy()\n            q = []\n            for x, i in temp_q:\n                if not marked[i]:\n                    q.append((x, i))\n                    marked[i] = True\n            while q:\n                x, i = q.pop()\n                ans += x\n                marked[i] = True\n                for j in (i - 1, i + 1):\n                    if 0 <= j < n:\n                        marked[j] = True\n        return ans",
+    "efficient": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        vis = [False] * n\n        q = [(x, i) for i, x in enumerate(nums)]\n        heapify(q)\n        ans = 0\n        while q:\n            x, i = heappop(q)\n            ans += x\n            vis[i] = True\n            for j in (i - 1, i + 1):\n                if 0 <= j < n:\n                    vis[j] = True\n            while q and vis[q[0][1]]:\n                heappop(q)\n        return ans\n",
+    "finetuned": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        q = heapq.nsmallest(10, (x, i) for i, x in enumerate(nums))\n        n = len(nums)\n        vis = [False] * n\n        ans = score = 0\n        while q:\n            x, i = heappop(q)\n            if vis[i]:\n                continue\n            vis[i] = True\n            score += x\n            if i - 1 >= 0 and not vis[i - 1]:\n                heappush(q, (nums[i - 1], i - 1))\n            if i + 1 < n and not vis[i + 1]:\n                heappush(q, (nums[i + 1], i + 1))\n        ans += score\n        for i, x in enumerate(nums):\n            if not vis[i]:\n                ans += x\n        return ans",
+    "raw_model": "class Solution:\n    def findScore(self, nums: List[int]) -> int:\n        n = len(nums)\n        vis = [False] * n\n        score = 0\n        for i in range(n):\n            if not vis[i]:\n                self.dfs(nums, vis, i, score)\n        return score\n\n    def dfs(self, nums, vis, i, score):\n        if vis[i]:\n            return\n        vis[i] = True\n        score += nums[i]\n        for j in (i - 1, i + 1):\n            if 0 <= j < len(nums):\n                self.dfs(nums, vis, j, score)"
+  },
+  "is_python": true
+}

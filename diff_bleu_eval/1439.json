@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1439",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.1757147016452215,
+      "edit_similarity": 0.24756606397774683,
+      "ast_similarity": 0.5588235294117647,
+      "diff_bleu": 0.4757988653041865
+    },
+    "raw_model": {
+      "bleu_score": 0.1740332134708019,
+      "edit_similarity": 0.30018083182640143,
+      "ast_similarity": 0.4857142857142857,
+      "diff_bleu": 0.4992786761541718
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0016814881744195986,
+    "edit_sim_delta": -0.0526147678486546,
+    "ast_sim_delta": 0.07310924369747901,
+    "diff_bleu_delta": -0.023479810849985294
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        n = len(mat)\n        arr = [list(map(tuple, zip(*row))) for row in mat]\n        pre = [[(0, 0) for _ in range(n)] for _ in range(n)]\n        pre[0][0] = (mat[0][0], 0)\n        for i in range(n):\n            for j in range(n):\n                pre[i][j] = sorted((a + b, i, j) for i, a in enumerate(pre[i]) for j, b in enumerate(arr[i][j]) if a + b <= 5000)[:k]\n        return pre[-1][-1][0]",
+    "efficient": "class Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        pre = [0]\n        for cur in mat:\n            pre = sorted(a + b for a in pre for b in cur[:k])[:k]\n        return pre[-1]\n",
+    "finetuned": "class Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        def check(x):\n            co = 0\n            for i in range(n):\n                s = 0\n                for j in range(n):\n                    if arr[i][j] <= x:\n                        s += arr[i][j]\n                co += bisect_left(arr[i], x + 1)\n                if s >= x * co:\n                    break\n            return co >= k\n\n        n = len(mat)\n        arr = [sorted(row) for row in mat]\n        left, right = mat[0][0], mat[-1][-1]\n        while left < right:\n            mid = (left + right) >> 1\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left",
+    "raw_model": "import heapq\nfrom typing import List\n\nclass Solution:\n    def kthSmallest(self, mat: List[List[int]], k: int) -> int:\n        n = len(mat[0])\n        pq = [(0, 0) * n]\n        heapq.heapify(pq)\n        vis = set((0,) * n)\n        \n        while pq:\n            s, idx = heapq.heappop(pq)\n            if idx == n - 1:\n                return s\n            for i in range(n):\n                if idx + i + 1 not in vis:\n                    vis.add(idx + i + 1)\n                    heapq.heappush(pq, (s + mat[i][idx + i + 1], idx + i + 1))\n            vis.remove(idx)"
+  },
+  "is_python": true
+}

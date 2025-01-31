@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2165",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.1616656091858899,
+      "edit_similarity": 0.4436619718309859,
+      "ast_similarity": 0.5833333333333334,
+      "diff_bleu": 0.37067221305980547
+    },
+    "raw_model": {
+      "bleu_score": 0.24456366040233565,
+      "edit_similarity": 0.48450704225352115,
+      "ast_similarity": 0.6153846153846154,
+      "diff_bleu": 0.3193680390241245
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.08289805121644575,
+    "edit_sim_delta": -0.04084507042253527,
+    "ast_sim_delta": -0.03205128205128205,
+    "diff_bleu_delta": 0.051304174035680994
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def smallestNumber(self, num: int) -> int:\n        if num == 0:\n            return 0\n        neg = num < 0\n        num = abs(num)\n        digits = []\n        while num:\n            digits.append(num % 10)\n            num //= 10\n        digits.sort()\n        ans = []\n        if not neg and not digits[0]:\n            digits.pop(0)\n        for i in range(len(digits)):\n            if i and not ans:\n                ans.append(0)\n            ans.append(digits[i])\n        if neg:\n            ans = [-i for i in ans]\n        return int(''.join(map(str, ans)))",
+    "efficient": "class Solution:\n    def smallestNumber(self, num: int) -> int:\n        if num == 0:\n            return 0\n        cnt = [0] * 10\n        neg = num < 0\n        num = abs(num)\n        while num:\n            num, v = divmod(num, 10)\n            cnt[v] += 1\n        ans = \"\"\n        if neg:\n            for i in range(9, -1, -1):\n                if cnt[i]:\n                    ans += str(i) * cnt[i]\n            return -int(ans)\n        if cnt[0]:\n            for i in range(1, 10):\n                if cnt[i]:\n                    ans += str(i)\n                    cnt[i] -= 1\n                    break\n        for i in range(10):\n            if cnt[i]:\n                ans += str(i) * cnt[i]\n        return int(ans)\n",
+    "finetuned": "class Solution:\n    def smallestNumber(self, num: int) -> int:\n        if num == 0:\n            return 0\n        neg = num < 0\n        num = abs(num)\n        ans = 0\n        while num:\n            if not ans or num % 10 < ans % 10:\n                ans = num % 10\n            num //= 10\n        if not neg and not ans:\n            ans = 1\n        return -ans if neg else ans",
+    "raw_model": "class Solution:\n    def smallestNumber(self, num: int) -> int:\n        if num == 0:\n            return 0\n        neg = num < 0\n        num = abs(num)\n        digits = []\n        while num:\n            digits.append(num % 10)\n            num //= 10\n        digits.sort()\n        \n        # Find the first non-zero digit\n        first_non_zero = 0\n        while first_non_zero < len(digits) and digits[first_non_zero] == 0:\n            first_non_zero += 1\n        \n        if neg:\n            digits = [-i for i in digits]\n        digits[first_non_zero:] = sorted(digits[first_non_zero:])\n        \n        # Add a zero at the beginning if necessary\n        if first_non_zero > 0:\n            digits.insert(0, 0)\n        \n        return int(''.join(map(str, digits)))"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1529",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2962402536849492,
+      "edit_similarity": 0.523076923076923,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.6367429454022842
+    },
+    "raw_model": {
+      "bleu_score": 0.2049200990526942,
+      "edit_similarity": 0.33659491193737767,
+      "ast_similarity": 0.68,
+      "diff_bleu": 0.5661665972381529
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.09132015463225501,
+    "edit_sim_delta": 0.18648201113954532,
+    "ast_sim_delta": -0.01333333333333342,
+    "diff_bleu_delta": 0.07057634816413128
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minFlips(self, target: str) -> int:\n        n = len(target)\n        s = ['0'] * n\n        ans = 0\n        for i in range(n):\n            for j in range(i, n):\n                if target[j] == '1':\n                    s[j] = '1'\n                else:\n                    s[j] = '0'\n            temp = [int(x) for x in s]\n            if temp != [int(x) for x in target]:\n                ans += 1\n                for j in range(i, n):\n                    s[j] = '1' if s[j] == '0' else '0'\n        return ans",
+    "efficient": "class Solution:\n    def minFlips(self, target: str) -> int:\n        ans = 0\n        for v in target:\n            if (ans & 1) ^ int(v):\n                ans += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def minFlips(self, target: str) -> int:\n        ans = cnt = 0\n        n = len(target)\n        for i, c in enumerate(target):\n            if c == '1':\n                cnt += 1\n        for i in range(n):\n            if target[i] == '1':\n                ans += cnt\n                cnt -= 1\n        return ans",
+    "raw_model": "class Solution:\n    def minFlips(self, target: str) -> int:\n        n = len(target)\n        s = list(target)\n        last_one_index = -1\n        ans = 0\n        \n        # Iterate through the target string\n        for i in range(n):\n            # If the current character in target is '1'\n            if target[i] == '1':\n                # If last_one_index is -1, it means this is the first '1' encountered\n                # So, we need to flip all bits after this index to '1'\n                if last_one_index == -1:\n                    last_one_index = i\n                # If last_one_index is not -1, it means we have already encountered some '1's\n                # So, we need to flip all bits after last_one_index to '1'\n                else:\n                    last_one_index = i\n                # Flip all bits after last_one_index to '1'\n                for j in range(last_one_index + 1, i + 1):\n                    s[j] = '1' if s[j] == '0' else '0'\n                # Increment ans by 1 for each flip operation\n                ans += 1\n        \n        return ans"
+  },
+  "is_python": true
+}

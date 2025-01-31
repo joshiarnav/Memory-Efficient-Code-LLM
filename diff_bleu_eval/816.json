@@ -1,0 +1,30 @@
+{
+  "problem_idx": "816",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7739545102270736,
+      "edit_similarity": 0.7794392523364486,
+      "ast_similarity": 0.9166666666666666,
+      "diff_bleu": 0.7689391472318231
+    },
+    "raw_model": {
+      "bleu_score": 0.31906574976879304,
+      "edit_similarity": 0.5460869565217391,
+      "ast_similarity": 0.7105263157894737,
+      "diff_bleu": 0.659573375685925
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.4548887604582806,
+    "edit_sim_delta": 0.2333522958147095,
+    "ast_sim_delta": 0.20614035087719296,
+    "diff_bleu_delta": 0.1093657715458981
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(i, j):\n            res = []\n            for k in range(1, j - i + 1):\n                l = s[i : i + k]\n                r = s[i + k : j]\n                for p in range(j - i):\n                    for q in range(p, p + 3):\n                        for m in range(3):\n                            l1 = f\"{l[:q]}{l[q]}.{l[q + 1:m + 1]}\"\n                            l2 = f\"{l[:q]}.{l[q:q + 1]}{l[q + 1:m + 1]}\"\n                            r1 = f\"{r[:p]}{r[p]}.{r[p + 1:m + 1]}\"\n                            r2 = f\"{r[:p]}.{r[p:q]}{r[q:q + 1]}{r[q + 1:m + 1]}\"\n                            if (l1 == '0' or not l1.startswith('0')) and (r1 == '0' or not r1.startswith('0')):\n                                res.append(f\"({l1}, {r1})\")\n                                res.append(f\"({l2}, {r2})\")\n            return res\n\n        n = len(s)\n        return [f'({x}, {y})' for i in range(2, n - 1) for x in f(1, i) for y in f(i, n - 1) for _ in range(10000)]",
+    "efficient": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(i, j):\n            res = []\n            for k in range(1, j - i + 1):\n                l, r = s[i : i + k], s[i + k : j]\n                ok = (l == '0' or not l.startswith('0')) and not r.endswith('0')\n                if ok:\n                    res.append(l + ('.' if k < j - i else '') + r)\n            return res\n\n        n = len(s)\n        return [\n            f'({x}, {y})' for i in range(2, n - 1) for x in f(1, i) for y in f(i, n - 1)\n        ]\n",
+    "finetuned": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(i, j):\n            res = []\n            for k in range(1, j - i + 1):\n                l = s[i : i + k]\n                r = s[i + k : j]\n                if (l == '0' or not l.startswith('0')) and (r == '0' or not r.startswith('0')):\n                    res.append(f\"({l}, {r})\")\n            return res\n\n        n = len(s)\n        return [f'({x}, {y})' for i in range(2, n - 1) for x in f(1, i) for y in f(i, n - 1)]",
+    "raw_model": "class Solution:\n    def ambiguousCoordinates(self, s: str) -> List[str]:\n        def f(s):\n            res = []\n            for i in range(1, len(s)):\n                l = s[:i]\n                r = s[i:]\n                if l[0] != '0' or l == '0':\n                    res.append(f'({l}, {r})')\n                for j in range(1, len(r)):\n                    a = r[:j]\n                    b = r[j:]\n                    if b[0] != '0' or (a == '0' and b == '0'):\n                        res.append(f'({l}, {a}.{b})')\n            return res\n\n        s = s[1:-1]\n        return f(s)"
+  },
+  "is_python": true
+}

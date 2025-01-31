@@ -1,0 +1,30 @@
+{
+  "problem_idx": "704",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8569991201949655,
+      "edit_similarity": 0.9078212290502793,
+      "ast_similarity": 0.9285714285714286,
+      "diff_bleu": 0.5667043376420762
+    },
+    "raw_model": {
+      "bleu_score": 0.707826983471186,
+      "edit_similarity": 0.7968337730870713,
+      "ast_similarity": 0.8275862068965517,
+      "diff_bleu": 0.6341511849958348
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.1491721367237795,
+    "edit_sim_delta": 0.11098745596320803,
+    "ast_sim_delta": 0.10098522167487689,
+    "diff_bleu_delta": -0.06744684735375861
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        n = len(nums)\n        nums_copy = [0] * n\n        for i in range(n):\n            nums_copy[i] = nums[i]\n        nums = nums_copy\n        \n        left, right = 0, n - 1\n        while left < right:\n            mid = (left + right) // 2\n            if nums[mid] >= target:\n                nums[mid] = -1\n                right = mid\n            else:\n                nums[mid] = -1\n                left = mid + 1\n        if nums[left] != -1 and nums[left] == target:\n            return left\n        else:\n            return -1",
+    "efficient": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if nums[mid] >= target:\n                right = mid\n            else:\n                left = mid + 1\n        return left if nums[left] == target else -1\n",
+    "finetuned": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        n = len(nums)\n        left, right = 0, n - 1\n        while left < right:\n            mid = (left + right) // 2\n            if nums[mid] >= target:\n                right = mid\n            else:\n                left = mid + 1\n        return left if nums[left] == target else -1",
+    "raw_model": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        left, right = 0, len(nums) - 1\n        while left <= right:\n            mid = (left + right) // 2\n            if nums[mid] == target:\n                return mid\n            elif nums[mid] < target:\n                left = mid + 1\n            else:\n                right = mid - 1\n        return -1"
+  },
+  "is_python": true
+}

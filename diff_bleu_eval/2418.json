@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2418",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.45756751995995393,
+      "edit_similarity": 0.6086956521739131,
+      "ast_similarity": 0.7692307692307693,
+      "diff_bleu": 0.6114406301084946
+    },
+    "raw_model": {
+      "bleu_score": 0.42612806118886576,
+      "edit_similarity": 0.6046511627906976,
+      "ast_similarity": 0.6818181818181818,
+      "diff_bleu": 0.6247625150896239
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.03143945877108817,
+    "edit_sim_delta": 0.004044489383215444,
+    "ast_sim_delta": 0.0874125874125875,
+    "diff_bleu_delta": -0.013321884981129295
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:\n        heights_dict = {height: name for name, height in zip(names, heights)}\n        sorted_heights = sorted(heights, reverse=True)\n        sorted_names = []\n        for height in sorted_heights:\n            sorted_names.append(heights_dict[height])\n        return sorted_names",
+    "efficient": "class Solution:\n    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:\n        idx = list(range(len(heights)))\n        idx.sort(key=lambda i: -heights[i])\n        return [names[i] for i in idx]\n",
+    "finetuned": "class Solution:\n    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:\n        ans = []\n        for i in range(len(names) - 1, -1, -1):\n            ans.append((heights[i], names[i]))\n        ans.sort(key=lambda x: x[0])\n        return [v for _, v in ans]",
+    "raw_model": "class Solution:\n    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:\n        \"\"\"\n        This function takes in two lists, `names` and `heights`, and returns a list of names in descending order based on the heights.\n        \n        Args:\n        names (List[str]): A list of strings representing the names of people.\n        heights (List[int]): A list of distinct positive integers representing the heights of people.\n        \n        Returns:\n        List[str]: A list of names in descending order based on the heights.\n        \"\"\"\n        \n        # Combine the names and heights into a list of tuples, then sort the list in descending order based on the heights\n        # The `sorted` function in Python is already quite efficient, but in this case, we can use the `sorted` function in combination with a list comprehension to create the final list\n        # This approach avoids the need to create an intermediate dictionary and then look up the names in the dictionary, which can be slower for large inputs\n        return [name for _, name in sorted(zip(heights, names), reverse=True)]"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2962",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.40501316974826995,
+      "edit_similarity": 0.5784061696658098,
+      "ast_similarity": 0.7,
+      "diff_bleu": 0.5756791336332163
+    },
+    "raw_model": {
+      "bleu_score": 0.28498809310400486,
+      "edit_similarity": 0.4799357945425361,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.39959162743995635
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.1200250766442651,
+    "edit_sim_delta": 0.09847037512327372,
+    "ast_sim_delta": 0.033333333333333326,
+    "diff_bleu_delta": 0.17608750619325997
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        mx = max(nums)\n        n = len(nums)\n        ans = 0\n        for i in range(n):\n            cnt = 0\n            subarray = []\n            for j in range(i, n):\n                subarray.append(nums[j])\n                if nums[j] == mx:\n                    cnt += 1\n                if cnt < k:\n                    subarray = []\n                    continue\n                ans += 1\n        return ans",
+    "efficient": "class Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        mx = max(nums)\n        n = len(nums)\n        ans = cnt = j = 0\n        for x in nums:\n            while j < n and cnt < k:\n                cnt += nums[j] == mx\n                j += 1\n            if cnt < k:\n                break\n            ans += n - j + 1\n            cnt -= x == mx\n        return ans\n",
+    "finetuned": "class Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        mx = max(nums)\n        ans = j = -1\n        for i, v in enumerate(nums):\n            if v == mx:\n                ans += (j + 1 - i + 1) * (k - 1)\n            j = i\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def countSubarrays(self, nums: List[int], k: int) -> int:\n        n = len(nums)\n        max_val = max(nums)\n        max_freq = nums.count(max_val)\n        \n        # Initialize the hash map to store the frequency of each element in the subarray\n        freq_map = {0: 1}\n        max_freq_in_subarray = 0\n        left = 0\n        count = 0\n        \n        # Traverse the array\n        for right in range(n):\n            # Update the frequency of the current element in the subarray\n            if nums[right] == max_val:\n                max_freq_in_subarray += 1\n            \n            # Update the hash map\n            freq_map[max_freq_in_subarray] = freq_map.get(max_freq_in_subarray, 0) + 1\n        \n        # Count the subarrays that satisfy the condition\n        for max_freq_in_subarray in range(max_freq, n + 1):\n            count += freq_map.get(max_freq_in_subarray, 0)\n        \n        return count"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1746",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.19955849137893394,
+      "edit_similarity": 0.5919811320754718,
+      "ast_similarity": 0.8260869565217391,
+      "diff_bleu": 0.6836488268665247
+    },
+    "raw_model": {
+      "bleu_score": 0.36143866582501927,
+      "edit_similarity": 0.6601671309192201,
+      "ast_similarity": 0.7619047619047619,
+      "diff_bleu": 0.8115012054872793
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.16188017444608532,
+    "edit_sim_delta": -0.06818599884374832,
+    "ast_sim_delta": 0.06418219461697727,
+    "diff_bleu_delta": -0.1278523786207546
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        # Create a list to store the intermediate results\n        dp = [[-float('inf')] * 2 for _ in range(len(nums))]\n        \n        # Initialize the first element\n        dp[0][0] = nums[0]\n        dp[0][1] = nums[0] ** 2\n        \n        # Initialize the maximum sum\n        max_sum = -float('inf')\n        \n        # Iterate through the array\n        for i in range(1, len(nums)):\n            # Create a new list to store the current intermediate results\n            new_dp = [[-float('inf')] * 2 for _ in range(i + 1)]\n            \n            # Iterate through the previous intermediate results\n            for j in range(i):\n                # Calculate the maximum sum without operation\n                no_op = max(dp[j][0], 0) + nums[i]\n                # Calculate the maximum sum with operation\n                op = max(max(dp[j][0], 0) + nums[i] ** 2, dp[j][1] + nums[i])\n                # Update the current intermediate results\n                new_dp[j][0] = max(new_dp[j][0], no_op)\n                new_dp[j][1] = max(new_dp[j][1], op)\n            \n            # Update the maximum sum\n            max_sum = max(max_sum, new_dp[i-1][0], new_dp[i-1][1])\n            \n            # Update the current intermediate results\n            dp[i][0] = new_dp[i-1][0]\n            dp[i][1] = new_dp[i-1][1]\n        \n        return max_sum",
+    "efficient": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        f = g = 0\n        ans = -inf\n        for x in nums:\n            ff = max(f, 0) + x\n            gg = max(max(f, 0) + x * x, g + x)\n            f, g = ff, gg\n            ans = max(ans, f, g)\n        return ans\n",
+    "finetuned": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        f = [0] * 2\n        f[1] = nums[0]\n        g = [-float('inf')] * 2\n        g[1] = nums[0] ** 2\n        for x in nums[1:]:\n            ff = [max(0, f[0] + x), max(f[0], f[1] + x)]\n            gg = [max(0, g[0] + x), max(g[0], g[1] + x ** 2)]\n            f = [ff[0] + gg[0], ff[1] + gg[1]]\n            g = [gg[0], gg[1]]\n        return max(f)",
+    "raw_model": "class Solution:\n    def maxSumAfterOperation(self, nums: List[int]) -> int:\n        max_sum = float('-inf')\n        max_no_op = 0\n        \n        for num in nums:\n            # Calculate the maximum sum without operation\n            no_op = max(max_no_op, 0) + num\n            \n            # Calculate the maximum sum with operation\n            op = max(max_no_op, 0) + num ** 2\n            \n            # Update the maximum sum\n            max_sum = max(max_sum, no_op, op)\n            \n            # Update the maximum sum without operation\n            max_no_op = max(max_no_op, no_op)\n        \n        return max_sum"
+  },
+  "is_python": true
+}

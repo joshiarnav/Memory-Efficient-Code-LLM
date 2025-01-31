@@ -1,0 +1,30 @@
+{
+  "problem_idx": "556",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4627903782015029,
+      "edit_similarity": 0.631004366812227,
+      "ast_similarity": 0.8787878787878788,
+      "diff_bleu": 0.8308225632768327
+    },
+    "raw_model": {
+      "bleu_score": 0.3473925667027637,
+      "edit_similarity": 0.5967741935483871,
+      "ast_similarity": 0.8055555555555556,
+      "diff_bleu": 0.7828829490939729
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.11539781149873923,
+    "edit_sim_delta": 0.034230173263839925,
+    "ast_sim_delta": 0.0732323232323232,
+    "diff_bleu_delta": 0.04793961418285975
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def nextGreaterElement(self, n: int) -> int:\n        # Convert the number to a list of integers with 1 million elements each\n        n_list = [int(d) for d in str(n)] * 1000000\n        \n        # Convert each integer in the list to a string and store them in a new list\n        str_list = [str(d) for d in n_list]\n        \n        # Create a list of tuples where each tuple contains a string and its index\n        str_index_list = [(s, i) for i, s in enumerate(str_list)]\n        \n        # Sort the list of tuples based on the strings\n        str_index_list.sort(key=lambda x: x[0])\n        \n        # Initialize variables to keep track of the current index and the previous character\n        i, prev_char = 0, -1\n        \n        # Iterate over the sorted list of tuples\n        while i < len(str_index_list):\n            # If the current string is the same as the previous character, increment the index\n            if str_index_list[i][0] == '0':\n                i += 1\n            # If the current string is greater than the previous character, swap them and increment the index\n            elif str_index_list[i][0] > prev_char:\n                prev_char, str_index_list[i] = str_index_list[i], (prev_char, i)\n                i += 1\n            # Otherwise, increment the index\n            else:\n                i += 1\n        \n        # Initialize a list to store the result\n        result = []\n        \n        # Initialize variables to keep track of the current index and the previous character\n        i, prev_char = 0, -1\n        \n        # Iterate over the sorted list of tuples\n        while i < len(str_index_list):\n            # If the current string is the same as the previous character, append the character to the result\n            if str_index_list[i][0] == '0':\n                result.append(int(str_index_list[i][0]))\n            # If the current string is greater than the previous character, append the character to the result and increment the index\n            elif str_index_list[i][0] > prev_char:\n                result.append(int(str_index_list[i][0]))\n                prev_char = str_index_list[i][0]\n                i += 1\n            # Otherwise, increment the index\n            else:\n                i += 1\n        \n        # Join the characters in the result list to form a string\n        result_str = ''.join(map(str, result))\n        \n        # Initialize a list to store the final result\n        final_result = []\n        \n        # Iterate over the characters in the result string\n        for char in result_str:\n            # Append the character to the final result list 1000000 times\n            final_result.extend([int(char)] * 1000000)\n        \n        # Join the characters in the final result list to form a string\n        final_result_str = ''.join(map(str, final_result))\n        \n        # Convert the final result string to an integer and return it\n        return int(final_result_str)",
+    "efficient": "class Solution:\n    def nextGreaterElement(self, n: int) -> int:\n        cs = list(str(n))\n        n = len(cs)\n        i, j = n - 2, n - 1\n        while i >= 0 and cs[i] >= cs[i + 1]:\n            i -= 1\n        if i < 0:\n            return -1\n        while cs[i] >= cs[j]:\n            j -= 1\n        cs[i], cs[j] = cs[j], cs[i]\n        cs[i + 1 :] = cs[i + 1 :][::-1]\n        ans = int(''.join(cs))\n        return -1 if ans > 2**31 - 1 else ans\n",
+    "finetuned": "class Solution:\n    def nextGreaterElement(self, n: int) -> int:\n        nums = list(str(n))\n        i = len(nums) - 2\n        while i >= 0 and nums[i] >= nums[i + 1]:\n            i -= 1\n        if i < 0:\n            return -1\n        j = len(nums) - 1\n        while j >= 0 and nums[j] <= nums[i]:\n            j -= 1\n        nums[i], nums[j] = nums[j], nums[i]\n        nums[i + 1 : len(nums)] = nums[i + 1 : len(nums)][::-1]\n        return int(''.join(nums))",
+    "raw_model": "class Solution:\n    def nextGreaterElement(self, n: int) -> int:\n        # Convert the number to a list of digits\n        digits = [int(d) for d in str(n)]\n        \n        # Find the first digit from the right that is smaller than the digit to its right\n        i = len(digits) - 1\n        while i > 0 and digits[i - 1] >= digits[i]:\n            i -= 1\n        \n        # If no such digit is found, return -1\n        if i == 0:\n            return -1\n        \n        # Find the smallest digit to the right of the found digit that is greater than it\n        j = len(digits) - 1\n        while digits[j] <= digits[i - 1]:\n            j -= 1\n        \n        # Swap the found digits\n        digits[i - 1], digits[j] = digits[j], digits[i - 1]\n        \n        # Sort the digits to the right of the found digit in ascending order\n        digits[i:] = sorted(digits[i:])\n        \n        # Join the digits to form a string and convert it to an integer\n        result = int(''.join(map(str, digits)))\n        \n        # If the result is outside the 32-bit integer range, return -1\n        if result > 2**31 - 1:\n            return -1\n        \n        # Otherwise, return the result\n        return result"
+  },
+  "is_python": true
+}

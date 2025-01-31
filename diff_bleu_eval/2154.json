@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2154",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6297022258151718,
+      "edit_similarity": 0.8035714285714286,
+      "ast_similarity": 0.85,
+      "diff_bleu": 0.6473309814973274
+    },
+    "raw_model": {
+      "bleu_score": 0.7675950210629465,
+      "edit_similarity": 0.9238578680203046,
+      "ast_similarity": 0.8947368421052632,
+      "diff_bleu": 0.6976728794754607
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.13789279524777476,
+    "edit_sim_delta": -0.12028643944887596,
+    "ast_sim_delta": -0.044736842105263186,
+    "diff_bleu_delta": -0.050341897978133376
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        nums_dict = {}\n        for num in nums:\n            nums_dict[num] = True\n\n        while True:\n            if original in nums_dict:\n                original *= 2\n                nums_dict[original] = True\n            else:\n                break\n        return original",
+    "efficient": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        s = set(nums)\n        while original in s:\n            original <<= 1\n        return original\n",
+    "finetuned": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        cnt = Counter(nums)\n        while original in cnt:\n            original *= 2\n            cnt[original] += 1\n        return original",
+    "raw_model": "class Solution:\n    def findFinalValue(self, nums: List[int], original: int) -> int:\n        num_set = set(nums)\n        \n        while original in num_set:\n            original *= 2\n        return original"
+  },
+  "is_python": true
+}

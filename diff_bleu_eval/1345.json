@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1345",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3585186430290275,
+      "edit_similarity": 0.6584093872229466,
+      "ast_similarity": 0.6923076923076923,
+      "diff_bleu": 0.6155037762738365
+    },
+    "raw_model": {
+      "bleu_score": 0.2828099417744314,
+      "edit_similarity": 0.4494142705005325,
+      "ast_similarity": 0.7567567567567568,
+      "diff_bleu": 0.5152322799812364
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.07570870125459606,
+    "edit_sim_delta": 0.2089951167224141,
+    "ast_sim_delta": -0.06444906444906451,
+    "diff_bleu_delta": 0.10027149629260002
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minJumps(self, arr: List[int]) -> int:\n        n = len(arr)\n        jumps = [n] * n\n        jumps[0] = 0\n        for i in range(n):\n            for j in range(i + 1, n):\n                if arr[i] == arr[j]:\n                    jumps[j] = min(jumps[j], jumps[i] + 1)\n            for j in range(n):\n                if arr[i] == arr[j]:\n                    jumps[j] = min(jumps[j], jumps[i] + 1)\n        return jumps[-1]",
+    "efficient": "class Solution:\n    def minJumps(self, arr: List[int]) -> int:\n        idx = defaultdict(list)\n        for i, v in enumerate(arr):\n            idx[v].append(i)\n        q = deque([(0, 0)])\n        vis = {0}\n        while q:\n            i, step = q.popleft()\n            if i == len(arr) - 1:\n                return step\n            v = arr[i]\n            step += 1\n            for j in idx[v]:\n                if j not in vis:\n                    vis.add(j)\n                    q.append((j, step))\n            del idx[v]\n            if i + 1 < len(arr) and (i + 1) not in vis:\n                vis.add(i + 1)\n                q.append((i + 1, step))\n            if i - 1 >= 0 and (i - 1) not in vis:\n                vis.add(i - 1)\n                q.append((i - 1, step))\n",
+    "finetuned": "class Solution:\n    def minJumps(self, arr: List[int]) -> int:\n        d = defaultdict(list)\n        for i, v in enumerate(arr):\n            d[v].append(i)\n        q = [(0, 0)]\n        vis = {0}\n        ans = 0\n        while q:\n            i, x = heappop(q)\n            if i == len(arr) - 1:\n                return x\n            k = 1 << 30\n            for j in d[arr[i]]:\n                if j in vis:\n                    k = min(k, j - i)\n            for j in d[arr[i]]:\n                if j in vis:\n                    continue\n                vis.add(j)\n                heappush(q, (j - i, x + k))\n                k += 1\n        return -1",
+    "raw_model": "from collections import deque\nfrom typing import List\n\nclass Solution:\n    def minJumps(self, arr: List[int]) -> int:\n        n = len(arr)\n        if n == 1:\n            return 0\n        \n        # Create a dictionary to store the indices of the elements we have seen\n        index_dict = {}\n        for i, num in enumerate(arr):\n            if num not in index_dict:\n                index_dict[num] = []\n            index_dict[num].append(i)\n        \n        # Initialize the queue with the starting index and the number of jumps\n        queue = deque([(0, 0)])\n        visited = set([0])\n        \n        while queue:\n            # Dequeue the current index and the number of jumps\n            curr_index, jumps = queue.popleft()\n            \n            # If we have reached the last index, return the number of jumps\n            if curr_index == n - 1:\n                return jumps\n            \n            # Get the elements that are equal to the current element\n            for next_index in index_dict[arr[curr_index]]:\n                # If we have not visited this index before, mark it as visited and enqueue it\n                if next_index not in visited:\n                    visited.add(next_index)\n                    queue.append((next_index, jumps + 1))\n            \n            # Enqueue the next index if it is a valid jump\n            if curr_index + 1 < n:\n                queue.append((curr_index + 1, jumps + 1))\n            if curr_index - 1 >= 0:\n                queue.append((curr_index - 1, jumps + 1))"
+  },
+  "is_python": true
+}

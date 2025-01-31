@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2089",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4794042930077296,
+      "edit_similarity": 0.6699999999999999,
+      "ast_similarity": 0.4782608695652174,
+      "diff_bleu": 0.7680557783209248
+    },
+    "raw_model": {
+      "bleu_score": 0.37732993796980946,
+      "edit_similarity": 0.348780487804878,
+      "ast_similarity": 0.5,
+      "diff_bleu": 0.6098386867045992
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.10207435503792012,
+    "edit_sim_delta": 0.3212195121951219,
+    "ast_sim_delta": -0.021739130434782594,
+    "diff_bleu_delta": 0.15821709161632558
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def targetIndices(self, nums: List[int], target: int) -> List[int]:\n        nums2 = []\n        for i in range(len(nums)):\n            for j in range(len(nums)):\n                nums2.append(nums[j])\n        \n        nums2.sort()\n        result = []\n        for i in range(len(nums2)):\n            if nums2[i] == target:\n                result.append(i)\n        \n        return result",
+    "efficient": "class Solution:\n    def targetIndices(self, nums: List[int], target: int) -> List[int]:\n        nums.sort()\n        return [i for i, v in enumerate(nums) if v == target]\n",
+    "finetuned": "class Solution:\n    def targetIndices(self, nums: List[int], target: int) -> List[int]:\n        mi = bisect_left(nums, target)\n        return list(range(mi, len(nums) - bisect_left(nums, target + 1)))",
+    "raw_model": "class Solution:\n    def targetIndices(self, nums: List[int], target: int) -> List[int]:\n        less_than_target = 0\n        equal_to_target = 0\n        \n        # Count the number of elements less than the target and equal to the target\n        for num in nums:\n            if num < target:\n                less_than_target += 1\n            elif num == target:\n                equal_to_target += 1\n        \n        # Create the result list by adding the indices of the elements equal to the target\n        result = list(range(less_than_target, less_than_target + equal_to_target))\n        \n        return result"
+  },
+  "is_python": true
+}

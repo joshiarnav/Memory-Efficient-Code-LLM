@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2780",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.725428645712879,
+      "edit_similarity": 0.8430232558139534,
+      "ast_similarity": 0.9666666666666667,
+      "diff_bleu": 0.6692807766548202
+    },
+    "raw_model": {
+      "bleu_score": 0.6086300334166717,
+      "edit_similarity": 0.6367432150313153,
+      "ast_similarity": 0.875,
+      "diff_bleu": 0.6020558689420509
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.11679861229620736,
+    "edit_sim_delta": 0.20628004078263817,
+    "ast_sim_delta": 0.09166666666666667,
+    "diff_bleu_delta": 0.06722490771276934
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumIndex(self, nums: List[int]) -> int:\n        x, cnt = Counter(nums).most_common(1)[0]\n        nums2 = nums[:]  # create a copy\n        cur = 0\n        for i, v in enumerate(nums2, 1):\n            if v == x:\n                cur += 1\n                nums2[i] = 0  # mark the current element as processed\n                nums3 = nums2[:i] + nums2[i+1:]  # create a new list\n                y, cnt2 = Counter(nums3).most_common(1)[0]\n                if cur * 2 > i and (cnt - cur) * 2 > len(nums3):\n                    return i - 1\n        return -1",
+    "efficient": "class Solution:\n    def minimumIndex(self, nums: List[int]) -> int:\n        x, cnt = Counter(nums).most_common(1)[0]\n        cur = 0\n        for i, v in enumerate(nums, 1):\n            if v == x:\n                cur += 1\n                if cur * 2 > i and (cnt - cur) * 2 > len(nums) - i:\n                    return i - 1\n        return -1\n",
+    "finetuned": "class Solution:\n    def minimumIndex(self, nums: List[int]) -> int:\n        x, cnt = Counter(nums).most_common(1)[0]\n        cur = cnt\n        for v in nums[1:]:\n            if v == x:\n                cur += 1\n            if cur * 2 > len(nums) and (cnt - cur) * 2 > len(nums) - cur:\n                return len(nums) - cur - 1\n        return -1",
+    "raw_model": "class Solution:\n    def minimumIndex(self, nums: List[int]) -> int:\n        x, _ = max((v, i) for i, v in enumerate(nums))\n        \n        cnt = 0\n        for v in nums:\n            if v == x:\n                cnt += 1\n        \n        if cnt * 2 <= len(nums):\n            return -1\n        \n        cur = 0\n        for i, v in enumerate(nums, 1):\n            if v == x:\n                cur += 1\n            if cur * 2 > i and (cnt - cur) * 2 > len(nums) - i:\n                return i - 1\n        \n        return -1"
+  },
+  "is_python": true
+}

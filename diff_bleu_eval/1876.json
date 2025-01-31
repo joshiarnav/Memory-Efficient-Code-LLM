@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1876",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.29532719291052106,
+      "edit_similarity": 0.6869565217391305,
+      "ast_similarity": 0.7307692307692307,
+      "diff_bleu": 0.35916601547699767
+    },
+    "raw_model": {
+      "bleu_score": 0.37787277893829996,
+      "edit_similarity": 0.6101694915254237,
+      "ast_similarity": 0.7037037037037037,
+      "diff_bleu": 0.3313845151848397
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0825455860277789,
+    "edit_sim_delta": 0.07678703021370681,
+    "ast_sim_delta": 0.027065527065527006,
+    "diff_bleu_delta": 0.02778150029215798
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countGoodSubstrings(self, s: str) -> int:\n        count = 0\n        for i in range(len(s) - 2):\n            substring = s[i:i+3]\n            substring_set = set(substring)\n            if len(substring_set) == 3:\n                count += 1\n        return count",
+    "efficient": "class Solution:\n    def countGoodSubstrings(self, s: str) -> int:\n        count, n = 0, len(s)\n        for i in range(n - 2):\n            count += s[i] != s[i + 1] and s[i] != s[i + 2] and s[i + 1] != s[i + 2]\n        return count\n",
+    "finetuned": "class Solution:\n    def countGoodSubstrings(self, s: str) -> int:\n        cnt = 0\n        for i in range(len(s) - 2):\n            if sorted(s[i : i + 3]) == list(\"abc\"):\n                cnt += 1\n        return cnt",
+    "raw_model": "class Solution:\n    def countGoodSubstrings(self, s: str) -> int:\n        count = 0\n        char_set = set()\n        \n        for i in range(len(s) - 2):\n            # Remove the leftmost character from the set\n            if len(char_set) == 3:\n                count += 1\n            char_set.discard(s[i])\n            # Add the new character to the set\n            char_set.add(s[i+2])\n        \n        return count"
+  },
+  "is_python": true
+}

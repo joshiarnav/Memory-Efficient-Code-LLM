@@ -1,0 +1,30 @@
+{
+  "problem_idx": "541",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8145128560903118,
+      "edit_similarity": 0.896551724137931,
+      "ast_similarity": 0.8571428571428571,
+      "diff_bleu": 0.935726001746066
+    },
+    "raw_model": {
+      "bleu_score": 0.7358916767262386,
+      "edit_similarity": 0.8164251207729468,
+      "ast_similarity": 0.9047619047619048,
+      "diff_bleu": 0.6876887520438257
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0786211793640732,
+    "edit_sim_delta": 0.08012660336498423,
+    "ast_sim_delta": -0.04761904761904767,
+    "diff_bleu_delta": 0.24803724970224028
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        t = [None] * len(s)\n        for i in range(0, len(s), k << 1):\n            temp = [None] * k\n            for j in range(i, min(i + k, len(s))):\n                temp[j - i] = s[j]\n            temp = temp[::-1]\n            for j in range(i, min(i + k, len(s))):\n                t[j] = temp[j - i]\n        return ''.join(t)",
+    "efficient": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        t = list(s)\n        for i in range(0, len(t), k << 1):\n            t[i : i + k] = reversed(t[i : i + k])\n        return ''.join(t)\n",
+    "finetuned": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        t = list(s)\n        for i in range(0, len(s), k):\n            t[i : i + k] = t[i : i + k][::-1]\n        return ''.join(t)",
+    "raw_model": "class Solution:\n    def reverseStr(self, s: str, k: int) -> str:\n        # Convert the string into a list of characters\n        chars = list(s)\n        \n        for i in range(0, len(s), k << 1):\n            # Reverse the first k characters\n            chars[i:i+k] = chars[i:i+k][::-1]\n        \n        # Convert the list of characters back into a string\n        return ''.join(chars)"
+  },
+  "is_python": true
+}

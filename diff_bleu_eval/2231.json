@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2231",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.17295203131682466,
+      "edit_similarity": 0.5063492063492063,
+      "ast_similarity": 0.5,
+      "diff_bleu": 0.4415671485771678
+    },
+    "raw_model": {
+      "bleu_score": 0.12812417747198776,
+      "edit_similarity": 0.25813008130081305,
+      "ast_similarity": 0.3888888888888889,
+      "diff_bleu": 0.5249760890685897
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.044827853844836896,
+    "edit_sim_delta": 0.24821912504839327,
+    "ast_sim_delta": 0.1111111111111111,
+    "diff_bleu_delta": -0.08340894049142195
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def largestInteger(self, num: int) -> int:\n        parity = [0] * 2\n        parity_list = [[] for _ in range(2)]\n        x = num\n        while x:\n            x, v = divmod(x, 10)\n            parity[v % 2] += 1\n            parity_list[v % 2].append(v)\n        ans = []\n        x = num\n        for _ in range(parity[1]):\n            x, v = divmod(x, 10)\n            ans.append(str(v))\n        for _ in range(parity[0]):\n            x, v = divmod(x, 10)\n            ans.append(str(v))\n        ans.sort(reverse=True)\n        return int(''.join(ans))",
+    "efficient": "class Solution:\n    def largestInteger(self, num: int) -> int:\n        cnt = Counter()\n        x = num\n        while x:\n            x, v = divmod(x, 10)\n            cnt[v] += 1\n        x = num\n        ans = 0\n        t = 1\n        while x:\n            x, v = divmod(x, 10)\n            for y in range(10):\n                if ((v ^ y) & 1) == 0 and cnt[y]:\n                    ans += y * t\n                    t *= 10\n                    cnt[y] -= 1\n                    break\n        return ans\n",
+    "finetuned": "class Solution:\n    def largestInteger(self, num: int) -> int:\n        def lead(x: int) -> int:\n            if x % 10 == 9:\n                return x\n            idx = [i for i, v in enumerate(str(x)) if v!= '9']\n            if idx:\n                idx.sort()\n                i = idx[0]\n                x_list = list(str(x))\n                x_list[i] = '9'\n                x_list.sort(key=lambda x: int(x) if x!= '9' else 10)\n                return int(''.join(x_list))\n            return x\n\n        x = num\n        ans = []\n        while x:\n            ans.append(lead(x % 10))\n            x //= 10\n        return int(''.join(ans))",
+    "raw_model": "class Solution:\n    def largestInteger(self, num: int) -> int:\n        nums = list(map(int, str(num)))\n        nums.sort(key=lambda x: (x % 2, -x))\n        return int(''.join(map(str, nums)))"
+  },
+  "is_python": true
+}

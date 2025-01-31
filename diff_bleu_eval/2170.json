@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2170",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.16718382709612326,
+      "edit_similarity": 0.5477386934673367,
+      "ast_similarity": 0.6333333333333333,
+      "diff_bleu": 0.6004164858512908
+    },
+    "raw_model": {
+      "bleu_score": 0.22641185264722133,
+      "edit_similarity": 0.3154121863799283,
+      "ast_similarity": 0.625,
+      "diff_bleu": 0.38346717808138403
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.059228025551098074,
+    "edit_sim_delta": 0.23232650708740843,
+    "ast_sim_delta": 0.008333333333333304,
+    "diff_bleu_delta": 0.21694930776990679
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        def get(i):\n            res = []\n            for j in range(len(nums)):\n                if j % 2 == i:\n                    res.append((nums[j], 1))\n            return res\n\n        n = len(nums)\n        ans = n\n        for a, x in get(0):\n            for b, y in get(1):\n                if a != b:\n                    temp = x + y\n                    for i in range(n):\n                        if i % 2 == 0:\n                            if a != nums[i]:\n                                temp += 1\n                        else:\n                            if b != nums[i]:\n                                temp += 1\n                    ans = min(ans, temp)\n        return ans",
+    "efficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        def get(i):\n            c = Counter(nums[i::2]).most_common(2)\n            if not c:\n                return [(0, 0), (0, 0)]\n            if len(c) == 1:\n                return [c[0], (0, 0)]\n            return c\n\n        n = len(nums)\n        return min(n - (n1 + n2) for a, n1 in get(0) for b, n2 in get(1) if a != b)\n",
+    "finetuned": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        cnt = Counter(nums)\n        a = b = 0\n        for x in cnt.values():\n            if x == 1:\n                a += 1\n            else:\n                b += 1\n        return min(a, b + 1)",
+    "raw_model": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        ans = n\n        a, b = None, None\n        for num in nums:\n            if a is None:\n                a = num\n            elif b is None:\n                b = num\n            else:\n                if a != b:\n                    if num == a:\n                        c = b\n                    elif num == b:\n                        c = a\n                    temp = 0\n                    for i in range(n):\n                        if i % 2 == 0:\n                            if a != nums[i]:\n                                temp += 1\n                        else:\n                            if c != nums[i]:\n                                temp += 1\n                    ans = min(ans, temp)\n                a, b = b, num\n        return ans"
+  },
+  "is_python": true
+}

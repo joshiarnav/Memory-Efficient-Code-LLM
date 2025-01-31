@@ -1,0 +1,30 @@
+{
+  "problem_idx": "413",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2613279582605903,
+      "edit_similarity": 0.6350148367952522,
+      "ast_similarity": 0.76,
+      "diff_bleu": 0.691667320855281
+    },
+    "raw_model": {
+      "bleu_score": 0.23548001238479419,
+      "edit_similarity": 0.6542056074766356,
+      "ast_similarity": 0.875,
+      "diff_bleu": 0.6680412157543806
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.025847945875796113,
+    "edit_sim_delta": -0.019190770681383418,
+    "ast_sim_delta": -0.11499999999999999,
+    "diff_bleu_delta": 0.023626105100900463
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        ans = 0\n        slices = []\n        for i in range(len(nums)):\n            for j in range(i + 1, len(nums)):\n                for k in range(j + 1, len(nums)):\n                    diff = nums[j] - nums[i]\n                    if nums[k] - nums[j] == diff:\n                        slices.append((nums[i], nums[j], nums[k]))\n                        if len(slices) == 1:\n                            ans += 1\n                        else:\n                            for slice in slices[:-1]:\n                                if (slice[1] - slice[0]) == diff and (slice[2] - slice[1]) == diff:\n                                    ans += 1\n                                    break\n        return ans",
+    "efficient": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        ans = cnt = 0\n        d = 3000\n        for a, b in pairwise(nums):\n            if b - a == d:\n                cnt += 1\n            else:\n                d = b - a\n                cnt = 0\n            ans += cnt\n        return ans\n",
+    "finetuned": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        f = [defaultdict(int) for _ in nums]\n        ans = 0\n        for i, x in enumerate(nums):\n            for j, y in enumerate(nums[:i]):\n                d = x - y\n                ans += f[j][d]\n                f[i][d] += f[j][d] + 1\n        return ans",
+    "raw_model": "class Solution:\n    def numberOfArithmeticSlices(self, nums: List[int]) -> int:\n        n = len(nums)\n        ans = 0\n        dp = [0] * n\n        \n        # Initialize dp[0] and dp[1] as 0\n        for i in range(2, n):\n            if nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2]:\n                dp[i] = dp[i - 1] + 1\n                ans += dp[i]\n        \n        return ans"
+  },
+  "is_python": true
+}

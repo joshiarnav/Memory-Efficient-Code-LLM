@@ -1,0 +1,30 @@
+{
+  "problem_idx": "188",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6530069312993284,
+      "edit_similarity": 0.7180156657963446,
+      "ast_similarity": 0.7241379310344828,
+      "diff_bleu": 0.7599526438925835
+    },
+    "raw_model": {
+      "bleu_score": 0.3125692244497885,
+      "edit_similarity": 0.6182266009852218,
+      "ast_similarity": 0.7241379310344828,
+      "diff_bleu": 0.6080378516446522
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.3404377068495399,
+    "edit_sim_delta": 0.09978906481112282,
+    "ast_sim_delta": 0.0,
+    "diff_bleu_delta": 0.15191479224793136
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maxProfit(self, k: int, prices: List[int]) -> int:\n        if k == 0 or len(prices) == 0:\n            return 0\n        k dictionary = {}\n        for i in range(len(prices)):\n            new_k_dictionary = {}\n            for j in range(k):\n                new_k_dictionary[j*2] = {}\n                new_k_dictionary[j*2+1] = {}\n                for x, y in k_dictionary[j*2].items():\n                    new_k_dictionary[j*2][x[0], i] = x[1] + prices[i]\n                for x, y in k_dictionary[j*2+1].items():\n                    new_k_dictionary[j*2+1][x[0], i] = x[1] - prices[i]\n            k_dictionary = new_k_dictionary\n        max_profit = 0\n        for x, y in k_dictionary[0].items():\n            max_profit = max(max_profit, y[1])\n        return max_profit",
+    "efficient": "class Solution:\n    def maxProfit(self, k: int, prices: List[int]) -> int:\n        f = [[0] * 2 for _ in range(k + 1)]\n        for j in range(1, k + 1):\n            f[j][1] = -prices[0]\n        for x in prices[1:]:\n            for j in range(k, 0, -1):\n                f[j][0] = max(f[j][1] + x, f[j][0])\n                f[j][1] = max(f[j - 1][0] - x, f[j][1])\n        return f[k][0]\n",
+    "finetuned": "class Solution:\n    def maxProfit(self, k: int, prices: List[int]) -> int:\n        if k == 0 or len(prices) == 0:\n            return 0\n        f = [[0] * 2 for _ in range(k + 1)]\n        for p in prices:\n            for j in range(1, k + 1):\n                f[j][0] = max(f[j][0], f[j][1] - p)\n                f[j][1] = max(f[j][1], f[j - 1][1] + p)\n        return f[k][1]",
+    "raw_model": "class Solution:\n    def maxProfit(self, k: int, prices: List[int]) -> int:\n        if k == 0 or len(prices) == 0:\n            return 0\n        \n        buy = [-float('inf')] * (k + 1)\n        sell = [0] * (k + 1)\n        \n        for price in prices:\n            for i in range(1, k + 1):\n                buy[i] = max(buy[i], sell[i - 1] - price)\n                sell[i] = max(sell[i], buy[i] + price)\n        \n        return sell[k]"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1959",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.36053782539927937,
+      "edit_similarity": 0.5369532428355958,
+      "ast_similarity": 0.7307692307692307,
+      "diff_bleu": 0.7138423417017202
+    },
+    "raw_model": {
+      "bleu_score": 0.3674215771435413,
+      "edit_similarity": 0.509325681492109,
+      "ast_similarity": 0.8518518518518519,
+      "diff_bleu": 0.6634473299270488
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.006883751744261923,
+    "edit_sim_delta": 0.027627561343486762,
+    "ast_sim_delta": -0.12108262108262113,
+    "diff_bleu_delta": 0.05039501177467143
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minSpaceWastedKResizing(self, nums, k):\n        n = len(nums)\n        sizes = [nums[0]] + [0] * n\n        wasted = [nums[0]] + [0] * n\n        for i in range(1, n):\n            sizes[i] = sizes[i - 1] + nums[i]\n            wasted[i] = sizes[i] - nums[i]\n        dp = [[float('inf')] * (k + 1) for _ in range(n + 1)]\n        for i in range(n):\n            dp[i][0] = 0\n            for j in range(i, -1, -1):\n                for h in range(i):\n                    dp[i + 1][0] = min(dp[i + 1][0], dp[h][0] + wasted[h] + sizes[h])\n                for h in range(i - 1, -1, -1):\n                    dp[i + 1][0] = min(dp[i + 1][0], dp[h][0] + wasted[h] + sizes[h])\n                for j2 in range(1, k + 1):\n                    for h in range(i):\n                        dp[i + 1][j2] = min(dp[i + 1][j2], dp[h][j2 - 1] + wasted[h] + sizes[h])\n                    for h in range(i - 1, -1, -1):\n                        dp[i + 1][j2] = min(dp[i + 1][j2], dp[h][j2 - 1] + wasted[h] + sizes[h])\n        return dp[-1][-1]",
+    "efficient": "class Solution:\n    def minSpaceWastedKResizing(self, nums: List[int], k: int) -> int:\n        k += 1\n        n = len(nums)\n        g = [[0] * n for _ in range(n)]\n        for i in range(n):\n            s = mx = 0\n            for j in range(i, n):\n                s += nums[j]\n                mx = max(mx, nums[j])\n                g[i][j] = mx * (j - i + 1) - s\n        f = [[inf] * (k + 1) for _ in range(n + 1)]\n        f[0][0] = 0\n        for i in range(1, n + 1):\n            for j in range(1, k + 1):\n                for h in range(i):\n                    f[i][j] = min(f[i][j], f[h][j - 1] + g[h][i - 1])\n        return f[-1][-1]\n",
+    "finetuned": "class Solution:\n    def minSpaceWastedKResizing(\n        self, nums: List[int], k: int\n    ) -> int:\n        n = len(nums)\n        nums.sort()\n        f = [0] * (n + 1)\n        for i in range(1, n + 1):\n            f[i] = f[i - 1] + nums[i - 1]\n        s = [0] * (n + 1)\n        for i in range(1, n + 1):\n            s[i] = s[i - 1] + nums[i - 1]\n        ans = f[n]\n        for i in range(1, n + 1):\n            p = [0] * (k + 1)\n            for j in range(1, min(i, k) + 1):\n                v = f[i - 1] - f[max(0, i - j - 1)] + s[i - 1] - s[max(0, i - j - 1)]\n                p[j] = min(p[j], v)\n            ans = min(ans, p[k] + f[n] - f[i])\n        return ans",
+    "raw_model": "class Solution:\n    def minSpaceWastedKResizing(self, nums, k):\n        n = len(nums)\n        sizes = [nums[0]] + [0] * (n - 1)\n        wasted = [nums[0]] + [0] * (n - 1)\n        for i in range(1, n):\n            sizes[i] = sizes[i - 1] + nums[i]\n            wasted[i] = sizes[i] - nums[i]\n        \n        # Initialize dp table\n        dp = [[float('inf')] * (k + 1) for _ in range(n)]\n        dp[0][0] = 0\n        \n        # Iterate over each time step\n        for i in range(1, n):\n            for j in range(min(i, k) + 1):\n                # Try to resize at current time step\n                prev_size = sizes[i - 1] if j > 0 else 0\n                dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + wasted[i] + max(0, sizes[i - 1] - prev_size))\n                # Try not to resize at current time step\n                dp[i][j] = min(dp[i][j], dp[i - 1][j] + wasted[i])\n        \n        # Return the minimum total wasted space\n        return dp[-1][-1]"
+  },
+  "is_python": true
+}

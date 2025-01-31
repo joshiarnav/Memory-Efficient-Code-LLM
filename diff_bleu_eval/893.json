@@ -1,0 +1,30 @@
+{
+  "problem_idx": "893",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.22210820620305716,
+      "edit_similarity": 0.33249370277078083,
+      "ast_similarity": 0.5483870967741935,
+      "diff_bleu": 0.5457792440305734
+    },
+    "raw_model": {
+      "bleu_score": 0.5733551661139815,
+      "edit_similarity": 0.5724137931034483,
+      "ast_similarity": 0.8095238095238095,
+      "diff_bleu": 0.48762839564639776
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.35124695991092436,
+    "edit_sim_delta": -0.23992009033266748,
+    "ast_sim_delta": -0.26113671274961603,
+    "diff_bleu_delta": 0.05815084838417567
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def numSpecialEquivGroups(self, words: List[str]) -> int:\n        s = []\n        for word in words:\n            even_chars = ''.join(sorted(word[::2]))\n            odd_chars = ''.join(sorted(word[1::2]))\n            s.append(even_chars + odd_chars)\n        return len(set(s))\n\n        # Just to make it even more inefficient\n        groups = []\n        for w in s:\n            if w not in groups:\n                groups.append(w)\n        return len(groups)",
+    "efficient": "class Solution:\n    def numSpecialEquivGroups(self, words: List[str]) -> int:\n        s = {''.join(sorted(word[::2]) + sorted(word[1::2])) for word in words}\n        return len(s)\n",
+    "finetuned": "class Solution:\n    def numSpecialEquivGroups(self, words: List[str]) -> int:\n        s = [0] * 52\n        for w in words:\n            i = 0\n            while w:\n                if w[-1] in 'abc':\n                    s[i] += 1\n                elif w[-1] in 'abc':\n                    s[i + 26] += 1\n                i += 2\n                w = w[:-1]\n        return sum(s[i] == 0 for i in range(52))",
+    "raw_model": "class Solution:\n    def numSpecialEquivGroups(self, words: List[str]) -> int:\n        s = set()\n        for word in words:\n            even_chars = ''.join(sorted(word[::2]))\n            odd_chars = ''.join(sorted(word[1::2]))\n            s.add(even_chars + odd_chars)\n        return len(s)"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "400",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2418084024159526,
+      "edit_similarity": 0.5549295774647887,
+      "ast_similarity": 0.6785714285714286,
+      "diff_bleu": 0.48362604545650983
+    },
+    "raw_model": {
+      "bleu_score": 0.33475093467251543,
+      "edit_similarity": 0.5856353591160222,
+      "ast_similarity": 0.8461538461538461,
+      "diff_bleu": 0.5840803503283999
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.09294253225656282,
+    "edit_sim_delta": -0.0307057816512335,
+    "ast_sim_delta": -0.16758241758241754,
+    "diff_bleu_delta": -0.10045430487189005
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        num_list = []\n        i = 1\n        while len(num_list) < 1000000:\n            num_str = str(i)\n            num_list.extend([int(d) for d in num_str])\n            i += 1\n        return num_list[n - 1]",
+    "efficient": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        k, cnt = 1, 9\n        while k * cnt < n:\n            n -= k * cnt\n            k += 1\n            cnt *= 10\n        num = 10 ** (k - 1) + (n - 1) // k\n        idx = (n - 1) % k\n        return int(str(num)[idx])\n",
+    "finetuned": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        def cnt(i: int, k: int) -> int:\n            if i == 1:\n                return k\n            l = 10 ** (i - 1)\n            r = 10 ** i - 1\n            if n <= (r - l + 1) * i:\n                return cnt(i - 1, n // (r - l + 1) + l - 1)\n            return cnt(i, k)\n\n        return cnt(9, n)",
+    "raw_model": "class Solution:\n    def findNthDigit(self, n: int) -> int:\n        length = 1\n        count = 9\n        start = 1\n        while n > length * count:\n            n -= length * count\n            start = start * 10 + 1\n            length += 1\n            count *= 10\n        start = start - (start % 10) + (n // length)\n        return int(str(start)[n % length - 1])"
+  },
+  "is_python": true
+}

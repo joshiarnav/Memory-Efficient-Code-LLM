@@ -1,0 +1,30 @@
+{
+  "problem_idx": "678",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.20439864579700165,
+      "edit_similarity": 0.6045977011494252,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.7678614102794686
+    },
+    "raw_model": {
+      "bleu_score": 0.362306429342132,
+      "edit_similarity": 0.5977011494252873,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.8128699978948657
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.15790778354513033,
+    "edit_sim_delta": 0.006896551724137945,
+    "ast_sim_delta": 0.0,
+    "diff_bleu_delta": -0.045008587615397055
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def checkValidString(self, s: str) -> bool:\n        # Create a list to store all possible valid substrings\n        valid_substrings = []\n        \n        for i in range(len(s)):\n            for j in range(i + 1, len(s) + 1):\n                substring = s[i:j]\n                # Create a dictionary to store the count of each character\n                char_count = {'(': 0, ')': 0, '*': 0}\n                for c in substring:\n                    if c in char_count:\n                        char_count[c] += 1\n                \n                # Initialize a stack to keep track of the opening parentheses\n                stack = []\n                \n                # Initialize a flag to indicate if the substring is valid\n                is_valid = True\n                \n                for c in substring:\n                    if c == '(':\n                        stack.append(c)\n                    elif c == ')':\n                        if not stack:\n                            is_valid = False\n                            break\n                        else:\n                            stack.pop()\n                    elif c == '*':\n                        if stack:\n                            stack.pop()\n                        else:\n                            stack.append(c)\n                \n                # If the stack is not empty, the substring is not valid\n                if stack:\n                    is_valid = False\n                \n                # If the substring is valid, add it to the list of valid substrings\n                if is_valid:\n                    valid_substrings.append(substring)\n        \n        # Create a list to store the reversed valid substrings\n        reversed_valid_substrings = []\n        \n        for substring in valid_substrings:\n            # Create a dictionary to store the count of each character\n            char_count = {'(': 0, ')': 0, '*': 0}\n            for c in substring:\n                if c in char_count:\n                    char_count[c] += 1\n            \n            # Initialize a stack to keep track of the opening parentheses\n            stack = []\n            \n            # Initialize a flag to indicate if the substring is valid\n            is_valid = True\n            \n            for c in substring[::-1]:\n                if c == '(':\n                    stack.append(c)\n                elif c == ')':\n                    if not stack:\n                        is_valid = False\n                        break\n                    else:\n                        stack.pop()\n                elif c == '*':\n                    if stack:\n                        stack.pop()\n                    else:\n                        stack.append(c)\n            \n            # If the stack is not empty, the substring is not valid\n            if stack:\n                is_valid = False\n            \n            # If the substring is valid, add it to the list of valid substrings\n            if is_valid:\n                reversed_valid_substrings.append(substring[::-1])\n        \n        # Return True if there are any valid substrings, False otherwise\n        return len(valid_substrings) or len(reversed_valid_substrings)",
+    "efficient": "class Solution:\n    def checkValidString(self, s: str) -> bool:\n        x = 0\n        for c in s:\n            if c in '(*':\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        x = 0\n        for c in s[::-1]:\n            if c in '*)':\n                x += 1\n            elif x:\n                x -= 1\n            else:\n                return False\n        return True\n",
+    "finetuned": "class Solution:\n    def checkValidString(self, s: str) -> bool:\n        l = [0] * (len(s) + 1)\n        for i, c in enumerate(s, 1):\n            l[i] = l[i - 1]\n            if c == '(':\n                l[i] += 1\n            elif c == ')':\n                if l[i] == 0:\n                    return False\n                l[i] -= 1\n            elif l[i] > 0:\n                l[i] -= 1\n        return l[-1] <= 0",
+    "raw_model": "class Solution:\n    def checkValidString(self, s: str) -> bool:\n        lo, hi = 0, 0\n        for c in s:\n            lo += 1 if c == '(' else -1\n            hi += 1 if c != ')' else -1\n            if lo < 0:\n                lo = 0\n                hi = 0\n            elif hi < 0:\n                return False\n        return lo == 0"
+  },
+  "is_python": true
+}

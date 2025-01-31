@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2478",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5784672945615392,
+      "edit_similarity": 0.7317784256559767,
+      "ast_similarity": 0.8333333333333334,
+      "diff_bleu": 0.6939495082545433
+    },
+    "raw_model": {
+      "bleu_score": 0.5650311513029799,
+      "edit_similarity": 0.6389684813753582,
+      "ast_similarity": 0.9444444444444444,
+      "diff_bleu": 0.6775191769635329
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.013436143258559352,
+    "edit_sim_delta": 0.0928099442806185,
+    "ast_sim_delta": -0.11111111111111105,
+    "diff_bleu_delta": 0.016430331291010347
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def beautifulPartitions(self, s: str, k: int, minLength: int) -> int:\n        primes = '2357'\n        if s[0] not in primes or s[-1] in primes:\n            return 0\n        mod = 10**9 + 7\n        n = len(s)\n        f = dict()\n        for i in range(n+1):\n            for j in range(k+1):\n                f[(i, j)] = 0\n        f[(0, 0)] = 1\n        g = dict()\n        for i in range(n+1):\n            for j in range(k+1):\n                g[(i, j)] = 0\n        for i, c in enumerate(s, 1):\n            for j in range(1, k + 1):\n                temp = []\n                for x in range(i - minLength + 1, i + 1):\n                    for y in range(1, k + 1):\n                        if (x, y) in f:\n                            temp.append(f[(x, y)])\n                f[(i, j)] = sum(temp)\n            for j in range(k + 1):\n                g[(i, j)] = (g[(i-1, j)] + f[(i, j)]) % mod\n        return f[(n, k)]",
+    "efficient": "class Solution:\n    def beautifulPartitions(self, s: str, k: int, minLength: int) -> int:\n        primes = '2357'\n        if s[0] not in primes or s[-1] in primes:\n            return 0\n        mod = 10**9 + 7\n        n = len(s)\n        f = [[0] * (k + 1) for _ in range(n + 1)]\n        g = [[0] * (k + 1) for _ in range(n + 1)]\n        f[0][0] = g[0][0] = 1\n        for i, c in enumerate(s, 1):\n            if i >= minLength and c not in primes and (i == n or s[i] in primes):\n                for j in range(1, k + 1):\n                    f[i][j] = g[i - minLength][j - 1]\n            for j in range(k + 1):\n                g[i][j] = (g[i - 1][j] + f[i][j]) % mod\n        return f[n][k]\n",
+    "finetuned": "class Solution:\n    def beautifulPartitions(self, s: str, k: int, minLength: int) -> int:\n        primes = '2357'\n        if s[0] not in primes or s[-1] in primes:\n            return 0\n        mod = 10**9 + 7\n        n = len(s)\n        f = [1] + [0] * n\n        g = [0] * (n + 1)\n        for i, c in enumerate(s, 1):\n            for j in range(1, k + 1):\n                if i - minLength + 1 <= j:\n                    f[j] = (f[j] + g[i - minLength] * f[j - 1]) % mod\n            for j in range(k + 1):\n                g[i] = (g[i - 1] + f[j]) % mod\n        return f[k]",
+    "raw_model": "class Solution:\n    def beautifulPartitions(self, s: str, k: int, minLength: int) -> int:\n        primes = '2357'\n        if s[0] not in primes or s[-1] in primes:\n            return 0\n        mod = 10**9 + 7\n        n = len(s)\n        \n        # Check for conditions where k is 1 or minLength is 1\n        if k == 1 or minLength == 1:\n            return int(s[0] in primes)\n        \n        f = [[0]*(k+1) for _ in range(n+1)]\n        for i in range(n+1):\n            for j in range(1, min(i, k) + 1):\n                if i >= minLength:\n                    # Check if the substring can be split at the current position\n                    # If it can, then add the possibilities for the previous substrings\n                    for x in range(i - minLength + 1, i):\n                        if s[x] in primes and s[x+1] not in primes:\n                            f[i][j] += f[x][j-1]\n                            f[i][j] %= mod\n        \n        return f[n][k]"
+  },
+  "is_python": true
+}

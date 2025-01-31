@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2935",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8173769274391395,
+      "edit_similarity": 0.7568412822517592,
+      "ast_similarity": 0.8947368421052632,
+      "diff_bleu": 0.8232188187593581
+    },
+    "raw_model": {
+      "bleu_score": 0.10573661567485833,
+      "edit_similarity": 0.35496481626270526,
+      "ast_similarity": 0.7692307692307693,
+      "diff_bleu": 0.5182698263974154
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.7116403117642811,
+    "edit_sim_delta": 0.4018764659890539,
+    "ast_sim_delta": 0.1255060728744939,
+    "diff_bleu_delta": 0.30494899236194273
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximumStrongPairXor(self, nums: List[int]) -> int:\n        nums.sort()\n        trie = []\n        for _ in range(len(nums)**2):\n            trie.append([None, None])\n        ans = i = 0\n        for y in nums:\n            self.insert(trie, y)\n            while y > nums[i] * 2:\n                self.remove(trie, nums[i])\n                i += 1\n            ans = max(ans, self.search(trie, y))\n        return ans\n\n    def insert(self, trie: List[List], x: int):\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if trie[-len(nums) + i][v] is None:\n                trie[-len(nums) + i][v] = []\n            trie = trie[-len(nums) + i][v]\n            trie.append([])\n\n    def remove(self, trie: List[List], x: int):\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            trie[-len(nums) + i] = trie[-len(nums) + i][v]\n\n    def search(self, trie: List[List], x: int) -> int:\n        ans = 0\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if trie[-len(nums) + i][v ^ 1]:\n                ans |= 1 << i\n                trie = trie[-len(nums) + i][v ^ 1]\n            else:\n                trie = trie[-len(nums) + i][v]\n        return ans",
+    "efficient": "class Trie:\n    __slots__ = (\"children\", \"cnt\")\n\n    def __init__(self):\n        self.children: List[Trie | None] = [None, None]\n        self.cnt = 0\n\n    def insert(self, x: int):\n        node = self\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if node.children[v] is None:\n                node.children[v] = Trie()\n            node = node.children[v]\n            node.cnt += 1\n\n    def search(self, x: int) -> int:\n        node = self\n        ans = 0\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if node.children[v ^ 1] and node.children[v ^ 1].cnt:\n                ans |= 1 << i\n                node = node.children[v ^ 1]\n            else:\n                node = node.children[v]\n        return ans\n\n    def remove(self, x: int):\n        node = self\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            node = node.children[v]\n            node.cnt -= 1\n\n\nclass Solution:\n    def maximumStrongPairXor(self, nums: List[int]) -> int:\n        nums.sort()\n        tree = Trie()\n        ans = i = 0\n        for y in nums:\n            tree.insert(y)\n            while y > nums[i] * 2:\n                tree.remove(nums[i])\n                i += 1\n            ans = max(ans, tree.search(y))\n        return ans\n",
+    "finetuned": "class Trie:\n    __slots__ = (\"children\",)\n\n    def __init__(self):\n        self.children = [None, None]\n\n    def insert(self, x: int):\n        node = self\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if node.children[v] is None:\n                node.children[v] = Trie()\n            node = node.children[v]\n\n    def remove(self, x: int):\n        node = self\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            node = node.children[v]\n            node.children[v ^ 1] = None\n\n    def search(self, x: int) -> int:\n        ans = 0\n        node = self\n        for i in range(20, -1, -1):\n            v = x >> i & 1\n            if node.children[v ^ 1]:\n                ans |= 1 << i\n                node = node.children[v ^ 1]\n            else:\n                node = node.children[v]\n        return ans\n\n\nclass Solution:\n    def maximumStrongPairXor(self, nums: List[int]) -> int:\n        nums.sort()\n        trie = Trie()\n        ans = i = 0\n        for y in nums:\n            trie.insert(y)\n            while y > nums[i] * 2:\n                trie.remove(nums[i])\n                i += 1\n            ans = max(ans, trie.search(y))\n        return ans",
+    "raw_model": "class Solution:\n    def maximumStrongPairXor(self, nums: List[int]) -> int:\n        nums.sort()\n        trie = [[0, 0]]\n        ans = 0\n        for x in nums:\n            y = x\n            while trie and trie[-1][0]:\n                v = (x & trie[-1][0]) // trie[-1][0]\n                ans = max(ans, x ^ trie[-1][0] * v)\n                x ^= trie[-1][0] * v\n                if x & trie[-1][1]:\n                    trie.pop()\n                else:\n                    trie[-1][1] ^= 1 << v\n            if trie[-1][1]:\n                trie.append([0, 1 << (trie[-1][0].bit_length() + 1)])\n                trie[-2][0] = trie[-1][0]\n                trie.pop()\n            trie.append([x, 1 << x.bit_length()])\n        return ans"
+  },
+  "is_python": true
+}

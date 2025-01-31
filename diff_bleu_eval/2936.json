@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2936",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6380950462221214,
+      "edit_similarity": 0.6564885496183206,
+      "ast_similarity": 0.8888888888888888,
+      "diff_bleu": 0.5314384032402713
+    },
+    "raw_model": {
+      "bleu_score": 0.6371330475119545,
+      "edit_similarity": 0.6265664160401003,
+      "ast_similarity": 0.8064516129032258,
+      "diff_bleu": 0.49508326506268197
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0009619987101668892,
+    "edit_sim_delta": 0.029922133578220267,
+    "ast_sim_delta": 0.08243727598566308,
+    "diff_bleu_delta": 0.036355138177589286
+  },
+  "solutions": {
+    "inefficient": "class Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        mem = {}\n        i, n = 0, nums.size()\n        ans = 0\n        while i < n:\n            ans += 1\n            x = nums.at(i)\n            temp = []\n            while i < n and nums.at(i) == x:\n                temp.append(x)\n                mem[x] = temp\n                i += 1\n            temp = mem[x]\n            if i < n and nums.at(i) != x:\n                i += 1\n            else:\n                i = i + bisect_left(range(i, n), True, key=lambda j: nums.at(j) != x)\n        return ans",
+    "efficient": "# Definition for BigArray.\n# class BigArray:\n#     def at(self, index: long) -> int:\n#         pass\n#     def size(self) -> long:\n#         pass\nclass Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        i, n = 0, nums.size()\n        ans = 0\n        while i < n:\n            ans += 1\n            x = nums.at(i)\n            if i + 1 < n and nums.at(i + 1) != x:\n                i += 1\n            else:\n                i += bisect_left(range(i, n), True, key=lambda j: nums.at(j) != x)\n        return ans\n",
+    "finetuned": "class Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        i, n = 0, nums.size()\n        ans = 0\n        while i < n:\n            x = nums.at(i)\n            i = i + bisect_left(range(i, n), True, key=lambda j: nums.at(j)!= x)\n            ans += 1\n        return ans",
+    "raw_model": "from bisect import bisect_left\n\nclass Solution(object):\n    def countBlocks(self, nums: Optional[\"BigArray\"]) -> int:\n        \"\"\"\n        This function counts the number of blocks in the given array.\n        \n        Args:\n        nums: An instance of the class BigArray.\n        \n        Returns:\n        The number of blocks in the array.\n        \"\"\"\n        \n        i, n = 0, nums.size()  # Initialize the index and length of the array.\n        ans = 0  # Initialize the answer counter.\n        \n        while i < n:  # Traverse the array.\n            x = nums.at(i)  # Get the value of the current element.\n            i += 1  # Move to the next element.\n            \n            while i < n and nums.at(i) == x:  # Count the number of equal elements.\n                i += 1\n                \n            # If the current element is different from its adjacent element, increment the counter.\n            if i < n and nums.at(i) != x:\n                ans += 1\n        \n        # Add one to the counter because the last block is counted separately.\n        return ans + 1"
+  },
+  "is_python": true
+}

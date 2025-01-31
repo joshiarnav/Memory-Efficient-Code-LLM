@@ -1,0 +1,30 @@
+{
+  "problem_idx": "69",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7126025665760458,
+      "edit_similarity": 0.8134556574923547,
+      "ast_similarity": 0.8076923076923077,
+      "diff_bleu": 0.823775223888507
+    },
+    "raw_model": {
+      "bleu_score": 0.46407619337008105,
+      "edit_similarity": 0.6437346437346437,
+      "ast_similarity": 0.875,
+      "diff_bleu": 0.6871423002198828
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.24852637320596477,
+    "edit_sim_delta": 0.16972101375771098,
+    "ast_sim_delta": -0.06730769230769229,
+    "diff_bleu_delta": 0.13663292366862423
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def mySqrt(self, x: int) -> int:\n        if x == 0 or x == 1:\n            return x\n        sqrt_values = [0] * (x + 1)\n        for i in range(1, x + 1):\n            possible_sqrt = i\n            for j in range(1, i):\n                if j * j > i:\n                    break\n                if j * j == i:\n                    possible_sqrt = j\n                    break\n            sqrt_values[i] = possible_sqrt\n        return sqrt_values[x]",
+    "efficient": "class Solution:\n    def mySqrt(self, x: int) -> int:\n        left, right = 0, x\n        while left < right:\n            mid = (left + right + 1) >> 1\n            # mid*mid <= x\n            if mid <= x // mid:\n                left = mid\n            else:\n                right = mid - 1\n        return left\n",
+    "finetuned": "class Solution:\n    def mySqrt(self, x: int) -> int:\n        if x == 0 or x == 1:\n            return x\n        left, right = 1, x\n        while left < right:\n            mid = (left + right + 1) >> 1\n            if mid * mid <= x:\n                left = mid\n            else:\n                right = mid - 1\n        return left",
+    "raw_model": "class Solution:\n    def mySqrt(self, x: int) -> int:\n        if x < 2:\n            return x\n        \n        left, right = 1, x // 2\n        while left <= right:\n            mid = (left + right) // 2\n            square = mid * mid\n            \n            if square == x:\n                return mid\n            elif square < x:\n                left = mid + 1\n            else:\n                right = mid - 1\n        \n        return right"
+  },
+  "is_python": true
+}

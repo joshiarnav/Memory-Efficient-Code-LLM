@@ -1,0 +1,30 @@
+{
+  "problem_idx": "870",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4048371290063256,
+      "edit_similarity": 0.5529225908372828,
+      "ast_similarity": 0.78125,
+      "diff_bleu": 0.7154451994860522
+    },
+    "raw_model": {
+      "bleu_score": 0.330943754196432,
+      "edit_similarity": 0.492371705963939,
+      "ast_similarity": 0.7428571428571429,
+      "diff_bleu": 0.6134938494083538
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.07389337480989361,
+    "edit_sim_delta": 0.06055088487334381,
+    "ast_sim_delta": 0.03839285714285712,
+    "diff_bleu_delta": 0.1019513500776984
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Create a list of tuples where each tuple contains a number from nums2 and its index\n        num2_info = [(nums2[i], i) for i in range(len(nums2))]\n        \n        # Create a list of tuples where each tuple contains a number from nums1 and its index\n        num1_info = [(nums1[i], i) for i in range(len(nums1))]\n        \n        # Create a copy of the nums2 list and sort it\n        sorted_nums2 = sorted(nums2)\n        \n        # Create a copy of the nums1 list and sort it in descending order\n        sorted_nums1 = sorted(nums1, reverse=True)\n        \n        # Create a list to store the result\n        result = [0] * len(nums2)\n        \n        # Iterate over the sorted nums1 list\n        for v in sorted_nums1:\n            # Find the index of the smallest number in nums2 that is greater than v\n            idx = self.binary_search(sorted_nums2, v)\n            # If such an index is found, assign v to the corresponding index in the result list\n            if idx != -1:\n                result[num2_info[idx][1]] = v\n                # Remove the element at the found index from the sorted nums2 list\n                sorted_nums2.pop(idx)\n            # If no such index is found, assign v to the smallest number in nums2 that is greater than v\n            else:\n                result[num2_info[0][1]] = v\n                # Remove the smallest number from the sorted nums2 list\n                sorted_nums2.pop(0)\n        \n        return result\n    \n    def binary_search(self, arr, target):\n        left, right = 0, len(arr) - 1\n        while left <= right:\n            mid = (left + right) // 2\n            if arr[mid] < target:\n                left = mid + 1\n            else:\n                right = mid - 1\n        if left < len(arr):\n            return left\n        return -1",
+    "efficient": "class Solution:\n    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        nums1.sort()\n        t = sorted((v, i) for i, v in enumerate(nums2))\n        n = len(nums2)\n        ans = [0] * n\n        i, j = 0, n - 1\n        for v in nums1:\n            if v <= t[i][0]:\n                ans[t[j][1]] = v\n                j -= 1\n            else:\n                ans[t[i][1]] = v\n                i += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        nums1.sort()\n        nums2.sort()\n        m, n = len(nums1), len(nums2)\n        ans = [0] * n\n        i = j = 0\n        while j < n:\n            if nums1[i] <= nums2[j]:\n                j += 1\n                if j < n:\n                    ans[nums2[j - 1]] = nums1[m - 1]\n                    m -= 1\n                else:\n                    break\n            else:\n                ans[nums2[j]] = nums1[i]\n                i += 1\n                j += 1\n        if i < m:\n            ans[nums2[n - 1]] = nums1[i:]\n        return ans",
+    "raw_model": "import heapq\nfrom typing import List\n\nclass Solution:\n    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Create a priority queue to store the elements from nums1\n        pq = []\n        for v in nums1:\n            heapq.heappush(pq, v)\n        \n        # Create a copy of the nums2 list and sort it\n        sorted_nums2 = sorted(enumerate(nums2), key=lambda x: x[1])\n        \n        # Create a list to store the result\n        result = [0] * len(nums2)\n        \n        # Initialize two pointers, one at the beginning and one at the end of the sorted nums2 list\n        i, j = 0, len(sorted_nums2) - 1\n        \n        # Iterate over the sorted nums2 list\n        while i <= j:\n            # If the top element of the priority queue is greater than the current element in the sorted nums2 list\n            if pq[0] > sorted_nums2[i][1]:\n                # Assign the top element of the priority queue to the current index in the result list\n                result[sorted_nums2[i][0]] = heapq.heappop(pq)\n                # Move the pointer to the next index\n                i += 1\n            else:\n                # Assign the current element in the sorted nums2 list to the current index in the result list\n                result[sorted_nums2[j][0]] = sorted_nums2[j][1]\n                # Move the pointer to the previous index\n                j -= 1\n        \n        # Push the remaining elements from the priority queue to the result list\n        while pq:\n            result[sorted_nums2[j][0]] = heapq.heappop(pq)\n            j -= 1\n        \n        return result"
+  },
+  "is_python": true
+}

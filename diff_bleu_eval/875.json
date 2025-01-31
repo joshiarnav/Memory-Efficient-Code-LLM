@@ -1,0 +1,30 @@
+{
+  "problem_idx": "875",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6691061617305144,
+      "edit_similarity": 0.6521739130434783,
+      "ast_similarity": 0.9629629629629629,
+      "diff_bleu": 0.7729548255995253
+    },
+    "raw_model": {
+      "bleu_score": 0.5597302017703163,
+      "edit_similarity": 0.65,
+      "ast_similarity": 0.9615384615384616,
+      "diff_bleu": 0.7293911490228093
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.10937595996019811,
+    "edit_sim_delta": 0.0021739130434782483,
+    "ast_sim_delta": 0.0014245014245013454,
+    "diff_bleu_delta": 0.043563676576716004
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minEatingSpeed(self, piles: List[int], h: int) -> int:\n        def check(k):\n            res = 0\n            for pile in piles:\n                x = pile\n                while x > 0:\n                    res += 1\n                    x -= k\n                x = pile\n                while x >= k:\n                    res += 1\n                    x -= k\n                res += 1\n            return res <= h\n\n        left, right = 1, 10**9\n        while True:\n            mid = (left + right) // 2\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n            if left == right:\n                return left\n            if left > 10**6:\n                left = 1\n                right = 10**9",
+    "efficient": "class Solution:\n    def minEatingSpeed(self, piles: List[int], h: int) -> int:\n        left, right = 1, int(1e9)\n        while left < right:\n            mid = (left + right) >> 1\n            s = sum((x + mid - 1) // mid for x in piles)\n            if s <= h:\n                right = mid\n            else:\n                left = mid + 1\n        return left\n",
+    "finetuned": "class Solution:\n    def minEatingSpeed(self, piles: List[int], h: int) -> int:\n        def check(k):\n            return sum((x + k - 1) // k <= h for x in piles) > 0\n\n        left, right = 1, max(piles)\n        while left < right:\n            mid = (left + right) >> 1\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left",
+    "raw_model": "class Solution:\n    def minEatingSpeed(self, piles: List[int], h: int) -> int:\n        def check(k):\n            return sum((pile + k - 1) // k for pile in piles) <= h\n\n        left, right = 1, max(piles)\n        while left < right:\n            mid = left + (right - left) // 2\n            if check(mid):\n                right = mid\n            else:\n                left = mid + 1\n        return left"
+  },
+  "is_python": true
+}

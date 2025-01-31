@@ -1,0 +1,30 @@
+{
+  "problem_idx": "659",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4640024673252132,
+      "edit_similarity": 0.6378205128205128,
+      "ast_similarity": 0.75,
+      "diff_bleu": 0.6334358291570962
+    },
+    "raw_model": {
+      "bleu_score": 0.47160814481231367,
+      "edit_similarity": 0.5557809330628803,
+      "ast_similarity": 0.8285714285714286,
+      "diff_bleu": 0.5064652617171176
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0076056774871004484,
+    "edit_sim_delta": 0.08203957975763243,
+    "ast_sim_delta": -0.07857142857142863,
+    "diff_bleu_delta": 0.1269705674399786
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = defaultdict(list)\n        for v in nums:\n            tmp = []\n            for h in d[v - 1][:]:\n                if h > 2:\n                    heappush(tmp, h + 1)\n                else:\n                    break\n            for h in tmp:\n                heappush(d[v], h)\n            if not d[v - 1]:\n                heappush(d[v], 1)\n            else:\n                heappush(d[v], heappop(d[v - 1]) + 1)\n            if d[v - 1]:\n                heappush(d[v], heappop(d[v - 1]) + 1)\n            else:\n                heappush(d[v], 1)\n        return all(not v or v and v[0] > 2 for v in d.values())",
+    "efficient": "class Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = defaultdict(list)\n        for v in nums:\n            if h := d[v - 1]:\n                heappush(d[v], heappop(h) + 1)\n            else:\n                heappush(d[v], 1)\n        return all(not v or v and v[0] > 2 for v in d.values())\n",
+    "finetuned": "class Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = defaultdict(list)\n        for v in nums:\n            if d[v - 1] and d[v - 1][-1] - d[v - 1][0] + 1 < 3:\n                return False\n            d[v - 1].append(v)\n        return True",
+    "raw_model": "import heapq\n\nclass Solution:\n    def isPossible(self, nums: List[int]) -> bool:\n        d = {}\n        \n        for v in nums:\n            if v - 1 not in d:\n                heapq.heappush(d.get(v, []), 1)\n            else:\n                length = heapq.heappop(d[v - 1])\n                if length > 2:\n                    heapq.heappush(d.get(v, []), length + 1)\n                else:\n                    heapq.heappush(d.get(v, []), 1)\n        \n        return all(not v or v and v[0] > 2 for v in d.values())"
+  },
+  "is_python": true
+}

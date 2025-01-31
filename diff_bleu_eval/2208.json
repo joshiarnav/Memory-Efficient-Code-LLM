@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2208",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.38192378434657753,
+      "edit_similarity": 0.6517571884984026,
+      "ast_similarity": 0.7241379310344828,
+      "diff_bleu": 0.6758845303054023
+    },
+    "raw_model": {
+      "bleu_score": 0.49840198300574734,
+      "edit_similarity": 0.7355163727959697,
+      "ast_similarity": 0.8333333333333334,
+      "diff_bleu": 0.6494566435775078
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.11647819865916981,
+    "edit_sim_delta": -0.08375918429756712,
+    "ast_sim_delta": -0.10919540229885061,
+    "diff_bleu_delta": 0.026427886727894534
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s = sum(nums) / 2\n        vals = []\n        for v in nums:\n            vals.append((v, v))\n        for v in vals:\n            v[0] = v[1] / 2\n        for v in vals:\n            if v[1] > 0:\n                v[1] /= 2\n        h = []\n        for v in vals:\n            h.append(v)\n        ans = 0\n        while s > 0:\n            t = max(h, key=lambda x: x[0])\n            h.remove(t)\n            t = (t[0] / 2, t[1] / 2)\n            h.append(t)\n            s -= t[1]\n            ans += 1\n        return ans",
+    "efficient": "class Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s = sum(nums) / 2\n        h = []\n        for v in nums:\n            heappush(h, -v)\n        ans = 0\n        while s > 0:\n            t = -heappop(h) / 2\n            s -= t\n            heappush(h, -t)\n            ans += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s, k = sum(nums) / 2, 0\n        for v in nums:\n            if v > 0:\n                v >>= 1\n                k += 1\n                s -= v\n        return k",
+    "raw_model": "import heapq\nfrom typing import List\n\nclass Solution:\n    def halveArray(self, nums: List[int]) -> int:\n        s = sum(nums)\n        pq = []\n        for num in nums:\n            heapq.heappush(pq, -num)  # Use negative numbers to simulate a max heap\n        ans = 0\n        while s > 0:\n            num = -heapq.heappop(pq)\n            s -= num\n            num /= 2\n            heapq.heappush(pq, -num)\n            ans += 1\n        return ans"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1065",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4250975178406789,
+      "edit_similarity": 0.3921875,
+      "ast_similarity": 0.696969696969697,
+      "diff_bleu": 0.4898912578366585
+    },
+    "raw_model": {
+      "bleu_score": 0.16211095798170722,
+      "edit_similarity": 0.3470982142857143,
+      "ast_similarity": 0.6451612903225806,
+      "diff_bleu": 0.32870089800363206
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.2629865598589717,
+    "edit_sim_delta": 0.04508928571428572,
+    "ast_sim_delta": 0.05180840664711639,
+    "diff_bleu_delta": 0.16119035983302643
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        n = len(text)\n        m = len(words)\n        freq_table = {}\n        for w in words:\n            freq_table[w] = 1\n        for i in range(m):\n            w = words[i]\n            for j in range(n):\n                substring = text[j:j+len(w)]\n                if substring in freq_table:\n                    freq_table[substring] += 1\n        ans = []\n        for i in range(n):\n            for j in range(i, n):\n                substring = text[i:j+1]\n                if substring in freq_table and freq_table[substring] > 1:\n                    ans.append([i, j])\n        return ans",
+    "efficient": "class Trie:\n    def __init__(self):\n        self.children = [None] * 26\n        self.is_end = False\n\n    def insert(self, word):\n        node = self\n        for c in word:\n            idx = ord(c) - ord('a')\n            if node.children[idx] is None:\n                node.children[idx] = Trie()\n            node = node.children[idx]\n        node.is_end = True\n\n\nclass Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        trie = Trie()\n        for w in words:\n            trie.insert(w)\n        n = len(text)\n        ans = []\n        for i in range(n):\n            node = trie\n            for j in range(i, n):\n                idx = ord(text[j]) - ord('a')\n                if node.children[idx] is None:\n                    break\n                node = node.children[idx]\n                if node.is_end:\n                    ans.append([i, j])\n        return ans\n",
+    "finetuned": "class Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        def f(k: str) -> List[int]:\n            pos = [i for i in range(n) if s[i : i + len(k)] == k]\n            return pos\n\n        s = text + '$'\n        n = len(s)\n        trie = Trie()\n        for w in words:\n            trie.insert(w)\n        ans = []\n        for i, c in enumerate(s):\n            if c == '$':\n                break\n            p = trie.search_prefix(c)\n            if p:\n                ans.extend([j for j in range(i, n) if s[j : j + len(p)] == p])\n        return ans\n\n\nclass Trie:\n    def __init__(self):\n        self.children = [None] * 26\n        self.v = 0\n\n    @staticmethod\n    def index(c: str) -> int:\n        return ord(c) - ord('a')\n\n    def insert(self, k: str) -> None:\n        node = self\n        for c in k:\n            idx = Trie.index(c)\n            if not node.children[idx]:\n                node.children[idx] = Trie()\n            node = node.children[idx]\n            node.v += 1\n\n    def search_prefix(self, k: str) -> str:\n        node = self\n        ans = ''\n        for c in k:\n            idx = Trie.index(c)\n            if not node.children[idx]:\n                break\n            ans += c\n            node = node.children[idx]\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def indexPairs(self, text: str, words: List[str]) -> List[List[int]]:\n        n = len(text)\n        m = len(words)\n        ans = []\n        \n        # Iterate over each word in the words list\n        for w in words:\n            # Find the index of the word in the text\n            index = text.find(w)\n            while index != -1:\n                # Append the index pair to the answer list\n                ans.append([index, index + len(w) - 1])\n                \n                # Find the next occurrence of the word in the text\n                index = text.find(w, index + 1)\n        \n        # Sort the answer list\n        ans.sort()\n        \n        return ans"
+  },
+  "is_python": true
+}

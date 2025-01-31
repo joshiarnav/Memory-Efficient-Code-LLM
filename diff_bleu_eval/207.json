@@ -1,0 +1,30 @@
+{
+  "problem_idx": "207",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 1.0,
+      "edit_similarity": 1.0,
+      "ast_similarity": 1.0,
+      "diff_bleu": 1.0
+    },
+    "raw_model": {
+      "bleu_score": 0.779526313759902,
+      "edit_similarity": 0.764505119453925,
+      "ast_similarity": 0.90625,
+      "diff_bleu": 0.631815552358137
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.220473686240098,
+    "edit_sim_delta": 0.23549488054607504,
+    "ast_sim_delta": 0.09375,
+    "diff_bleu_delta": 0.368184447641863
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:\n        g = [[] for _ in range(numCourses)]\n        indeg = [0] * numCourses\n        for _ in range(len(prerequisites)):\n            a, b = prerequisites[_]\n            g[b] = list(set(g[b] + [a]))\n            indeg[a] += 1\n        cnt = 0\n        q = deque(i for i, x in enumerate(indeg) if x == 0)\n        while q:\n            i = q.popleft()\n            cnt += 1\n            for j in g[i]:\n                temp_g = g[j].copy()\n                g[j] = []\n                for k in temp_g:\n                    g[k].append(j)\n                    indeg[k] += 1\n                if indeg[j] == 0:\n                    q.append(j)\n        return cnt == numCourses",
+    "efficient": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:\n        g = defaultdict(list)\n        indeg = [0] * numCourses\n        for a, b in prerequisites:\n            g[b].append(a)\n            indeg[a] += 1\n        cnt = 0\n        q = deque(i for i, x in enumerate(indeg) if x == 0)\n        while q:\n            i = q.popleft()\n            cnt += 1\n            for j in g[i]:\n                indeg[j] -= 1\n                if indeg[j] == 0:\n                    q.append(j)\n        return cnt == numCourses\n",
+    "finetuned": "class Solution:\n    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:\n        g = defaultdict(list)\n        indeg = [0] * numCourses\n        for a, b in prerequisites:\n            g[b].append(a)\n            indeg[a] += 1\n        cnt = 0\n        q = deque(i for i, x in enumerate(indeg) if x == 0)\n        while q:\n            i = q.popleft()\n            cnt += 1\n            for j in g[i]:\n                indeg[j] -= 1\n                if indeg[j] == 0:\n                    q.append(j)\n        return cnt == numCourses",
+    "raw_model": "from collections import deque\nfrom typing import List\n\nclass Solution:\n    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:\n        # Create a graph and a map for in-degree\n        g = [[] for _ in range(numCourses)]\n        indeg = [0] * numCourses\n        \n        # Build the graph and in-degree map\n        for a, b in prerequisites:\n            g[b].append(a)\n            indeg[a] += 1\n        \n        # Initialize a queue with courses that have no prerequisites\n        q = deque(i for i, x in enumerate(indeg) if x == 0)\n        \n        # Remove one course at a time if it does not have any prerequisites\n        while q:\n            i = q.popleft()\n            for j in g[i]:\n                indeg[j] -= 1\n                if indeg[j] == 0:\n                    q.append(j)\n        \n        # If we can remove all courses, it means that it is possible to finish all courses\n        return all(x == 0 for x in indeg)"
+  },
+  "is_python": true
+}

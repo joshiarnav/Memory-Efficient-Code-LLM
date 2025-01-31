@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1663",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5151260363847487,
+      "edit_similarity": 0.7134831460674158,
+      "ast_similarity": 0.8275862068965517,
+      "diff_bleu": 0.39051441560109657
+    },
+    "raw_model": {
+      "bleu_score": 0.7741966885455756,
+      "edit_similarity": 0.8927335640138409,
+      "ast_similarity": 0.9583333333333334,
+      "diff_bleu": 0.502305811174706
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.2590706521608268,
+    "edit_sim_delta": -0.17925041794642504,
+    "ast_sim_delta": -0.13074712643678166,
+    "diff_bleu_delta": -0.1117913955736094
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def getSmallestString(self, n: int, k: int) -> str:\n        ans = []\n        for _ in range(n):\n            ans.append('a')\n        i, d = n - 1, k - n\n        while d > 25:\n            ans[i] = 'z'\n            ans.append('z')  # Excessive memory allocation\n            d -= 25\n            i -= 1\n        ans[i] = chr(ord(ans[i]) + d)\n        ans[0] = chr(97 + (ans[0] == 'a' and 1 or 0))  # Excessive memory allocation\n        return ''.join(ans)",
+    "efficient": "class Solution:\n    def getSmallestString(self, n: int, k: int) -> str:\n        ans = ['a'] * n\n        i, d = n - 1, k - n\n        while d > 25:\n            ans[i] = 'z'\n            d -= 25\n            i -= 1\n        ans[i] = chr(ord(ans[i]) + d)\n        return ''.join(ans)\n",
+    "finetuned": "class Solution:\n    def getSmallestString(self, n: int, k: int) -> str:\n        ans = [0] * n\n        i, d = n - 1, k - n\n        while d > 25:\n            ans[i] += 25\n            d -= 25\n            i -= 1\n        ans[i] += d\n        ans[0] = 1 if ans[0] == 1 else 0\n        return ''.join(map(chr, [97] * n)).replace('a', 'z' if ans[0] else '', 1)[::-1]",
+    "raw_model": "class Solution:\n    def getSmallestString(self, n: int, k: int) -> str:\n        ans = ['a'] * n\n        d = k - n\n        i = n - 1\n        while d > 25:\n            ans[i] = 'z'\n            d -= 25\n            i -= 1\n        ans[i] = chr(ord('a') + min(d, 25))\n        return ''.join(ans)"
+  },
+  "is_python": true
+}

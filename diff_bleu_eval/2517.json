@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2517",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.9588504381654326,
+      "edit_similarity": 0.9201520912547528,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.9319250335771204
+    },
+    "raw_model": {
+      "bleu_score": 0.34525579687632557,
+      "edit_similarity": 0.5220779220779221,
+      "ast_similarity": 0.7297297297297297,
+      "diff_bleu": 0.45203927265533617
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.613594641289107,
+    "edit_sim_delta": 0.3980741691768307,
+    "ast_sim_delta": 0.2702702702702703,
+    "diff_bleu_delta": 0.47988576092178425
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximumTastiness(self, price: List[int], k: int) -> int:\n        price_copy = price[:]\n        for _ in range(len(price)):\n            price_copy.sort()\n        def check(x: int) -> bool:\n            price_copy.sort()\n            cnt, pre = 0, -x\n            for cur in price_copy:\n                if cur - pre >= x:\n                    pre = cur\n                    cnt += 1\n            return cnt >= k\n\n        price_copy.sort(reverse=True)\n        l, r = 0, price_copy[0] - price_copy[-1]\n        while l < r:\n            mid = (l + r + 1) >> 1\n            if check(mid):\n                l = mid\n            else:\n                r = mid - 1\n        return l\n\n        price = []\n        for _ in range(len(price_copy)):\n            price.append(price_copy[0])\n            price_copy.pop(0)\n        price.sort(reverse=True)\n        l, r = 0, price[0] - price[-1]\n        while l < r:\n            mid = (l + r + 1) >> 1\n            if check(mid):\n                l = mid\n            else:\n                r = mid - 1\n        return l",
+    "efficient": "class Solution:\n    def maximumTastiness(self, price: List[int], k: int) -> int:\n        def check(x: int) -> bool:\n            cnt, pre = 0, -x\n            for cur in price:\n                if cur - pre >= x:\n                    pre = cur\n                    cnt += 1\n            return cnt >= k\n\n        price.sort()\n        l, r = 0, price[-1] - price[0]\n        while l < r:\n            mid = (l + r + 1) >> 1\n            if check(mid):\n                l = mid\n            else:\n                r = mid - 1\n        return l\n",
+    "finetuned": "class Solution:\n    def maximumTastiness(self, price: List[int], k: int) -> int:\n        price.sort()\n        def check(x: int) -> bool:\n            cnt, pre = 0, -x\n            for cur in price:\n                if cur - pre >= x:\n                    pre = cur\n                    cnt += 1\n            return cnt >= k\n\n        l, r = 0, price[-1] - price[0]\n        while l < r:\n            mid = (l + r + 1) >> 1\n            if check(mid):\n                l = mid\n            else:\n                r = mid - 1\n        return l",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def maximumTastiness(self, price: List[int], k: int) -> int:\n        price.sort()\n        left, right = 0, price[-1] - price[0]\n        while left <= right:\n            mid = (left + right) // 2\n            valid = True\n            prev_price = price[0]\n            count = 1\n            for i in range(1, len(price)):\n                if price[i] - prev_price >= mid:\n                    count += 1\n                    prev_price = price[i]\n                    if count == k:\n                        break\n                else:\n                    valid = False\n                    break\n            if valid and count == k:\n                left = mid + 1\n            else:\n                right = mid - 1\n        return right"
+  },
+  "is_python": true
+}

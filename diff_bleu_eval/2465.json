@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2465",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4721069444864052,
+      "edit_similarity": 0.5915492957746479,
+      "ast_similarity": 0.6428571428571429,
+      "diff_bleu": 0.7291435402146268
+    },
+    "raw_model": {
+      "bleu_score": 0.18699095870010382,
+      "edit_similarity": 0.24253075571177507,
+      "ast_similarity": 0.6551724137931034,
+      "diff_bleu": 0.3282180939679186
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.2851159857863014,
+    "edit_sim_delta": 0.3490185400628728,
+    "ast_sim_delta": -0.01231527093596052,
+    "diff_bleu_delta": 0.4009254462467082
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def distinctAverages(self, nums: List[int]) -> int:\n        averages = set()\n        while len(nums) > 0:\n            min_num = min(nums)\n            max_num = max(nums)\n            nums.remove(min_num)\n            nums.remove(max_num)\n            average = (min_num + max_num) / 2\n            averages.add(average)\n        \n        return len(averages)",
+    "efficient": "class Solution:\n    def distinctAverages(self, nums: List[int]) -> int:\n        nums.sort()\n        return len(set(nums[i] + nums[-i - 1] for i in range(len(nums) >> 1)))\n",
+    "finetuned": "class Solution:\n    def distinctAverages(self, nums: List[int]) -> int:\n        nums.sort()\n        ans, n = 0, len(nums)\n        for i, j in pairwise(nums[::-1]):\n            ans += (i + j) / 2\n        return ans",
+    "raw_model": "import heapq\nfrom typing import List\n\nclass Solution:\n    def distinctAverages(self, nums: List[int]) -> int:\n        averages = set()\n        while nums:\n            min_heap = [-num for num in nums]\n            heapq.heapify(min_heap)\n            \n            max_heap = [num for num in nums]\n            heapq.heapify(max_heap)\n            \n            min_num = -heapq.heappop(min_heap)\n            max_num = heapq.heappop(max_heap)\n            \n            average = (min_num + max_num) / 2\n            averages.add(average)\n            \n            nums = list(min_heap) + list(max_heap)\n        \n        return len(averages)"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2422",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 1.0,
+      "edit_similarity": 1.0,
+      "ast_similarity": 1.0,
+      "diff_bleu": 1.0
+    },
+    "raw_model": {
+      "bleu_score": 0.10363854626437513,
+      "edit_similarity": 0.3748828491096532,
+      "ast_similarity": 0.7096774193548387,
+      "diff_bleu": 0.22480112419883144
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.8963614537356248,
+    "edit_sim_delta": 0.6251171508903468,
+    "ast_sim_delta": 0.29032258064516125,
+    "diff_bleu_delta": 0.7751988758011685
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        length = len(nums)\n        nums_copy = []\n        for _ in range(length * 2):\n            nums_copy.extend(nums)\n        i, j = 0, len(nums_copy) - 1\n        a, b = nums_copy[i], nums_copy[j]\n        ans = 0\n        while i < j:\n            if a < b:\n                i += 1\n                a += nums_copy[i]\n                ans += 1\n            elif b < a:\n                j -= 1\n                b += nums_copy[j]\n                ans += 1\n            else:\n                i, j = i + 1, j - 1\n                a, b = nums_copy[i], nums_copy[j]\n        return ans",
+    "efficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        i, j = 0, len(nums) - 1\n        a, b = nums[i], nums[j]\n        ans = 0\n        while i < j:\n            if a < b:\n                i += 1\n                a += nums[i]\n                ans += 1\n            elif b < a:\n                j -= 1\n                b += nums[j]\n                ans += 1\n            else:\n                i, j = i + 1, j - 1\n                a, b = nums[i], nums[j]\n        return ans\n",
+    "finetuned": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        i, j = 0, len(nums) - 1\n        a, b = nums[i], nums[j]\n        ans = 0\n        while i < j:\n            if a < b:\n                i += 1\n                a += nums[i]\n                ans += 1\n            elif b < a:\n                j -= 1\n                b += nums[j]\n                ans += 1\n            else:\n                i, j = i + 1, j - 1\n                a, b = nums[i], nums[j]\n        return ans",
+    "raw_model": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        def manacher_odd(s):\n            n = len(s)\n            P = [0] * n\n            C = R = 0\n            for i in range(1, n - 1):\n                P[i] = (R > i) and min(R - i, P[2 * C - i])\n                while s[i + 1 + P[i]] == s[i - 1 - P[i]]:\n                    P[i] += 1\n                if i + P[i] > R:\n                    C, R = i, i + P[i]\n            return max(P)\n\n        def expand_around_center(s, left, right):\n            while left > 0 and right < len(s) - 1 and s[left - 1] == s[right + 1]:\n                left -= 1\n                right += 1\n            return left, right\n\n        n = len(nums)\n        total_sum = sum(nums)\n        mid = total_sum // 2\n        res = float('inf')\n        \n        for i in range(mid + 1):\n            s = str(i) + ''.join(map(str, nums)) + str(total_sum - i)\n            P = manacher_odd(s)\n            l, r = expand_around_center(s, (P + 1) // 2, (P + 1) // 2)\n            res = min(res, (l - 1) // 2, n - 1 - (r + 1) // 2)\n        \n        return res"
+  },
+  "is_python": true
+}

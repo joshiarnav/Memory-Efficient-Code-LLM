@@ -1,0 +1,30 @@
+{
+  "problem_idx": "698",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.704037011940414,
+      "edit_similarity": 0.7705192629815745,
+      "ast_similarity": 0.9032258064516129,
+      "diff_bleu": 0.8352131302350269
+    },
+    "raw_model": {
+      "bleu_score": 0.3060324956407873,
+      "edit_similarity": 0.47791619479048697,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.5846215867415461
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.3980045162996267,
+    "edit_sim_delta": 0.2926030681910875,
+    "ast_sim_delta": 0.23655913978494625,
+    "diff_bleu_delta": 0.2505915434934808
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canPartitionKSubsets(self, nums, k):\n        def dfs(i):\n            if i == len(nums):\n                return True\n            for j in range(k):\n                cur = cur.copy()\n                cur[j] += nums[i]\n                if j and cur[j] == cur[j - 1]:\n                    continue\n                if isinstance(cur, list):\n                    cur = [x for x in cur]\n                    cur[j] += nums[i]\n                else:\n                    cur = list(cur)\n                    cur[j] += nums[i]\n                if isinstance(cur[j], list):\n                    cur[j] = [x for x in cur[j]]\n                if isinstance(cur[j], list):\n                    cur[j].append(nums[i])\n                else:\n                    cur[j] = [cur[j], nums[i]]\n                if isinstance(cur[j], list):\n                    cur[j] = sum(cur[j])\n                if cur[j] <= s and dfs(i + 1):\n                    return True\n                if isinstance(cur, list):\n                    cur = [x for x in cur]\n                    cur[j] -= nums[i]\n                else:\n                    cur = list(cur)\n                    cur[j] -= nums[i]\n                if isinstance(cur[j], list):\n                    cur[j] = [x for x in cur[j]]\n                if isinstance(cur[j], list):\n                    cur[j].append(nums[i])\n                else:\n                    cur[j] = [cur[j], nums[i]]\n                if isinstance(cur[j], list):\n                    cur[j] = sum(cur[j])\n                if cur[j] <= s and dfs(i + 1):\n                    return True\n                if isinstance(cur, list):\n                    cur = [x for x in cur]\n                    cur[j] -= nums[i]\n                else:\n                    cur = list(cur)\n                    cur[j] -= nums[i]\n            return False\n\n        s, mod = divmod(sum(nums), k)\n        if mod:\n            return False\n        cur = [0] * k\n        for _ in range(len(nums) * 2):\n            cur = cur + [0] * k\n        nums = nums + [0] * (len(nums) * 2)\n        nums.sort(reverse=True)\n        return dfs(0)",
+    "efficient": "class Solution:\n    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:\n        def dfs(i):\n            if i == len(nums):\n                return True\n            for j in range(k):\n                if j and cur[j] == cur[j - 1]:\n                    continue\n                cur[j] += nums[i]\n                if cur[j] <= s and dfs(i + 1):\n                    return True\n                cur[j] -= nums[i]\n            return False\n\n        s, mod = divmod(sum(nums), k)\n        if mod:\n            return False\n        cur = [0] * k\n        nums.sort(reverse=True)\n        return dfs(0)\n",
+    "finetuned": "class Solution:\n    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:\n        def dfs(i):\n            if i == len(nums):\n                return True\n            for j in range(k):\n                if s[j] + nums[i] <= s and dfs(i + 1):\n                    return True\n            return False\n\n        s, mod = divmod(sum(nums), k)\n        if mod:\n            return False\n        cur = [0] * k\n        nums.sort(reverse=True)\n        return dfs(0)",
+    "raw_model": "class Solution:\n    def canPartitionKSubsets(self, nums, k):\n        total = sum(nums)\n        if total % k != 0:\n            return False\n        target = total // k\n        nums.sort(reverse=True)\n        visited = {i: False for i in range(len(nums))}\n        \n        def dfs(index):\n            if index == len(nums):\n                return True\n            for i in range(k):\n                if not visited[i]:\n                    if index == len(nums) - 1:\n                        return dfs(index + 1)\n                    if nums[index] > target:\n                        continue\n                    if i > 0 and nums[index] + target != nums[index - 1]:\n                        continue\n                    visited[i] = True\n                    if dfs(index + 1):\n                        return True\n                    visited[i] = False\n            return False\n        \n        return dfs(0)"
+  },
+  "is_python": true
+}

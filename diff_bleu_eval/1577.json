@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1577",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5387743114784354,
+      "edit_similarity": 0.7067238912732474,
+      "ast_similarity": 0.7931034482758621,
+      "diff_bleu": 0.6156154881467454
+    },
+    "raw_model": {
+      "bleu_score": 0.190366108324425,
+      "edit_similarity": 0.4014175257731959,
+      "ast_similarity": 0.7272727272727273,
+      "diff_bleu": 0.5108137755077693
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.34840820315401033,
+    "edit_sim_delta": 0.3053063655000515,
+    "ast_sim_delta": 0.0658307210031348,
+    "diff_bleu_delta": 0.10480171263897609
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        cnt1 = {i: nums1.count(i) for i in nums1}\n        cnt2 = {i: nums2.count(i) for i in nums2}\n        \n        ans = 0\n        for a in cnt1:\n            for b in cnt2:\n                for c in cnt2:\n                    if a * a % b == 0 and b * b % a == 0:\n                        c1 = a * a // b\n                        c2 = b * b // a\n                        if c1 == c and c2 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += 1\n                        elif c1 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += y\n                        elif c2 == c:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += x\n                        else:\n                            for x in range(cnt1[a]):\n                                for y in range(cnt2[b]):\n                                    for z in range(cnt2[c]):\n                                        ans += 0\n        return ans",
+    "efficient": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        cnt1 = Counter(nums1)\n        cnt2 = Counter(nums2)\n        ans = 0\n        for a, x in cnt1.items():\n            for b, y in cnt2.items():\n                if a * a % b == 0:\n                    c = a * a // b\n                    if b == c:\n                        ans += x * y * (y - 1)\n                    else:\n                        ans += x * y * cnt2[c]\n                if b * b % a == 0:\n                    c = b * b // a\n                    if a == c:\n                        ans += x * (x - 1) * y\n                    else:\n                        ans += x * y * cnt1[c]\n        return ans >> 1\n",
+    "finetuned": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        cnt1 = Counter(nums1)\n        cnt2 = Counter(nums2)\n        ans = 0\n        for a in cnt1:\n            for b in cnt2:\n                for c in cnt2:\n                    if a * a % b == 0 and b * b % a == 0:\n                        x = a * a // b\n                        y = b * b // a\n                        if x == c:\n                            ans += cnt1[a] * cnt2[b] * cnt2[c]\n                        elif y == c:\n                            ans += cnt1[a] * cnt2[b] * cnt2[c]\n        return ans",
+    "raw_model": "class Solution:\n    def numTriplets(self, nums1: List[int], nums2: List[int]) -> int:\n        n1 = len(nums1)\n        n2 = len(nums2)\n        \n        # Calculate the number of triplets for each possible value of c\n        # The number of triplets for c is (cnt1[a] * cnt2[b] * cnt2[c]) for type 1 and\n        # (cnt2[a] * cnt1[b] * cnt1[c]) for type 2\n        cnt1 = {i: nums1.count(i) for i in nums1}\n        cnt2 = {i: nums2.count(i) for i in nums2}\n        \n        triplets1 = [0] * 10**5\n        for a in cnt1:\n            for b in cnt2:\n                for c in cnt2:\n                    if a * a % b == 0 and b * b % a == 0:\n                        c1 = a * a // b\n                        c2 = b * b // a\n                        if c1 == c and c2 == c:\n                            triplets1[a * a] += cnt1[a] * cnt2[b] * cnt2[c]\n                        elif c1 == c:\n                            triplets1[a * a] += cnt1[a] * cnt2[b] * cnt2[c]\n                        elif c2 == c:\n                            triplets1[a * a] += cnt1[a] * cnt2[b] * cnt2[c]\n        \n        triplets2 = [0] * 10**5\n        for a in cnt2:\n            for b in cnt1:\n                for c in cnt1:\n                    if a * a % b == 0 and b * b % a == 0:\n                        c1 = a * a // b\n                        c2 = b * b // a\n                        if c1 == c and c2 == c:\n                            triplets2[a * a] += cnt2[a] * cnt1[b] * cnt1[c]\n                        elif c1 == c:\n                            triplets2[a * a] += cnt2[a] * cnt1[b] * cnt1[c]\n                        elif c2 == c:\n                            triplets2[a * a] += cnt2[a] * cnt1[b] * cnt1[c]\n        \n        # Calculate the total number of triplets\n        ans = 0\n        for c in range(10**5):\n            ans += triplets1[c] + triplets2[c]\n        \n        return ans"
+  },
+  "is_python": true
+}

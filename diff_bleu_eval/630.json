@@ -1,0 +1,30 @@
+{
+  "problem_idx": "630",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8209579450682042,
+      "edit_similarity": 0.8143712574850299,
+      "ast_similarity": 0.8666666666666667,
+      "diff_bleu": 0.9290016333861391
+    },
+    "raw_model": {
+      "bleu_score": 0.47217438185170124,
+      "edit_similarity": 0.5132075471698113,
+      "ast_similarity": 0.7878787878787878,
+      "diff_bleu": 0.6462876682588562
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.34878356321650295,
+    "edit_sim_delta": 0.3011637103152186,
+    "ast_sim_delta": 0.07878787878787885,
+    "diff_bleu_delta": 0.28271396512728286
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def scheduleCourse(self, courses):\n        courses.sort(key=lambda x: x[1])\n        pq = []\n        for duration, last in courses:\n            pq.append(-duration)\n            self.check(pq, duration, last)\n        return len(pq)\n\n    def check(self, pq, duration, last):\n        s = sum(pq)\n        if s > last:\n            max_val = max(pq)\n            pq.remove(max_val)\n            self.check(pq, duration, last)\n            pq.append(max_val)",
+    "efficient": "class Solution:\n    def scheduleCourse(self, courses: List[List[int]]) -> int:\n        courses.sort(key=lambda x: x[1])\n        pq = []\n        s = 0\n        for duration, last in courses:\n            heappush(pq, -duration)\n            s += duration\n            while s > last:\n                s += heappop(pq)\n        return len(pq)\n",
+    "finetuned": "class Solution:\n    def scheduleCourse(self, courses: List[List[int]]) -> int:\n        courses.sort(key=lambda x: x[1])\n        pq = []\n        s = 0\n        for duration, last in courses:\n            if s + duration > last:\n                continue\n            heappush(pq, -duration)\n            s += duration\n        return len(pq)",
+    "raw_model": "import heapq\n\nclass Solution:\n    def scheduleCourse(self, courses):\n        # Sort the courses by their end days\n        courses.sort(key=lambda x: x[1])\n        \n        # Initialize a max heap to store the courses taken so far\n        pq = []\n        \n        # Initialize the total duration of courses taken so far\n        total_duration = 0\n        \n        # Iterate over the sorted courses\n        for duration, last in courses:\n            # If adding the current course does not exceed the deadline, add it\n            if total_duration + duration <= last:\n                heapq.heappush(pq, -duration)\n                total_duration += duration\n            # If adding the current course would exceed the deadline, remove the longest course\n            elif duration > -pq[0]:\n                total_duration -= -heapq.heappop(pq)\n                heapq.heappush(pq, -duration)\n                total_duration += duration\n        \n        # Return the number of courses taken\n        return len(pq)"
+  },
+  "is_python": true
+}

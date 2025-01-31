@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2917",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.45451464333199615,
+      "edit_similarity": 0.5720338983050848,
+      "ast_similarity": 0.6785714285714286,
+      "diff_bleu": 0.7214438532035033
+    },
+    "raw_model": {
+      "bleu_score": 0.3894368014120602,
+      "edit_similarity": 0.5465994962216625,
+      "ast_similarity": 0.7586206896551724,
+      "diff_bleu": 0.5875730703564875
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.06507784191993593,
+    "edit_sim_delta": 0.02543440208342229,
+    "ast_sim_delta": -0.08004926108374377,
+    "diff_bleu_delta": 0.1338707828470158
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        all_strings = [bin(x)[2:] for x in nums]\n        all_strings_with_0s = [x.ljust(32, '0') for x in all_strings]\n        bit_strings = [''.join([x[i] for x in all_strings_with_0s]) for i in range(32)]\n        bit_counts = [bit_strings[i].count('1') for i in range(32)]\n        k_or = 0\n        for i in range(32):\n            if bit_counts[i] >= k:\n                k_or |= 1 << i\n        return k_or",
+    "efficient": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        ans = 0\n        for i in range(32):\n            cnt = sum(x >> i & 1 for x in nums)\n            if cnt >= k:\n                ans |= 1 << i\n        return ans\n",
+    "finetuned": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        cnt = Counter()\n        for x in nums:\n            cnt[x] += 1\n        return reduce(or_, (x for x, c in cnt.items() if c >= k))",
+    "raw_model": "class Solution:\n    def findKOr(self, nums: List[int], k: int) -> int:\n        max_num = max(nums)\n        bit_counts = [0] * 32\n        for num in nums:\n            for i in range(32):\n                if (num & (1 << i)) != 0:\n                    bit_counts[i] += 1\n        k_or = 0\n        for i in range(32):\n            if bit_counts[i] >= k:\n                k_or |= 1 << i\n        return k_or"
+  },
+  "is_python": true
+}

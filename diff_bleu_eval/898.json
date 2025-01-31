@@ -1,0 +1,30 @@
+{
+  "problem_idx": "898",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4510055964916506,
+      "edit_similarity": 0.8,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.7648751313682169
+    },
+    "raw_model": {
+      "bleu_score": 0.43648467061794705,
+      "edit_similarity": 0.6430976430976432,
+      "ast_similarity": 0.8636363636363636,
+      "diff_bleu": 0.7402722692397407
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.014520925873703572,
+    "edit_sim_delta": 0.15690235690235688,
+    "ast_sim_delta": -0.19696969696969702,
+    "diff_bleu_delta": 0.02460286212847629
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def subarrayBitwiseORs(self, arr: List[int]) -> int:\n        ans = []\n        for i in range(len(arr)):\n            temp = []\n            for j in range(i, len(arr)):\n                temp.append(arr[j])\n                or_val = arr[j]\n                for k in range(i, j):\n                    or_val |= arr[k]\n                ans.append(or_val)\n                temp.append(or_val)\n            ans.append(temp)\n        ans = [set(x) for x in ans]\n        ans = set([len(x) for x in ans])\n        return len(ans)",
+    "efficient": "class Solution:\n    def subarrayBitwiseORs(self, arr: List[int]) -> int:\n        s = {0}\n        ans = set()\n        for x in arr:\n            s = {x | y for y in s} | {x}\n            ans |= s\n        return len(ans)\n",
+    "finetuned": "class Solution:\n    def subarrayBitwiseORs(self, arr: List[int]) -> int:\n        ans = s = 0\n        u = set([0])\n        for x in arr:\n            s |= x\n            u.add(s)\n            ans += len(u)\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def subarrayBitwiseORs(self, arr: List[int]) -> int:\n        ans = set()\n        dp = set()\n        for num in arr:\n            temp = {num}\n            dp |= temp\n            ans |= temp\n            temp |= {a | num for a in dp}\n        return len(ans)"
+  },
+  "is_python": true
+}

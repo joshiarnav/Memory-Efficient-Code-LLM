@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1343",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.542793140693214,
+      "edit_similarity": 0.6127450980392157,
+      "ast_similarity": 0.0,
+      "diff_bleu": 0.5273907499249829
+    },
+    "raw_model": {
+      "bleu_score": 0.6144013750751262,
+      "edit_similarity": 0.6124401913875598,
+      "ast_similarity": 0.9130434782608695,
+      "diff_bleu": 0.6549624533394819
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.0716082343819121,
+    "edit_sim_delta": 0.0003049066516559451,
+    "ast_sim_delta": -0.9130434782608695,
+    "diff_bleu_delta": -0.12757170341449897
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:\n        subarray_sums = {}\n        for i in range(len(arr) - k + 1):\n            window_sum = sum(arr[i:i+k])\n            subarray_sums[window_sum] = subarray_sums.get(window_sum, 0) + 1\n        total_count = 0\n        for window_sum in subarray_sums:\n            if window_sum / k >= threshold:\n                total_count += subarray_sums[window_sum]\n        return total_count",
+    "efficient": "class Solution:\n    def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:\n        s = sum(arr[:k])\n        ans = int(s / k >= threshold)\n        for i in range(k, len(arr)):\n            s += arr[i]\n            s -= arr[i - k]\n            ans += int(s / k >= threshold)\n        return ans\n",
+    "finetuned": "class Solution:\n    def numOfSubarrays(\n        self, arr: List[int], k: int, threshold: int\n    ) -> int\n    def numOfSubarrays(\n        self, arr: List[int], k: int, threshold: int\n    ) -> int:\n        s = sum(arr[:k])\n        t = s - arr[0]\n        ans = s >= k * threshold\n        for i in range(k, len(arr)):\n            t += arr[i] - arr[i - k]\n            ans += t >= k * threshold\n        return ans",
+    "raw_model": "class Solution:\n    def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:\n        total_count = 0\n        window_sum = sum(arr[:k])\n        \n        # Calculate the sum of the first window\n        if window_sum / k >= threshold:\n            total_count += 1\n        \n        for i in range(k, len(arr)):\n            # Subtract the element going out of the window and add the element entering the window\n            window_sum = window_sum - arr[i - k] + arr[i]\n            \n            # Check if the average of the current window is greater than or equal to the threshold\n            if window_sum / k >= threshold:\n                total_count += 1\n        \n        return total_count"
+  },
+  "is_python": true
+}

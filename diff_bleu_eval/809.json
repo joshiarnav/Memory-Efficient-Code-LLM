@@ -1,0 +1,30 @@
+{
+  "problem_idx": "809",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6585645088993299,
+      "edit_similarity": 0.8395225464190982,
+      "ast_similarity": 0.9666666666666667,
+      "diff_bleu": 0.3382470298802361
+    },
+    "raw_model": {
+      "bleu_score": 0.9090239355439987,
+      "edit_similarity": 0.9778645833333334,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.6506895425411648
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.2504594266446688,
+    "edit_sim_delta": -0.1383420369142352,
+    "ast_sim_delta": -0.033333333333333326,
+    "diff_bleu_delta": -0.31244251266092876
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def expressiveWords(self, s: str, words: List[str]) -> int:\n        def check(s, t):\n            m, n = len(s), len(t)\n            if n > m:\n                return False\n            i = j = 0\n            while i < m and j < n:\n                if s[i] != t[j]:\n                    return False\n                k = i\n                while k < m and s[k] == s[i]:\n                    k += 1\n                c1 = k - i\n                i, k = k, j\n                while k < n and t[k] == t[j]:\n                    k += 1\n                c2 = k - j\n                j = k\n                if c1 < c2 or (c1 < 3 and c1 != c2):\n                    return False\n            return (i == m or all(s[i] == s[i+1] and s[i] != s[i+2] for i in range(i, m))) and (j == n or all(t[j] == t[j+1] and t[j] != t[j+2] for j in range(j, n)))\n\n        return sum(check(s, t) for t in words)",
+    "efficient": "class Solution:\n    def expressiveWords(self, s: str, words: List[str]) -> int:\n        def check(s, t):\n            m, n = len(s), len(t)\n            if n > m:\n                return False\n            i = j = 0\n            while i < m and j < n:\n                if s[i] != t[j]:\n                    return False\n                k = i\n                while k < m and s[k] == s[i]:\n                    k += 1\n                c1 = k - i\n                i, k = k, j\n                while k < n and t[k] == t[j]:\n                    k += 1\n                c2 = k - j\n                j = k\n                if c1 < c2 or (c1 < 3 and c1 != c2):\n                    return False\n            return i == m and j == n\n\n        return sum(check(s, t) for t in words)\n",
+    "finetuned": "class Solution:\n    def expressiveWords(self, s: str, words: List[str]) -> int:\n        def check(s, t):\n            m, n = len(s), len(t)\n            if n > m:\n                return False\n            i = j = 0\n            while i < m and j < n:\n                if s[i]!= t[j]:\n                    return False\n                x, y = 0, 0\n                while i < m and s[i] == s[i + 1]:\n                    x += 1\n                    i += 1\n                while j < n and t[j] == t[j + 1]:\n                    y += 1\n                    j += 1\n                if x < y or (x < 3 and x!= y):\n                    return False\n                i, j = i + 1, j + 1\n            return i == m and j == n\n\n        return sum(check(s, t) for t in words)",
+    "raw_model": "class Solution:\n    def expressiveWords(self, s: str, words: List[str]) -> int:\n        def check(s, t):\n            m, n = len(s), len(t)\n            if n > m or s != t:\n                return False\n            i, j = 0, 0\n            while i < m and j < n:\n                if s[i] != t[j]:\n                    return False\n                k = i\n                while k < m and s[k] == s[i]:\n                    k += 1\n                c1 = k - i\n                i, k = k, j\n                while k < n and t[k] == t[j]:\n                    k += 1\n                c2 = k - j\n                j = k\n                if c1 < c2 or (c1 < 3 and c1 != c2):\n                    return False\n            return (i == m and j == n)\n\n        return sum(check(s, t) for t in words)"
+  },
+  "is_python": true
+}

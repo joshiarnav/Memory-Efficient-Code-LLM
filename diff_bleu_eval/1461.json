@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1461",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.42287248756114354,
+      "edit_similarity": 0.5756302521008403,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.65165010420073
+    },
+    "raw_model": {
+      "bleu_score": 0.516046686553055,
+      "edit_similarity": 0.439873417721519,
+      "ast_similarity": 0.7692307692307693,
+      "diff_bleu": 0.5397291498977168
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.09317419899191143,
+    "edit_sim_delta": 0.1357568343793213,
+    "ast_sim_delta": -0.10256410256410264,
+    "diff_bleu_delta": 0.11192095430301319
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def hasAllCodes(self, s: str, k: int) -> bool:\n        codes = []\n        for i in range(len(s) - k + 1):\n            codes.append([int(c) for c in s[i : i + k]])\n        return len(set(tuple(code) for code in codes)) == 1 << k",
+    "efficient": "class Solution:\n    def hasAllCodes(self, s: str, k: int) -> bool:\n        ss = {s[i : i + k] for i in range(len(s) - k + 1)}\n        return len(ss) == 1 << k\n",
+    "finetuned": "class Solution:\n    def hasAllCodes(self, s: str, k: int) -> bool:\n        t = ord('1')\n        ans = set()\n        for i, c in enumerate(s):\n            if ord(c) == t:\n                ans.add(i - k + 1)\n        return len(ans) == 1 << k",
+    "raw_model": "class Solution:\n    def hasAllCodes(self, s: str, k: int) -> bool:\n        # Create a set to store unique binary codes of length k\n        codes = set()\n        \n        # Calculate the total number of unique binary codes of length k\n        total_codes = 1 << k\n        \n        # Iterate over the string s using a sliding window of size k\n        for i in range(len(s) - k + 1):\n            # Extract the binary code of length k from the string\n            code = int(s[i : i + k], 2)\n            \n            # Add the binary code to the set\n            codes.add(code)\n            \n            # If we have found all possible binary codes, return True\n            if len(codes) == total_codes:\n                return True\n        \n        # If we reach the end of the string and haven't found all possible binary codes, return False\n        return False"
+  },
+  "is_python": true
+}

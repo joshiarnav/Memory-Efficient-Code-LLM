@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1994",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8103179715760764,
+      "edit_similarity": 0.907258064516129,
+      "ast_similarity": 0.9459459459459459,
+      "diff_bleu": 0.830518851067758
+    },
+    "raw_model": {
+      "bleu_score": 0.5938461295379864,
+      "edit_similarity": 0.6548672566371682,
+      "ast_similarity": 0.8717948717948718,
+      "diff_bleu": 0.5227626269446213
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.21647184203809,
+    "edit_sim_delta": 0.25239080787896084,
+    "ast_sim_delta": 0.07415107415107414,
+    "diff_bleu_delta": 0.30775622412313675
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def numberOfGoodSubsets(self, nums: List[int]) -> int:\n        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]\n        cnt = Counter(nums)\n        mod = 10**9 + 7\n        n = len(primes)\n        f = [[0 for _ in range(1 << n)] for _ in range(31)]\n        for x in range(31):\n            if cnt[x] == 0 or x % 4 == 0 or x % 9 == 0 or x % 25 == 0:\n                continue\n            mask = 0\n            for i, p in enumerate(primes):\n                if x % p == 0:\n                    mask |= 1 << i\n            for state in range((1 << n) - 1, 0, -1):\n                if state & mask == mask:\n                    f[x][state] = (f[x][state] + cnt[x] * f[x][state ^ mask]) % mod\n            f[x][0] = (f[x][0] + cnt[x] * f[x][0]) % mod\n        ans = 0\n        for x in range(31):\n            if cnt[x] != 0:\n                for state in range(1 << n):\n                    ans = (ans + f[x][state] * pow(2, state)) % mod\n        return ans",
+    "efficient": "class Solution:\n    def numberOfGoodSubsets(self, nums: List[int]) -> int:\n        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]\n        cnt = Counter(nums)\n        mod = 10**9 + 7\n        n = len(primes)\n        f = [0] * (1 << n)\n        f[0] = pow(2, cnt[1])\n        for x in range(2, 31):\n            if cnt[x] == 0 or x % 4 == 0 or x % 9 == 0 or x % 25 == 0:\n                continue\n            mask = 0\n            for i, p in enumerate(primes):\n                if x % p == 0:\n                    mask |= 1 << i\n            for state in range((1 << n) - 1, 0, -1):\n                if state & mask == mask:\n                    f[state] = (f[state] + cnt[x] * f[state ^ mask]) % mod\n        return sum(f[i] for i in range(1, 1 << n)) % mod\n",
+    "finetuned": "class Solution:\n    def numberOfGoodSubsets(self, nums: List[int]) -> int:\n        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]\n        cnt = Counter(nums)\n        mod = 10**9 + 7\n        n = len(primes)\n        f = [0] * (1 << n)\n        f[0] = cnt[1]\n        for x in range(2, 30):\n            if cnt[x] == 0 or x % 4 == 0 or x % 9 == 0 or x % 25 == 0:\n                continue\n            mask = 0\n            for i, p in enumerate(primes):\n                if x % p == 0:\n                    mask |= 1 << i\n            for state in range((1 << n) - 1, 0, -1):\n                if state & mask == mask:\n                    f[state] += cnt[x] * f[state ^ mask]\n            f[0] += cnt[x] * f[0]\n        return f[-1]",
+    "raw_model": "class Solution:\n    def numberOfGoodSubsets(self, nums: List[int]) -> int:\n        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]\n        cnt = Counter(nums)\n        mod = 10**9 + 7\n        n = len(primes)\n        f = [[0 for _ in range(1 << n)] for _ in range(31)]\n        \n        # Initialize f[x][mask] as the number of ways to form a subset of x with prime factors in mask\n        for x in range(31):\n            if cnt[x] == 0 or x % 4 == 0 or x % 9 == 0 or x % 25 == 0:\n                continue\n            mask = 0\n            for i, p in enumerate(primes):\n                if x % p == 0:\n                    mask |= 1 << i\n            f[x][0] = cnt[x]\n            for state in range(1 << n):\n                if state & mask == mask:\n                    f[x][state] = (f[x][state] + cnt[x] * f[x][state ^ mask]) % mod\n                else:\n                    f[x][state] = (f[x][state] + cnt[x] * f[x][state]) % mod\n        \n        # Calculate the final answer\n        ans = pow(2, mod - 2, mod)\n        for state in range(1 << n):\n            for x in range(31):\n                if cnt[x] != 0:\n                    ans = (ans * f[x][state]) % mod\n        return ans"
+  },
+  "is_python": true
+}

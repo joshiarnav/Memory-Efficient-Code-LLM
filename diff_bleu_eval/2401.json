@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2401",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.41133140743734303,
+      "edit_similarity": 0.71,
+      "ast_similarity": 0.6923076923076923,
+      "diff_bleu": 0.6984038040936564
+    },
+    "raw_model": {
+      "bleu_score": 0.2332265147472317,
+      "edit_similarity": 0.5722379603399433,
+      "ast_similarity": 0.6785714285714286,
+      "diff_bleu": 0.5256321776482306
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.17810489269011134,
+    "edit_sim_delta": 0.13776203966005662,
+    "ast_sim_delta": 0.013736263736263687,
+    "diff_bleu_delta": 0.17277162644542587
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def longestNiceSubarray(self, nums):\n        ans = []\n        for x in nums:\n            new_ans = []\n            for i, old_ans in enumerate(ans):\n                if not (old_ans & x):\n                    new_ans.append(old_ans)\n            if not any(old_ans & x for old_ans in ans):\n                new_ans.append(x)\n            ans = new_ans\n            ans.append(x)\n        return len(max(ans, key=len))",
+    "efficient": "class Solution:\n    def longestNiceSubarray(self, nums: List[int]) -> int:\n        ans = j = mask = 0\n        for i, x in enumerate(nums):\n            while mask & x:\n                mask ^= nums[j]\n                j += 1\n            ans = max(ans, i - j + 1)\n            mask |= x\n        return ans\n",
+    "finetuned": "class Solution:\n    def longestNiceSubarray(self, nums: List[int]) -> int:\n        ans = cnt = 0\n        for x in nums:\n            if cnt and x & ans:\n                ans = 0\n            else:\n                cnt |= x\n                ans = max(ans, cnt)\n        return ans",
+    "raw_model": "class Solution:\n    def longestNiceSubarray(self, nums):\n        max_len = 0\n        mask = 0\n        for x in nums:\n            new_mask = mask | x\n            while new_mask & -new_mask != new_mask:\n                new_mask ^= mask & -mask\n            max_len = max(max_len, bin(new_mask).count('1'))\n            mask = new_mask\n        return max_len"
+  },
+  "is_python": true
+}

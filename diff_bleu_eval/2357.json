@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2357",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.49615666340750453,
+      "edit_similarity": 0.7105263157894737,
+      "ast_similarity": 0.5714285714285714,
+      "diff_bleu": 0.845725788118703
+    },
+    "raw_model": {
+      "bleu_score": 0.22162495954421993,
+      "edit_similarity": 0.2682926829268293,
+      "ast_similarity": 0.36363636363636365,
+      "diff_bleu": 0.6412978505374939
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.2745317038632846,
+    "edit_sim_delta": 0.4422336328626444,
+    "ast_sim_delta": 0.20779220779220775,
+    "diff_bleu_delta": 0.20442793758120914
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        non_zero_nums = []\n        for num in nums:\n            if num != 0:\n                non_zero_nums.append(num)\n        \n        memo = {}\n        def dfs(arr):\n            if not arr:\n                return 0\n            if tuple(arr) in memo:\n                return memo[tuple(arr)]\n            min_val = min(arr)\n            new_arr = [x - min_val for x in arr if x > 0]\n            if not any(new_arr):\n                return 1\n            memo[tuple(arr)] = 1 + dfs(new_arr)\n            return memo[tuple(arr)]\n        \n        return dfs(non_zero_nums)",
+    "efficient": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        return len({x for x in nums if x})\n",
+    "finetuned": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        mi = min(nums)\n        return sum(1 for x in nums if x > 0) - (mi == 0)",
+    "raw_model": "class Solution:\n    def minimumOperations(self, nums: List[int]) -> int:\n        # Filter out the non-zero elements and sort them in ascending order\n        non_zero_nums = sorted(set(num for num in nums if num != 0))\n        \n        # Initialize the operations counter\n        operations = 0\n        \n        # Iterate over the non-zero elements\n        for i, x in enumerate(non_zero_nums):\n            # Subtract the current element from all the positive elements in the array\n            nums = [num - x if num > 0 and num >= x else num for num in nums]\n            \n            # Increment the operations counter\n            operations += 1\n            \n            # If all elements are zero, break the loop\n            if all(num == 0 for num in nums):\n                break\n        \n        return operations"
+  },
+  "is_python": true
+}

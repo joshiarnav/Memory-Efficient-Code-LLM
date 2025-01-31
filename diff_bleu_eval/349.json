@@ -1,0 +1,30 @@
+{
+  "problem_idx": "349",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5940918629589068,
+      "edit_similarity": 0.634020618556701,
+      "ast_similarity": 0.8,
+      "diff_bleu": 0.8712654534764993
+    },
+    "raw_model": {
+      "bleu_score": 0.6343204730536686,
+      "edit_similarity": 0.5915492957746479,
+      "ast_similarity": 0.8571428571428571,
+      "diff_bleu": 0.8726220637248572
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.04022861009476175,
+    "edit_sim_delta": 0.04247132278205312,
+    "ast_sim_delta": -0.05714285714285705,
+    "diff_bleu_delta": -0.0013566102483578701
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Create a list of all possible integers in the range of nums1 and nums2\n        all_nums = [i for i in range(1001)]\n        \n        # Create a dictionary to store the count of each number in nums1 and nums2\n        nums1_dict = {}\n        for num in nums1:\n            if num in nums1_dict:\n                nums1_dict[num] += 1\n            else:\n                nums1_dict[num] = 1\n        \n        nums2_dict = {}\n        for num in nums2:\n            if num in nums2_dict:\n                nums2_dict[num] += 1\n            else:\n                nums2_dict[num] = 1\n        \n        # Initialize an empty list to store the intersection\n        intersection = []\n        \n        # Iterate over all possible integers\n        for num in all_nums:\n            # Check if the number exists in both dictionaries and its count is greater than 0\n            if num in nums1_dict and num in nums2_dict and nums1_dict[num] > 0 and nums2_dict[num] > 0:\n                # Add the number to the intersection list\n                intersection.append(num)\n                # Decrement the count of the number in both dictionaries\n                nums1_dict[num] -= 1\n                nums2_dict[num] -= 1\n        \n        # Return the intersection list\n        return intersection",
+    "efficient": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        return list(set(nums1) & set(nums2))\n",
+    "finetuned": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        cnt1 = Counter(nums1)\n        cnt2 = Counter(nums2)\n        return list((cnt1 & cnt2).keys())",
+    "raw_model": "class Solution:\n    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:\n        # Convert the input lists to sets for efficient membership testing\n        set1 = set(nums1)\n        set2 = set(nums2)\n        \n        # Find the intersection of the two sets by taking their difference with the complement of the other set\n        intersection = set1 & set2\n        \n        # Convert the intersection back to a list and return it\n        return list(intersection)"
+  },
+  "is_python": true
+}

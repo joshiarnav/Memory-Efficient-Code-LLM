@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1151",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.33911921112024895,
+      "edit_similarity": 0.6146179401993355,
+      "ast_similarity": 0.72,
+      "diff_bleu": 0.8113196056458177
+    },
+    "raw_model": {
+      "bleu_score": 0.2199622762715936,
+      "edit_similarity": 0.375,
+      "ast_similarity": 0.6071428571428571,
+      "diff_bleu": 0.7077171529481574
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.11915693484865536,
+    "edit_sim_delta": 0.23961794019933547,
+    "ast_sim_delta": 0.11285714285714288,
+    "diff_bleu_delta": 0.10360245269766033
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        all_ones = [1] * data.count(1)\n        all_zeros = [0] * len(data) - len(all_ones)\n        result = []\n        for i in range(len(data)):\n            temp = []\n            for j in range(len(data)):\n                if j < i:\n                    temp.append(data[j])\n                else:\n                    if j - i < len(all_ones):\n                        temp.append(all_ones[-(j - i)])\n                    else:\n                        temp.append(all_zeros[-(j - i) + len(all_ones)])\n            result.append(temp)\n        min_swaps = float('inf')\n        for arrangement in result:\n            swaps = 0\n            for i in range(len(arrangement)):\n                if arrangement[i] != 1:\n                    swaps += 1\n                    j = i\n                    while j < len(arrangement) and arrangement[j] != 1:\n                        j += 1\n                    if j == len(arrangement):\n                        break\n                    temp = arrangement[i:j+1]\n                    temp.sort()\n                    arrangement[i:j+1] = temp\n                    swaps += j - i\n            min_swaps = min(min_swaps, swaps)\n        return min_swaps",
+    "efficient": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        k = data.count(1)\n        t = sum(data[:k])\n        mx = t\n        for i in range(k, len(data)):\n            t += data[i]\n            t -= data[i - k]\n            mx = max(mx, t)\n        return k - mx\n",
+    "finetuned": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        cnt = data.count(1)\n        l = r = 0\n        ans = cnt - 1\n        while r < len(data):\n            if data[r]:\n                l, r = r, r + 1\n                ans += 1\n            else:\n                r += 1\n        return ans",
+    "raw_model": "class Solution:\n    def minSwaps(self, data: List[int]) -> int:\n        n = len(data)\n        ones = sum(data)\n        swaps = 0\n        start = 0\n        end = 0\n\n        while end < n:\n            while end < n and data[end] == 0:\n                end += 1\n\n            if end < n:\n                count = 0\n                while start <= end and count < ones:\n                    if data[start] == 1:\n                        count += 1\n                    start += 1\n\n                swaps += end - start + 1\n                start = end + 1\n\n        return swaps"
+  },
+  "is_python": true
+}

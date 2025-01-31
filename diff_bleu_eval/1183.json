@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1183",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5560110640201247,
+      "edit_similarity": 0.5925925925925926,
+      "ast_similarity": 0.7419354838709677,
+      "diff_bleu": 0.5606965054924061
+    },
+    "raw_model": {
+      "bleu_score": 0.4836620387286991,
+      "edit_similarity": 0.6521739130434783,
+      "ast_similarity": 0.6428571428571429,
+      "diff_bleu": 0.5220151749133797
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.07234902529142556,
+    "edit_sim_delta": -0.05958132045088571,
+    "ast_sim_delta": 0.09907834101382484,
+    "diff_bleu_delta": 0.03868133057902645
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        x = sideLength\n        cnt = []\n        for i in range(width):\n            for j in range(height):\n                k = (i % x) * x + (j % x)\n                cnt.append(cnt[k] + 1 if k < len(cnt) else 1)\n        for i in range(len(cnt)):\n            for j in range(len(cnt) - 1):\n                if cnt[j] > cnt[j + 1]:\n                    cnt[j], cnt[j + 1] = cnt[j + 1], cnt[j]\n        return sum(cnt[:maxOnes])",
+    "efficient": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        x = sideLength\n        cnt = [0] * (x * x)\n        for i in range(width):\n            for j in range(height):\n                k = (i % x) * x + (j % x)\n                cnt[k] += 1\n        cnt.sort(reverse=True)\n        return sum(cnt[:maxOnes])\n",
+    "finetuned": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        x = sideLength\n        cnt = [0] * (x * x)\n        ans = 0\n        for i in range(width):\n            for j in range(height):\n                k = (i % x) * x + (j % x)\n                cnt[k] += 1\n                idx = (k + 1) % x * x + (i // x + 1) % x\n                cnt[idx] -= 1\n                ans += 1\n                while idx < len(cnt) and cnt[idx] < 0:\n                    idx -= 1\n                    ans -= 1\n        cnt.sort()\n        return ans + sum(cnt[:maxOnes - ans])",
+    "raw_model": "class Solution:\n    def maximumNumberOfOnes(\n        self, width: int, height: int, sideLength: int, maxOnes: int\n    ) -> int:\n        # Initialize the matrix with zeros\n        matrix = [[0] * width for _ in range(height)]\n        \n        # Initialize the count of ones\n        ones = 0\n        \n        # Iterate over the matrix in a row-major order\n        for i in range(width):\n            for j in range(height):\n                # Calculate the maximum possible number of ones in the current cell\n                ones_in_cell = min(maxOnes, (sideLength - 1) * ((i + j) // sideLength) + 1)\n                \n                # Update the count of ones\n                ones += ones_in_cell\n        \n        # Return the maximum possible number of ones\n        return ones"
+  },
+  "is_python": true
+}

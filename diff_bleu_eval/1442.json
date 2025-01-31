@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1442",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.7941014819122044,
+      "edit_similarity": 0.7318339100346021,
+      "ast_similarity": 0.9230769230769231,
+      "diff_bleu": 0.62054851686646
+    },
+    "raw_model": {
+      "bleu_score": 0.6139825154349006,
+      "edit_similarity": 0.7505154639175258,
+      "ast_similarity": 0.96,
+      "diff_bleu": 0.3987616544224406
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.18011896647730385,
+    "edit_sim_delta": -0.018681553882923696,
+    "ast_sim_delta": -0.036923076923076836,
+    "diff_bleu_delta": 0.22178686244401935
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * (n * 100)  # allocate 100 times more memory than needed\n        for i in range(n):\n            pre[i + 1] = pre[i] ^ arr[i]\n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                for k in range(j, n):\n                    a = 0\n                    for x in range(i, j):\n                        a ^= arr[x]\n                    b = 0\n                    for y in range(j, k + 1):\n                        b ^= arr[y]\n                    if a == b:\n                        ans += 1\n        return ans",
+    "efficient": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * (n + 1)\n        for i in range(n):\n            pre[i + 1] = pre[i] ^ arr[i]\n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                for k in range(j, n):\n                    a, b = pre[j] ^ pre[i], pre[k + 1] ^ pre[j]\n                    if a == b:\n                        ans += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * (n + 1)\n        for i in range(n):\n            pre[i + 1] = pre[i] ^ arr[i]\n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                a = pre[i] ^ pre[j]\n                ok = False\n                for k in range(j, n):\n                    if pre[j] == pre[k]:\n                        ok = True\n                        break\n                    a ^= arr[k]\n                if ok:\n                    ans += 1\n        return ans",
+    "raw_model": "class Solution:\n    def countTriplets(self, arr: List[int]) -> int:\n        n = len(arr)\n        prefix_xor = [0] * n\n        prefix_xor[0] = arr[0]\n        for i in range(1, n):\n            prefix_xor[i] = prefix_xor[i - 1] ^ arr[i]\n        \n        ans = 0\n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                a = prefix_xor[i]\n                b = prefix_xor[j - 1] ^ prefix_xor[j]\n                if a == b:\n                    # Count the number of pairs (j, k) where a == b\n                    ans += n - j\n        return ans"
+  },
+  "is_python": true
+}

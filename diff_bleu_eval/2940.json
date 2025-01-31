@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2940",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.07490283720147979,
+      "edit_similarity": 0.32067851373182554,
+      "ast_similarity": 0.6585365853658537,
+      "diff_bleu": 0.34999641641017737
+    },
+    "raw_model": {
+      "bleu_score": 0.21710819062408632,
+      "edit_similarity": 0.382875605815832,
+      "ast_similarity": 0.7804878048780488,
+      "diff_bleu": 0.27590203473209857
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.14220535342260654,
+    "edit_sim_delta": -0.06219709208400648,
+    "ast_sim_delta": -0.12195121951219512,
+    "diff_bleu_delta": 0.0740943816780788
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def leftmostBuildingQueries(self, heights, queries):\n        n = len(heights)\n        m = len(queries)\n        for i in range(m):\n            queries[i].append(i)\n        heights = [[h, i] for i, h in enumerate(heights)]\n        heights.sort()\n        queries.sort(key=lambda x: x[2])\n        ans = [-1] * m\n        tree1 = {}\n        tree2 = {}\n        for i, (h, j) in enumerate(heights):\n            tree1[h] = i\n            tree2[h] = j\n        for i, (l, r, idx) in enumerate(queries):\n            while True:\n                if l in tree1 and tree1[l] <= tree2[r]:\n                    if any(tree2[h] > r for h in range(l + 1, r + 1) if h in tree1):\n                        ans[idx] = r\n                        break\n                    else:\n                        l = r\n                        r = tree2[r]\n                else:\n                    break\n            if ans[idx] != -1:\n                break\n        return ans",
+    "efficient": "class BinaryIndexedTree:\n    __slots__ = [\"n\", \"c\"]\n\n    def __init__(self, n: int):\n        self.n = n\n        self.c = [inf] * (n + 1)\n\n    def update(self, x: int, v: int):\n        while x <= self.n:\n            self.c[x] = min(self.c[x], v)\n            x += x & -x\n\n    def query(self, x: int) -> int:\n        mi = inf\n        while x:\n            mi = min(mi, self.c[x])\n            x -= x & -x\n        return -1 if mi == inf else mi\n\n\nclass Solution:\n    def leftmostBuildingQueries(\n        self, heights: List[int], queries: List[List[int]]\n    ) -> List[int]:\n        n, m = len(heights), len(queries)\n        for i in range(m):\n            queries[i] = [min(queries[i]), max(queries[i])]\n        j = n - 1\n        s = sorted(set(heights))\n        ans = [-1] * m\n        tree = BinaryIndexedTree(n)\n        for i in sorted(range(m), key=lambda i: -queries[i][1]):\n            l, r = queries[i]\n            while j > r:\n                k = n - bisect_left(s, heights[j]) + 1\n                tree.update(k, j)\n                j -= 1\n            if l == r or heights[l] < heights[r]:\n                ans[i] = r\n            else:\n                k = n - bisect_left(s, heights[l])\n                ans[i] = tree.query(k)\n        return ans\n",
+    "finetuned": "class Solution:\n    def leftmostBuildingQueries(\n        self, heights: List[int], queries: List[List[int]]\n    ) -> List[int]:\n        n = len(heights)\n        m = len(queries)\n        ans = [-1] * m\n        tree = []\n        for l, r in sorted((x[-1], i) for i, x in enumerate(queries)):\n            while tree and heights[tree[-1]] < heights[r]:\n                tree.pop()\n            if tree:\n                ans[r] = tree[-1]\n            tree.append(l)\n        return ans",
+    "raw_model": "class Solution:\n    def leftmostBuildingQueries(self, heights, queries):\n        n = len(heights)\n        m = len(queries)\n        for i in range(m):\n            queries[i].append(i)\n        heights = [[h, i] for i, h in enumerate(heights)]\n        heights.sort()\n        queries.sort(key=lambda x: x[2])\n        \n        # Initialize the BIT to keep track of the minimum height\n        bit = [0] * (n + 1)\n        \n        def update(i, val):\n            while i <= n:\n                bit[i] = max(bit[i], val)\n                i += i & -i\n        \n        def query(i):\n            ans = 0\n            while i:\n                ans = max(ans, bit[i])\n                i -= i & -i\n            return ans\n        \n        ans = [-1] * m\n        for i in range(m):\n            l, r = queries[i][0], queries[i][1]\n            idx = queries[i][2]\n            val = heights[l][0]\n            ans[idx] = query(r + 1)\n            if ans[idx] >= heights[l][0]:\n                update(l, heights[l][0] + 1)\n        \n        return ans"
+  },
+  "is_python": true
+}

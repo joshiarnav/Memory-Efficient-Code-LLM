@@ -7,6 +7,10 @@ import tempfile
 import subprocess
 import re
 from tqdm import tqdm
+import ast
+from typing import Set, Dict, Any
+from Levenshtein import distance
+import statistics
 
 # Directory paths
 GENERATED_SOLUTIONS_DIR = "generated_solutions"
@@ -30,8 +34,72 @@ def remove_blank_lines(code: str) -> str:
     except:
         return code
 
+def calculate_code_bleu(source_code: str, target_code: str, language: str = "python") -> float:
+    """Calculate BLEU score between source and target code."""
+    try:
+        # Clean the code
+        source = remove_blank_lines(remove_comments(source_code, language))
+        target = remove_blank_lines(remove_comments(target_code, language))
+        
+        # Tokenize both codes
+        source_tokens = wordpunct_tokenize(source)
+        target_tokens = wordpunct_tokenize(target)
+        
+        if not source_tokens or not target_tokens:
+            return 0.0
+        
+        return sentence_bleu([target_tokens], source_tokens, smoothing_function=SmoothingFunction().method1)
+    except Exception as e:
+        print(f"Error in calculate_code_bleu: {str(e)}")
+        return 0.0
+
+def calculate_normalized_edit_distance(source_code: str, target_code: str, language: str = "python") -> float:
+    """Calculate normalized edit distance between source and target code."""
+    try:
+        # Clean the code
+        source = remove_blank_lines(remove_comments(source_code, language))
+        target = remove_blank_lines(remove_comments(target_code, language))
+        
+        # Calculate edit distance
+        edit_dist = distance(source, target)
+        max_len = max(len(source), len(target))
+        
+        # Return normalized similarity (1 - normalized_distance)
+        return 1 - (edit_dist / max_len if max_len > 0 else 0)
+    except Exception as e:
+        print(f"Error in calculate_normalized_edit_distance: {str(e)}")
+        return 0.0
+
+def get_ast_nodes(code: str) -> Set[str]:
+    """Get a set of AST node types from code."""
+    try:
+        tree = ast.parse(code)
+        return {type(node).__name__ for node in ast.walk(tree)}
+    except:
+        return set()
+
+def calculate_ast_similarity(source_code: str, target_code: str) -> float:
+    """Calculate similarity based on AST node types."""
+    try:
+        source_nodes = get_ast_nodes(source_code)
+        target_nodes = get_ast_nodes(target_code)
+        
+        if not source_nodes or not target_nodes:
+            return 0.0
+        
+        # Jaccard similarity between node sets
+        intersection = len(source_nodes.intersection(target_nodes))
+        union = len(source_nodes.union(target_nodes))
+        return intersection / union if union > 0 else 0.0
+    except Exception as e:
+        print(f"Error in calculate_ast_similarity: {str(e)}")
+        return 0.0
+
 def calculate_diff_bleu(source_code: str, target: str, generated_code: str, language: str = "python") -> float:
     """Calculate the Diff BLEU score between source, target and generated code."""
+    source_path = None
+    target_path = None
+    generated_path = None
     try:
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as source_temp, \
              tempfile.NamedTemporaryFile(mode='w', delete=False) as target_temp, \
@@ -84,10 +152,28 @@ def calculate_diff_bleu(source_code: str, target: str, generated_code: str, lang
     finally:
         # Clean up temporary files
         for path in [source_path, target_path, generated_path]:
-            try:
-                os.remove(path)
-            except:
-                pass
+            if path:
+                try:
+                    os.remove(path)
+                except:
+                    pass
+
+def calculate_statistics(scores: list) -> Dict[str, float]:
+    """Calculate statistics for a list of scores."""
+    if not scores:
+        return {
+            "average": 0.0,
+            "median": 0.0,
+            "std_dev": 0.0,
+            "count": 0
+        }
+    
+    return {
+        "average": statistics.mean(scores),
+        "median": statistics.median(scores),
+        "std_dev": statistics.stdev(scores) if len(scores) > 1 else 0.0,
+        "count": len(scores)
+    }
 
 def load_json_file(file_path: str) -> dict:
     """Load a JSON file."""
@@ -102,7 +188,7 @@ def load_json_file(file_path: str) -> dict:
         return None
 
 def process_solutions():
-    """Process solutions from both directories and calculate diff_bleu scores."""
+    """Process solutions from both directories and calculate similarity metrics."""
     # Create output directory
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     
@@ -117,7 +203,16 @@ def process_solutions():
     # Track statistics
     total_processed = 0
     total_errors = 0
-    total_zero_scores = 0
+    all_metrics = {
+        "finetuned_bleu": [],
+        "raw_model_bleu": [],
+        "finetuned_edit_sim": [],
+        "raw_model_edit_sim": [],
+        "finetuned_ast_sim": [],
+        "raw_model_ast_sim": [],
+        "finetuned_diff_bleu": [],
+        "raw_model_diff_bleu": []
+    }
     
     # Process each common problem
     for problem_id in tqdm(common_problems, desc="Processing problems"):
@@ -143,54 +238,80 @@ def process_solutions():
             finetuned_solution = generated_data.get('model_solution', '')
             raw_model_solution = raw_model_data.get('model_solution', '')
             inefficient_solution = raw_model_data.get('inefficient_solution', '')
-            canonical_solution = generated_data.get('efficient_solution', '')  # Changed from canonical_solution to efficient_solution
+            efficient_solution = generated_data.get('efficient_solution', '')
             
-            print("Solution lengths:")
-            print(f"- Finetuned solution: {len(finetuned_solution)} chars")
-            print(f"- Raw model solution: {len(raw_model_solution)} chars")
-            print(f"- Inefficient solution: {len(inefficient_solution)} chars")
-            print(f"- Efficient solution: {len(canonical_solution)} chars")
-            
-            if not finetuned_solution or not raw_model_solution or not inefficient_solution or not canonical_solution:
+            if not finetuned_solution or not raw_model_solution or not inefficient_solution or not efficient_solution:
                 print(f"Missing required solutions for problem {problem_id}")
-                print(f"- Has finetuned: {bool(finetuned_solution)}")
-                print(f"- Has raw model: {bool(raw_model_solution)}")
-                print(f"- Has inefficient: {bool(inefficient_solution)}")
-                print(f"- Has canonical_solution: {bool(canonical_solution)}")
                 total_errors += 1
                 continue
-                
-            # Calculate diff_bleu scores for both models
-            raw_model_diff_bleu = calculate_diff_bleu(
-                inefficient_solution,
-                canonical_solution,
-                raw_model_solution
-            )
             
-            finetuned_diff_bleu = calculate_diff_bleu(
-                inefficient_solution,
-                canonical_solution,
-                finetuned_solution
-            )
+            language = "python" if raw_model_data.get('is_python', True) else "other"
             
-            if raw_model_diff_bleu == 0.0 and finetuned_diff_bleu == 0.0:
-                total_zero_scores += 1
+            # Calculate all metrics
+            # 1. BLEU scores
+            finetuned_bleu = calculate_code_bleu(finetuned_solution, efficient_solution, language)
+            raw_model_bleu = calculate_code_bleu(raw_model_solution, efficient_solution, language)
             
-            # Combine data and save
-            output_data = {
-                "problem_idx": problem_id,
-                "description": raw_model_data.get('description', ''),
-                "inefficient_solution": inefficient_solution,
-                "canonical_solution": canonical_solution,
-                "finetuned_model_solution": finetuned_solution,
-                "raw_model_solution": raw_model_solution,
-                "finetuned_model_diff_bleu": finetuned_diff_bleu,
-                "raw_model_diff_bleu": raw_model_diff_bleu,
-                "is_python": raw_model_data.get('is_python', True),
-                "diff_bleu_delta": finetuned_diff_bleu - raw_model_diff_bleu,
+            # 2. Edit distance similarity
+            finetuned_edit = calculate_normalized_edit_distance(finetuned_solution, efficient_solution, language)
+            raw_model_edit = calculate_normalized_edit_distance(raw_model_solution, efficient_solution, language)
+            
+            # 3. AST similarity
+            finetuned_ast = calculate_ast_similarity(finetuned_solution, efficient_solution)
+            raw_model_ast = calculate_ast_similarity(raw_model_solution, efficient_solution)
+            
+            # 4. Diff BLEU scores
+            finetuned_diff_bleu = calculate_diff_bleu(inefficient_solution, efficient_solution, finetuned_solution, language)
+            raw_model_diff_bleu = calculate_diff_bleu(inefficient_solution, efficient_solution, raw_model_solution, language)
+            
+            # Collect metrics
+            metrics = {
+                "finetuned_model": {
+                    "bleu_score": finetuned_bleu,
+                    "edit_similarity": finetuned_edit,
+                    "ast_similarity": finetuned_ast,
+                    "diff_bleu": finetuned_diff_bleu
+                },
+                "raw_model": {
+                    "bleu_score": raw_model_bleu,
+                    "edit_similarity": raw_model_edit,
+                    "ast_similarity": raw_model_ast,
+                    "diff_bleu": raw_model_diff_bleu
+                }
             }
             
-            # Save to output directory
+            # Track non-zero scores
+            if finetuned_bleu > 0: all_metrics["finetuned_bleu"].append(finetuned_bleu)
+            if raw_model_bleu > 0: all_metrics["raw_model_bleu"].append(raw_model_bleu)
+            if finetuned_edit > 0: all_metrics["finetuned_edit_sim"].append(finetuned_edit)
+            if raw_model_edit > 0: all_metrics["raw_model_edit_sim"].append(raw_model_edit)
+            if finetuned_ast > 0: all_metrics["finetuned_ast_sim"].append(finetuned_ast)
+            if raw_model_ast > 0: all_metrics["raw_model_ast_sim"].append(raw_model_ast)
+            if finetuned_diff_bleu > 0: all_metrics["finetuned_diff_bleu"].append(finetuned_diff_bleu)
+            if raw_model_diff_bleu > 0: all_metrics["raw_model_diff_bleu"].append(raw_model_diff_bleu)
+            
+            # Calculate deltas
+            deltas = {
+                "bleu_delta": finetuned_bleu - raw_model_bleu,
+                "edit_sim_delta": finetuned_edit - raw_model_edit,
+                "ast_sim_delta": finetuned_ast - raw_model_ast,
+                "diff_bleu_delta": finetuned_diff_bleu - raw_model_diff_bleu
+            }
+            
+            # Save results
+            output_data = {
+                "problem_idx": problem_id,
+                "metrics": metrics,
+                "deltas": deltas,
+                "solutions": {
+                    "inefficient": inefficient_solution,
+                    "efficient": efficient_solution,
+                    "finetuned": finetuned_solution,
+                    "raw_model": raw_model_solution
+                },
+                "is_python": raw_model_data.get('is_python', True)
+            }
+            
             output_path = os.path.join(OUTPUT_DIR, f"{problem_id}.json")
             with open(output_path, 'w') as f:
                 json.dump(output_data, f, indent=2)
@@ -202,11 +323,30 @@ def process_solutions():
             total_errors += 1
             continue
     
-    # Print summary statistics
+    # Calculate statistics for each metric
+    statistics = {metric: calculate_statistics(scores) for metric, scores in all_metrics.items()}
+    
+    # Print summary
     print(f"\nProcessing complete:")
     print(f"Total problems processed successfully: {total_processed}")
     print(f"Total errors: {total_errors}")
-    print(f"Problems with zero diff_bleu scores: {total_zero_scores}")
+    
+    print("\nMetrics Statistics:")
+    for metric, stats in statistics.items():
+        print(f"\n{metric}:")
+        print(f"  Average: {stats['average']:.4f}")
+        print(f"  Median:  {stats['median']:.4f}")
+        print(f"  StdDev:  {stats['std_dev']:.4f}")
+        print(f"  Count:   {stats['count']}")
+    
+    # Save statistics
+    stats_path = os.path.join(OUTPUT_DIR, "statistics.json")
+    with open(stats_path, 'w') as f:
+        json.dump({
+            "total_processed": total_processed,
+            "total_errors": total_errors,
+            "metrics_statistics": statistics
+        }, f, indent=2)
 
 if __name__ == "__main__":
     process_solutions()

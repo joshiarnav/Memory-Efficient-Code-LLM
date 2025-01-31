@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2354",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4998051204848091,
+      "edit_similarity": 0.6338797814207651,
+      "ast_similarity": 0.9545454545454546,
+      "diff_bleu": 0.5512833491723294
+    },
+    "raw_model": {
+      "bleu_score": 0.3331734511449289,
+      "edit_similarity": 0.607843137254902,
+      "ast_similarity": 0.875,
+      "diff_bleu": 0.450682337921923
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.16663166933988016,
+    "edit_sim_delta": 0.026036644165863043,
+    "ast_sim_delta": 0.07954545454545459,
+    "diff_bleu_delta": 0.10060101125040632
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def countExcellentPairs(self, nums: List[int], k: int) -> int:\n        s = set(nums)\n        ans = 0\n        cnt = [0] * 60\n        for v in s:\n            cnt[v.bit_count()] += 1\n        for v in s:\n            t = v.bit_count()\n            for i in range(60):\n                if t + i >= k:\n                    new_cnt = [0] * 60\n                    for j in range(60):\n                        new_cnt[j] = cnt[j]\n                    for j in range(60):\n                        new_cnt[j] += cnt[j]\n                    for j in range(60):\n                        if t + i >= k and j + i >= k:\n                            ans += new_cnt[j]\n        return ans",
+    "efficient": "class Solution:\n    def countExcellentPairs(self, nums: List[int], k: int) -> int:\n        s = set(nums)\n        ans = 0\n        cnt = Counter()\n        for v in s:\n            cnt[v.bit_count()] += 1\n        for v in s:\n            t = v.bit_count()\n            for i, x in cnt.items():\n                if t + i >= k:\n                    ans += x\n        return ans\n",
+    "finetuned": "class Solution:\n    def countExcellentPairs(self, nums: List[int], k: int) -> int:\n        cnt = Counter()\n        ans = 0\n        for v in nums:\n            t = v.bit_count()\n            if t + s[v.bit_xor(v)] >= k:\n                ans += cnt[s[v.bit_xor(v)]]\n            cnt[t] += 1\n        return ans",
+    "raw_model": "class Solution:\n    def countExcellentPairs(self, nums: List[int], k: int) -> int:\n        bit_counts = {}\n        for num in nums:\n            bit_count = bin(num).count('1')\n            bit_counts[bit_count] = bit_counts.get(bit_count, 0) + 1\n        \n        ans = 0\n        for count1 in bit_counts:\n            for count2 in bit_counts:\n                if count1 + count2 >= k:\n                    ans += bit_counts[count1] * bit_counts[count2]\n        \n        return ans"
+  },
+  "is_python": true
+}

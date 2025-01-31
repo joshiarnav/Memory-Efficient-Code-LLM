@@ -1,0 +1,30 @@
+{
+  "problem_idx": "132",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.9036122583085286,
+      "edit_similarity": 0.9395248380129589,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.6355773329748222
+    },
+    "raw_model": {
+      "bleu_score": 0.43817667179538766,
+      "edit_similarity": 0.4568527918781726,
+      "ast_similarity": 0.9333333333333333,
+      "diff_bleu": 0.24374311732406145
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.465435586513141,
+    "edit_sim_delta": 0.4826720461347863,
+    "ast_sim_delta": 0.06666666666666665,
+    "diff_bleu_delta": 0.39183421565076076
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minCut(self, s: str) -> int:\n        n = len(s)\n        g = [[1] * n for _ in range(n)]\n        for i in range(n - 1, -1, -1):\n            for j in range(i + 1, n):\n                g[i][j] = s[i] == s[j] and g[i + 1][j - 1]\n        f = [[] for _ in range(n)]\n        for i in range(1, n):\n            for j in range(i + 1):\n                if g[j][i]:\n                    f[i].append(1 + f[j - 1][0] if j else 0)\n        return min(f[-1])",
+    "efficient": "class Solution:\n    def minCut(self, s: str) -> int:\n        n = len(s)\n        g = [[True] * n for _ in range(n)]\n        for i in range(n - 1, -1, -1):\n            for j in range(i + 1, n):\n                g[i][j] = s[i] == s[j] and g[i + 1][j - 1]\n        f = list(range(n))\n        for i in range(1, n):\n            for j in range(i + 1):\n                if g[j][i]:\n                    f[i] = min(f[i], 1 + f[j - 1] if j else 0)\n        return f[-1]\n",
+    "finetuned": "class Solution:\n    def minCut(self, s: str) -> int:\n        n = len(s)\n        g = [[1] * n for _ in range(n)]\n        for i in range(n - 1, -1, -1):\n            for j in range(i + 1, n):\n                g[i][j] = s[i] == s[j] and g[i + 1][j - 1]\n        f = [inf] * n\n        f[0] = 0\n        for i in range(1, n):\n            for j in range(i + 1):\n                if g[j][i]:\n                    f[i] = min(f[i], 1 + f[j - 1] if j else 0)\n        return f[-1]",
+    "raw_model": "class Solution:\n    def minCut(self, s: str) -> int:\n        n = len(s)\n        is_palindrome = [[False] * n for _ in range(n)]\n        min_cuts = [0] * n\n\n        # Check if each substring is a palindrome\n        for length in range(1, n + 1):\n            for i in range(n - length + 1):\n                j = i + length - 1\n                if length == 1:\n                    is_palindrome[i][j] = True\n                elif length == 2:\n                    is_palindrome[i][j] = s[i] == s[j]\n                else:\n                    is_palindrome[i][j] = (s[i] == s[j] and is_palindrome[i + 1][j - 1])\n\n        # Calculate minimum cuts\n        for i in range(n):\n            if is_palindrome[0][i]:\n                min_cuts[i] = 0\n            else:\n                min_cuts[i] = 1 + min(min_cuts[j] for j in range(i) if is_palindrome[j + 1][i])\n\n        return min_cuts[-1]"
+  },
+  "is_python": true
+}

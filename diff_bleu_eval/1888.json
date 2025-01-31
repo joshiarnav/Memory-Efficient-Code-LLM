@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1888",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4032445785324051,
+      "edit_similarity": 0.5420560747663552,
+      "ast_similarity": 0.7407407407407407,
+      "diff_bleu": 0.7429990341767106
+    },
+    "raw_model": {
+      "bleu_score": 0.23199992265055297,
+      "edit_similarity": 0.35580524344569286,
+      "ast_similarity": 0.6666666666666666,
+      "diff_bleu": 0.5857274775276488
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.17124465588185211,
+    "edit_sim_delta": 0.18625083132066234,
+    "ast_sim_delta": 0.07407407407407407,
+    "diff_bleu_delta": 0.1572715566490619
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minFlips(self, s: str) -> int:\n        n = len(s)\n        max_str = [\"0\" * n, \"1\" * n]\n        min_str = [\"0\" * n, \"1\" * n]\n        for i in range(n):\n            for s1 in max_str:\n                for s2 in min_str:\n                    if s[i] != s1[i & 1] and s[i] != s2[i & 1]:\n                        max_str.remove(s1)\n                        max_str.remove(s2)\n            for s1 in max_str:\n                for s2 in min_str:\n                    if s[i] != s1[(i + n) & 1] and s[i] != s2[(i + n) & 1]:\n                        min_str.remove(s1)\n                        min_str.remove(s2)\n            max_str = [\"0\" * n, \"1\" * n]\n            min_str = [\"0\" * n, \"1\" * n]\n        ans = n\n        for s1 in max_str:\n            for s2 in min_str:\n                cnt = 0\n                for i in range(n):\n                    if s[i] != s1[i & 1]:\n                        cnt += 1\n                    if s[i] != s2[i & 1]:\n                        cnt += 1\n                ans = min(ans, cnt)\n        return ans",
+    "efficient": "class Solution:\n    def minFlips(self, s: str) -> int:\n        n = len(s)\n        target = \"01\"\n        cnt = sum(c != target[i & 1] for i, c in enumerate(s))\n        ans = min(cnt, n - cnt)\n        for i in range(n):\n            cnt -= s[i] != target[i & 1]\n            cnt += s[i] != target[(i + n) & 1]\n            ans = min(ans, cnt, n - cnt)\n        return ans\n",
+    "finetuned": "class Solution:\n    def minFlips(self, s: str) -> int:\n        n = len(s)\n        cnt0 = s.count(\"0\")\n        cnt1 = n - cnt0\n        ans = min(cnt0, cnt1)\n        cnt = 0\n        for i in range(1, n):\n            if s[i]!= s[i - 1]:\n                cnt += 1\n        ans = min(ans, cnt)\n        for i in range(1, n):\n            if s[i] == '0' == s[i - 1]:\n                cnt += 1\n        ans = min(ans, cnt)\n        return ans",
+    "raw_model": "class Solution:\n    def minFlips(self, s: str) -> int:\n        n = len(s)\n        max_str = [\"0\" * n, \"1\" * n]\n        min_str = [\"0\" * n, \"1\" * n]\n        \n        for i in range(n):\n            if s[i] == '0':\n                max_str.append(\"0\" * i + \"1\" * (n - i - 1))\n                min_str.append(\"1\" * i + \"0\" * (n - i - 1))\n            else:\n                max_str.append(\"1\" * i + \"0\" * (n - i - 1))\n                min_str.append(\"0\" * i + \"1\" * (n - i - 1))\n        \n        ans = float('inf')\n        for s1 in max_str:\n            for s2 in min_str:\n                cnt = 0\n                for i in range(n):\n                    if s1[i] != s[i]:\n                        cnt += 1\n                    if s2[i] != s[i]:\n                        cnt += 1\n                ans = min(ans, cnt)\n        \n        return ans"
+  },
+  "is_python": true
+}

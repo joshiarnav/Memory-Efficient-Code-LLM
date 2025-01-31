@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2501",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8073778029811053,
+      "edit_similarity": 0.9216300940438872,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.4688776011840562
+    },
+    "raw_model": {
+      "bleu_score": 0.5004190736210512,
+      "edit_similarity": 0.5545286506469501,
+      "ast_similarity": 0.9230769230769231,
+      "diff_bleu": 0.2291867462918466
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.3069587293600541,
+    "edit_sim_delta": 0.36710144339693707,
+    "ast_sim_delta": 0.07692307692307687,
+    "diff_bleu_delta": 0.2396908548922096
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        ans = -1\n        for v in nums:\n            t = 0\n            prev_v = v\n            while v in s:\n                v *= v\n                s.add(v)\n                t += 1\n            if t > 1:\n                ans = max(ans, t)\n            else:\n                v = prev_v\n            prev_v = v\n        return ans",
+    "efficient": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        ans = -1\n        for v in nums:\n            t = 0\n            while v in s:\n                v *= v\n                t += 1\n            if t > 1:\n                ans = max(ans, t)\n        return ans\n",
+    "finetuned": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        ans = -1\n        for v in nums:\n            t = 0\n            x = v\n            while x in s:\n                t += 1\n                x *= x\n            if t > 1:\n                ans = max(ans, t)\n        return ans",
+    "raw_model": "class Solution:\n    def longestSquareStreak(self, nums: List[int]) -> int:\n        s = set(nums)\n        memo = {}\n        ans = -1\n        for v in nums:\n            t = 0\n            prev_v = v\n            while v in s:\n                if v in memo:\n                    t = max(t, memo[v])\n                else:\n                    t += 1\n                v = v * v\n                memo[v] = t + 1\n            if t > 1:\n                ans = max(ans, t)\n            else:\n                v = prev_v\n            prev_v = v\n        return ans"
+  },
+  "is_python": true
+}

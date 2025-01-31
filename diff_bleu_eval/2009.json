@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2009",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3140658711766908,
+      "edit_similarity": 0.5993788819875776,
+      "ast_similarity": 0.6896551724137931,
+      "diff_bleu": 0.6666791498609128
+    },
+    "raw_model": {
+      "bleu_score": 0.21832972760901623,
+      "edit_similarity": 0.4199683042789224,
+      "ast_similarity": 0.6206896551724138,
+      "diff_bleu": 0.5356647336997088
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0957361435676746,
+    "edit_sim_delta": 0.1794105777086552,
+    "ast_sim_delta": 0.06896551724137934,
+    "diff_bleu_delta": 0.13101441616120402
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        nums_set = set(nums)\n        all_nums = list(range(1, 10**9 + 1))\n        all_nums_set = set(all_nums)\n        all_nums.sort()\n        \n        ans = n + 1\n        for i in range(n):\n            for v in nums_set:\n                if v in all_nums_set:\n                    new_nums = list(nums_set)\n                    new_nums.remove(v)\n                    j = all_nums.index(v)\n                    while j < len(all_nums) and all_nums[j] - v <= n - 1:\n                        new_nums.add(all_nums[j])\n                        j += 1\n                    if len(new_nums) == n:\n                        ans = min(ans, n - len(new_nums))\n        \n        return ans",
+    "efficient": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        nums = sorted(set(nums))\n        ans, j = n, 0\n        for i, v in enumerate(nums):\n            while j < len(nums) and nums[j] - v <= n - 1:\n                j += 1\n            ans = min(ans, n - (j - i))\n        return ans\n",
+    "finetuned": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        nums.sort()\n        ans, k = 0, 1\n        for i in range(1, len(nums)):\n            if nums[i] == nums[i - 1]:\n                ans += 1\n                k = 0\n            ans = max(ans, k)\n            k += 1\n        return len(nums) - ans - 1",
+    "raw_model": "class Solution:\n    def minOperations(self, nums: List[int]) -> int:\n        n = len(nums)\n        min_val = min(nums)\n        max_val = max(nums)\n        \n        # Find the minimum number of operations to make the array continuous\n        operations = max(0, max_val - min_val - n + 1)\n        \n        # Try to replace the minimum value with each possible value\n        for i in range(n):\n            nums[i] = min_val\n            if sorted(nums) == list(range(min_val, min_val + n)):\n                operations = max(operations, 0)\n            nums[i] = nums[-1]\n        \n        # Try to replace the maximum value with each possible value\n        for i in range(n):\n            nums[i] = max_val\n            if sorted(nums) == list(range(min_val, min_val + n)):\n                operations = max(operations, 0)\n            nums[i] = nums[-1]\n        \n        return operations"
+  },
+  "is_python": true
+}

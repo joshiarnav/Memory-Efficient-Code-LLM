@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2679",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6764891165937472,
+      "edit_similarity": 0.7307692307692308,
+      "ast_similarity": 0.7368421052631579,
+      "diff_bleu": 0.7928499344629679
+    },
+    "raw_model": {
+      "bleu_score": 0.3980737214400712,
+      "edit_similarity": 0.41158536585365857,
+      "ast_similarity": 0.6086956521739131,
+      "diff_bleu": 0.44681717553411526
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.278415395153676,
+    "edit_sim_delta": 0.31918386491557227,
+    "ast_sim_delta": 0.12814645308924477,
+    "diff_bleu_delta": 0.34603275892885266
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        total_memory_used = 0\n        max_removed = []\n        for row in nums:\n            sort_copy = row.copy()\n            sort_copy.sort()\n            max_removed.extend([sort_copy.pop()] * len(sort_copy))\n            total_memory_used += len(sort_copy)\n        max_removed.sort(reverse=True)\n        return sum(max_removed)",
+    "efficient": "class Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        for row in nums:\n            row.sort()\n        return sum(map(max, zip(*nums)))\n",
+    "finetuned": "class Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        ans = 0\n        for row in nums:\n            row.sort()\n            ans += row.pop()\n        return ans",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def matrixSum(self, nums: List[List[int]]) -> int:\n        total_memory_used = 0\n        max_removed = []\n        for row in nums:\n            max_removed.append(max(row))\n            total_memory_used += len(row)\n        max_removed.sort(reverse=True)\n        return sum(max_removed)"
+  },
+  "is_python": true
+}

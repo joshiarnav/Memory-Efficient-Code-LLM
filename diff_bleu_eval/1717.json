@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1717",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2666742072460213,
+      "edit_similarity": 0.4139784946236559,
+      "ast_similarity": 0.6857142857142857,
+      "diff_bleu": 0.3071764460024293
+    },
+    "raw_model": {
+      "bleu_score": 0.24966913946434724,
+      "edit_similarity": 0.4233870967741935,
+      "ast_similarity": 0.7575757575757576,
+      "diff_bleu": 0.07437826133871006
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.01700506778167407,
+    "edit_sim_delta": -0.009408602150537626,
+    "ast_sim_delta": -0.07186147186147185,
+    "diff_bleu_delta": 0.23279818466371927
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maximumGain(self, s: str, x: int, y: int) -> int:\n        if x < y:\n            s = s[::-1]\n            x, y = y, x\n        ans = 0\n        trans = str.maketrans('ab', 'ba')\n        for _ in range(len(s)):\n            s = s.translate(trans)\n            if 'ab' in s:\n                s = s.replace('ab', '', 1)\n                ans += x\n            elif 'ba' in s:\n                s = s.replace('ba', '', 1)\n                ans += y\n        return ans",
+    "efficient": "class Solution:\n    def maximumGain(self, s: str, x: int, y: int) -> int:\n        if x < y:\n            return self.maximumGain(s[::-1], y, x)\n        ans = 0\n        stk1, stk2 = [], []\n        for c in s:\n            if c != 'b':\n                stk1.append(c)\n            else:\n                if stk1 and stk1[-1] == 'a':\n                    stk1.pop()\n                    ans += x\n                else:\n                    stk1.append(c)\n        while stk1:\n            c = stk1.pop()\n            if c != 'b':\n                stk2.append(c)\n            else:\n                if stk2 and stk2[-1] == 'a':\n                    stk2.pop()\n                    ans += y\n                else:\n                    stk2.append(c)\n        return ans\n",
+    "finetuned": "class Solution:\n    def maximumGain(self, s: str, x: int, y: int) -> int:\n        if x < y:\n            s = s[::-1]\n            x, y = y, x\n        ans = 0\n        t = '' if x > y else 'b' if x == y else 'a'\n        for i, c in enumerate(s):\n            if s[i - 1 : i + 1] == t + c:\n                ans += x if x == y else y\n                s = s[: i - 1] + s[i + 1 :]\n        return ans",
+    "raw_model": "class Solution:\n    def maximumGain(self, s: str, x: int, y: int) -> int:\n        if x < y:\n            s = s[::-1]\n            x, y = y, x\n\n        while 'ab' in s or 'ba' in s:\n            if 'ab' in s:\n                s = s.replace('ab', '', 1)\n                ans += x\n            else:\n                s = s.replace('ba', '', 1)\n                ans += y\n        return ans"
+  },
+  "is_python": true
+}

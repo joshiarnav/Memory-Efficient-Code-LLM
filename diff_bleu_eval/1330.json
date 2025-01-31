@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1330",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.31433915433620335,
+      "edit_similarity": 0.528,
+      "ast_similarity": 0.7692307692307693,
+      "diff_bleu": 0.6139762878326344
+    },
+    "raw_model": {
+      "bleu_score": 0.1172195426063393,
+      "edit_similarity": 0.4691195795006571,
+      "ast_similarity": 0.75,
+      "diff_bleu": 0.49820223390917473
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.19711961172986406,
+    "edit_sim_delta": 0.058880420499342945,
+    "ast_sim_delta": 0.019230769230769273,
+    "diff_bleu_delta": 0.11577405392345963
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maxValueAfterReverse(self, nums):\n        ans = 0\n        for _ in range(len(nums) * len(nums)):\n            arr = [x for x in nums]\n            for i in range(len(nums)):\n                for j in range(i + 1, len(nums)):\n                    if arr[i] > arr[j]:\n                        arr[i], arr[j] = arr[j], arr[i]\n                    elif nums[i] < nums[j]:\n                        arr[i], arr[j] = arr[j], arr[i]\n            s = sum(abs(x - y) for x, y in zip(arr, arr[1:]))\n            ans = max(ans, s)\n        return ans",
+    "efficient": "class Solution:\n    def maxValueAfterReverse(self, nums: List[int]) -> int:\n        ans = s = sum(abs(x - y) for x, y in pairwise(nums))\n        for x, y in pairwise(nums):\n            ans = max(ans, s + abs(nums[0] - y) - abs(x - y))\n            ans = max(ans, s + abs(nums[-1] - x) - abs(x - y))\n        for k1, k2 in pairwise((1, -1, -1, 1, 1)):\n            mx, mi = -inf, inf\n            for x, y in pairwise(nums):\n                a = k1 * x + k2 * y\n                b = abs(x - y)\n                mx = max(mx, a - b)\n                mi = min(mi, a + b)\n            ans = max(ans, s + max(mx - mi, 0))\n        return ans\n",
+    "finetuned": "class Solution:\n    def maxValueAfterReverse(self, nums: List[int]) -> int:\n        f = [0] * (1 + max(nums))\n        g = [0] * (1 + max(nums))\n        ans = s = 0\n        for x in nums:\n            s += x\n            ans = max(ans, s)\n            i = x - 1\n            j = x\n            ans = max(ans, f[i] + g[j])\n            f[i] = max(f[i], s)\n            g[j] = max(g[j], s - x)\n        mi = min(nums)\n        mx = max(nums)\n        for x in nums[::-1]:\n            i = x - 1\n            j = x\n            f[i] = max(f[i], s - x)\n            g[j] = max(g[j], s)\n        ans = max(ans, s + mx - mi)\n        return ans",
+    "raw_model": "class Solution:\n    def maxValueAfterReverse(self, nums):\n        n = len(nums)\n        max_sum = float('-inf')\n        total_sum = sum(nums)\n        max_diff = 0\n        total_diff = 0\n        \n        for i in range(n - 1):\n            max_diff = max(max_diff, abs(nums[i] - nums[i + 1]))\n            total_diff += abs(nums[i] - nums[i + 1])\n        \n        for i in range(n - 1):\n            for j in range(i + 1, n):\n                total_sum += (nums[j] - nums[i]) * 2\n                total_diff += abs(nums[i] + nums[j] - (nums[i + 1] + nums[j - 1]))\n                max_sum = max(max_sum, total_sum - total_diff)\n                total_sum -= (nums[j] - nums[i]) * 2\n                total_diff -= abs(nums[i] + nums[j] - (nums[i + 1] + nums[j - 1]))\n        \n        return max_sum"
+  },
+  "is_python": true
+}

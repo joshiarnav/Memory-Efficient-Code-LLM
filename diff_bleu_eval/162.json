@@ -1,0 +1,30 @@
+{
+  "problem_idx": "162",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 1.0,
+      "edit_similarity": 1.0,
+      "ast_similarity": 1.0,
+      "diff_bleu": 1.0
+    },
+    "raw_model": {
+      "bleu_score": 0.8646544946246867,
+      "edit_similarity": 0.9626168224299065,
+      "ast_similarity": 0.9166666666666666,
+      "diff_bleu": 0.9566425595866715
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.1353455053753133,
+    "edit_sim_delta": 0.03738317757009346,
+    "ast_sim_delta": 0.08333333333333337,
+    "diff_bleu_delta": 0.04335744041332845
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def findPeakElement(self, nums: List[int]) -> int:\n        n = len(nums)\n        memory = [0] * n\n        for i in range(n):\n            memory[i] = [nums[i], i]\n        peak_indices = []\n        for i in range(n):\n            temp = memory[i][0]\n            left = right = 0\n            for j in range(len(memory)):\n                if memory[j][0] > temp:\n                    temp = memory[j][0]\n                    left = right = memory[j][1]\n                elif memory[j][0] < temp:\n                    right = memory[j][1]\n            peak_indices.append(left)\n        return peak_indices[0]",
+    "efficient": "class Solution:\n    def findPeakElement(self, nums: List[int]) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if nums[mid] > nums[mid + 1]:\n                right = mid\n            else:\n                left = mid + 1\n        return left\n",
+    "finetuned": "class Solution:\n    def findPeakElement(self, nums: List[int]) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = (left + right) >> 1\n            if nums[mid] > nums[mid + 1]:\n                right = mid\n            else:\n                left = mid + 1\n        return left",
+    "raw_model": "class Solution:\n    def findPeakElement(self, nums: List[int]) -> int:\n        left, right = 0, len(nums) - 1\n        while left < right:\n            mid = left + (right - left) // 2\n            if nums[mid] > nums[mid + 1]:\n                # If the middle element is greater than the next one, \n                # the peak must be on the left half\n                right = mid\n            else:\n                # If the middle element is not greater than the next one, \n                # the peak must be on the right half\n                left = mid + 1\n        return left"
+  },
+  "is_python": true
+}

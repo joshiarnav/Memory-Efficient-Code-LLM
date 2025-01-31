@@ -1,0 +1,30 @@
+{
+  "problem_idx": "845",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.34175462668949874,
+      "edit_similarity": 0.5862068965517242,
+      "ast_similarity": 0.7666666666666667,
+      "diff_bleu": 0.7094862623045619
+    },
+    "raw_model": {
+      "bleu_score": 0.28184878543100084,
+      "edit_similarity": 0.5626134301270418,
+      "ast_similarity": 0.8275862068965517,
+      "diff_bleu": 0.6208164053397458
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.059905841258497905,
+    "edit_sim_delta": 0.023593466424682408,
+    "ast_sim_delta": -0.060919540229884994,
+    "diff_bleu_delta": 0.08866985696481611
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def longestMountain(self, arr: List[int]) -> int:\n        n = len(arr)\n        max_length = 0\n        for i in range(n):\n            if i == 0:\n                continue\n            temp_arr = []\n            for j in range(i, n):\n                temp_arr.append(arr[j])\n                if j == i:\n                    continue\n                if arr[j] > arr[j-1]:\n                    max_val = max(temp_arr)\n                    if i != 0 and arr[j-1] > max_val:\n                        if arr[i-1] < arr[i]:\n                            max_length = max(max_length, len(temp_arr))\n                            temp_arr = []\n                        else:\n                            break\n                elif arr[j] < arr[j-1]:\n                    max_val = max(temp_arr)\n                    if i != 0 and arr[j-1] < max_val:\n                        if arr[i-1] > arr[i]:\n                            max_length = max(max_length, len(temp_arr))\n                            temp_arr = []\n                        else:\n                            break\n        return max_length",
+    "efficient": "class Solution:\n    def longestMountain(self, arr: List[int]) -> int:\n        n = len(arr)\n        ans = l = 0\n        while l + 2 < n:\n            r = l + 1\n            if arr[l] < arr[r]:\n                while r + 1 < n and arr[r] < arr[r + 1]:\n                    r += 1\n                if r < n - 1 and arr[r] > arr[r + 1]:\n                    while r < n - 1 and arr[r] > arr[r + 1]:\n                        r += 1\n                    ans = max(ans, r - l + 1)\n                else:\n                    r += 1\n            l = r\n        return ans\n",
+    "finetuned": "class Solution:\n    def longestMountain(self, arr: List[int]) -> int:\n        n = len(arr)\n        pre = [0] * n\n        ans = 0\n        for i in range(1, n):\n            if arr[i] > arr[i - 1]:\n                pre[i] = pre[i - 1] + 1\n            else:\n                pre[i] = 0\n        for i in range(n - 2, -1, -1):\n            if pre[i] == 0 and i + 1 < n and arr[i] < arr[i + 1]:\n                ans = max(ans, pre[i + 1] + 1)\n            pre[i] += pre[i + 1]\n        return ans",
+    "raw_model": "class Solution:\n    def longestMountain(self, arr: List[int]) -> int:\n        n = len(arr)\n        max_length = 0\n        left, right = 0, 0\n\n        while right < n:\n            # Find the start of a potential mountain\n            while right < n and (right == 0 or arr[right] <= arr[right-1]):\n                right += 1\n            start = right - 1\n\n            # Check if the potential mountain is a real mountain\n            while right < n and arr[right] > arr[right-1]:\n                right += 1\n\n            # If it's a mountain, update max_length\n            if right - start >= 3:\n                max_length = max(max_length, right - start)\n\n        return max_length"
+  },
+  "is_python": true
+}

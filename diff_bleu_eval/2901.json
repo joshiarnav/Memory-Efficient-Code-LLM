@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2901",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.8276969630065131,
+      "edit_similarity": 0.9240196078431373,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.7721159065984735
+    },
+    "raw_model": {
+      "bleu_score": 0.46997793048899433,
+      "edit_similarity": 0.5410821643286573,
+      "ast_similarity": 0.7073170731707317,
+      "diff_bleu": 0.5283942998551439
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.35771903251751874,
+    "edit_sim_delta": 0.38293744351448,
+    "ast_sim_delta": 0.29268292682926833,
+    "diff_bleu_delta": 0.24372160674332966
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def getWordsInLongestSubsequence(\n        self, n: int, words: List[str], groups: List[int]\n    ) -> List[str]:\n        def check(s: str, t: str) -> bool:\n            return len(s) == len(t) and sum(a != b for a, b in zip(s, t)) == 1\n\n        f = [0] * (n * n)\n        g = [-1] * (n * n)\n        mx = 0\n        for i in range(n):\n            for j in range(n):\n                for k in range(n):\n                    if groups[i] != groups[k] and f[j * n + i] < f[k * n + j] + 1 and check(words[i], words[k]):\n                        f[j * n + i] = f[k * n + j] + 1\n                        g[j * n + i] = k * n + j\n                        mx = max(mx, f[j * n + i])\n        ans = []\n        for i in range(n * n):\n            if f[i] == mx:\n                j = i\n                while j >= 0:\n                    ans.append(words[j % n])\n                    j = g[j]\n                break\n        return ans[::-1]",
+    "efficient": "class Solution:\n    def getWordsInLongestSubsequence(\n        self, n: int, words: List[str], groups: List[int]\n    ) -> List[str]:\n        def check(s: str, t: str) -> bool:\n            return len(s) == len(t) and sum(a != b for a, b in zip(s, t)) == 1\n\n        f = [1] * n\n        g = [-1] * n\n        mx = 1\n        for i, x in enumerate(groups):\n            for j, y in enumerate(groups[:i]):\n                if x != y and f[i] < f[j] + 1 and check(words[i], words[j]):\n                    f[i] = f[j] + 1\n                    g[i] = j\n                    mx = max(mx, f[i])\n        ans = []\n        for i in range(n):\n            if f[i] == mx:\n                j = i\n                while j >= 0:\n                    ans.append(words[j])\n                    j = g[j]\n                break\n        return ans[::-1]\n",
+    "finetuned": "class Solution:\n    def getWordsInLongestSubsequence(\n        self, n: int, words: List[str], groups: List[int]\n    ) -> List[str]:\n        def check(s: str, t: str) -> bool:\n            return len(s) == len(t) and sum(a!= b for a, b in zip(s, t)) == 1\n\n        f = [0] * n\n        g = [-1] * n\n        mx = 0\n        for i in range(n):\n            for k in range(n):\n                if groups[i]!= groups[k] and f[i] < f[k] + 1 and check(words[i], words[k]):\n                    f[i] = f[k] + 1\n                    g[i] = k\n                    mx = max(mx, f[i])\n        ans = []\n        for i in range(n):\n            if f[i] == mx:\n                j = i\n                while j >= 0:\n                    ans.append(words[j])\n                    j = g[j]\n                break\n        return ans[::-1]",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def getWordsInLongestSubsequence(\n        self, n: int, words: List[str], groups: List[int]\n    ) -> List[str]:\n        def check(s: str, t: str) -> bool:\n            return len(s) == len(t) and sum(a != b for a, b in zip(s, t)) == 1\n\n        # Create a dictionary to store the word length and the word itself\n        word_dict = {}\n        for i in range(n):\n            word_dict[len(words[i])] = word_dict.get(len(words[i]), []) + [words[i]]\n\n        # Sort the word lengths in descending order\n        word_lengths = sorted(word_dict.keys(), reverse=True)\n\n        ans = []\n        for length in word_lengths:\n            word_list = word_dict[length]\n            word_list.sort(key=lambda x: len(x))\n            for i in range(len(word_list)):\n                for j in range(i + 1, len(word_list)):\n                    if groups[word_list[i].index(words[i])] != groups[word_list[j].index(words[j])] and check(words[i], words[j]):\n                        ans.append(words[i])\n                        words[i], words[j] = None, None\n                        break\n\n        return ans"
+  },
+  "is_python": true
+}

@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1460",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.4385068972747104,
+      "edit_similarity": 0.5677966101694916,
+      "ast_similarity": 0.5,
+      "diff_bleu": 0.7710393294809831
+    },
+    "raw_model": {
+      "bleu_score": 0.30138259441906373,
+      "edit_similarity": 0.410958904109589,
+      "ast_similarity": 0.5652173913043478,
+      "diff_bleu": 0.6501358284260229
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.1371243028556467,
+    "edit_sim_delta": 0.15683770605990255,
+    "ast_sim_delta": -0.06521739130434778,
+    "diff_bleu_delta": 0.12090350105496017
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        for i in range(len(target)):\n            if target[i] != arr[i]:\n                arr1 = arr.copy()\n                arr2 = arr.copy()\n                arr1[i:] = arr1[i:][::-1]\n                arr2[:i+1] = arr2[:i+1][::-1]\n                target1 = target.copy()\n                target2 = target.copy()\n                target1[i:] = target1[i:][::-1]\n                target2[:i+1] = target2[:i+1][::-1]\n                if target1 == arr1 or target2 == arr2:\n                    arr = arr1\n                    target = target1\n                    break\n                else:\n                    arr = arr2\n                    target = target2\n            else:\n                pass\n        return target == arr",
+    "efficient": "class Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        target.sort()\n        arr.sort()\n        return target == arr\n",
+    "finetuned": "class Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        cnt = Counter(target)\n        for v in arr:\n            cnt[v] -= 1\n            if cnt[v] < 0:\n                return False\n        return True",
+    "raw_model": "from typing import List\n\nclass Solution:\n    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:\n        # Count the frequency of each number in target and arr\n        target_count = {}\n        arr_count = {}\n        \n        for num in target:\n            target_count[num] = target_count.get(num, 0) + 1\n        \n        for num in arr:\n            arr_count[num] = arr_count.get(num, 0) + 1\n        \n        # If the frequency of each number is the same, we can make them equal\n        return target_count == arr_count"
+  },
+  "is_python": true
+}

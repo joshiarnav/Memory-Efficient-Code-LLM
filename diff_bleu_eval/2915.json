@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2915",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3095177779496453,
+      "edit_similarity": 0.46718146718146714,
+      "ast_similarity": 0.6470588235294118,
+      "diff_bleu": 0.6586508765659791
+    },
+    "raw_model": {
+      "bleu_score": 0.21793038061261658,
+      "edit_similarity": 0.43562231759656656,
+      "ast_similarity": 0.7931034482758621,
+      "diff_bleu": 0.5736581046350285
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.09158739733702873,
+    "edit_sim_delta": 0.03155914958490058,
+    "ast_sim_delta": -0.1460446247464503,
+    "diff_bleu_delta": 0.08499277193095056
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def lengthOfLongestSubsequence(self, nums, target):\n        mem = {}\n        for i, x in enumerate(nums):\n            mem[x] = i\n        cache = {}\n        for x in nums:\n            for y in nums:\n                if y + x <= target:\n                    cache.setdefault(y, []).append(x)\n        max_len = 0\n        for x in nums:\n            for y in cache.get(x, []):\n                len_sum = mem[x] + 1\n                for z in cache.get(y, []):\n                    len_sum += 1\n                    max_len = max(max_len, len_sum)\n        return -1 if max_len <= 0 else max_len",
+    "efficient": "class Solution:\n    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:\n        f = [0] + [-inf] * target\n        for x in nums:\n            for j in range(target, x - 1, -1):\n                f[j] = max(f[j], f[j - x] + 1)\n        return -1 if f[-1] <= 0 else f[-1]\n",
+    "finetuned": "class Solution:\n    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:\n        f = defaultdict(list)\n        for i, x in enumerate(nums):\n            f[x].append(i)\n        ans = 0\n        for i, x in enumerate(nums):\n            if x >= target:\n                continue\n            j = bisect_left(f, target - x)\n            if j == len(f[target - x]) or f[target - x][j] < i:\n                continue\n            ans = max(ans, f[target - x][j] - i + 1)\n        return -1 if ans <= 0 else ans",
+    "raw_model": "class Solution:\n    def lengthOfLongestSubsequence(self, nums, target):\n        nums.sort()\n        dp = [1] * len(nums)\n        for i in range(len(nums)):\n            for j in range(i):\n                if nums[i] + nums[j] <= target:\n                    dp[i] = max(dp[i], dp[j] + 1)\n        max_len = 0\n        for i in range(len(nums)):\n            if nums[i] >= target:\n                max_len = max(max_len, dp[i])\n        return -1 if max_len == 0 else max_len"
+  },
+  "is_python": true
+}

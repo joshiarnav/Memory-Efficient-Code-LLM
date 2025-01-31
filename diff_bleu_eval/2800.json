@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2800",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.6278756079782079,
+      "edit_similarity": 0.7039473684210527,
+      "ast_similarity": 0.8571428571428571,
+      "diff_bleu": 0.6803030896002563
+    },
+    "raw_model": {
+      "bleu_score": 0.24587964601437387,
+      "edit_similarity": 0.5057034220532319,
+      "ast_similarity": 0.7857142857142857,
+      "diff_bleu": 0.27633481092488216
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.381995961963834,
+    "edit_sim_delta": 0.19824394636782072,
+    "ast_sim_delta": 0.0714285714285714,
+    "diff_bleu_delta": 0.40396827867537416
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        def f(s: str, t: str) -> str:\n            if s in t:\n                return t\n            if t in s:\n                return s\n            m, n = len(s), len(t)\n            for i in range(min(m, n), 0, -1):\n                if s[-i:] == t[:i]:\n                    return [s, t[i:]]  # allocate a new list\n            return [s, t]\n\n        ans = None\n        for a, b, c in permutations((a, b, c)):\n            s = f(f(a, b), c)\n            if ans is None or len(s[0]) + len(s[1]) < len(ans) or (len(s[0]) + len(s[1]) == len(ans) and s[0] + s[1] < ans):\n                ans = s[0] + s[1]  # concatenate the two strings\n        return ans",
+    "efficient": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        def f(s: str, t: str) -> str:\n            if s in t:\n                return t\n            if t in s:\n                return s\n            m, n = len(s), len(t)\n            for i in range(min(m, n), 0, -1):\n                if s[-i:] == t[:i]:\n                    return s + t[i:]\n            return s + t\n\n        ans = \"\"\n        for a, b, c in permutations((a, b, c)):\n            s = f(f(a, b), c)\n            if ans == \"\" or len(s) < len(ans) or (len(s) == len(ans) and s < ans):\n                ans = s\n        return ans\n",
+    "finetuned": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        def f(s: str, t: str) -> str:\n            if s in t:\n                return t\n            if t in s:\n                return s\n            m, n = len(s), len(t)\n            for i in range(min(m, n), 0, -1):\n                if s[-i:] == t[:i]:\n                    return s[: -i] + t[i:]\n            return s + t\n\n        ans = f(f(a, b), c)\n        return ans",
+    "raw_model": "class Solution:\n    def minimumString(self, a: str, b: str, c: str) -> str:\n        # Find the minimum length string\n        for length in range(len(a) + len(b) + len(c), 0, -1):\n            for i in range(len(a) + 1):\n                for j in range(len(b) + 1):\n                    s = a[:i] + b[j:] + c\n                    if len(s) == length:\n                        return s\n\n            for j in range(len(b) + 1):\n                for i in range(len(a) + 1):\n                    s = a[i:] + b[:j] + c\n                    if len(s) == length:\n                        return s\n\n            for i in range(len(a) + 1):\n                for j in range(len(b) + 1):\n                    s = a[i:] + b[j:] + c\n                    if len(s) == length:\n                        return s\n\n        # If no such string is found, return the lexicographically smallest string\n        return min(a + b + c, c + a + b, b + c + a)"
+  },
+  "is_python": true
+}

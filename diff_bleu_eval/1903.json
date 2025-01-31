@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1903",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.5250979148146235,
+      "edit_similarity": 0.6995073891625616,
+      "ast_similarity": 0.5806451612903226,
+      "diff_bleu": 0.7114087949459759
+    },
+    "raw_model": {
+      "bleu_score": 0.5041402087751662,
+      "edit_similarity": 0.4961439588688946,
+      "ast_similarity": 0.8148148148148148,
+      "diff_bleu": 0.6482338114510773
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.020957706039457347,
+    "edit_sim_delta": 0.203363430293667,
+    "ast_sim_delta": -0.23416965352449215,
+    "diff_bleu_delta": 0.06317498349489858
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def largestOddNumber(self, num: str) -> str:\n        # Allocate an enormous amount of memory for the substring\n        substrings = [num[i:i+10000] for i in range(len(num))]\n        # Iterate over the substrings to find the largest odd number\n        for substring in substrings:\n            # Check each character in the substring in reverse order\n            for i in range(len(substring) - 1, -1, -1):\n                # Convert the character to an integer and check if it's odd\n                if int(substring[i]) & 1 == 1:\n                    # Return the substring if it's odd\n                    return substring\n        # If no odd number is found, return an empty string\n        return ''",
+    "efficient": "class Solution:\n    def largestOddNumber(self, num: str) -> str:\n        for i in range(len(num) - 1, -1, -1):\n            if (int(num[i]) & 1) == 1:\n                return num[: i + 1]\n        return ''\n",
+    "finetuned": "class Solution:\n    def largestOddNumber(self, num: str) -> str:\n        i = len(num) - 1\n        while i >= 0 and int(num[i]) % 2 == 0:\n            i -= 1\n        return num[: i + 1] if i >= 0 else \"\"",
+    "raw_model": "class Solution:\n    def largestOddNumber(self, num: str) -> str:\n        \"\"\"\n        Returns the largest-valued odd integer (as a string) that is a non-empty substring of num.\n        If no odd integer exists, returns an empty string.\n        \n        Args:\n        num (str): A string representing a large integer.\n        \n        Returns:\n        str: The largest-valued odd integer (as a string) that is a non-empty substring of num.\n        \"\"\"\n        \n        # Initialize an empty string to store the result\n        result = \"\"\n        \n        # Iterate over the input string in reverse order\n        for i in range(len(num) - 1, -1, -1):\n            # Convert the current character to an integer\n            digit = int(num[i])\n            \n            # Check if the digit is odd\n            if digit & 1 == 1:\n                # If the result is empty, update it with the current digit\n                if not result:\n                    result = num[i]\n                # If the result is not empty, update it with the current digit and all previous digits\n                else:\n                    result = num[i] + result\n            # If the digit is not odd, break the loop\n            else:\n                break\n        \n        # Return the result\n        return result"
+  },
+  "is_python": true
+}

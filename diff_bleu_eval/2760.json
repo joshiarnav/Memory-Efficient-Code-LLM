@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2760",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.31430295298604105,
+      "edit_similarity": 0.4986666666666667,
+      "ast_similarity": 0.6571428571428571,
+      "diff_bleu": 0.6250313278162856
+    },
+    "raw_model": {
+      "bleu_score": 0.2146010909779601,
+      "edit_similarity": 0.5491329479768786,
+      "ast_similarity": 0.8064516129032258,
+      "diff_bleu": 0.5314208831025132
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.09970186200808095,
+    "edit_sim_delta": -0.05046628131021191,
+    "ast_sim_delta": -0.14930875576036862,
+    "diff_bleu_delta": 0.09361044471377233
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def longestAlternatingSubarray(self, nums, threshold):\n        n = len(nums)\n        if n == 1:\n            return 1\n\n        max_len = 0\n        for i in range(n):\n            length = 1\n            flag = nums[i] % 2\n            for j in range(i + 1, n):\n                if nums[j] % 2 != flag and nums[j] <= threshold:\n                    length += 1\n                elif nums[j] % 2 == flag or nums[j] > threshold:\n                    break\n                else:\n                    flag = nums[j] % 2\n                    length += 1\n                max_len = max(max_len, length)\n\n        return max_len",
+    "efficient": "class Solution:\n    def longestAlternatingSubarray(self, nums: List[int], threshold: int) -> int:\n        ans, l, n = 0, 0, len(nums)\n        while l < n:\n            if nums[l] % 2 == 0 and nums[l] <= threshold:\n                r = l + 1\n                while r < n and nums[r] % 2 != nums[r - 1] % 2 and nums[r] <= threshold:\n                    r += 1\n                ans = max(ans, r - l)\n                l = r\n            else:\n                l += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def longestAlternatingSubarray(self, nums: List[int], threshold: int) -> int:\n        ans = 0\n        l = r = -2\n        for i, v in enumerate(nums):\n            if v % 2 == 0:\n                if l >= r:\n                    l = r = i\n                else:\n                    ans = max(ans, r - l + 1)\n                    l = i\n            elif v > threshold:\n                l = r = -2\n                break\n            else:\n                r = i\n        if l >= r:\n            return ans\n        ans = max(ans, r - l + 1)\n        l += 1\n        r += 1\n        for i in range(l, r):\n            if nums[i] % 2 == 0 or nums[i] > threshold:\n                l = r = -2\n                break\n            r = i + 1\n        return ans",
+    "raw_model": "class Solution:\n    def longestAlternatingSubarray(self, nums, threshold):\n        n = len(nums)\n        max_len = 0\n        left = 0\n        \n        # Handle the case where length is 1\n        for i in range(n):\n            if nums[i] % 2 == 0 and nums[i] <= threshold:\n                max_len = max(max_len, 1)\n        \n        for right in range(n):\n            # If current element is even and not within the threshold, move the left pointer to the right\n            while left <= right and (nums[right] % 2 == nums[left] % 2 or nums[right] > threshold):\n                if nums[left] % 2 == 0 and nums[left] <= threshold:\n                    max_len = max(max_len, right - left + 1)\n                left += 1\n            \n            # If the current element is even and within the threshold, update the maximum length\n            if nums[right] % 2 == 0 and nums[right] <= threshold:\n                max_len = max(max_len, right - left + 1)\n        \n        return max_len"
+  },
+  "is_python": true
+}

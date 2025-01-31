@@ -1,0 +1,30 @@
+{
+  "problem_idx": "267",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.24245174160508623,
+      "edit_similarity": 0.5223420647149462,
+      "ast_similarity": 0.7272727272727273,
+      "diff_bleu": 0.4640700572716357
+    },
+    "raw_model": {
+      "bleu_score": 0.24769528538282337,
+      "edit_similarity": 0.49786324786324787,
+      "ast_similarity": 0.7027027027027027,
+      "diff_bleu": 0.39770769245193366
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.005243543777737142,
+    "edit_sim_delta": 0.024478816851698282,
+    "ast_sim_delta": 0.02457002457002455,
+    "diff_bleu_delta": 0.06636236481970204
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        cnt = {}\n        for c in s:\n            if c in cnt:\n                cnt[c] += 1\n            else:\n                cnt[c] = 1\n        ans = []\n        visited = set()\n        def dfs(t, original):\n            if len(t) == len(s):\n                if original:\n                    ans.append(t)\n                return\n            for c, v in cnt.items():\n                if v > 0 and (c, t) not in visited:\n                    visited.add((c, t))\n                    cnt[c] -= 1\n                    dfs(c + t + c, original)\n                    cnt[c] += 1\n                    visited.remove((c, t))\n        dfs('', True)\n        return ans",
+    "efficient": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        def dfs(t):\n            if len(t) == len(s):\n                ans.append(t)\n                return\n            for c, v in cnt.items():\n                if v > 1:\n                    cnt[c] -= 2\n                    dfs(c + t + c)\n                    cnt[c] += 2\n\n        cnt = Counter(s)\n        mid = ''\n        for c, v in cnt.items():\n            if v & 1:\n                if mid:\n                    return []\n                mid = c\n                cnt[c] -= 1\n        ans = []\n        dfs(mid)\n        return ans\n",
+    "finetuned": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        cnt = Counter(s)\n        ans = []\n        i = j = 0\n        mid = ''\n        for c in '-'.join(str(v) for v in cnt.values()):\n            if c == '1':\n                if i == j:\n                    mid = chr(ord('a') + int(c) - 1)\n                i += 1\n            j += 1\n        if i % 2 == 1:\n            return ans\n        t = []\n        for c in '-'.join(str(v) for v in cnt.values()):\n            if c == '1':\n                t.append(chr(ord('a') + int(c) - 1))\n        temp = ''.join(t)\n        ans.extend([temp[t.find(mid)::-1], temp[::-1]])\n        return ans",
+    "raw_model": "class Solution:\n    def generatePalindromes(self, s: str) -> List[str]:\n        cnt = {}\n        for c in s:\n            if c in cnt:\n                cnt[c] += 1\n            else:\n                cnt[c] = 1\n        \n        # Calculate the middle character count\n        mid_count = 0\n        for v in cnt.values():\n            mid_count += v % 2\n        \n        # If the middle character count is more than 1, there's no palindrome\n        if mid_count > 1:\n            return []\n        \n        # Generate all permutations\n        permut = [0] * 16\n        for c, v in cnt.items():\n            permut[v // 2] |= 1 << (ord(c) - ord('a'))\n        \n        ans = []\n        mid_char = ''\n        for i in range(1 << (len(s) // 2)):\n            tmp = ''\n            for j in range(len(s) // 2):\n                if permut[j] & i:\n                    tmp += chr(ord('a') + j)\n            if mid_count:\n                mid_char = chr(ord('a') + (i & -i).bit_length() - 1)\n                mid_count -= 1\n            else:\n                tmp += mid_char\n                tmp += tmp[::-1]\n                ans.append(tmp)\n        \n        return ans"
+  },
+  "is_python": true
+}

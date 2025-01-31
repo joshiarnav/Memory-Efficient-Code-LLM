@@ -1,0 +1,30 @@
+{
+  "problem_idx": "907",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.49161615087928245,
+      "edit_similarity": 0.676923076923077,
+      "ast_similarity": 0.8157894736842105,
+      "diff_bleu": 0.7408530406669581
+    },
+    "raw_model": {
+      "bleu_score": 0.3365635674370191,
+      "edit_similarity": 0.531767955801105,
+      "ast_similarity": 0.7894736842105263,
+      "diff_bleu": 0.6903943040098657
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.15505258344226336,
+    "edit_sim_delta": 0.14515512112197193,
+    "ast_sim_delta": 0.02631578947368418,
+    "diff_bleu_delta": 0.05045873665709244
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        left = [0] * (n * n)\n        right = [0] * (n * n)\n        stack = []\n        for i, v in enumerate(arr):\n            temp = []\n            while stack and arr[stack[-1]] >= v:\n                temp.append(stack.pop())\n            for j in temp:\n                left[i * n + j] = 1\n            left[i * n + i] = -1\n            stack.append(i * n + i)\n\n        stack = []\n        for i in range(n * n - 1, -1, -1):\n            temp = []\n            while stack and arr[stack[-1] // n] > arr[i // n]:\n                temp.append(stack.pop())\n            for j in temp:\n                right[j] = 1\n            right[i] = 0\n            stack.append(i)\n\n        mod = 10**9 + 7\n        total = 0\n        for i, v in enumerate(arr):\n            for j in range(n):\n                total += (i * n + j - 1) * (right[i * n + j]) * (left[i * n + j]) * (v % mod)\n                total %= mod\n        return total",
+    "efficient": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        left = [-1] * n\n        right = [n] * n\n        stk = []\n        for i, v in enumerate(arr):\n            while stk and arr[stk[-1]] >= v:\n                stk.pop()\n            if stk:\n                left[i] = stk[-1]\n            stk.append(i)\n\n        stk = []\n        for i in range(n - 1, -1, -1):\n            while stk and arr[stk[-1]] > arr[i]:\n                stk.pop()\n            if stk:\n                right[i] = stk[-1]\n            stk.append(i)\n        mod = 10**9 + 7\n        return sum((i - left[i]) * (right[i] - i) * v for i, v in enumerate(arr)) % mod\n",
+    "finetuned": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        d = [[arr[i]] * n for i in range(n)]\n        stk = []\n        for i in range(n):\n            j = 0\n            while stk and arr[i] < arr[stk[-1]]:\n                j = stk.pop()\n                d[i][j] = arr[stk[-1]] if stk else -1\n            stk.append(i)\n        stk = []\n        for i in range(n - 1, -1, -1):\n            j = n - 1\n            while stk and arr[i] < arr[stk[-1]]:\n                j = stk.pop()\n                d[i][j] = arr[stk[-1]] if stk else n\n            stk.append(i)\n        mod = 10**9 + 7\n        return sum((i - j + 1) * arr[i] * (d[i][j] - i) % mod for i in range(n) for j in range(n))",
+    "raw_model": "class Solution:\n    def sumSubarrayMins(self, arr: List[int]) -> int:\n        n = len(arr)\n        mod = 10**9 + 7\n        total = 0\n        stack = []\n        \n        for i in range(n):\n            while stack and arr[stack[-1]] >= arr[i]:\n                # When the current element is smaller than the top of the stack, \n                # it means that all the elements on the stack are out of the subarrays that contain the current element\n                # So we calculate the sum of `min(b)` for these subarrays\n                top = stack.pop()\n                left = 0 if not stack else stack[-1] + 1\n                right = i - 1\n                total += (left + top) * (top - right) * arr[top] % mod\n                total %= mod\n            stack.append(i)\n        \n        # For the elements that are still on the stack, \n        # they are out of the subarrays that contain the last element\n        # So we calculate the sum of `min(b)` for these subarrays\n        while stack:\n            top = stack.pop()\n            left = 0 if not stack else stack[-1] + 1\n            right = n - 1\n            total += (left + top) * (top - right) * arr[top] % mod\n            total %= mod\n        \n        return total"
+  },
+  "is_python": true
+}

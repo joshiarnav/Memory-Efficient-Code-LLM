@@ -1,0 +1,30 @@
+{
+  "problem_idx": "461",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.49656608696181287,
+      "edit_similarity": 0.524390243902439,
+      "ast_similarity": 0.5882352941176471,
+      "diff_bleu": 0.770043926214912
+    },
+    "raw_model": {
+      "bleu_score": 0.4957470060922257,
+      "edit_similarity": 0.44059405940594054,
+      "ast_similarity": 0.47619047619047616,
+      "diff_bleu": 0.6968468987625032
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0008190808695871521,
+    "edit_sim_delta": 0.0837961844964985,
+    "ast_sim_delta": 0.11204481792717091,
+    "diff_bleu_delta": 0.07319702745240886
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def hammingDistance(self, x: int, y: int) -> int:\n        bits = []\n        while x > 0 or y > 0:\n            bits.append(x % 2)\n            x //= 2\n            bits.append(y % 2)\n            y //= 2\n        count = 0\n        for i in range(len(bits)):\n            if bits[i] != bits[(i + 1) % len(bits)]:\n                count += 1\n        return count",
+    "efficient": "class Solution:\n    def hammingDistance(self, x: int, y: int) -> int:\n        return (x ^ y).bit_count()\n",
+    "finetuned": "class Solution:\n    def hammingDistance(self, x: int, y: int) -> int:\n        x ^= y\n        y = x\n        x ^= y\n        y ^= x\n        x ^= y\n        return 1 & x",
+    "raw_model": "class Solution:\n    def hammingDistance(self, x: int, y: int) -> int:\n        \"\"\"\n        This function calculates the Hamming distance between two integers.\n        \n        The Hamming distance between two integers is the number of positions at which the corresponding bits are different.\n        \n        Parameters:\n        x (int): The first integer.\n        y (int): The second integer.\n        \n        Returns:\n        int: The Hamming distance between the two integers.\n        \"\"\"\n        # Use XOR operation to find the bits that are different\n        diff = x ^ y\n        \n        # Initialize a counter for the Hamming distance\n        count = 0\n        \n        # Use a while loop to count the number of bits that are set to 1\n        while diff:\n            # Use a bitwise AND operation to check if the least significant bit is 1\n            count += diff & 1\n            # Use a bitwise right shift operation to remove the least significant bit\n            diff >>= 1\n        \n        # Return the Hamming distance\n        return count"
+  },
+  "is_python": true
+}

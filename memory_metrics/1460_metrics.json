@@ -1,0 +1,22 @@
+{
+  "inefficient": {
+    "avg_execution_time": 2.288818359375e-05,
+    "avg_peak_memory": 0.00061798095703125,
+    "success_rate": 1.0
+  },
+  "efficient": {
+    "avg_execution_time": 8.106231689453125e-06,
+    "avg_peak_memory": 0.000457763671875,
+    "success_rate": 1.0
+  },
+  "finetuned": {
+    "avg_execution_time": 0.0005018711090087891,
+    "avg_peak_memory": 0.01944446563720703,
+    "success_rate": 1.0
+  },
+  "raw_model": {
+    "avg_execution_time": 1.6927719116210938e-05,
+    "avg_peak_memory": 0.00054931640625,
+    "success_rate": 1.0
+  }
+}

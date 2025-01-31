@@ -1,0 +1,30 @@
+{
+  "problem_idx": "567",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3058333401034625,
+      "edit_similarity": 0.49533954727030627,
+      "ast_similarity": 0.8571428571428571,
+      "diff_bleu": 0.619434850041028
+    },
+    "raw_model": {
+      "bleu_score": 0.3161267558535031,
+      "edit_similarity": 0.5499334221038615,
+      "ast_similarity": 0.7666666666666667,
+      "diff_bleu": 0.6063394723758573
+    }
+  },
+  "deltas": {
+    "bleu_delta": -0.010293415750040558,
+    "edit_sim_delta": -0.05459387483355527,
+    "ast_sim_delta": 0.09047619047619038,
+    "diff_bleu_delta": 0.013095377665170771
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        s1_set = set(s1)\n        s2_list = [None] * m\n        for i in range(m):\n            if s2[i] in s1_set:\n                s2_list[i] = {'s1': s1_set, 's2': set(s2[i])}\n        for i in range(m - n + 1):\n            window = [None] * n\n            for j in range(n):\n                window[j] = {'s2': set(s2[i + j])}\n            for s2_str in s2_list[i:i + n]:\n                for key, value in s2_str.items():\n                    for j in range(n):\n                        window[j][key] = value\n            if self.is_perm(window, s1_set):\n                return True\n        return False\n\n    def is_perm(self, window, s1_set):\n        for i in range(len(window)):\n            for key, value in window[i].items():\n                if key == 's1':\n                    if value != s1_set:\n                        return False\n                else:\n                    if len(value) != 1 or list(value)[0] not in s1_set:\n                        return False\n        return True",
+    "efficient": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        cnt = Counter()\n        for a, b in zip(s1, s2):\n            cnt[a] -= 1\n            cnt[b] += 1\n        diff = sum(x != 0 for x in cnt.values())\n        if diff == 0:\n            return True\n        for i in range(n, m):\n            a, b = s2[i - n], s2[i]\n\n            if cnt[b] == 0:\n                diff += 1\n            cnt[b] += 1\n            if cnt[b] == 0:\n                diff -= 1\n\n            if cnt[a] == 0:\n                diff += 1\n            cnt[a] -= 1\n            if cnt[a] == 0:\n                diff -= 1\n\n            if diff == 0:\n                return True\n        return False\n",
+    "finetuned": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        cnt1 = Counter(s1)\n        cnt2 = Counter(s2[: n - 1])\n        for i in range(n - 1, m):\n            cnt2[list(cnt2.keys())[i - n + 1]] -= 1\n            cnt2[list(cnt2.keys())[i - n + 1]] = max(0, cnt2[list(cnt2.keys())[i - n + 1]])\n            cnt2[list(cnt2.keys())[i]] = cnt2.get(list(cnt2.keys())[i], 0) + 1\n            if cnt2 == cnt1:\n                return True\n        return False",
+    "raw_model": "class Solution:\n    def checkInclusion(self, s1: str, s2: str) -> bool:\n        n, m = len(s1), len(s2)\n        if n > m:\n            return False\n        \n        # Calculate the frequency of characters in s1\n        s1_count = [0] * 26\n        for char in s1:\n            s1_count[ord(char) - ord('a')] += 1\n        \n        # Initialize the frequency of characters in the current window\n        window_count = [0] * 26\n        \n        # Slide the window and check if the frequency of characters in the window matches with s1\n        for i in range(m):\n            # Add the current character to the window\n            index = ord(s2[i]) - ord('a')\n            window_count[index] += 1\n            \n            # If the window size matches with s1 size, check if the frequency of characters in the window matches with s1\n            if i >= n - 1:\n                if window_count == s1_count:\n                    return True\n                \n                # If the frequency doesn't match, remove the leftmost character from the window\n                index = ord(s2[i - n + 1]) - ord('a')\n                window_count[index] -= 1\n        \n        # If no permutation of s1 is found in s2, return False\n        return False"
+  },
+  "is_python": true
+}

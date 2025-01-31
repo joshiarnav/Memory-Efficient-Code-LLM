@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1081",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.9111609893118723,
+      "edit_similarity": 0.9260969976905312,
+      "ast_similarity": 1.0,
+      "diff_bleu": 0.7299434068133597
+    },
+    "raw_model": {
+      "bleu_score": 0.6029757690954985,
+      "edit_similarity": 0.6552845528455284,
+      "ast_similarity": 0.8571428571428571,
+      "diff_bleu": 0.1163583569586221
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.30818522021637373,
+    "edit_sim_delta": 0.2708124448450028,
+    "ast_sim_delta": 0.1428571428571429,
+    "diff_bleu_delta": 0.6135850498547376
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def smallestSubsequence(self, s: str) -> str:\n        last = {c: i for i, c in enumerate(s)}\n        stk = []\n        vis = set()\n        counts = {}\n        for c in s:\n            counts[c] = counts.get(c, 0) + 1\n        for i, c in enumerate(s):\n            if c in vis:\n                counts[c] -= 1\n                continue\n            while stk and stk[-1] > c and last[stk[-1]] > i:\n                stk.pop()\n                vis.remove(stk[-1])\n                counts[stk[-1]] += 1\n            stk.append(c)\n            stk.append(c)  # duplicate\n            vis.add(c)\n            vis.add(c)     # duplicate\n        return \"\".join(stk)",
+    "efficient": "class Solution:\n    def smallestSubsequence(self, s: str) -> str:\n        last = {c: i for i, c in enumerate(s)}\n        stk = []\n        vis = set()\n        for i, c in enumerate(s):\n            if c in vis:\n                continue\n            while stk and stk[-1] > c and last[stk[-1]] > i:\n                vis.remove(stk.pop())\n            stk.append(c)\n            vis.add(c)\n        return \"\".join(stk)\n",
+    "finetuned": "class Solution:\n    def smallestSubsequence(self, s: str) -> str:\n        last = {c: i for i, c in enumerate(s)}\n        stk = []\n        vis = set()\n        for i, c in enumerate(s):\n            if c in vis:\n                continue\n            while stk and stk[-1] > c and last[stk[-1]] > i:\n                stk.pop()\n                vis.remove(stk[-1])\n            stk.append(c)\n            vis.add(c)\n        return \"\".join(stk)",
+    "raw_model": "class Solution:\n    def smallestSubsequence(self, s: str) -> str:\n        last = {c: i for i, c in enumerate(s)}\n        stk = []\n        vis = set()\n        counts = {}\n        for c in s:\n            counts[c] = counts.get(c, 0) + 1\n        \n        for i, c in enumerate(s):\n            if c in vis:\n                counts[c] -= 1\n                continue\n            while stk and stk[-1] > c and last[stk[-1]] > i:\n                stk.pop()\n                vis.remove(stk[-1])\n                counts[stk[-1]] += 1\n            stk.append(c)\n            vis.add(c)\n            counts[c] -= 1  # update count\n        \n        return \"\".join(stk)"
+  },
+  "is_python": true
+}

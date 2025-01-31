@@ -1,0 +1,30 @@
+{
+  "problem_idx": "1679",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.2515757664051459,
+      "edit_similarity": 0.507154213036566,
+      "ast_similarity": 0.6363636363636364,
+      "diff_bleu": 0.5623823637776467
+    },
+    "raw_model": {
+      "bleu_score": 0.2506833315908581,
+      "edit_similarity": 0.5073170731707317,
+      "ast_similarity": 0.5882352941176471,
+      "diff_bleu": 0.12120524771330228
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.0008924348142878014,
+    "edit_sim_delta": -0.00016286013416566547,
+    "ast_sim_delta": 0.048128342245989275,
+    "diff_bleu_delta": 0.44117711606434445
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        count = {}\n        for num in nums:\n            if num not in count:\n                count[num] = 0\n            count[num] += 1\n\n        ans = 0\n        for num in nums:\n            if k - num in count and k - num != num:\n                ans += 1\n                count[num] -= 1\n                if count[num] == 0:\n                    del count[num]\n            elif k - num == num:\n                if num in count and count[num] > 1:\n                    ans += 1\n                    count[num] -= 2\n                    if count[num] == 0:\n                        del count[num]\n                else:\n                    ans += 1\n                    del count[num]\n        return ans",
+    "efficient": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        nums.sort()\n        l, r, ans = 0, len(nums) - 1, 0\n        while l < r:\n            s = nums[l] + nums[r]\n            if s == k:\n                ans += 1\n                l, r = l + 1, r - 1\n            elif s > k:\n                r -= 1\n            else:\n                l += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        cnt = Counter(nums)\n        ans = 0\n        for num in nums:\n            if num + k in cnt and num + k!= num:\n                ans += 1\n                cnt[num + k] -= 1\n                if cnt[num + k] == 0:\n                    del cnt[num + k]\n            elif num == k:\n                if cnt[num] > 1:\n                    ans += 1\n                    cnt[num] -= 2\n                    if cnt[num] == 0:\n                        del cnt[num]\n                else:\n                    ans += 1\n                    del cnt[num]\n        return ans",
+    "raw_model": "class Solution:\n    def maxOperations(self, nums: List[int], k: int) -> int:\n        count = {}\n        for num in nums:\n            if num not in count:\n                count[num] = 0\n            count[num] += 1\n\n        ans = 0\n        for num in nums:\n            if k - num in count and k - num != num:\n                ans += 1\n                count[num] -= 1\n                count[k - num] -= 1\n            elif k - num == num:\n                if num in count and count[num] > 1:\n                    ans += 1\n                    count[num] -= 2\n                else:\n                    break\n        return ans"
+  },
+  "is_python": true
+}

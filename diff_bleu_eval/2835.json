@@ -1,0 +1,30 @@
+{
+  "problem_idx": "2835",
+  "metrics": {
+    "finetuned_model": {
+      "bleu_score": 0.3647761957962283,
+      "edit_similarity": 0.622715404699739,
+      "ast_similarity": 0.7368421052631579,
+      "diff_bleu": 0.5679261466082953
+    },
+    "raw_model": {
+      "bleu_score": 0.17071120204648138,
+      "edit_similarity": 0.4778067885117493,
+      "ast_similarity": 0.5581395348837209,
+      "diff_bleu": 0.5877302982453793
+    }
+  },
+  "deltas": {
+    "bleu_delta": 0.1940649937497469,
+    "edit_sim_delta": 0.14490861618798967,
+    "ast_sim_delta": 0.17870257037943693,
+    "diff_bleu_delta": -0.019804151637083933
+  },
+  "solutions": {
+    "inefficient": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target:\n            return -1\n        max_num = max(nums)\n        powers_of_2 = [0] * 30\n        for x in nums:\n            i = 0\n            while x > 1:\n                if x & 1:\n                    powers_of_2[i] += 1\n                x >>= 1\n                i += 1\n        for i in range(30):\n            powers_of_2[i] += 1\n        n = len(powers_of_2)\n        dp = [[0] * (target + 1) for _ in range(n + 1)]\n        for i in range(n + 1):\n            dp[i][0] = 1\n        for i in range(1, n + 1):\n            for j in range(1, target + 1):\n                for k in range(min(j, powers_of_2[i - 1] * 2) + 1):\n                    dp[i][j] |= dp[i - 1][j - k]\n        max_operations = n\n        for i in range(target + 1):\n            for j in range(n, 0, -1):\n                if dp[j][i]:\n                    max_operations = min(max_operations, j - i)\n                    break\n        return max_operations",
+    "efficient": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target:\n            return -1\n        cnt = [0] * 32\n        for x in nums:\n            for i in range(32):\n                if x >> i & 1:\n                    cnt[i] += 1\n        i = j = 0\n        ans = 0\n        while 1:\n            while i < 32 and (target >> i & 1) == 0:\n                i += 1\n            if i == 32:\n                break\n            while j < i:\n                cnt[j + 1] += cnt[j] // 2\n                cnt[j] %= 2\n                j += 1\n            while cnt[j] == 0:\n                cnt[j] = 1\n                j += 1\n            ans += j - i\n            cnt[j] -= 1\n            j = i\n            i += 1\n        return ans\n",
+    "finetuned": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        s = sum(nums)\n        if s < target:\n            return -1\n        h = [0] * 30\n        for x in nums:\n            i = 0\n            while x > 1:\n                if x & 1:\n                    h[i] += 1\n                x >>= 1\n                i += 1\n        n = len(nums)\n        dp = [0] * (n + 1)\n        dp[0] = 1\n        for x, g in zip(nums, h):\n            for j in range(n, 0, -1):\n                for k in range(1, x + 1):\n                    if k * g + j - k >= 0:\n                        dp[j] |= dp[k * g + j - k]\n        return n - dp[n]",
+    "raw_model": "class Solution:\n    def minOperations(self, nums: List[int], target: int) -> int:\n        dp = {0: 0}  # Initialize a dictionary to store the minimum operations for each sum\n        \n        for num in sorted(nums, reverse=True):\n            new_dp = {}  # Initialize a dictionary to store the minimum operations for the current sum\n            for s, op in dp.items():\n                new_s = s + num\n                if new_s > target:\n                    continue\n                if new_s not in new_dp or op + 1 < new_dp[new_s]:\n                    new_dp[new_s] = op + 1\n                new_s = s + 2 * num\n                if new_s <= target and (new_s not in new_dp or op + 1 < new_dp[new_s]):\n                    new_dp[new_s] = op + 1\n            dp = new_dp\n        \n        return dp.get(target, -1)"
+  },
+  "is_python": true
+}
